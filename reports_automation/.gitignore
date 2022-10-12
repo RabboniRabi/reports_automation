@@ -1,2 +1,5 @@
 # Ignore the credentials folder
 credentials/
+
+# Ignore pycache
+__pycache__/
