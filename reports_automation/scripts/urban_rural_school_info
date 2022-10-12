@@ -1,0 +1,3 @@
+% Urban rural school info%
+
+select udise_code UDISE, school_name SchName, case when urbanrural=1 then "Rural" when urbanrural = 2 then "Urban" end as Location from schoolnew_basicinfo where curr_stat=1;
