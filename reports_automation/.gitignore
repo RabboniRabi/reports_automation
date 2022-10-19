@@ -3,3 +3,7 @@ credentials/
 
 # Ignore pycache
 __pycache__/
+
+
+# Ignore the scripts folder
+scripts/
