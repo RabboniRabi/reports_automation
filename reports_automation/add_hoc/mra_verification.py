@@ -131,12 +131,8 @@ def group_and_count_statuses(df, group_by):
 
 def main():
 
-    # Read the credentials and get a database connection
-    curr_dir = os.getcwd()
-    output_data_path = '../credentials/'
-    file_path = os.path.join(curr_dir, output_data_path, 'db_credentials.json')
-    
-    credentials_dict = dbutilities.read_credentials(file_path)
+    # Read the credentials and get a database connection    
+    credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Query and get the data
     df_data = get_data_as_df(credentials_dict)

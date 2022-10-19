@@ -5,4 +5,4 @@ credentials/
 __pycache__/
 
 # Ignore the scripts folder
-scripts/
+sql_scripts/
