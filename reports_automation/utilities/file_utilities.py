@@ -7,6 +7,7 @@ that can be commonly used across the project.
 import tkinter.filedialog as filedialog
 import os
 import sys
+import pandas as pd
 
 from pathlib import Path
 
@@ -116,8 +117,8 @@ def save_to_excel(df_sheet_dict, file_name, index=False):
     curr_dir = os.getcwd()
     output_data_path = '../../../reports/generated/'
     file_path = os.path.join(curr_dir, output_data_path, file_name)
-    datatoexcel = pd.ExcelWriter(file_path)
-    for key in df_sheet_dict:
+    datatoexcel = pd.ExcelWriter(file_path, engine='openpyxl')
+    for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(datatoexcel, sheet_name=key, index=index)
         print('Saving ', key, ' sheet in excel file: ', file_name, '....')
     datatoexcel.save()

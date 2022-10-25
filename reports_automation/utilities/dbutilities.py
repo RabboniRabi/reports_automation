@@ -5,13 +5,13 @@ from sqlalchemy import create_engine
 import json
 import os
 
-def read_conn_credentials(ile_name):
+def read_conn_credentials(file_name):
     """
     Function to read the connection and credential details stored 
     in dictionary or JSON format in file with given name 
     Parameters:
     ----------
-    ile_name: str
+    file_name: str
         The name of file with credentials and connection details to connect to a database
     Returns:
     -------
@@ -24,8 +24,8 @@ def read_conn_credentials(ile_name):
         }
     """
     curr_dir = os.getcwd()
-    output_data_path = '../credentials/'
-    file_path = os.path.join(curr_dir, output_data_path, ile_name)
+    cred_dir_path = '../credentials/'
+    file_path = os.path.join(curr_dir, cred_dir_path, file_name)
     file = open(file_path, mode = 'r')
     data = file.read()
     credentials_dict = json.loads(data)
