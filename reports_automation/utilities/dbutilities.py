@@ -3,18 +3,19 @@ from mysql.connector import Error
 from sqlalchemy import create_engine
 
 import json
+import os
 
-def read_credentials(file_path):
+def read_conn_credentials(file_name):
     """
-    Function to read the credentials stored in a given file (with full path)
-    in dictionary or JSON format
+    Function to read the connection and credential details stored 
+    in dictionary or JSON format in file with given name 
     Parameters:
     ----------
-    file_path: str
-        The full path to the file
+    file_name: str
+        The name of file with credentials and connection details to connect to a database
     Returns:
     -------
-    The dictionary supplied in the file
+    A dictionary with connection details and credentials read from the file
         {
             "username": "<username>",
             "password": "<password>",
@@ -22,6 +23,9 @@ def read_credentials(file_path):
             "host_name": "<hostname>"
         }
     """
+    curr_dir = os.getcwd()
+    cred_dir_path = '../credentials/'
+    file_path = os.path.join(curr_dir, cred_dir_path, file_name)
     file = open(file_path, mode = 'r')
     data = file.read()
     credentials_dict = json.loads(data)

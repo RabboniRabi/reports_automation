@@ -8,7 +8,6 @@ import pandas as pd
 import utilities.utilities as utilities
 import sys
 
-
 # Global variables
 # Column names are defined here so that they can be edited in one place
 student_count  = 'count(distinct unique_id_no)'

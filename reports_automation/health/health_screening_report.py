@@ -1,113 +1,192 @@
+import sys
+sys.path.append('../')
+
+import utilities.utilities as utilities
+import utilities.file_utilities as file_utilities
+import utilities.dbutilities as dbutilities
 import pandas as pd
 
-df1 = pd.read_excel(r'/home/rabboni/Downloads/Student-health-checkup-rpt.xlsx', sheet_name='Report',skiprows=4)
+# Global variables
+district = 'District'
 
 
-# Sum of All students in DataFrame2
+# Read the excel report as a Pandas DataFrame object
+#df_report = pd.read_excel(r'/home/rabboni/Downloads/Student-health-checkup-rpt.xlsx', sheet_name='Report',skiprows=4)
 
-df2 = df1.groupby(['District', 'Edu.Dist', 'Block'])[['Total','Screened', 'Unscreened']].sum().reset_index()
+def get_students_screening_status(df, group_level):
+    """
+    Function to get the screening status of students at a given grouping level (district/educational district/block)
 
-df3 = df1[df1['Screened'] == 0]
+    Parameters:
+    ----------
+    df: Pandas DataFrame object
+        The data from which summary of grouped level wise screening status of students is to be extracted
+    group_level: str
+        The column name in the data to group by (Eg: district/educational district/block)
+    Returns:
+    --------
+    The grouped level wise screening status of students as a Pandas DataFrame object 
+    """
 
-df4a = df3.groupby(['District', 'Edu.Dist', 'Block'])[['School']].count().reset_index()
-df4a.rename(columns = {'School': 'Total Schools Not Started'}, inplace = True)
+    # Group the data down to given grouping level,
+    # counting total students, students screened, not screened, referred to MHT and referred to PMOA
+    df_group_level = df.groupby([group_level],sort=False)[
+    ['Total', 'Screened', 'UnScreened', 'Referred to MHT', 'Referred to PMOA']].sum().reset_index()
 
-df6 = df1.groupby(['District', 'Edu.Dist', 'Block'])[['School']].count().reset_index()
-df6.rename(columns = {'School':'Total Schools'}, inplace = True)
+    # Add a % students screened column to the dataframe
+    # Insert the column to the right of Screened column
+    screened_col_index = df_group_level.columns.get_loc('Screened')        
+    df_group_level.insert(screened_col_index+1,'% Screened', df_group_level['Screened']/df_group_level['Total'])
+    #df_group_level.loc[:, '% Screened'] = df_group_level['% Screened'].map('{:.2%}'.format)
 
-df4 = df2.merge(df4a[['District', 'Edu.Dist', 'Block', 'Total Schools Not Started']])
+    # Add a % Referred to MHT column to the dataframe
+    # Insert the column to the right of Referred to MHT column
+    mht_col_index = df_group_level.columns.get_loc('Referred to MHT')
+    df_group_level.insert(mht_col_index+1,'% Referred to MHT', df_group_level['Referred to MHT']/df_group_level['Screened'])
+    df_group_level.loc[:, '% Referred to MHT'] = df_group_level['% Referred to MHT'].map('{:.2%}'.format)   
 
-df4 = df4.merge(df6[['District', 'Edu.Dist', 'Block', 'Total Schools']])
+    # Add a % Referred to PMOA column to the dataframe
+    # Insert the column to the right of Referred to PMOA column
+    pmoa_col_index = df_group_level.columns.get_loc('Referred to PMOA')
+    df_group_level.insert(pmoa_col_index+1,'% Referred to PMOA', df_group_level['Referred to PMOA']/df_group_level['Screened'])
+    df_group_level.loc[:, '% Referred to PMOA'] = df_group_level['% Referred to PMOA'].map('{:.2%}'.format)
 
-df4['% Students Screened'] = df4['Screened']/df4['Total']
+    # Sort the data by % Screened
+    df_group_level = df_group_level.sort_values(['% Screened'], ascending=[False])
 
-df4['Total Schools Started'] = df4['Total Schools'] - df4['Total Schools Not Started']
+    df_group_level.rename(columns = {'Total':'Total Students'}, inplace = True)
 
-df4['% Schools Not Started'] = df4['Total Schools Not Started']/df4['Total Schools']
+    df_group_level.drop(columns=['UnScreened'], inplace = True)
 
+    # Trying colour gradients
 
-# Ranking for Block
-df4['Rank'] = df4['% Schools Not Started'].rank(method='min',ascending=True)
+    
+    #df_group_level.style.background_gradient(axis=0,subset=['% Screened'], cmap='Blues').to_excel('please_work.xlsx', engine='openpyxl')
 
-# Ranking for Educational District
-ed_rank = df4.groupby(['Edu.Dist'])[['Total Schools Not Started', 'Total Schools']].sum()
-ed_rank['EDist_Data'] = (ed_rank['Total Schools Not Started']/ed_rank['Total Schools'])
-ed_rank['EDist_Rank'] = ed_rank['EDist_Data'].rank(method='min',ascending=True)
-ed_rank = ed_rank.reset_index()
+    return df_group_level
 
-# Ranking for District
-d_rank = df4.groupby(['District'])[['Total Schools Not Started', 'Total Schools']].sum()
-d_rank['Dist_Data'] = (d_rank['Total Schools Not Started']/d_rank['Total Schools'])
-d_rank['Dist_Rank'] = d_rank['Dist_Data'].rank(method='min',ascending=True)
-d_rank = d_rank.reset_index()
+def get_schools_screening_status(df, group_level):
+    """
+    Function to get the screening status of schools at a given grouping level (district/educational district/block)
+    
+    Parameters:
+    ----------
+    df: Pandas DataFrame object
+        The data from which summary of grouped level wise screening status of schools is to be extracted
+    group_level: str
+        The column name in the data to group by (Eg: district/educational district/block)
+    Returns:
+    --------
+    The grouped level wise screening status of schools as a Pandas DataFrame object 
+    """
 
-# Vlookup for Ed_District
-def xlookup(lookup_value, lookup_array, return_array, if_not_found: str = ''):
-    match_value = return_array.loc[lookup_array == lookup_value]
-    if match_value.empty:
-        return 0 if if_not_found == '' else if_not_found
+    # Compute whether a school has completed screening, partially completed or not started
+    series_completed = (df['Total'] - df['Screened'] == 0 ) & (df['Total']  != 0) 
+    series_not_started =  df['Screened'] == 0
+    series_partially_completed =  ~(series_completed | series_not_started)
+    school_col_index = df.columns.get_loc('School')            
+    # Insert the computed values as series into the dataframe next to the school column
+    df.insert(school_col_index+1,'Fully completed', series_completed)
+    df.insert(school_col_index+2,'Partially Completed', series_partially_completed)
+    df.insert(school_col_index+3,'Not started', series_not_started)
 
-    else:
-        return match_value.tolist()[0]
+    # Group the data down to given grouping level,
+    # counting total schools, completed schools, partially completed school, not started schools
+    df_group_level = df.groupby([group_level],sort=False).agg(
+        Total_Schools=('School', 'count'),
+        Fully_Completed_Schools = ('Fully completed', 'sum'),
+        Partially_Completed_Schools = ('Partially Completed', 'sum'),
+        Not_Started_Schools = ('Not started', 'sum')
+    ).reset_index()
 
+    # Rename columns
+    df_group_level.rename(columns = {
+        'Total_Schools':'Total Schools',
+        'Fully_Completed_Schools': 'Fully Completed Schools',
+        'Partially_Completed_Schools': 'Partially Completed Schools',
+        'Not_Started_Schools': 'Not Started Schools'
+        }, inplace = True)
 
-df4['ERank'] = df4['Edu.Dist']. apply(xlookup, args=(ed_rank['Edu.Dist'], ed_rank['EDist_Rank']))
+    # Add a column indicated % completed schools at each grouped value
+    df_group_level.insert(df_group_level.shape[1], '% Fully completed', df_group_level['Fully Completed Schools']/df_group_level['Total Schools'])
 
-# Vlookup for District Rank
+     # Sort the data by % Fully completed
+    df_group_level = df_group_level.sort_values(['% Fully completed'], ascending=[False])
 
+    # checking color gradient
+    """df_group_level.style\
+    .background_gradient(axis=0,subset=['% Fully completed'], cmap='jet')\
+    .format({'% Fully completed': '{:.2%}'})\
+    .to_excel('please_work.xlsx', engine='openpyxl')"""
 
-df4['DRank'] = df4['District']. apply(xlookup, args=(d_rank['District'], d_rank['Dist_Rank']))
+    df_group_level.loc[:, '% Fully completed'] = df_group_level['% Fully completed'].map('{:.2%}'.format)   
 
-# Changing % format
-df4.loc[:, "% Schools Not Started"] = df4["% Schools Not Started"].map('{:.2%}'.format)
-
-# Sorting df4
-df4 = df4.sort_values(['DRank', 'District', 'ERank', 'Edu.Dist', 'Rank'],
-                      ascending=[True, True, True, True, True])
-
-
-# Creating View for "c1_total  2021 View" for Edu Dist
-TV_ED = pd.DataFrame(df4['Edu.Dist'])
-
-TV_ED['ERank'] = TV_ED['Edu.Dist']. apply(xlookup, args=(ed_rank['Edu.Dist'], ed_rank['EDist_Rank']))
-
-TV_ED['ERank1'] = TV_ED['Edu.Dist']. apply(xlookup, args=(ed_rank['Edu.Dist'], ed_rank['Edu.Dist']))
-
-TV_ED['ERank1'] = TV_ED['ERank1'] + ' Total'
-
-TV_ED = TV_ED.drop_duplicates(keep='first')
-
-# Creating View for "c1_total  2021 View" for Dist
-
-TV_D = pd.DataFrame(df4['District'])
-
-TV_D['DRank'] = TV_D['District']. apply(xlookup, args=(d_rank['District'], d_rank['Dist_Rank']))
-
-TV_D['DRank1'] = TV_D['District']. apply(xlookup, args=(d_rank['District'], d_rank['District']))
-
-TV_D['DRank1'] = TV_D['DRank1'] + ' Total'
-
-TV_D = TV_D.drop_duplicates(keep='first')
-
-# Remove last 2 columns of df4 before printing
-df4.drop(columns=df4.columns[-2:],
-        axis=1,
-        inplace=True)
-
-
-df4 =df4[['District', 'Edu.Dist', 'Block','Total','Screened', 'Unscreened','% Students Screened', 'Total Schools', 'Total Schools Started',
-          'Total Schools Not Started','% Schools Not Started','Rank' ]]
-
-
-# Final DataFrame
-df_1 = pd.DataFrame(df4)
-
-datatoexcel = pd.ExcelWriter(r'/home/rabboni/Downloads/health.xlsx')
-
-# write DataFrame to excel
-df_1.to_excel(datatoexcel, sheet_name='Main View', index=False)
-
-# save the excel
-datatoexcel.save()
+    return df_group_level
 
 
+
+
+
+def fetch_data_as_df (credentials_dict, script_file_name):
+    """
+    Function to query the database for students' health screening details and return the data as a pandas dataframe object
+    
+    Parameters
+    ---------
+    credentials_dict: dict
+        A dictionary of credentials to use to connect to the database
+        eg: {
+        "username": "<username>",
+        "password": "<password>",
+        "db_name": "<dbname>",
+        "host_name": "<hostname>"
+        }
+    script_file_name: str
+        The file name with the sql script to be executed to fetch the data
+    Returns
+    -------
+    Students' health screening details as a dataframe object
+    """
+    connection = dbutilities.create_server_connection(credentials_dict)
+    query = file_utilities.open_script(script_file_name).read()
+
+    print('Executing Query...')
+    df_data = pd.read_sql_query(query, connection) 
+    print('Query Execution Successful')
+
+    # Close the database connection
+    connection.close()
+
+    return df_data
+
+def main():
+    
+    # Read the database connection credentials
+    #credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+
+    # Get the students' health screening details from the database as a Pandas DataFrame object
+    #df = fetch_data_as_df(credentials_dict, 'health_screening_status.sql')
+
+    # Temporarily reading from excel
+    df_report = pd.read_excel(r'/home/rabboni/Downloads/health.xlsx', sheet_name='Report')
+
+    #df_copy = df_report.copy(deep=True)
+
+    # Get the students' health screening details at district level
+    df_students_screening_status = get_students_screening_status(df_report, district)
+
+
+    # Get the schools' health screening details at district level
+    df_schools_screening_status = get_schools_screening_status(df_report, district)
+
+    df_sheet_dict = {
+    'Students screening status': df_students_screening_status,
+    'Schools screening status': df_schools_screening_status
+    }
+
+    file_utilities.save_to_excel(df_sheet_dict, 'health_screening_status.xlsx')
+
+      
+
+if __name__ == "__main__":
+    main()
