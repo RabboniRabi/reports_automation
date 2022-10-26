@@ -233,3 +233,38 @@ def build_row(master_columns, df_partial_row, text_append_dict):
             new_row.append('')   
     return new_row    
 
+
+def filter_group_count_valid_values(df, group_levels, filter_columns, accepted_values_regex):
+    """
+    Function to filter data by taking only those values that match a given regex pattern,
+    apply grouping on given grouping columns and count the number of valid values on
+    the columns the regex pattern was matched on.
+
+    Parameters:
+    ----------
+    df: Pandas DataFrame
+        The raw data
+    group_levels: list
+        The list of columns to group by
+    filter_columns: list
+        The list of columns to filter (apply regex pattern on)
+    accepted_values_regex: str
+        A regex pattern of accepted values to filter the columns by
+    """
+    first_iteration = True
+    for column in filter_columns:
+        # Filter the data by accepted values for a column
+        df_col_accepted_vals = df[df[column].str.match(accepted_values_regex)]
+        # Apply grouping on the filtered data and count the accepted values in the columns
+        df_grouped = df_col_accepted_vals.groupby(group_levels,sort=False)[column].count().reset_index()
+
+        # If iterating for the first time, there wont be previous grouping to merge
+        if first_iteration:
+            df_filtered_grouped = df_grouped
+            first_iteration = False
+        else:
+            # columns to merge will be grouping columns plus the current iterated column
+            merge_cols = group_levels + [column]    
+            df_filtered_grouped = df_filtered_grouped.merge(df_grouped[merge_cols]).reset_index()
+
+    return df_filtered_grouped      
