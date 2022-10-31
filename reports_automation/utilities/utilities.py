@@ -8,7 +8,7 @@ import pandas as pd
 
 
 
-def xlookup(lookup_value, lookup_array, return_array, if_not_found: str = ''):
+def xlookup(lookup_value, lookup_array, return_array, if_not_found = ''):
     """
     Function to perform the XLOOKUP function in Excel
     """
@@ -234,7 +234,7 @@ def build_row(master_columns, df_partial_row, text_append_dict):
     return new_row    
 
 
-def filter_group_count_valid_values(df, group_levels, filter_columns, accepted_values_regex):
+def filter_group_count_valid_values(df, group_levels, filter_columns_regex_dict):
     """
     Function to filter data by taking only those values that match a given regex pattern,
     apply grouping on given grouping columns and count the number of valid values on
@@ -246,15 +246,23 @@ def filter_group_count_valid_values(df, group_levels, filter_columns, accepted_v
         The raw data
     group_levels: list
         The list of columns to group by
-    filter_columns: list
-        The list of columns to filter (apply regex pattern on)
-    accepted_values_regex: str
-        A regex pattern of accepted values to filter the columns by
+    filter_columns_regex_dict: dict
+        A column - regex, key - value pair dictionary
+        This dictionary will be used to filter values in the column by matching only the values
+        given in the regex
+        eg: {
+            'col_a' : '[1-9].',
+            'col_b' : '(a|h|e)+
+        }
+    Returns:
+    -------
+    DataFrame object of filtered and grouped data    
     """
     first_iteration = True
-    for column in filter_columns:
+    for column in filter_columns_regex_dict.keys():
         # Filter the data by accepted values for a column
-        df_col_accepted_vals = df[df[column].str.match(accepted_values_regex)]
+        accepted_values_regex = filter_columns_regex_dict[column]
+        df_col_accepted_vals = filter_df_by_regex_match(df, column, accepted_values_regex)
         # Apply grouping on the filtered data and count the accepted values in the columns
         df_grouped = df_col_accepted_vals.groupby(group_levels,sort=False)[column].count().reset_index()
 
@@ -268,3 +276,57 @@ def filter_group_count_valid_values(df, group_levels, filter_columns, accepted_v
             df_filtered_grouped = df_filtered_grouped.merge(df_grouped[merge_cols]).reset_index()
 
     return df_filtered_grouped      
+
+
+def filter_df_by_regex_match(df, column, accepted_values_regex):
+    """
+    Function to filter data by matching values in a column with corresponding regex pattern.
+    
+    Parameters:
+    ----------
+    df: Pandas DataFrame
+        The raw data
+    column: str
+        The column on which to filter the data
+    accepted_values_regex: str
+        A regex pattern to be used to match values in a column        
+    Returns:
+    -------
+    DataFrame object of data filtered on a column    
+    """
+    # Filter the data by accepted values for a column
+    df_col_accepted_vals = df[df[column].str.match(accepted_values_regex)]
+
+    return df_col_accepted_vals
+
+
+def get_grouping_level_wise_col_values_count(df, group_levels, column, col_values):
+    """
+    Function to get the count of number of occurences of each distinct value in a given column
+    at given grouping levels.
+
+    Parameters:
+    -----------
+    df: Pandas DataFrame
+        The raw data
+    group_levels: list
+        The list of columns to group by
+    column: str
+        The column in which to count the number of occurences of each distinct value
+    col_values: list
+        A subset of column values to get the count for
+    Returns:
+    --------
+    DataFrame object with count of support provided in different categories
+    """
+
+    # Pivot the table - group to grouping levels and count the number of distinct values in column
+    df_pivot = pd.pivot_table(df, index=group_levels, columns=column,
+                aggfunc='size', fill_value=0, sort=False).reset_index()
+
+    # Filter the result of the pivot with columns containing grouping levels and supported categories
+    selected_columns = group_levels + col_values            
+
+    df_supp_cat_count = df_pivot[selected_columns]
+
+    return df_supp_cat_count
