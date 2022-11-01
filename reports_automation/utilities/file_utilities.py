@@ -11,9 +11,9 @@ import pandas as pd
 
 from pathlib import Path
 
-def ask_open_file(file_types, initialdir):
+def ask_open_filename(file_types, initialdir):
     """
-    Function to open a file open dialog and return the user file.
+    Function to open a file open dialog and return the user selected filename.
 
     Parameters:
     -----------
@@ -24,35 +24,44 @@ def ask_open_file(file_types, initialdir):
     
     Returns:
     --------    
-    File object with the opened file
+    The name of the user selected file
     """
-    file = filedialog.askopenfile(mode='r',initialdir=initialdir, filetypes=file_types)
-    if file is not None:
-        return file
+    filename = filedialog.askopenfilename(initialdir=initialdir, filetypes=file_types)
+    if filename is not None:
+        return filename
     else:
         sys.exit('No file selected!')
 
 
-def open_excel():
+def user_sel_excel_filename():
     """
-    Function to open excel files by user
+    Function to get the filename of the user selected excel file.
+    
+    Returns:
+    -------
+    The name of the user selected excel file
     """
     initialdir = get_download_dir_path()
     filetypes =[('Excel files', '*.xlsx')]
-    return ask_open_file(filetypes, initialdir)
+    return ask_open_filename(filetypes, initialdir)
 
 def open_scripts():
     """
-    Function to open script files by user
+    Function to get the file name of the user selected script file
+    
+    Returns:
+    -------
+    The name of the user selected excel file
     """
-    initialdir = str(os.path.join(Path.cwd(), "scripts"))
-    filetypes =[]
-    return ask_open_file(filetypes, initialdir)    
+    initialdir = str(os.path.join(Path.cwd(), "sql_scripts"))
+    filetypes = [('SQL Scripts', '*.sql')]
+    return ask_open_filename(filetypes, initialdir)    
 
 def open_script(script_file_name):
     """
     Function to open the sql script in a given file name.
     The function only searches in the sql_scripts directory
+    
     Parameters:
     ----------
     script_file_name: str
@@ -70,12 +79,17 @@ def get_download_dir_path():
     """
     Function to get the path to the downloads directory in the OS.
     The function should work for all Operating Systems
+
+    Returns:
+    --------
+    The path to the user's download path
     """
     return str(os.path.join(Path.home(), "Downloads"))
 
 def read_sheet(file_path, sheet_name, skiprows=0):
     """
     Function to read an excel sheet in a given excel file as a Pandas DataFrame object
+    
     Parameters:
     ----------
     file_path: str
