@@ -124,11 +124,7 @@ def get_grouping_level_wise_UDID_app_count(df, group_levels, udid_col, appl_cat_
         # Where there is no entry for a row in the above grouping, zero is inserted
         lowest_grouping_level = group_levels[len(group_levels) - 1]
         df_grouped[appl_category] = df_grouped[lowest_grouping_level].apply(utilities.xlookup,\
-         args=(df_appl_category_grouped[lowest_grouping_level], df_appl_category_grouped[appl_category], 0))
-
-
-    print(df_grouped)
-           
+         args=(df_appl_category_grouped[lowest_grouping_level], df_appl_category_grouped[appl_category], 0))     
 
     return df_grouped
 
@@ -136,7 +132,10 @@ def get_grouping_level_wise_UDID_app_count(df, group_levels, udid_col, appl_cat_
 def main():
 
     # Read report from excel
-    df_report = pd.read_excel(r'/home/rabboni/Downloads/CWSN-Report.xlsx', sheet_name='Report', skiprows=4)
+    #df_report = pd.read_excel(r'/home/rabboni/Downloads/CWSN-Report.xlsx', sheet_name='Report', skiprows=4)
+    # Ask the user to select the CWSN report excel file.
+    cwsn_report = file_utilities.user_sel_excel_filename()
+    df_report = pd.read_excel(cwsn_report, sheet_name='Report', skiprows=4)
 
     # List of student statuses to count
     student_statuses = ['In_School', 'Common Pool']
@@ -156,8 +155,6 @@ def main():
         'Website' : '^33([0-9]{18})$', # Website application numbers will have 20 digits and start with 33
         'Mobile' : '([0-9]{6})' # Mobile application number will contain 6 digits
     }
-
-
 
     # Get block level wise total students count
     block_wise_total_students_count = get_grouping_level_wise_student_count (df_report, group_levels, 'Name')
@@ -208,8 +205,6 @@ def main():
     df_overview.sort_values(group_levels, inplace = True)    
 
     file_utilities.save_to_excel({'Report':df_overview}, 'CWSN_Summary.xlsx')
-
-
 
 if __name__ == "__main__":
     main()
