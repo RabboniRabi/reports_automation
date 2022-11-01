@@ -37,7 +37,7 @@ def get_students_screening_status(df, group_level):
     # Insert the column to the right of Screened column
     screened_col_index = df_group_level.columns.get_loc('Screened')        
     df_group_level.insert(screened_col_index+1,'% Screened', df_group_level['Screened']/df_group_level['Total'])
-    #df_group_level.loc[:, '% Screened'] = df_group_level['% Screened'].map('{:.2%}'.format)
+    df_group_level.loc[:, '% Screened'] = df_group_level['% Screened'].map('{:.2%}'.format)
 
     # Add a % Referred to MHT column to the dataframe
     # Insert the column to the right of Referred to MHT column
@@ -162,13 +162,13 @@ def fetch_data_as_df (credentials_dict, script_file_name):
 def main():
     
     # Read the database connection credentials
-    #credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+    credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Get the students' health screening details from the database as a Pandas DataFrame object
-    #df = fetch_data_as_df(credentials_dict, 'health_screening_status.sql')
+    df = fetch_data_as_df(credentials_dict, 'health_screening_status.sql')
 
     # Temporarily reading from excel
-    df_report = pd.read_excel(r'/home/rabboni/Downloads/health.xlsx', sheet_name='Report')
+    #df_report = pd.read_excel(r'/home/rabboni/Downloads/health.xlsx', sheet_name='Report')
 
     #df_copy = df_report.copy(deep=True)
 
