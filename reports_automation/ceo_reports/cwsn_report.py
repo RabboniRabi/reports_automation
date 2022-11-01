@@ -44,8 +44,6 @@ def get_grouping_level_wise_student_count(df, group_levels, student_count_col):
 
     df_grouped.rename(columns={student_count_col: 'Total CWSN Students'}, inplace=True)
 
-    print()
-
     return df_grouped
 
 def get_grouping_level_wise_IDs_issued_count(df, group_levels, columns_regex_dict):
@@ -198,8 +196,6 @@ def main():
         'Yes' : 'Number of students with account',
         'No' : 'Number of students without account'
         }, inplace = True)
-
-    print('columns post merging: ', df_overview.columns.tolist())
 
     # Sort the values
     df_overview.sort_values(group_levels, inplace = True)    
