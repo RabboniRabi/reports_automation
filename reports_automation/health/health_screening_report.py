@@ -165,7 +165,7 @@ def main():
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Get the students' health screening details from the database as a Pandas DataFrame object
-    df = fetch_data_as_df(credentials_dict, 'health_screening_status.sql')
+    df_report = fetch_data_as_df(credentials_dict, 'health_screening_status.sql')
 
     # Temporarily reading from excel
     #df_report = pd.read_excel(r'/home/rabboni/Downloads/health.xlsx', sheet_name='Report')
