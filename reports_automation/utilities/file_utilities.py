@@ -116,7 +116,7 @@ def read_sheet(file_path, sheet_name, skiprows=0):
 
 def save_to_excel(df_sheet_dict, file_name, index=False):
     """
-    Function to save a data frame to excel - not complete
+    Function to save a data frame to excel using openpyxl engine
 
     Parameters:
     ----------
@@ -137,3 +137,30 @@ def save_to_excel(df_sheet_dict, file_name, index=False):
         print('Saving ', key, ' sheet in excel file: ', file_name, '....')
     datatoexcel.save()
     print('Save done')
+
+
+def get_xlsxwriter_obj(df_sheet_dict, file_name, index=False):
+    """
+    Function to convert the Pandas DataFrame object to 
+    a ready to use and save XlsxWriter object.
+
+    Parameters:
+    ----------
+    df_sheet_dict: dictionary
+        A dictionary containing sheet-dataframe key-value paits
+    file_name: str
+        File name to save the data in
+    index: bool
+        Boolean value indicating if row names need to be written. Default is False
+
+    Returns:
+    -------
+    An XlsxWriter object    
+    """
+    curr_dir = os.getcwd()
+    output_data_path = '../../../reports/generated/'
+    file_path = os.path.join(curr_dir, output_data_path, file_name)
+    writer = pd.ExcelWriter(file_path, engine='xlsxwriter')
+    for key in df_sheet_dict.keys():
+        df_sheet_dict[key].to_excel(writer, sheet_name=key, index=index)        
+    return writer    
