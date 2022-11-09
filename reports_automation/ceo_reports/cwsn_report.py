@@ -199,8 +199,6 @@ def main():
         'No' : 'Number of students without account'
         }, inplace = True)
 
-    print('columns post merging: ', df_overview.columns.tolist())
-
     # Sort the values
     df_overview.sort_values(group_levels, inplace = True)    
 

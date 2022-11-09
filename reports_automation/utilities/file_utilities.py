@@ -3,12 +3,11 @@ Module with utility functions related to opening, reading and writing files
 that can be commonly used across the project.
 """
 
-
-import tkinter.filedialog as filedialog
 import os
 import sys
 import pandas as pd
 
+from easygui import fileopenbox
 from pathlib import Path
 
 def ask_open_filename(file_types, initialdir):
@@ -26,7 +25,7 @@ def ask_open_filename(file_types, initialdir):
     --------    
     The name of the user selected file
     """
-    filename = filedialog.askopenfilename(initialdir=initialdir, filetypes=file_types)
+    filename = fileopenbox(default=initialdir, filetypes=file_types)
     if filename is not None:
         return filename
     else:
@@ -42,19 +41,19 @@ def user_sel_excel_filename():
     The name of the user selected excel file
     """
     initialdir = get_download_dir_path()
-    filetypes =[('Excel files', '*.xlsx')]
+    filetypes =[['*.xlsx', 'Excel files']]
     return ask_open_filename(filetypes, initialdir)
 
 def open_scripts():
     """
-    Function to get the file name of the user selected script file
+    Function to get the file name of the user selected sql script file
     
     Returns:
     -------
     The name of the user selected excel file
     """
     initialdir = str(os.path.join(Path.cwd(), "sql_scripts"))
-    filetypes = [('SQL Scripts', '*.sql')]
+    filetypes = [['*.sql', 'SQL scripts']]
     return ask_open_filename(filetypes, initialdir)    
 
 def open_script(script_file_name):
@@ -69,7 +68,8 @@ def open_script(script_file_name):
     Returns:
     -------
     """
-    file_path = os.path.join(os.getcwd(), '../', 'sql_scripts', script_file_name)
+    curr_dir_path = Path(os.getcwd())
+    file_path = os.path.join(curr_dir_path.parents[0], 'sql_scripts', script_file_name)
 
     file = open(file_path,'r')
 
@@ -84,7 +84,21 @@ def get_download_dir_path():
     --------
     The path to the user's download path
     """
-    return str(os.path.join(Path.home(), "Downloads"))
+    return str(os.path.join(Path.home(), 'Downloads'))
+
+def get_gen_reports_dir_path():
+    """
+    Function to get the path to the folder where generated reports are to be saved.
+
+    Retunrs:
+    -------
+    The path to the generated reports folder
+    """    
+    curr_dir_path = Path(os.getcwd())
+    # Get the path to parent three levels up
+    parent_dir_three_lvls_up = curr_dir_path.parents[2]
+    file_path = os.path.join(parent_dir_three_lvls_up, 'reports', 'generated')
+    return file_path
 
 def read_sheet(file_path, sheet_name, skiprows=0):
     """
@@ -128,9 +142,7 @@ def save_to_excel(df_sheet_dict, file_name, index=False):
         Boolean value indicating if row names need to be written. Default is False
 
     """
-    curr_dir = os.getcwd()
-    output_data_path = '../../../reports/generated/'
-    file_path = os.path.join(curr_dir, output_data_path, file_name)
+    file_path = os.path.join(get_gen_reports_dir_path(), file_name)
     datatoexcel = pd.ExcelWriter(file_path, engine='openpyxl')
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(datatoexcel, sheet_name=key, index=index)
@@ -157,9 +169,8 @@ def get_xlsxwriter_obj(df_sheet_dict, file_name, index=False):
     -------
     An XlsxWriter object    
     """
-    curr_dir = os.getcwd()
-    output_data_path = '../../../reports/generated/'
-    file_path = os.path.join(curr_dir, output_data_path, file_name)
+
+    file_path = os.path.join(get_gen_reports_dir_path(), file_name)
     writer = pd.ExcelWriter(file_path, engine='xlsxwriter')
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(writer, sheet_name=key, index=index)        
