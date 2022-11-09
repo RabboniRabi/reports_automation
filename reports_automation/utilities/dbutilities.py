@@ -30,7 +30,6 @@ def read_conn_credentials(file_name):
     data = file.read()
     credentials_dict = json.loads(data)
     file.close()
-    print ('credentials_dict: ', credentials_dict)
     return credentials_dict
 
 

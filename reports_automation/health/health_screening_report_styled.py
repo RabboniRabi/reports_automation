@@ -3,6 +3,7 @@ sys.path.append('../')
 
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
+import utilities.format_utilities as format_utilities
 import utilities.dbutilities as dbutilities
 import pandas as pd
 
@@ -37,18 +38,19 @@ def get_students_screening_status(df, group_level):
     # Insert the column to the right of Screened column
     screened_col_index = df_group_level.columns.get_loc('Screened')        
     df_group_level.insert(screened_col_index+1,'% Screened', df_group_level['Screened']/df_group_level['Total'])
-    
+    #df_group_level.loc[:, '% Screened'] = df_group_level['% Screened'].map('{:.2%}'.format)
 
     # Add a % Referred to MHT column to the dataframe
     # Insert the column to the right of Referred to MHT column
     mht_col_index = df_group_level.columns.get_loc('Referred to MHT')
     df_group_level.insert(mht_col_index+1,'% Referred to MHT', df_group_level['Referred to MHT']/df_group_level['Screened'])
-    
+    #df_group_level.loc[:, '% Referred to MHT'] = df_group_level['% Referred to MHT'].map('{:.2%}'.format)   
 
     # Add a % Referred to PMOA column to the dataframe
     # Insert the column to the right of Referred to PMOA column
     pmoa_col_index = df_group_level.columns.get_loc('Referred to PMOA')
     df_group_level.insert(pmoa_col_index+1,'% Referred to PMOA', df_group_level['Referred to PMOA']/df_group_level['Screened'])
+    #df_group_level.loc[:, '% Referred to PMOA'] = df_group_level['% Referred to PMOA'].map('{:.2%}'.format)
 
     # Drop the UnScreened count data
     df_group_level.drop(columns=['UnScreened'], inplace = True)
@@ -67,12 +69,8 @@ def get_students_screening_status(df, group_level):
         df_group_level['Referred to PMOA'].sum(),
         df_group_level['% Referred to PMOA'].mean()]
 
-    # Format the percentage values to show it in readable format
-    df_group_level.loc[:, '% Screened'] = df_group_level['% Screened'].map('{:.2%}'.format)
-    df_group_level.loc[:, '% Referred to MHT'] = df_group_level['% Referred to MHT'].map('{:.2%}'.format)
-    df_group_level.loc[:, '% Referred to PMOA'] = df_group_level['% Referred to PMOA'].map('{:.2%}'.format)   
-
     df_group_level.rename(columns = {'Total':'Total Students'}, inplace = True)
+
 
     return df_group_level
 
@@ -109,7 +107,6 @@ def get_schools_screening_status(df, group_level):
         Partially_Completed_Schools = ('Partially Completed', 'sum'),
         Not_Started_Schools = ('Not started', 'sum')
     ).reset_index()
-    
 
     # Rename columns
     df_group_level.rename(columns = {
@@ -133,14 +130,8 @@ def get_schools_screening_status(df, group_level):
         df_group_level['Partially Completed Schools'].sum(),
         df_group_level['Not Started Schools'].sum(),
         df_group_level['% Fully completed'].mean()]
-    
-
-    # Format the percentage values to show it in readable format
-    df_group_level.loc[:, '% Fully completed'] = df_group_level['% Fully completed'].map('{:.2%}'.format)   
 
     return df_group_level
-
-
 
 
 
@@ -175,6 +166,7 @@ def fetch_data_as_df (credentials_dict, script_file_name):
     connection.close()
 
     return df_data
+   
 
 def main():
     
@@ -187,7 +179,6 @@ def main():
     # Temporarily reading from excel
     #df_report = pd.read_excel(r'/home/rabboni/Downloads/health.xlsx', sheet_name='Report')
 
-    #df_copy = df_report.copy(deep=True)
 
     # Get the students' health screening details at district level
     df_students_screening_status = get_students_screening_status(df_report, district)
@@ -201,8 +192,37 @@ def main():
     'Schools screening status': df_schools_screening_status
     }
 
-    file_utilities.save_to_excel(df_sheet_dict, 'health_screening_status.xlsx')
+    writer = file_utilities.get_xlsxwriter_obj(df_sheet_dict, 'health_screening_status_styled.xlsx')
 
+    # Format and stylize the data
+    
+    workbook  = writer.book
+    
+    # Apply colour gradient
+    gradient_color_frmt = {'type': '3_color_scale'}
+    col_index = df_students_screening_status.columns.get_loc('% Screened')
+    no_of_rows = df_students_screening_status.shape[0]
+    format_utilities.apply_cond_frmt(writer, 'Students screening status', col_index, gradient_color_frmt, no_of_rows)
+
+    col_index = df_schools_screening_status.columns.get_loc('% Fully completed')
+    no_of_rows = df_schools_screening_status.shape[0]
+    format_utilities.apply_cond_frmt(writer, 'Schools screening status', col_index, gradient_color_frmt, no_of_rows)
+
+    # Format values to percent
+    prcnt_frmt = {'num_format': '0.00%'}
+    screened_col_index = df_students_screening_status.columns.get_loc('% Screened')
+    format_utilities.apply_frmt_cols(writer, 'Students screening status', screened_col_index, screened_col_index, prcnt_frmt)
+
+    mht_col_index = df_students_screening_status.columns.get_loc('% Referred to MHT')
+    format_utilities.apply_frmt_cols(writer, 'Students screening status', mht_col_index, mht_col_index, prcnt_frmt)
+
+    pmoa_col_index = df_students_screening_status.columns.get_loc('% Referred to PMOA')
+    format_utilities.apply_frmt_cols(writer, 'Students screening status', pmoa_col_index, pmoa_col_index, prcnt_frmt)
+
+    comp_schools_col_index = df_schools_screening_status.columns.get_loc('% Fully completed')
+    format_utilities.apply_frmt_cols(writer, 'Schools screening status', comp_schools_col_index, comp_schools_col_index, prcnt_frmt)
+
+    writer.save()
       
 
 if __name__ == "__main__":
