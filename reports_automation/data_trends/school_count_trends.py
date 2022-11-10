@@ -11,7 +11,7 @@ def main():
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Get the latest students and teachers count
-    df_report = fetch_data_as_df(credentials_dict, 'students_school_child_count_summary.sql')
+    df_report = dbutilities.fetch_data_as_df(credentials_dict, 'students_school_child_count_summary.sql')
 
     # Alternatively
     # Ask the user to select the School enrollment abstract excel file.
