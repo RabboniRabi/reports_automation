@@ -5,6 +5,9 @@ from sqlalchemy import create_engine
 import json
 import os
 
+import utilities.file_utilities as file_utilities
+import pandas as pd
+
 def read_conn_credentials(file_name):
     """
     Function to read the connection and credential details stored 
@@ -125,7 +128,7 @@ def fetch_data_as_df (credentials_dict, script_file_name):
     -------
     Students' health screening details as a dataframe object
     """
-    connection = dbutilities.create_server_connection(credentials_dict)
+    connection = create_server_connection(credentials_dict)
     query = file_utilities.open_script(script_file_name).read()
 
     print('Executing Query...')
