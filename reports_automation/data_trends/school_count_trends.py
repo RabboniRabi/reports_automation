@@ -68,7 +68,7 @@ def day_wise_school_count_tracking(master_file_name, sheet_name, df_today, group
 
 
 
-def day_wise_tracking(master_file_name, df_today):
+def day_wise_tracking(master_file_name, df_today,columns_tb_copied,sheet_name):
     """
     Function to track the presence/absence of UDISE code on the day the script is run.
     The function also updates the master tracking excel file with any new UDISE codes found.
@@ -87,10 +87,18 @@ def day_wise_tracking(master_file_name, df_today):
     # check if master udise tracking exists??
 
     master_file_path = os.path.join(fileutilities.get_gen_reports_dir_path(), master_file_name)
+    if ~os.path.exists(master_file_path):
+        df_master = df_today[columns_tb_copied].copy()
+        df_master[date.today()] = 'True'
+        file_utilities.save_to_excel({sheet_name: df_master}, master_file_name)
 
-
-
-
+    else:
+        df_master = pd.read_excel(master_file_path, sheet_name=sheet_name)
+        df_tobeconcat = df_today[~df_master.isin(df_today)].dropna()
+        df_tobeconcat[date.today()] = 'TRUE'
+        df_master = pd.concat([df_master, df_tobeconcat], axis=0).fillna("FALSE")
+        df_master[date.today()] = df_master['UDISE'].isin(df_today['UDISE'])
+        file_utilities.save_to_excel({sheet_name: df_master}, master_file_name)
 
 def main():
     # Read the database connection credentials
@@ -114,7 +122,7 @@ def main():
     #df_today = pd.read_excel(r'C:\Users\Admin\Downloads\Test for Daily.xlsx', sheet_name='Sheet2')
     #day_wise_tracking('data_trends.xlsx', df_today)
 
-
+    day_wise_tracking('school_count_trends.xlsx',df_report,df_today['District','UDISE'],'master_sheet')
 
 
 
