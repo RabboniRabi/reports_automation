@@ -8,6 +8,7 @@ Module with functions to:
 import sys
 sys.path.append('../')
 
+import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 
@@ -36,13 +37,15 @@ def day_wise_school_count_tracking(master_file_name, sheet_name, df_today, group
     """
 
     # Get the full file path to the master trends tracking file - assuming in generated reports folder
-    master_file_path = os.path.join(fileutilities.get_gen_reports_dir_path(), master_file_name)
+    master_file_path = os.path.join(file_utilities.get_gen_reports_dir_path(), master_file_name)
 
     # Group the data fetched for today by grouping level, counting the number of UDISE codes
-    df_today_grouped = df_today.groupby(group_levels)[udise_col].count().reset_index
+    df_today_grouped = df_today.groupby(group_levels)[udise_col].count().reset_index()
+
+    print('df_today_grouped: ', df_today_grouped)
 
     # Rename the UDISE column with counts
-    df_today_grouped.rename(columns={udise_col: date.today() + 'count'})
+    df_today_grouped.rename(columns={udise_col: utilities.get_today_date() + ' count'}, inplace=True)
 
     
     if(os.path.exists(master_file_path)):
@@ -51,9 +54,9 @@ def day_wise_school_count_tracking(master_file_name, sheet_name, df_today, group
         df_master = pd.read_excel(master_file_path, sheet_name=sheet_name)
 
         # Merge the data for the day with the master data
-        df_updated = df_master.merge(df_today_grouped)
+        df_master = df_master.merge(df_today_grouped)
 
-        return df_updated
+        print('df_master:', df_master)
     
     else:
         # If file doesnt exist, create data and save for day 1
@@ -84,34 +87,6 @@ def day_wise_tracking(master_file_name, df_today):
     # check if master udise tracking exists??
 
     master_file_path = os.path.join(fileutilities.get_gen_reports_dir_path(), master_file_name)
-
-    """"
-
-   if (~os.path.exists(master_file_path)):
-        # create file
-        print('')
-        # Save all the data
-    else:
-        # Read the file
-        # update UDISE present/absent
-        print('')
-        
-    """
-
-
-    if os.path.exists(r'C:\Users\Admin\Downloads\data_trends.xlsx'):
-        df_master = pd.read_excel(r'C:\Users\Admin\Downloads\data_trends.xlsx')
-        df_tobeconcat = df_today[~df_master.isin(df_today)].dropna()
-        df_tobeconcat[date.today()] = 'TRUE'
-        df_master = pd.concat([df_master, df_tobeconcat], axis=0).fillna("FALSE")
-        df_master[date.today()] = df_master['UDISE'].isin(df_today['UDISE'])
-    else:
-        df_day1 = pd.read_excel(r'C:\Users\Admin\Downloads\Test for Daily.xlsx', sheet_name='Sheet1')
-        df_formaster = df_day1.groupby(['District', 'UDISE'])['UDISE'].count()
-        df_formaster = pd.ExcelWriter(r'C:\Users\Admin\Downloads\data_trends.xlsx')
-        df_formaster.to_excel(df_day1, index = False)
-        df_formaster.save()"""
-      
 
 
 

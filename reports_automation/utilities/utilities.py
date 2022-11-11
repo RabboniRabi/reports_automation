@@ -6,6 +6,15 @@ from datetime import datetime
 
 import pandas as pd
 
+def get_today_date():
+    """
+    Function to return a string representation of the current day's date
+
+    Returns:
+    -------
+    The current date as a 'DD:MM:YY' format string
+    """
+    return datetime.now().strftime('%d-%m-%y')
 
 
 def xlookup(lookup_value, lookup_array, return_array, if_not_found = ''):
