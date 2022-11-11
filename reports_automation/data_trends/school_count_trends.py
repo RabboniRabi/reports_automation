@@ -42,7 +42,10 @@ def day_wise_school_count_tracking(master_file_name, sheet_name, df_today, group
     # Group the data fetched for today by grouping level, counting the number of UDISE codes
     df_today_grouped = df_today.groupby(group_levels)[udise_col].count().reset_index()
 
-    print('df_today_grouped: ', df_today_grouped)
+
+    # Calculate and insert grand total of UDISE codes for the day
+    df_today_grouped.loc['Grand Total'] = ['Grand Total', df_today_grouped[udise_col].sum()]
+
 
     # Rename the UDISE column with counts
     df_today_grouped.rename(columns={udise_col: utilities.get_today_date() + ' count'}, inplace=True)
@@ -55,13 +58,10 @@ def day_wise_school_count_tracking(master_file_name, sheet_name, df_today, group
 
         # Merge the data for the day with the master data
         df_master = df_master.merge(df_today_grouped)
-
-        print('df_master:', df_master)
     
     else:
         # If file doesnt exist, create data and save for day 1
         df_master = df_today_grouped
-
 
     file_utilities.save_to_excel({sheet_name: df_master}, master_file_name)    
 
