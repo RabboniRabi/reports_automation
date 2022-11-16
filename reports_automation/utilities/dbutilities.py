@@ -108,7 +108,7 @@ def fetch_data(connection, query):
             print(f'Error: ', err)    
 
 
-def fetch_data_as_df (credentials_dict, script_file_name):
+def fetch_data_as_df (credentials_dict, script_file_name, params=None):
     """
     Function to query the database for students' health screening details and return the data as a pandas dataframe object
     
@@ -132,7 +132,7 @@ def fetch_data_as_df (credentials_dict, script_file_name):
     query = file_utilities.open_script(script_file_name).read()
 
     print('Executing Query...')
-    df_data = pd.read_sql_query(query, connection) 
+    df_data = pd.read_sql_query(query, connection, params) 
     print('Query Execution Successful')
 
     # Close the database connection
