@@ -62,13 +62,11 @@ def day_wise_school_count_tracking(master_file_name, sheet_name, df_today, group
     else:
         # If file doesnt exist, create data and save for day 1
         df_master = df_today_grouped
-    return
-    df_master_final = day_wise_school_count_tracking(master_file_name, sheet_name, df_today, group_levels, udise_col)
-
-    #file_utilities.save_to_excel({sheet_name: df_master}, master_file_name)
+    return df_master
 
 
-def day_wise_tracking(master_file_name, sheet_name,df_today,columns_tb_copied):
+
+def day_wise_tracking(master_file_name, sheet_name,df_today,columns_tb_copied,udise_col):
     """
     Function to track the presence/absence of UDISE code on the day the script is run.
     The function also updates the master tracking excel file with any new UDISE codes found.
@@ -89,28 +87,41 @@ def day_wise_tracking(master_file_name, sheet_name,df_today,columns_tb_copied):
     # check if master sheet exists, if it doesn't, create the master sheet for day 1, else add to the master sheet.
 
     master_file_path = os.path.join(file_utilities.get_gen_reports_dir_path(), master_file_name)
-    if ~os.path.exists(master_file_path):
-        df_master = df_today[columns_tb_copied].copy()
+
+    # Update df_today to be the subset of given columns
+    df_today = df_today[columns_tb_copied]
+    if not os.path.exists(master_file_path):
+        print('file does not exist')
+        df_master = df_today.copy()
         df_master[date.today()] = 'True'
-        file_utilities.save_to_excel({sheet_name: df_master}, master_file_name)
 
     else:
+        print('file exists')
         df_master = pd.read_excel(master_file_path, sheet_name=sheet_name)
-        new_udises = df_today[~df_master.isin(df_today)].dropna()
+        new_udises = df_today[~df_master[udise_col].isin(df_today[udise_col])].dropna()
         new_udises[date.today()] = 'TRUE'
+        print('new_udises: ' , new_udises)
         df_master = pd.concat([df_master, new_udises], axis=0).fillna("FALSE")
-        df_master[date.today()] = df_master['UDISE'].isin(df_today['UDISE'])
-        #file_utilities.save_to_excel({sheet_name: df_master}, master_file_name)
 
-    return
-    df_master_count = day_wise_tracking(master_file_name, sheet_name, df_today, columns_tb_copied)
+        print('df_master post concat: ', df_master)
+        file_utilities.save_to_excel({'test' : df_master}, 'test.xlsx')
+        # create a new column with today's date where UDISEs present both in master and today are marked true and those absent, false
+        df_master[date.today()] = df_master[udise_col].isin(df_today[udise_col])
 
-def main(sheet_name,df_master,):
+    # Rename the UDISE column with counts
+    df_master.rename(columns={date.today(): utilities.get_today_date() + ' present'}, inplace=True)
+    df_master.sort_values(['District'], ascending=[True]).reset_index()
+    return df_master
+
+
+def main():
     # Read the database connection credentials
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Get the latest students and teachers count
     df_report = dbutilities.fetch_data_as_df(credentials_dict, 'students_school_child_count.sql')
+
+    print('df_report fetched from db: ', df_report)
 
 
     # Alternatively
@@ -120,16 +131,20 @@ def main(sheet_name,df_master,):
 
 
     # district wise count of schools based on UDISE code - Separate function for this
-    day_wise_school_count_tracking('school_count_trends.xlsx', 'school_count_tracking', df_report,['District'],'UDISE_Code')
+    df_school_count = day_wise_school_count_tracking('school_count_trends.xlsx', 'school_count_tracking', df_report,['District'],'UDISE_Code')
 
     # UDISE day wise tracking (present/absent) - Separate function for this
     #df_today = pd.read_excel(r'C:\Users\Admin\Downloads\Test for Daily.xlsx', sheet_name='Sheet2')
     #day_wise_tracking('data_trends.xlsx', df_today)
-    df_today = pd.read_excel(r'C:\Users\Admin\Downloads\Sch-Enrollment-Abstract (9).xlsx', sheet_name='Report')
+    #df_today = pd.read_excel(r'C:\Users\Admin\Downloads\Sch-Enrollment-Abstract (9).xlsx', sheet_name='Report')
 
-    day_wise_tracking('school_count_trends.xlsx','master_sheet',df_report,['District','UDISE_Code'])
+    df_daywise_tracking = day_wise_tracking('school_count_trends.xlsx','daywise_UDISE_tracking',df_report,['District','UDISE_Code'], 'UDISE_Code')
 
-    file_utilities.save_to_excel({sheet_name: df_master_final}, master_file_name)
+    df_sheet_dict = {
+        'school_count_tracking': df_school_count,
+        'daywise_UDISE_tracking': df_daywise_tracking
+        }
+    file_utilities.save_to_excel(df_sheet_dict, 'school_count_trends.xlsx')
 
 
 if __name__ == "__main__":

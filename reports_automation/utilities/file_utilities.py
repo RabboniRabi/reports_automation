@@ -135,7 +135,7 @@ def save_to_excel(df_sheet_dict, file_name, index=False):
     Parameters:
     ----------
     df_sheet_dict: dictionary
-        A dictionary containing sheet-dataframe key-value paits
+        A dictionary containing sheet-dataframe key-value pairs
     file_name: str
         File name to save the data in
     index: bool
