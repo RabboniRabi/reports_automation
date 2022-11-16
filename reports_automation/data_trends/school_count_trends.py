@@ -107,16 +107,16 @@ def day_wise_tracking(master_file_name, sheet_name,df_today,columns_tb_copied):
 
 def main(sheet_name,df_master,):
     # Read the database connection credentials
-    #credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+    credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Get the latest students and teachers count
-    #df_report = dbutilities.fetch_data_as_df(credentials_dict, 'students_school_child_count_summary.sql')
+    df_report = dbutilities.fetch_data_as_df(credentials_dict, 'students_school_child_count.sql')
 
 
     # Alternatively
     # Ask the user to select the School enrollment abstract excel file.
-    school_enrollment_abstract = file_utilities.user_sel_excel_filename()
-    df_report = pd.read_excel(school_enrollment_abstract, sheet_name='Report')
+    #school_enrollment_abstract = file_utilities.user_sel_excel_filename()
+    #df_report = pd.read_excel(school_enrollment_abstract, sheet_name='Report')
 
 
     # district wise count of schools based on UDISE code - Separate function for this
