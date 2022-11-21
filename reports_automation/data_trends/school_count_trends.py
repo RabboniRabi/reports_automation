@@ -91,7 +91,7 @@ def day_wise_tracking(master_file_name, sheet_name, df_today, dist_col, udise_co
     today_date = utilities.get_today_date()
 
     # Update df_today to be the subset of district and UDISE columns
-    df_today = df_today[dist_col, udise_col]
+    df_today = df_today[[dist_col, udise_col]]
 
     # If file does not exist
     if not os.path.exists(master_file_path):

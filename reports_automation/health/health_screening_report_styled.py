@@ -90,7 +90,7 @@ def get_schools_screening_status(df, group_level):
     """
 
     # Compute whether a school has completed screening, partially completed or not started
-    series_completed = (df['Total'] - df['Screened'] == 0 ) & (df['Total']  != 0) 
+    series_completed = (df['Total'] - df['Screened'] <= 0 ) & (df['Total']  != 0)
     series_not_started =  df['Screened'] == 0
     series_partially_completed =  ~(series_completed | series_not_started)
     school_col_index = df.columns.get_loc('School')            
