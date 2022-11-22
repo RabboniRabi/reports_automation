@@ -12,6 +12,7 @@ sys.path.append('../')
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
+import utilities.ranking_utilities as ranking_utilities
 
 import pandas as pd
 import os
@@ -47,6 +48,7 @@ deo_user = 'deo_user'
 cwsn_students ='cwsn'
 beo_rank = 'BEO Rank'
 deo_rank = 'DEO Rank'
+perc_students_cp = '% Students ageing > 30 days'
 
 def common_pool_ceo_review(raw_data,brc_master_sheet):
     #concatenating the mapping master sheet with the raw data from the db
@@ -63,7 +65,7 @@ def common_pool_ceo_review(raw_data,brc_master_sheet):
     df_cp_b4formatting_elm = pd.pivot_table(raw_data_elementary, values=students_ageing30_count, index=[district_name,deo_user,
                             block_name,beo_user,new_category,school_category], columns=[class_number],
                                            aggfunc='sum').reset_index()
-    df_cp_b4formatting_elm['% Students ageing > 30 days'] = df_cp_b4formatting_elm[students_ageing30_count]/\
+    df_cp_b4formatting_elm[perc_students_cp] = df_cp_b4formatting_elm[students_ageing30_count]/\
                                                            df_cp_b4formatting_elm[total_student_count]
 
     df_cp_b4formatting_scn = pd.pivot_table(raw_data_secondary, values=students_ageing30_count,
@@ -71,23 +73,20 @@ def common_pool_ceo_review(raw_data,brc_master_sheet):
                                    school_category], columns=[class_number],
                                           aggfunc='sum').reset_index()
 
-    df_cp_b4formatting_scn['% Students ageing > 30 days'] = df_cp_b4formatting_scn[students_ageing30_count] / \
+    df_cp_b4formatting_scn[perc_students_cp] = df_cp_b4formatting_scn[students_ageing30_count] / \
                                                            df_cp_b4formatting_scn[total_student_count]
     
     
     # 3. Ranking for DEOs and BEOS - Elementary
-    # Ranking for BEOS
-    df_beo_rank = df_cp_b4formatting_elm.groupby([beo_user])[[total_student_count, students_ageing30_count]].sum()
-    df_beo_rank['% Students ageing > 30 days'] = (df_beo_rank[students_ageing30_count]/df_beo_rank[total_student_count])
-    df_beo_rank[beo_rank] = df_beo_rank['% Students ageing > 30 days'].rank(ascending=True, method='min')
-    df_beo_rank = df_beo_rank.reset_index()
+    
+    # Get ranking for elementary BEOs
+    df_beo_rank = ranking_utilities.percent_ranking(df_cp_b4formatting_elm, [beo_user], [students_ageing30_count, total_student_count],\
+                    'sum', perc_students_cp, students_ageing30_count, total_student_count, beo_rank)
 
 
-    # Ranking for deos for elementary
-    df_deo_rank = df_cp_b4formatting_elm.groupby([deo_user])[[students_ageing30_count, total_student_count]].sum()
-    df_deo_rank['% Students ageing > 30 days'] = (df_deo_rank[students_ageing30_count]/df_deo_rank[total_student_count])
-    df_deo_rank[deo_rank] = df_deo_rank['% Students ageing > 30 days'].rank(ascending=True, method='min')
-    df_deo_rank = df_deo_rank.reset_index()
+    # Get Ranking for elementary DEOs
+    df_deo_rank = ranking_utilities.percent_ranking(df_cp_b4formatting_elm, [deo_user], [students_ageing30_count, total_student_count],\
+                    'sum', perc_students_cp, students_ageing30_count, total_student_count, deo_rank)
 
     # Vlookup for educational district ranks based on name
     df_cp_b4formatting_elm[deo_rank] = df_cp_b4formatting_elm[deo_user].\
