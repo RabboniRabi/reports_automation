@@ -2,6 +2,27 @@
 Module with utility functions to perform ranking of data
 """
 
+# Define a dictionary of ranking functions
+ranking_funcs_dict = {
+    'percent_ranking': percent_ranking
+}
+
+def calc_ranking(ranking_type, *params):
+    """
+    Function to calculate ranking for data based on the type of ranking given.
+    The function uses a local dictionary to match the ranking type and 
+    calls the appropriate ranking function which will calculate and return the rank.
+
+    Paramters:
+    ----------
+    ranking_type: str
+        The type of ranking to be used to calculate the ranking for the data
+    *params:
+        The parameters to be passed to the ranking function    
+    """
+    ranking_func = ranking_funcs_dict.get(ranking_type)
+    return ranking_func(*params)
+
 def percent_ranking(df, group_levels, agg_cols, agg_func, frac_col_name, num_col, den_col, rank_col_name, sort=False, ascending=True, tie_method='min'):
     """
     Function to rank data based on percentage (Value of one column compared to another column)

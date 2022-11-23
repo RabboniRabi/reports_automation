@@ -128,7 +128,7 @@ def read_sheet(file_path, sheet_name, skiprows=0):
         
 
 
-def save_to_excel(df_sheet_dict, file_name, index=False):
+def save_to_excel(df_sheet_dict, file_name, file_path = get_gen_reports_dir_path(), index=False):
     """
     Function to save a data frame to excel using openpyxl engine
 
@@ -138,11 +138,13 @@ def save_to_excel(df_sheet_dict, file_name, index=False):
         A dictionary containing sheet-dataframe key-value pairs
     file_name: str
         File name to save the data in
-    index: bool
+    file_path: str, optional
+        The directory path to save the file in. Default is generated reports directory path
+    index: bool, optional
         Boolean value indicating if row names need to be written. Default is False
 
     """
-    file_path = os.path.join(get_gen_reports_dir_path(), file_name)
+    file_path = os.path.join(file_path, file_name)
     datatoexcel = pd.ExcelWriter(file_path, engine='openpyxl')
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(datatoexcel, sheet_name=key, index=index)
@@ -151,7 +153,7 @@ def save_to_excel(df_sheet_dict, file_name, index=False):
     print('Save done')
 
 
-def get_xlsxwriter_obj(df_sheet_dict, file_name, index=False):
+def get_xlsxwriter_obj(df_sheet_dict, file_name, file_path = get_gen_reports_dir_path(), index=False):
     """
     Function to convert the Pandas DataFrame object to 
     a ready to use and save XlsxWriter object.
@@ -162,6 +164,8 @@ def get_xlsxwriter_obj(df_sheet_dict, file_name, index=False):
         A dictionary containing sheet-dataframe key-value paits
     file_name: str
         File name to save the data in
+    file_path: str, optional
+        The directory path to save the file in. Default is generated reports directory path    
     index: bool
         Boolean value indicating if row names need to be written. Default is False
 
@@ -170,7 +174,7 @@ def get_xlsxwriter_obj(df_sheet_dict, file_name, index=False):
     An XlsxWriter object    
     """
 
-    file_path = os.path.join(get_gen_reports_dir_path(), file_name)
+    file_path = os.path.join(file_path, file_name)
     writer = pd.ExcelWriter(file_path, engine='xlsxwriter')
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(writer, sheet_name=key, index=index)        
