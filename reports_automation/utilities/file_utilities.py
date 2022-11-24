@@ -9,6 +9,7 @@ import pandas as pd
 
 from easygui import fileopenbox
 from pathlib import Path
+from datetime import datetime
 
 def ask_open_filename(file_types, initialdir):
     """
@@ -84,7 +85,7 @@ def get_download_dir_path():
     --------
     The path to the user's download path
     """
-    return str(os.path.join(Path.home(), 'Downloads'))
+    return os.path.join(Path.home(), 'Downloads')
 
 def get_gen_reports_dir_path():
     """
@@ -97,8 +98,93 @@ def get_gen_reports_dir_path():
     curr_dir_path = Path(os.getcwd())
     # Get the path to parent three levels up
     parent_dir_three_lvls_up = curr_dir_path.parents[2]
-    file_path = os.path.join(parent_dir_three_lvls_up, 'reports', 'generated')
-    return file_path
+    dir_path = os.path.join(parent_dir_three_lvls_up, 'reports', 'generated')
+    return dir_path
+
+
+def get_ceo_rpts_dir_path():
+    """
+    Function to get the directory path to CEO reports folder.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the CEO reports directory
+    """
+    dir_path = os.path.join(get_gen_reports_dir_path(), 'ceo_reports')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
+
+def get_curr_month_ceo_rpts_dir_path():
+    """
+    Function to get the directory path with the current month's ceo reports.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the current month's CEO reports directory
+    """
+    # Get the current month and year
+    curr_month_year = datetime.now().strftime('%h_%y')
+    dir_path = os.path.join(get_ceo_rpts_dir_path(), curr_month_year)
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
+
+def get_curr_month_elem_ceo_rpts_dir_path():
+    """
+    Function to get the directory path to the current month's Elementary level ceo reports.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the current month's CEO reports directory
+    """
+    dir_path = os.path.join(get_curr_month_ceo_rpts_dir_path(), 'Elementary')
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path    
+
+def get_curr_month_secnd_ceo_rpts_dir_path():
+    """
+    Function to get the directory path to the current month's Secondary level ceo reports.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the current month's CEO reports directory
+    """
+    dir_path = os.path.join(get_curr_month_ceo_rpts_dir_path(), 'Secondary')
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path   
+
+def create_dir(dir_path):
+    """
+    Function to create a directory with the given directory path
+    """
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        try:
+            # Make directory
+            os.makedirs(dir_path)
+        except OSError:
+            print(OSError)
+        # Check that directory has been created
+        if not os.path.isdir(dir_path):
+            raise
 
 def read_sheet(file_path, sheet_name, skiprows=0):
     """
@@ -128,7 +214,7 @@ def read_sheet(file_path, sheet_name, skiprows=0):
         
 
 
-def save_to_excel(df_sheet_dict, file_name, file_path = get_gen_reports_dir_path(), index=False):
+def save_to_excel(df_sheet_dict, file_name, dir_path = get_gen_reports_dir_path(), index=False):
     """
     Function to save a data frame to excel using openpyxl engine
 
@@ -138,13 +224,13 @@ def save_to_excel(df_sheet_dict, file_name, file_path = get_gen_reports_dir_path
         A dictionary containing sheet-dataframe key-value pairs
     file_name: str
         File name to save the data in
-    file_path: str, optional
-        The directory path to save the file in. Default is generated reports directory path
+    dir_path: str, optional
+        The directory path to save the file in. Default is the generated reports directory path
     index: bool, optional
         Boolean value indicating if row names need to be written. Default is False
 
     """
-    file_path = os.path.join(file_path, file_name)
+    file_path = os.path.join(dir_path, file_name)
     datatoexcel = pd.ExcelWriter(file_path, engine='openpyxl')
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(datatoexcel, sheet_name=key, index=index)

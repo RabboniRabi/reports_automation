@@ -25,7 +25,7 @@ def calc_ranking(ranking_type, *params):
 
 def percent_ranking(df, group_levels, agg_cols, agg_func, frac_col_name, num_col, den_col, rank_col_name, sort=False, ascending=True, tie_method='min'):
     """
-    Function to rank data based on percentage (Value of one column compared to another column)
+    Function to rank data based on percentage (value of one column compared to another column)
     
     Parameters:
     -----------
