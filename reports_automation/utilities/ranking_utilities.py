@@ -4,10 +4,10 @@ Module with utility functions to perform ranking of data
 
 # Define a dictionary of ranking functions
 ranking_funcs_dict = {
-    'percent_ranking': percent_ranking
+    'percent_ranking': 'percent_ranking'
 }
 
-def calc_ranking(ranking_type, *params):
+def calc_ranking(ranking_type, *args):
     """
     Function to calculate ranking for data based on the type of ranking given.
     The function uses a local dictionary to match the ranking type and 
@@ -21,7 +21,7 @@ def calc_ranking(ranking_type, *params):
         The parameters to be passed to the ranking function    
     """
     ranking_func = ranking_funcs_dict.get(ranking_type)
-    return ranking_func(*params)
+    return ranking_func(*args)
 
 def percent_ranking(df, group_levels, agg_cols, agg_func, frac_col_name, num_col, den_col, rank_col_name, sort=False, ascending=True, tie_method='min'):
     """
@@ -56,8 +56,11 @@ def percent_ranking(df, group_levels, agg_cols, agg_func, frac_col_name, num_col
     --------
         The updated DataFrame object with the fractional values used for ranking and the ranking
     """
+
+    print('I get called')
+    print('num_col passed is: ', num_col)
     # Group by grouping levels and aggregate by given columns and aggregate function
-    df_rank = df.groupby(group_levels, as_index=False, sort=sort)[agg_cols].agg(agg_func)
+    df_rank = d 
 
     # Calculate fraction of values (to be used for ranking)
     df_rank[frac_col_name] = (df_rank[num_col]/df_rank[den_col])

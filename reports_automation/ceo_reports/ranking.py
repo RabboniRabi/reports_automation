@@ -7,6 +7,7 @@ import sys
 sys.path.append('../')
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
+import utilities.ranking_utilities as ranking_utilities
 
 import pandas as pd
 from datetime import datetime
@@ -19,7 +20,9 @@ ranking_master_sheet_name = 'ranking'
 ceo_rpts_dir_path = file_utilities.get_ceo_rpts_dir_path()
 
 
-# get ranking 
+# Get and update ranking
+#def get_and_update_ranking(df_data, metric_code, metric_category, school_level):
+    
 
 
 def update_ranking_master(df_ranking, metric_code, metric_category, school_level):
@@ -43,7 +46,8 @@ def update_ranking_master(df_ranking, metric_code, metric_category, school_level
     df_ranking['metric_code'] = metric_code
     df_ranking['metric_category'] = metric_category
     df_ranking['school_level'] = school_level
-    df_ranking['Month-Year'] =  datetime.now().strftime('%h_%y')
+    df_ranking['Month'] =  datetime.now().strftime('%h')
+    df_ranking['Year'] =  datetime.now().strftime('%y')
     
     # Get the master ranking file. In the future, this needs to be saved and fetched from a database
     ranking_file_path = os.path.join(ceo_rpts_dir_path, ranking_master_file_name)
@@ -57,7 +61,7 @@ def update_ranking_master(df_ranking, metric_code, metric_category, school_level
         df_master_ranking = pd.read_excel(ranking_file_path, ranking_master_sheet_name)
 
         # Define the subset of columns to check for common rows
-        cols_to_check = ['District', 'Block', 'Name', 'metric_code', 'school_level', 'Month-Year']
+        cols_to_check = ['District', 'Block', 'Name', 'metric_code', 'school_level', 'Month', 'Year']
 
         # Check if ranking data already exists
         if (utilities.is_any_row_common(df_master_ranking[cols_to_check], df_ranking[cols_to_check])):
@@ -86,7 +90,11 @@ def main():
                    'Rank': [1, 2, 3]
                    
                    })
-    update_ranking_master(df_ranking, 'CP', 'Enrollment', 'Elementary')
+    #update_ranking_master(df_ranking, 'CP', 'Enrollment', 'Elementary')
+
+
+    percent_ranking_args = [ ['A', 'B'], ['C'], 'sum', 'frac_col', 'numerator', 'denominator', 'rank']
+    ranking_utilities.calc_ranking('percent_ranking', df_ranking,  percent_ranking_args)
     
     
 

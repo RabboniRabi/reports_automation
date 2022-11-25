@@ -102,6 +102,21 @@ def get_gen_reports_dir_path():
     return dir_path
 
 
+def get_mapping_data_dir_path():
+    """
+    Function to get the path to the folder where mapping data is saved.
+
+    Retunrs:
+    -------
+    The path to the mapping data folder
+    """    
+    curr_dir_path = Path(os.getcwd())
+    # Get the path to parent three levels up
+    parent_dir_three_lvls_up = curr_dir_path.parents[2]
+    dir_path = os.path.join(parent_dir_three_lvls_up, 'reports', 'mapping_data')
+    return dir_path
+
+
 def get_ceo_rpts_dir_path():
     """
     Function to get the directory path to CEO reports folder.
