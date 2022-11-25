@@ -2,12 +2,8 @@
 Module with utility functions to perform ranking of data
 """
 
-# Define a dictionary of ranking functions
-ranking_funcs_dict = {
-    'percent_ranking': 'percent_ranking'
-}
 
-def calc_ranking(ranking_type, *args):
+def calc_ranking(df, ranking_type, ranking_args_dict):
     """
     Function to calculate ranking for data based on the type of ranking given.
     The function uses a local dictionary to match the ranking type and 
@@ -21,9 +17,12 @@ def calc_ranking(ranking_type, *args):
         The parameters to be passed to the ranking function    
     """
     ranking_func = ranking_funcs_dict.get(ranking_type)
-    return ranking_func(*args)
+    
+    return ranking_func(df, ranking_args_dict)
 
-def percent_ranking(df, group_levels, agg_cols, agg_func, frac_col_name, num_col, den_col, rank_col_name, sort=False, ascending=True, tie_method='min'):
+def percent_ranking(df, ranking_args_dict):
+
+    # group_levels, agg_cols, agg_func, frac_col_name, num_col, den_col, rank_col_name, sort=False, ascending=True, tie_method='min'
     """
     Function to rank data based on percentage (value of one column compared to another column)
     
@@ -57,16 +56,31 @@ def percent_ranking(df, group_levels, agg_cols, agg_func, frac_col_name, num_col
         The updated DataFrame object with the fractional values used for ranking and the ranking
     """
 
-    print('I get called')
-    print('num_col passed is: ', num_col)
+    # Get the values from the ranking arguments dictionary
+    group_levels = ranking_args_dict['group_levels']
+    sort = ranking_args_dict['sort']
+    agg_cols = ranking_args_dict['agg_cols']
+    agg_func = ranking_args_dict['agg_func']
+    frac_col_name = ranking_args_dict['frac_col_name']
+    num_col = ranking_args_dict['num_col']
+    den_col = ranking_args_dict['den_col']
+    rank_col_name = ranking_args_dict['rank_col_name']
+    sort = ranking_args_dict['sort']
+    ascending = ranking_args_dict['ascending']
+
+
     # Group by grouping levels and aggregate by given columns and aggregate function
-    df_rank = d 
+    df_rank = df.groupby(group_levels, as_index=False, sort=sort)[agg_cols].agg(agg_func)
 
     # Calculate fraction of values (to be used for ranking)
     df_rank[frac_col_name] = (df_rank[num_col]/df_rank[den_col])
-    df_rank[rank_col_name] = df_rank[frac_col_name].rank(ascending=ascending, method=tie_method)
+    df_rank[rank_col_name] = df_rank[frac_col_name].rank(ascending=ascending)
     df_rank = df_rank.reset_index()
 
     return df_rank
 
 
+# Define a dictionary of ranking functions
+ranking_funcs_dict = {
+    'percent_ranking': percent_ranking
+}

@@ -21,7 +21,7 @@ ceo_rpts_dir_path = file_utilities.get_ceo_rpts_dir_path()
 
 
 # Get and update ranking
-#def get_and_update_ranking(df_data, metric_code, metric_category, school_level):
+#def get_and_update_ranking(df_data, metric_code, metric_category, school_level, ranking_type, ranking_args_dict):
     
 
 
@@ -92,9 +92,20 @@ def main():
                    })
     #update_ranking_master(df_ranking, 'CP', 'Enrollment', 'Elementary')
 
+    ranking_args_dict = {
+        'group_levels' : ['A', 'B'],
+        'agg_cols' : ['C'],
+        'agg_func' : 'sum',
+        'frac_col_name' : 'frac_col',
+        'num_col' : 'numerator',
+        'den_col' : 'denominator',
+        'rank_col_name' : 'rank',
+        'sort' : False, 
+        'ascending' : True
+    }
 
-    percent_ranking_args = [ ['A', 'B'], ['C'], 'sum', 'frac_col', 'numerator', 'denominator', 'rank']
-    ranking_utilities.calc_ranking('percent_ranking', df_ranking,  percent_ranking_args)
+
+    ranking_utilities.calc_ranking(df_ranking, 'percent_ranking',  ranking_args_dict)
     
     
 
