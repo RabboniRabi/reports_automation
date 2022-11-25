@@ -13,7 +13,7 @@ import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.ranking_utilities as ranking_utilities
-import utilities.report_utitilites as report_utilities
+import utilities.report_utilities as report_utilities
 
 
 import pandas as pd
@@ -41,6 +41,7 @@ total_student_count  = 'total'
 students_ageing30_count = 'last_30days'
 district_name = 'district_name'
 udise_col = 'udise_code'
+school_name ='school_name'
 edu_district_name = 'edu_dist_name'
 block_name = 'block_name'
 school_category = 'category'
@@ -56,68 +57,6 @@ deo_rank_sec = 'DEO Rank Secondary'
 perc_students_cp = '% Students ageing > 30 days'
 
 "-----------------------------------------------------------------------------------------------------------------------"
-
-
-#Call the report utility to get the report_summary to work on:
-report_summary = utilities.report_utitilites.report_summary(raw_data,brc_master_sheet,district_name,deo_user_elm,
-                  deo_user_sec,block_name,beo_user,udise_col, school_category,school_level)
-
-
-#changing the format into the required format with classes as the columns for both elementary and secondary schools
-#adding the % column for the ranking
-#ranking them
-df_cp_b4formatting_elm = pd.pivot_table(raw_data_elementary, values=students_ageing30_count, index=[district_name,deo_user,
-                            block_name,beo_user,school_level,school_category], columns=[class_number],
-                                           aggfunc='sum').reset_index()
-df_cp_b4formatting_elm[perc_students_cp] = df_cp_b4formatting_elm[students_ageing30_count]/\
-                                                           df_cp_b4formatting_elm[total_student_count]
-
-df_cp_b4formatting_scn = pd.pivot_table(raw_data_secondary, values=students_ageing30_count,
-                            index=[district_name, deo_user, block_name, beo_user, school_level,
-                                   school_category], columns=[class_number],
-                                          aggfunc='sum').reset_index()
-
-df_cp_b4formatting_scn[perc_students_cp] = df_cp_b4formatting_scn[students_ageing30_count] / \
-                                                           df_cp_b4formatting_scn[total_student_count]
-    
-    
-# 3. Ranking for DEOs and BEOS - Elementary
-    
-# Get ranking for elementary BEOs
-df_beo_rank_elm = ranking_utilities.percent_ranking(df_cp_b4formatting_elm, [beo_user], [students_ageing30_count, total_student_count],\
-                    'sum', perc_students_cp, students_ageing30_count, total_student_count, beo_rank)
-
-
-#Get Ranking for elementary DEOs:
-df_deo_rank_elm = ranking_utilities.percent_ranking(df_cp_b4formatting_elm, [deo_user], [students_ageing30_count, total_student_count],\
-                'sum', perc_students_cp, students_ageing30_count, total_student_count, deo_rank)
-
-# Vlookup for deo ranks based on name
-df_cp_b4formatting_elm[deo_rank] = df_cp_b4formatting_elm[deo_user].\
- apply(utilities.xlookup, args=(df_deo_rank_elm[deo_user], df_deo_rank_elm[deo_rank]))
-
-# Vlookup for beo ranks based on name
-df_cp_b4formatting_elm[beo_rank] = df_cp_b4formatting_elm[beo_user].\
- apply(utilities.xlookup, args=(df_beo_rank_elm[beo_user], df_beo_rank_elm[beo_rank]))
-
-# Convert values to percentage and upto two decimal places
-df_cp_b4formatting_elm.loc[:, "% in Common Pool"] = df_cp_b4formatting_elm["% in Common Pool"].map('{:.2%}'.format)
-
-
-# Get Ranking for secondary DEOs
-df_deo_rank_scn = ranking_utilities.percent_ranking(df_cp_b4formatting_scn, [deo_user], [students_ageing30_count, total_student_count],\
-                'sum', perc_students_cp, students_ageing30_count, total_student_count, deo_rank)
-
-# Vlookup for DEO ranks based on name
-df_cp_b4formatting_scn[deo_rank] = df_cp_b4formatting_scn[deo_user].\
- apply(utilities.xlookup, args=(df_deo_rank_scn[deo_user], df_deo_rank_scn[deo_rank]))
-
-# Convert values to percentage and upto two decimal places
-df_cp_b4formatting_scn.loc[:, "% in Common Pool"] = df_cp_b4formatting_scn["% in Common Pool"].map('{:.2%}'.format)
-
-
-# 4. Formatting
-# Sorting
 
 
 
@@ -147,15 +86,15 @@ def main():
     print('df_report fetched from db: ', df_report)
     """
 
-# Alternatively
-# Ask the user to select the School enrollment abstract excel file.
     common_pool_basefile = file_utilities.user_sel_excel_filename()
-    df_report = pd.read_excel(common_pool_basefile, sheet_name='Abstract')
+    raw_data = pd.read_excel(common_pool_basefile, sheet_name='Abstract')
+    brc_crc_master_sheet = report_utilities.get_brc_master()
+    raw_data = pd.pivot_table(raw_data, values=udise_col, index=[raw_data.columns.to_list(),
+                brc_crc_master_sheet.columns.to_list()],columns=[class_number], aggfunc='sum').reset_index()
 
-    df_elementary = common_pool_ceo_review(,,'Elementary')
-    df_seconday = common_pool_ceo_review(,,'Seconday')
-
-
+    #Call the report utility to get the report_summary to work on:
+    report_summary = report_utilities.concat_with_brc_master(raw_data,udise_col)
+    print('report_summary', report_summary)
 
 
 if __name__ == "__main__":
