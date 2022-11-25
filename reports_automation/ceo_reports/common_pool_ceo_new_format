@@ -13,6 +13,8 @@ import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.ranking_utilities as ranking_utilities
+import utilities.report_utitilites as report_utilities
+
 
 import pandas as pd
 import os
@@ -25,12 +27,13 @@ Define the all the variables in the report
 
 
 Step 1: 
-Create the required common dataframe (raw_data) with the new mapping. The new mapping would be done by doing an 
-XLOOKUP with the brc_master_sheet 
+Make the 3 main definitions "get_cp_ceoreview_summary",get_elementary
+
+
 
 """
 
-
+"-----------------------------------------------------------------------------------------------------------------------"
 # Step 0:
 # Global variables
 # Column names are defined here so that they can be edited in one place
@@ -41,63 +44,83 @@ udise_col = 'udise_code'
 edu_district_name = 'edu_dist_name'
 block_name = 'block_name'
 school_category = 'category'
-new_category = 'new_category'
+school_level = 'school_level'
 class_number = 'class'
 beo_user = 'beo_user'
-deo_user = 'deo_user'
+deo_user_elm = 'deo_name (elementary)'
+deo_user_sec = 'deo_name (secondary)'
 cwsn_students ='cwsn'
 beo_rank = 'BEO Rank'
-deo_rank = 'DEO Rank'
+deo_rank_elm = 'DEO Rank Elementary'
+deo_rank_sec = 'DEO Rank Secondary'
 perc_students_cp = '% Students ageing > 30 days'
 
-def common_pool_ceo_review(raw_data,brc_master_sheet):
-    #concatenating the mapping master sheet with the raw data from the db
-    raw_data = pd.concat([brc_master_sheet[district_name,deo_user,block_name,beo_user,udise_col,school_category,
-                                           new_category],raw_data], axis=0)
+"-----------------------------------------------------------------------------------------------------------------------"
 
-    #splitting the dataframe into elementary and secondary schools
-    raw_data_elementary = raw_data[raw_data[new_category].str.contains('Elementary', na = False)]
-    raw_data_secondary = raw_data[raw_data[new_category].str.contains('Secondary', na=False)]
 
-    #changing the format into the required format with classes as the columns for both elementary and secondary schools
-    #adding the % column for the ranking
-    #ranking them
-    df_cp_b4formatting_elm = pd.pivot_table(raw_data_elementary, values=students_ageing30_count, index=[district_name,deo_user,
-                            block_name,beo_user,new_category,school_category], columns=[class_number],
+#Call the report utility to get the report_summary to work on:
+report_summary = utilities.report_utitilites.report_summary(raw_data,brc_master_sheet,district_name,deo_user_elm,
+                  deo_user_sec,block_name,beo_user,udise_col, school_category,school_level)
+
+
+#changing the format into the required format with classes as the columns for both elementary and secondary schools
+#adding the % column for the ranking
+#ranking them
+df_cp_b4formatting_elm = pd.pivot_table(raw_data_elementary, values=students_ageing30_count, index=[district_name,deo_user,
+                            block_name,beo_user,school_level,school_category], columns=[class_number],
                                            aggfunc='sum').reset_index()
-    df_cp_b4formatting_elm[perc_students_cp] = df_cp_b4formatting_elm[students_ageing30_count]/\
+df_cp_b4formatting_elm[perc_students_cp] = df_cp_b4formatting_elm[students_ageing30_count]/\
                                                            df_cp_b4formatting_elm[total_student_count]
 
-    df_cp_b4formatting_scn = pd.pivot_table(raw_data_secondary, values=students_ageing30_count,
-                            index=[district_name, deo_user, block_name, beo_user, new_category,
+df_cp_b4formatting_scn = pd.pivot_table(raw_data_secondary, values=students_ageing30_count,
+                            index=[district_name, deo_user, block_name, beo_user, school_level,
                                    school_category], columns=[class_number],
                                           aggfunc='sum').reset_index()
 
-    df_cp_b4formatting_scn[perc_students_cp] = df_cp_b4formatting_scn[students_ageing30_count] / \
+df_cp_b4formatting_scn[perc_students_cp] = df_cp_b4formatting_scn[students_ageing30_count] / \
                                                            df_cp_b4formatting_scn[total_student_count]
     
     
-    # 3. Ranking for DEOs and BEOS - Elementary
+# 3. Ranking for DEOs and BEOS - Elementary
     
-    # Get ranking for elementary BEOs
-    df_beo_rank = ranking_utilities.percent_ranking(df_cp_b4formatting_elm, [beo_user], [students_ageing30_count, total_student_count],\
+# Get ranking for elementary BEOs
+df_beo_rank_elm = ranking_utilities.percent_ranking(df_cp_b4formatting_elm, [beo_user], [students_ageing30_count, total_student_count],\
                     'sum', perc_students_cp, students_ageing30_count, total_student_count, beo_rank)
 
 
-    # Get Ranking for elementary DEOs
-    df_deo_rank = ranking_utilities.percent_ranking(df_cp_b4formatting_elm, [deo_user], [students_ageing30_count, total_student_count],\
-                    'sum', perc_students_cp, students_ageing30_count, total_student_count, deo_rank)
+#Get Ranking for elementary DEOs:
+df_deo_rank_elm = ranking_utilities.percent_ranking(df_cp_b4formatting_elm, [deo_user], [students_ageing30_count, total_student_count],\
+                'sum', perc_students_cp, students_ageing30_count, total_student_count, deo_rank)
 
-    # Vlookup for educational district ranks based on name
-    df_cp_b4formatting_elm[deo_rank] = df_cp_b4formatting_elm[deo_user].\
-     apply(utilities.xlookup, args=(df_deo_rank[deo_user], df_deo_rank[deo_rank]))
+# Vlookup for deo ranks based on name
+df_cp_b4formatting_elm[deo_rank] = df_cp_b4formatting_elm[deo_user].\
+ apply(utilities.xlookup, args=(df_deo_rank_elm[deo_user], df_deo_rank_elm[deo_rank]))
 
-    # Vlookup for district ranks based on name
-    df_cp_b4formatting_elm[beo_rank] = df_cp_b4formatting_elm[beo_user].\
-     apply(utilities.xlookup, args=(df_beo_rank[beo_user], df_beo_rank[beo_rank]))
+# Vlookup for beo ranks based on name
+df_cp_b4formatting_elm[beo_rank] = df_cp_b4formatting_elm[beo_user].\
+ apply(utilities.xlookup, args=(df_beo_rank_elm[beo_user], df_beo_rank_elm[beo_rank]))
 
-    # Convert values to percentage and upto two decimal places
-    df_cp_b4formatting_elm.loc[:, "% in Common Pool"] = df_cp_b4formatting_elm["% in Common Pool"].map('{:.2%}'.format)
+# Convert values to percentage and upto two decimal places
+df_cp_b4formatting_elm.loc[:, "% in Common Pool"] = df_cp_b4formatting_elm["% in Common Pool"].map('{:.2%}'.format)
+
+
+# Get Ranking for secondary DEOs
+df_deo_rank_scn = ranking_utilities.percent_ranking(df_cp_b4formatting_scn, [deo_user], [students_ageing30_count, total_student_count],\
+                'sum', perc_students_cp, students_ageing30_count, total_student_count, deo_rank)
+
+# Vlookup for DEO ranks based on name
+df_cp_b4formatting_scn[deo_rank] = df_cp_b4formatting_scn[deo_user].\
+ apply(utilities.xlookup, args=(df_deo_rank_scn[deo_user], df_deo_rank_scn[deo_rank]))
+
+# Convert values to percentage and upto two decimal places
+df_cp_b4formatting_scn.loc[:, "% in Common Pool"] = df_cp_b4formatting_scn["% in Common Pool"].map('{:.2%}'.format)
+
+
+# 4. Formatting
+# Sorting
+
+
+
 
 
 
@@ -112,8 +135,8 @@ def common_pool_ceo_review(raw_data,brc_master_sheet):
 
 def main():
 
-""""
-code for running the sql script:
+    """""
+    #code for running the sql script:
 
     # Read the database connection credentials
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
@@ -122,13 +145,15 @@ code for running the sql script:
     df_report = dbutilities.fetch_data_as_df(credentials_dict, 'common_pool_latest.sql')
 
     print('df_report fetched from db: ', df_report)
-
-"""
+    """
 
 # Alternatively
 # Ask the user to select the School enrollment abstract excel file.
-common_pool_basefile = file_utilities.user_sel_excel_filename()
-df_report = pd.read_excel(common_pool_basefile, sheet_name='Abstract')
+    common_pool_basefile = file_utilities.user_sel_excel_filename()
+    df_report = pd.read_excel(common_pool_basefile, sheet_name='Abstract')
+
+    df_elementary = common_pool_ceo_review(,,'Elementary')
+    df_seconday = common_pool_ceo_review(,,'Seconday')
 
 
 
