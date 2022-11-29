@@ -3,22 +3,14 @@ Module with utility functions to perform ranking of data
 """
 
 
-def calc_ranking(df, ranking_type, ranking_args_dict):
-    """
-    Function to calculate ranking for data based on the type of ranking given.
-    The function uses a local dictionary to match the ranking type and 
-    calls the appropriate ranking function which will calculate and return the rank.
+# Define the name of the columns with the ranks
+rank_col = 'Rank'
+# Define the name of the column in ranked data with values that will be used to calculate ranking
+ranking_value_col = 'Ranking Value'
+# Define the name of the column with short description of the values used for ranking
+ranking_value_desc_col = 'Ranking Value Description'
 
-    Paramters:
-    ----------
-    ranking_type: str
-        The type of ranking to be used to calculate the ranking for the data
-    *params:
-        The parameters to be passed to the ranking function    
-    """
-    ranking_func = ranking_funcs_dict.get(ranking_type)
-    
-    return ranking_func(df, ranking_args_dict)
+
 
 def percent_ranking(df, ranking_args_dict):
 
@@ -29,7 +21,7 @@ def percent_ranking(df, ranking_args_dict):
     Parameters:
     -----------
     df: Pandas DataFrame
-        The raw data
+        The data to be ranked
     group_levels: list
         The list of columns to group by
     agg_cols: list
@@ -61,10 +53,9 @@ def percent_ranking(df, ranking_args_dict):
     sort = ranking_args_dict['sort']
     agg_cols = ranking_args_dict['agg_cols']
     agg_func = ranking_args_dict['agg_func']
-    frac_col_name = ranking_args_dict['frac_col_name']
+    ranking_val_desc = ranking_args_dict['ranking_val_desc']
     num_col = ranking_args_dict['num_col']
     den_col = ranking_args_dict['den_col']
-    rank_col_name = ranking_args_dict['rank_col_name']
     sort = ranking_args_dict['sort']
     ascending = ranking_args_dict['ascending']
 
@@ -73,14 +64,33 @@ def percent_ranking(df, ranking_args_dict):
     df_rank = df.groupby(group_levels, as_index=False, sort=sort)[agg_cols].agg(agg_func)
 
     # Calculate fraction of values (to be used for ranking)
-    df_rank[frac_col_name] = (df_rank[num_col]/df_rank[den_col])
-    df_rank[rank_col_name] = df_rank[frac_col_name].rank(ascending=ascending)
-    df_rank = df_rank.reset_index()
+    df_rank[ranking_value_col] = (df_rank[num_col]/df_rank[den_col])
+    df_rank[rank_col] = df_rank[ranking_value_col].rank(ascending=ascending)
+    
+    # Add the ranking value description to the ranked data
+    df_rank[ranking_value_desc_col] = ranking_val_desc
+    
+    
+    # Sort by ranking if specified
+    if sort:
+        df_rank.sort_values(by=[rank_col], inplace=True)
+
+    df_rank = df_rank.reset_index()    
 
     return df_rank
 
 
+def get_ranking_funcs():
+    """
+    Function to return names of available ranking functions
+
+    Returns:
+    -------
+    Dictionary of name - function name key-value pairs
+    """
+    return ranking_funcs_dict
+   
 # Define a dictionary of ranking functions
 ranking_funcs_dict = {
     'percent_ranking': percent_ranking
-}
+}    
