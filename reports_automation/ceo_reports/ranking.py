@@ -13,7 +13,6 @@ import pandas as pd
 from datetime import datetime
 
 
-
 # Name of the master report with all the rankings
 ranking_master_file_name = 'ranking_master.xlsx'
 ranking_master_sheet_name = 'ranking'
@@ -97,7 +96,7 @@ def main():
     percent_ranking_args = [ ['A', 'B'], ['C'], 'sum', 'frac_col', 'numerator', 'denominator', 'rank']
     ranking_utilities.calc_ranking('percent_ranking', df_ranking,  percent_ranking_args)
     
-
+    
 
 if __name__ == "__main__":
     main()
