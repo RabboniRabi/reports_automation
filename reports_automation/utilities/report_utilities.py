@@ -67,8 +67,7 @@ def get_brc_master():
 
     Returns:
     -------
-    DataFrame object of the BRC-CRC mapping data0
-
+    DataFrame object of the BRC-CRC mapping data
     """
     mapping_data_dir = file_utilities.get_mapping_data_dir_path()
     # read from excel, get sub columns
@@ -77,17 +76,37 @@ def get_brc_master():
     return brc_master
 
 
-def get_elementary_report(report_summary):
+def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_code, metric_category):
 
     """
-    This function creates the elementary report on given data by calculating
-    the BEO ranking and DEO(Elementary) ranking.
+    Function create and return the elementary report on given data by calculating
+    the BEO ranking, EO(Elementary) ranking and updating the data.
 
-    - Method to be updated post integration with ranking functionality.
+    The master ranking data is also updated when this function is called.
 
-    report_summary: The final dataframe that is returned after creating the specific report
-    beo_ranking: this would be a column that has the BEO ranking for the specific report
-    deo_elm_ranking: this would be a column that has the BEO ranking for the specific report
+    Parameters: 
+    -----------
+
+    df_summary: Pandas DataFrame
+        The raw processed, summarised and ready for ranking
+    ranking_type: str
+        The type of ranking to be used to calculate the ranking for the data
+    ranking_args_dict: dict
+        A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
+        Eg: ranking_args_dict = {
+        'group_levels' : ['district', 'name', 'designation'],
+        'agg_cols' : ['class_1', 'Total'],
+        'agg_func' : 'sum',
+        'ranking_val_desc' : '% moved to CP',
+        'num_col' : 'class_1',
+        'den_col' : 'Total',
+        'sort' : True, 
+        'ascending' : False
+        }
+    metric_code: str
+        The code of the metric on which the data is ranked
+    metric_category: str
+        The category of the metric on which the data is ranked
     """
 
     # Get the ranking for the BEOs
@@ -98,18 +117,43 @@ def get_elementary_report(report_summary):
 
     deo_elm_ranking = ranking.get_ranking(df, deo_user_elm, CP)
 
-    elementary_report = pd.append([report_summary,beo_ranking,deo_elm_ranking], axis=1)
+    elementary_report = pd.append([df_summary,beo_ranking,deo_elm_ranking], axis=1)
 
     return elementary_report
 
 
 def get_secondary_report(report_summary):
     """
-    This module would return a dataframe with the list of entries that pertain to the secondary schools
-    for any report that calls it.
-    report_summary: The final dataframe that is returned after creating the specific report
-    deo_sec_ranking: this would be a column that has the BEO ranking for the specific report
+    Function create and return the elementary report on given data by calculating
+    the BEO ranking, DEO(Secondary) ranking and updating the data.
+
+    The master ranking data is also updated when this function is called.
+
+    Parameters: 
+    -----------
+
+    df_summary: Pandas DataFrame
+        The raw processed, summarised and ready for ranking
+    ranking_type: str
+        The type of ranking to be used to calculate the ranking for the data
+    ranking_args_dict: dict
+        A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
+        Eg: ranking_args_dict = {
+        'group_levels' : ['district', 'name', 'designation'],
+        'agg_cols' : ['class_1', 'Total'],
+        'agg_func' : 'sum',
+        'ranking_val_desc' : '% moved to CP',
+        'num_col' : 'class_1',
+        'den_col' : 'Total',
+        'sort' : True, 
+        'ascending' : False
+        }
+    metric_code: str
+        The code of the metric on which the data is ranked
+    metric_category: str
+        The category of the metric on which the data is ranked
     """
+
 
     # Get the ranking for the secondary DEOs
     deo_sec_ranking = ranking_utilities.calc_ranking(df, ranking_type, ranking_args_dict)
