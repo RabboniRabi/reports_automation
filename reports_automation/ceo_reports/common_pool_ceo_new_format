@@ -10,6 +10,7 @@ import sys
 sys.path.append('../')
 
 import utilities.utilities as utilities
+import functools as ft
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.ranking_utilities as ranking_utilities
@@ -55,20 +56,16 @@ beo_rank = 'BEO Rank'
 deo_rank_elm = 'DEO Rank Elementary'
 deo_rank_sec = 'DEO Rank Secondary'
 perc_students_cp = '% Students ageing > 30 days'
+total_cwsn_students ='cwsn'
+total_cp_students ='total'
+
+
+merge_dict = {
+    'on_values' : [district_name,block_name,school_name,school_category ,udise_col],
+    'how' : 'left'
+}
 
 "-----------------------------------------------------------------------------------------------------------------------"
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -88,13 +85,34 @@ def main():
 
     common_pool_basefile = file_utilities.user_sel_excel_filename()
     raw_data = pd.read_excel(common_pool_basefile, sheet_name='Abstract')
-    brc_crc_master_sheet = report_utilities.get_brc_master()
-    raw_data = pd.pivot_table(raw_data, values=udise_col, index=[raw_data.columns.to_list(),
-                brc_crc_master_sheet.columns.to_list()],columns=[class_number], aggfunc='sum').reset_index()
+    raw_data.drop(columns=edu_district_name, axis=1, inplace=True)
+    # Update the data with the BRC-CRC mapping
+    data_with_brc_mapping = report_utilities.map_data_with_brc(raw_data, merge_dict)
+    print(data_with_brc_mapping)
+    #list_touse =  list(set(brc_crc_master_sheet.columns.to_list() + raw_data.columns.to_list()))
+    #print(list_touse)
 
-    #Call the report utility to get the report_summary to work on:
-    report_summary = report_utilities.concat_with_brc_master(raw_data,udise_col)
-    print('report_summary', report_summary)
+    # Pivot the data, grouping on
+    data_pivot_ageing = pd.pivot_table(data_with_brc_mapping, values=students_ageing30_count, index= [district_name,block_name,school_category]
+                              ,columns='class', aggfunc='sum').reset_index()
+    print(data_pivot_ageing)
+
+    data_pivot_total = pd.pivot_table(data_with_brc_mapping, values=total_cp_students, index=[district_name,block_name,school_category],
+                          aggfunc='sum').reset_index()
+
+    data_pivot_cwsn = pd.pivot_table(data_with_brc_mapping, values=total_cwsn_students, index=[district_name,block_name,school_category],
+                          aggfunc='sum').reset_index()
+
+    data_frames_merge = [data_pivot_ageing,data_pivot_total,data_pivot_cwsn]
+
+    data_final = ft.reduce(lambda left, right: pd.merge(left, right, on=[district_name,block_name,school_category]), data_frames_merge)
+    print(data_final)
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
