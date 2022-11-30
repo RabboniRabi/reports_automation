@@ -8,7 +8,6 @@ sys.path.append('../')
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.report_utilities as report_utilities
-import ranking
 import pandas as pd
 import os
 
