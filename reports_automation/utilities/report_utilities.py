@@ -7,6 +7,7 @@ import pandas as pd
 #import reports_automation.ceo_reports.ranking as ranking
 import os
 import utilities.file_utilities as file_utilities
+import utilities.ranking_utilities as ranking_utilities
 
 brc_file_name = 'BRC_CRC_Master_sheet.xlsx'
 brc_master_sheet_name = 'BRC-CRC Updated sheet'
@@ -56,7 +57,12 @@ def get_elementary_report(report_summary):
     deo_elm_ranking: this would be a column that has the BEO ranking for the specific report
     """
 
-    beo_ranking = ranking.get_ranking(df,beo_user,CP)
+    # Get the ranking for the BEOs
+    beo_ranking = ranking_utilities.calc_ranking(df, ranking_type, ranking_args_dict)
+
+    # Update the master ranking with the BEO ranking
+    ranking_utilities.update_ranking_master(beo_ranking, metric_code, metric_category, 'Elementary')
+
     deo_elm_ranking = ranking.get_ranking(df, deo_user_elm, CP)
 
     elementary_report = pd.append([report_summary,beo_ranking,deo_elm_ranking], axis=1)
@@ -72,7 +78,11 @@ def get_secondary_report(report_summary):
     deo_sec_ranking: this would be a column that has the BEO ranking for the specific report
     """
 
-    deo_sec_ranking = ranking.get_ranking(df, deo_user_sec, CP)
+    # Get the ranking for the secondary DEOs
+    deo_sec_ranking = ranking_utilities.calc_ranking(df, ranking_type, ranking_args_dict)
+
+    # Update the master ranking with the DEOs ranking
+    ranking_utilities.update_ranking_master(deo_sec_ranking, metric_code, metric_category, 'Secondary')
 
     secondary_report = pd.append([report_summary, deo_sec_ranking], axis=1)
 

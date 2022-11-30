@@ -1,96 +1,129 @@
 """
-Module with utility functions to perform ranking of data
+Module with utilitiy functions to calculate and save ranking
 """
 
+import os
+import sys
+sys.path.append('../')
+import utilities.utilities as utilities
+import utilities.file_utilities as file_utilities
+import utilities.ranking_funcs_utilities as ranking_funcs_utilities
 
-# Define the name of the columns with the ranks
-rank_col = 'Rank'
-# Define the name of the column in ranked data with values that will be used to calculate ranking
-ranking_value_col = 'Ranking Value'
-# Define the name of the column with short description of the values used for ranking
-ranking_value_desc_col = 'Ranking Value Description'
+import pandas as pd
+from datetime import datetime
 
 
 
-def percent_ranking(df, ranking_args_dict):
+# Name of the master report with all the rankings
+ranking_master_file_name = 'ranking_master.xlsx'
+ranking_master_sheet_name = 'ranking'
+# Get the path to the ceo_reports folder for the month
+ceo_rpts_dir_path = file_utilities.get_ceo_rpts_dir_path()
 
-    # group_levels, agg_cols, agg_func, frac_col_name, num_col, den_col, rank_col_name, sort=False, ascending=True, tie_method='min'
+
+# Define the columns used in the ranking master file
+district = 'District'
+name = 'Name'
+desig = 'Designation'
+metric_code_col = 'metric_code'
+metric_category_col = 'metric_category'
+school_level_col = 'school_level'
+month_col = 'Month'
+year_col = 'year'
+rank_col = ranking_funcs_utilities.rank_col
+rank_val_col = ranking_funcs_utilities.ranking_value_col
+ranking_val_desc_col = ranking_funcs_utilities.ranking_value_desc_col
+
+# Define the columns to save to the ranking master
+cols_to_save = [district, name, desig, rank_col, rank_val_col, ranking_val_desc_col,\
+    metric_code_col, metric_category_col, school_level_col, month_col, year_col]
+
+
+
+def calc_ranking(df, ranking_type, ranking_args_dict):
     """
-    Function to rank data based on percentage (value of one column compared to another column)
+    Function to calculate ranking for data based on the type of ranking given.
+    The function uses the dictionary in ranking_utilities to match the ranking type and 
+    calls the appropriate ranking function which will calculate and return the rank.
+
+    Paramters:
+    ----------
+    df: Pandas DataFrame
+        The data to be ranked
+    ranking_type: str
+        The type of ranking to be used to calculate the ranking for the data
+    ranking_args_dict: dict
+        A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
+        Eg: ranking_args_dict = {
+        'group_levels' : ['district', 'name', 'designation'],
+        'agg_cols' : ['class_1', 'Total'],
+        'agg_func' : 'sum',
+        'ranking_val_desc' : '% moved to CP',
+        'num_col' : 'class_1',
+        'den_col' : 'Total',
+        'sort' : True, 
+        'ascending' : False
+        }
+    Returns:
+    --------
+    Ranked DataFrame object
+    """
+    ranking_func = ranking_funcs_utilities.get_ranking_funcs().get(ranking_type)
+    
+    return ranking_func(df, ranking_args_dict)
+
+
+
+def update_ranking_master(df_ranking, metric_code, metric_category, school_level):
+    """
+    Function to update the master ranking file with the given ranking data for the current month.
+
+    The ranking master file is stored in the ceo_reports folder in generated reports.
     
     Parameters:
     -----------
-    df: Pandas DataFrame
-        The data to be ranked
-    group_levels: list
-        The list of columns to group by
-    agg_cols: list
-        The columns to aggregate the grouping by
-    agg_func: str
-        The aggregate function to be applied on the aggregated columns (eg: sum, count, mean)
-    frac_col_name: str
-        The name of a new column with fractional values computed using two columns in the data
-    num_col: str
-        The name of the column whose values will go in the numerator of percent based ranking calculation
-    den_col: str
-        The name of the column whose values will go in the denominator of percent based ranking calculation
-    sort: bool
-        Default: False. Flag to indicate if values need to be sorting when grouping
-    ascending: bool
-        Default: True. Flag to if values need to be ranking by ascending order
-    tie_method: str
-        to rank the group of records that have the same value (i.e. ties)
-
-    Ref: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rank.html                        
-    
-    Returns:
-    --------
-        The updated DataFrame object with the fractional values used for ranking and the ranking
+    df_ranking: Pandas DataFrame
+        The ranked data for a metric
+    metric_code: str
+        The code for the metric used in the calculation of the ranking
+    metric_category: str
+        The category the ranked metric falls under
+    school_level: str
+        The level of school education the ranking is for: Elementary or Secondary    
     """
 
-    # Get the values from the ranking arguments dictionary
-    group_levels = ranking_args_dict['group_levels']
-    sort = ranking_args_dict['sort']
-    agg_cols = ranking_args_dict['agg_cols']
-    agg_func = ranking_args_dict['agg_func']
-    ranking_val_desc = ranking_args_dict['ranking_val_desc']
-    num_col = ranking_args_dict['num_col']
-    den_col = ranking_args_dict['den_col']
-    sort = ranking_args_dict['sort']
-    ascending = ranking_args_dict['ascending']
-
-
-    # Group by grouping levels and aggregate by given columns and aggregate function
-    df_rank = df.groupby(group_levels, as_index=False, sort=sort)[agg_cols].agg(agg_func)
-
-    # Calculate fraction of values (to be used for ranking)
-    df_rank[ranking_value_col] = (df_rank[num_col]/df_rank[den_col])
-    df_rank[rank_col] = df_rank[ranking_value_col].rank(ascending=ascending)
+    # Update the ranking data with columns indicating metrics, school level and month-year
+    df_ranking[metric_code_col] = metric_code
+    df_ranking[metric_category_col] = metric_category
+    df_ranking[school_level_col] = school_level
+    df_ranking[month_col] =  datetime.now().strftime('%h')
+    df_ranking[year_col] =  int(datetime.now().strftime('%Y'))
     
-    # Add the ranking value description to the ranked data
-    df_rank[ranking_value_desc_col] = ranking_val_desc
-    
-    
-    # Sort by ranking if specified
-    if sort:
-        df_rank.sort_values(by=[rank_col], inplace=True)
+    # Get the master ranking file. In the future, this needs to be saved and fetched from a database
+    ranking_file_path = os.path.join(ceo_rpts_dir_path, ranking_master_file_name)
 
-    df_rank = df_rank.reset_index()    
+    # If file does not exist, save the ranking to the file
+    if not os.path.exists(ranking_file_path):
+        df_master_ranking = df_ranking
+    else:
 
-    return df_rank
+        # Get the master ranking file
+        df_master_ranking = pd.read_excel(ranking_file_path, ranking_master_sheet_name)
 
+        # Define the subset of columns to check for common rows
+        cols_to_check = [district, name, desig, metric_code_col, school_level_col, month_col, year_col]
 
-def get_ranking_funcs():
-    """
-    Function to return names of available ranking functions
+        # Check if ranking data already exists
+        if (utilities.is_any_row_common(df_master_ranking[cols_to_check], df_ranking[cols_to_check])):
+            # Then update with the latest ranking
+            df_master_ranking.update(df_ranking)
+        else:
+            # Add the new ranking to the ranking master
+            df_master_ranking = pd.concat([df_master_ranking, df_ranking], join='inner')
 
-    Returns:
-    -------
-    Dictionary of name - function name key-value pairs
-    """
-    return ranking_funcs_dict
-   
-# Define a dictionary of ranking functions
-ranking_funcs_dict = {
-    'percent_ranking': percent_ranking
-}    
+    # Get only the columns to save.
+    df_master_ranking = df_master_ranking[cols_to_save]        
+
+    # Save the updated df_master_ranking
+    df_sheet_dict = {ranking_master_sheet_name: df_master_ranking}
+    file_utilities.save_to_excel(df_sheet_dict, ranking_master_file_name, ceo_rpts_dir_path)

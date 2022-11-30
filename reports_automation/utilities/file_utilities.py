@@ -87,18 +87,31 @@ def get_download_dir_path():
     """
     return os.path.join(Path.home(), 'Downloads')
 
-def get_gen_reports_dir_path():
+def get_reports_dir_path():
     """
-    Function to get the path to the folder where generated reports are to be saved.
-
-    Retunrs:
+    Function to get the path to the folder where all generated reports, 
+    mapping data and source data for reports are stored
+    Returns:
     -------
-    The path to the generated reports folder
+    The path to the reports folder
     """    
     curr_dir_path = Path(os.getcwd())
     # Get the path to parent three levels up
     parent_dir_three_lvls_up = curr_dir_path.parents[2]
-    dir_path = os.path.join(parent_dir_three_lvls_up, 'reports', 'generated')
+    dir_path = os.path.join(parent_dir_three_lvls_up, 'reports')
+    return dir_path
+
+
+def get_gen_reports_dir_path():
+    """
+    Function to get the path to the folder where generated reports are to be saved.
+
+    Returns:
+    -------
+    The path to the generated reports folder
+    """    
+
+    dir_path = os.path.join(get_reports_dir_path(), 'generated')
     return dir_path
 
 
@@ -106,14 +119,24 @@ def get_mapping_data_dir_path():
     """
     Function to get the path to the folder where mapping data is saved.
 
-    Retunrs:
+    Returns:
     -------
     The path to the mapping data folder
     """    
-    curr_dir_path = Path(os.getcwd())
-    # Get the path to parent three levels up
-    parent_dir_three_lvls_up = curr_dir_path.parents[2]
-    dir_path = os.path.join(parent_dir_three_lvls_up, 'reports', 'mapping_data')
+
+    dir_path = os.path.join(get_reports_dir_path(), 'mapping_data')
+    return dir_path
+
+def get_source_data_dir_path():
+    """
+    Function to get the path to the folder where source data is saved.
+
+    Returns:
+    -------
+    The path to the source data folder
+    """    
+
+    dir_path = os.path.join(get_reports_dir_path(), 'source_data')
     return dir_path
 
 

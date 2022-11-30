@@ -7,7 +7,10 @@ sys.path.append('../')
 
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
+import utilities.report_utilities as report_utilities
+import ranking
 import pandas as pd
+import os
 
 # Declare column names to be used in the module
 admitted_status = 'Admitted'
@@ -60,10 +63,9 @@ def get_rte_admission_status_summary(df, group_levels, agg_col):
     # Merge the admit and allot statuses data
     df_admission_status_summary = df_admit_status_schools_count.merge(df_allot_status_schools_count[group_levels + [allot_tot]])
 
-    print('df_allot_status_schools_count: ' , df_allot_status_schools_count)                
+    return df_admission_status_summary
 
-    # Test save
-    file_utilities.save_to_excel({'test': df_admission_status_summary}, 'test_rte.xlsx')
+
 
 def run():
     """
@@ -71,29 +73,54 @@ def run():
     """
 
     # Read the database connection credentials
-    credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+    #credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Get the latest students and teachers count
-    df_report = dbutilities.fetch_data_as_df(credentials_dict, 'rte_admission_status.sql')
+    #df_report = dbutilities.fetch_data_as_df(credentials_dict, 'rte_admission_status.sql')
 
-    print('df_report fetched from db: ', df_report)
+    #print('df_report fetched from db: ', df_report)
 
     # Alternatively
-    # Ask the user to select the School enrollment abstract excel file.
-    #rte_report = file_utilities.user_sel_excel_filename()
-    #df_report = pd.read_excel(rte_report, sheet_name='Report', skiprows=4)
+    # Get the data from the source data folder
+    print('file_utilities.get_source_data_dir_path(): ', file_utilities.get_source_data_dir_path())
+    file_path = os.path.join(file_utilities.get_source_data_dir_path(), 'rte_admission_status_2022.xlsx')
+    df_report = pd.read_excel(file_path, sheet_name='Report', skiprows=4)
+
+    print('df_report columns: ', df_report.columns.to_list())
 
     group_levels = ['District', 'edu_dist_name', 'Block_Name']
 
-    get_rte_admission_status_summary(df_report, group_levels, 'School_Name')
+    # Get the RTE admission status summary from raw data
+    df_admission_status_summary = get_rte_admission_status_summary(df_report, group_levels, 'School_Name')
+
+    # Prepare the data needed for generating the report
+    ranking_args_dict = {
+        'group_levels' : group_levels,
+        'agg_cols' : ['class_1', 'Total'],
+        'agg_func' : 'sum',
+        'ranking_val_desc' : '% moved to CP',
+        'num_col' : 'class_1',
+        'den_col' : 'Total',
+        'sort' : True, 
+        'ascending' : False
+    }
+    # Get the Elementary report
+    elem_report = report_utilities.get_elementary_report(\
+        df_admission_status_summary, 'percent_ranking', ranking_args_dict, 'RTE', 'Operations')
+
+    # Save the elementary report
+    file_utilities.save_to_excel({'Elementary Report': elem_report}, 'RTE_admn_status.xlsx',
+            dir_path = get_curr_month_elem_ceo_rpts_dir_path())    
+
+    # Get the Secondary report
+    elem_report = report_utilities.get_secondary_report(\
+        df_admission_status_summary, 'percent_ranking', ranking_args_dict, 'RTE', 'Operations')    
+
+    # Save the secondary report
+    file_utilities.save_to_excel({'Secondary Report': elem_report}, 'RTE_admn_status.xlsx',
+            dir_path = get_curr_month_secnd_ceo_rpts_dir_path()) 
+
     
-
-    # Alternatively
-    # Ask the user to select the School enrollment abstract excel file.
-    #rte_report = file_utilities.user_sel_excel_filename()
-    #df_report = pd.read_excel(rte_report, sheet_name='Abstract')
-
-
 
 
 
