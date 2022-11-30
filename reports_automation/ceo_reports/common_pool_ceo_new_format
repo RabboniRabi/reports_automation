@@ -49,6 +49,7 @@ school_category = 'category'
 school_level = 'school_level'
 class_number = 'class'
 beo_user = 'beo_user'
+beo_name ='beo_name'
 deo_user_elm = 'deo_name (elementary)'
 deo_user_sec = 'deo_name (secondary)'
 cwsn_students ='cwsn'
@@ -88,30 +89,45 @@ def main():
     raw_data.drop(columns=edu_district_name, axis=1, inplace=True)
     # Update the data with the BRC-CRC mapping
     data_with_brc_mapping = report_utilities.map_data_with_brc(raw_data, merge_dict)
-    print(data_with_brc_mapping)
+    data_with_brc_mapping.replace('Null', value=0, inplace=True)
+    convert_dtype_columns = {students_ageing30_count: 'int', total_cp_students: 'int', total_cwsn_students: 'int',class_number:'int'}
+    data_with_brc_mapping = data_with_brc_mapping.fillna(0).astype(convert_dtype_columns)
+
     #list_touse =  list(set(brc_crc_master_sheet.columns.to_list() + raw_data.columns.to_list()))
     #print(list_touse)
 
     # Pivot the data, grouping on
-    data_pivot_ageing = pd.pivot_table(data_with_brc_mapping, values=students_ageing30_count, index= [district_name,block_name,school_category]
-                              ,columns='class', aggfunc='sum').reset_index()
-    print(data_pivot_ageing)
 
-    data_pivot_total = pd.pivot_table(data_with_brc_mapping, values=total_cp_students, index=[district_name,block_name,school_category],
+    data_pivot_ageing = pd.pivot_table(data_with_brc_mapping, values=students_ageing30_count, index= [district_name,block_name,beo_user,beo_name,school_category]
+                              ,columns=[class_number], aggfunc='sum',fill_value=0).reset_index()
+    print('pivot:',data_pivot_ageing)
+
+    data_pivot_total = pd.pivot_table(data_with_brc_mapping, values=total_cp_students, index=[district_name,block_name,beo_user,beo_name,school_category],
                           aggfunc='sum').reset_index()
 
-    data_pivot_cwsn = pd.pivot_table(data_with_brc_mapping, values=total_cwsn_students, index=[district_name,block_name,school_category],
-                          aggfunc='sum').reset_index()
+    data_pivot_cwsn = pd.pivot_table(data_with_brc_mapping, values=total_cwsn_students, index=[district_name,block_name,beo_user,beo_name,school_category],
+                           aggfunc='sum').reset_index()
 
-    data_frames_merge = [data_pivot_ageing,data_pivot_total,data_pivot_cwsn]
+    # Need to rewrite code below
+    data_to_addback = data_with_brc_mapping[[district_name,block_name,beo_user,beo_name,school_category,school_level,
+                                            deo_user_elm,deo_user_sec]].drop_duplicates()
 
-    data_final = ft.reduce(lambda left, right: pd.merge(left, right, on=[district_name,block_name,school_category]), data_frames_merge)
-    print(data_final)
+    data_frames_merge = [data_to_addback,data_pivot_ageing,data_pivot_total,data_pivot_cwsn]
 
-
-
-
-
+    data_final = ft.reduce(lambda left, right: pd.merge(left, right, how='left',on=[district_name,block_name,beo_user,beo_name,school_category]), data_frames_merge)
+    file_utilities.save_to_excel({'test1':data_to_addback,'test2':data_final,'test3':data_pivot_ageing},'test6.xlsx')
+    # Post creating data summary
+    # Get the elementary report
+    ranking_args_dict = {
+        'agg_cols': ['ageing', 'total'],
+        'agg_func': 'sum',
+        'ranking_val_desc': '% ageing in CP',
+        'num_col': 'ageing',
+        'den_col': 'total',
+        'sort': True,
+        'ascending': True
+    }
+    elem_report = report_utilities.get_elementary_report(data_final, 'percent_ranking', ranking_args_dict, 'CP', 'Elementary')
 
 
 

@@ -26,12 +26,19 @@ school_category = 'category'
 school_level = 'school_level'
 class_number = 'class'
 beo_user = 'beo_user'
+beo_name = 'beo_name'
 deo_user_elm = 'deo_name (elementary)'
 deo_user_sec = 'deo_name (secondary)'
 cwsn_students ='cwsn'
 beo_rank = 'BEO Rank'
 deo_rank_elm = 'DEO Rank Elementary'
 deo_rank_sec = 'DEO Rank Secondary'
+
+# Define the list of columns to group by for rankings
+beo_ranking_group_cols = [district_name, beo_user, beo_name]
+deo_elem_ranking_group_cols = [district_name, deo_user_elm]
+deo_secnd_ranking_group_cols = [district_name, deo_user_sec]
+
 
 def map_data_with_brc(raw_data, merge_dict):
     """
@@ -109,17 +116,28 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
         The category of the metric on which the data is ranked
     """
 
+    # Filter the data to Elementary school type
+    df_summary = df_summary[df_summary[school_level].isin(['Elementary School'])]
+
+    file_utilities.save_to_excel({'Elementary shcools': df_summary}, 'Elementary_Schools.xlsx')
+
+    print('df_summary filtered to elementary: ', df_summary)
+
     # Get the ranking for the BEOs
-    beo_ranking = ranking_utilities.calc_ranking(df, ranking_type, ranking_args_dict)
+    beo_ranking = ranking_utilities.calc_ranking(df_summary, beo_ranking_group_cols, ranking_type, ranking_args_dict)
+
+    print('beo_ranking', beo_ranking)
+
+    file_utilities.save_to_excel({'BEO Ranking': beo_ranking}, 'beo_ranking.xlsx')
 
     # Update the master ranking with the BEO ranking
-    ranking_utilities.update_ranking_master(beo_ranking, metric_code, metric_category, 'Elementary')
+    """ranking_utilities.update_ranking_master(beo_ranking, metric_code, metric_category, 'Elementary')
 
     deo_elm_ranking = ranking.get_ranking(df, deo_user_elm, CP)
 
     elementary_report = pd.append([df_summary,beo_ranking,deo_elm_ranking], axis=1)
 
-    return elementary_report
+    return elementary_report"""
 
 
 def get_secondary_report(report_summary):
@@ -154,6 +172,8 @@ def get_secondary_report(report_summary):
         The category of the metric on which the data is ranked
     """
 
+    # Filter the data to Secondary school type
+    df_summary = df_summary[df_summary[school_level].isin('Secondary')]
 
     # Get the ranking for the secondary DEOs
     deo_sec_ranking = ranking_utilities.calc_ranking(df, ranking_type, ranking_args_dict)

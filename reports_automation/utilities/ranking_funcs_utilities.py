@@ -13,7 +13,7 @@ ranking_value_desc_col = 'Ranking Value Description'
 
 
 
-def percent_ranking(df, ranking_args_dict):
+def percent_ranking(df, group_levels, ranking_args_dict):
 
     # group_levels, agg_cols, agg_func, frac_col_name, num_col, den_col, rank_col_name, sort=False, ascending=True, tie_method='min'
     """
@@ -50,7 +50,6 @@ def percent_ranking(df, ranking_args_dict):
     """
 
     # Get the values from the ranking arguments dictionary
-    group_levels = ranking_args_dict['group_levels']
     sort = ranking_args_dict['sort']
     agg_cols = ranking_args_dict['agg_cols']
     agg_func = ranking_args_dict['agg_func']
