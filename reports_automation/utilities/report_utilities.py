@@ -14,7 +14,7 @@ brc_file_name = 'BRC_CRC_Master_sheet.xlsx'
 brc_master_sheet_name = 'BRC-CRC Updated sheet'
 
 # Columns to be dropped from the BRC mapping sheet
-brc_master_drop_cols = ['Cluster ID', 'CRC Udise','CRC School Name']
+brc_master_drop_cols = ['Cluster ID', 'CRC Udise','CRC School Name','BRTE']
 
 # Define column names
 beo_rank = 'BEO Rank'
@@ -172,7 +172,7 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
 
     elementary_report = pd.merge(df_summary, beo_ranking, on=[cols.beo_user, cols.beo_name])
     elementary_report = pd.merge(elementary_report, deo_elm_ranking, on=[cols.deo_name_elm])
-    
+
     # Sort the data by district and rank
     elementary_report.sort_values(by=[deo_elem_rank, cols.deo_name_elm, beo_rank], ascending=True, inplace=True)
     #elementary_report = df_summary.merge(beo_ranking[cols.beo_user, cols.beo_name, cols.rank_col])
