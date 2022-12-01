@@ -8,6 +8,7 @@ sys.path.append('../')
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.ranking_funcs_utilities as ranking_funcs_utilities
+import utilities.column_names_utilities as cols
 
 import pandas as pd
 from datetime import datetime
@@ -21,22 +22,9 @@ ranking_master_sheet_name = 'ranking'
 ceo_rpts_dir_path = file_utilities.get_ceo_rpts_dir_path()
 
 
-# Define the columns used in the ranking master file
-district = 'District'
-name = 'Name'
-desig = 'Designation'
-metric_code_col = 'metric_code'
-metric_category_col = 'metric_category'
-school_level_col = 'school_level'
-month_col = 'Month'
-year_col = 'year'
-rank_col = ranking_funcs_utilities.rank_col
-rank_val_col = ranking_funcs_utilities.ranking_value_col
-ranking_val_desc_col = ranking_funcs_utilities.ranking_value_desc_col
-
 # Define the columns to save to the ranking master
-cols_to_save = [district, name, desig, rank_col, rank_val_col, ranking_val_desc_col,\
-    metric_code_col, metric_category_col, school_level_col, month_col, year_col]
+cols_to_save = [cols.district, cols.name, cols.desig, cols.rank_col, cols.ranking_value, cols.ranking_value_desc,\
+    cols.metric_code, cols.metric_category, cols.school_level, cols.month_col, cols.year_col]
 
 
 
@@ -95,11 +83,11 @@ def update_ranking_master(df_ranking, metric_code, metric_category, school_level
     """
 
     # Update the ranking data with columns indicating metrics, school level and month-year
-    df_ranking[metric_code_col] = metric_code
-    df_ranking[metric_category_col] = metric_category
-    df_ranking[school_level_col] = school_level
-    df_ranking[month_col] =  datetime.now().strftime('%h')
-    df_ranking[year_col] =  int(datetime.now().strftime('%Y'))
+    df_ranking[cols.metric_code] = metric_code
+    df_ranking[cols.metric_category] = metric_category
+    df_ranking[cols.school_level] = school_level
+    df_ranking[cols.month_col] =  datetime.now().strftime('%h')
+    df_ranking[cols.year_col] =  int(datetime.now().strftime('%Y'))
     
     # Get the master ranking file. In the future, this needs to be saved and fetched from a database
     ranking_file_path = os.path.join(ceo_rpts_dir_path, ranking_master_file_name)
@@ -113,7 +101,7 @@ def update_ranking_master(df_ranking, metric_code, metric_category, school_level
         df_master_ranking = pd.read_excel(ranking_file_path, ranking_master_sheet_name)
 
         # Define the subset of columns to check for common rows
-        cols_to_check = [district, name, desig, metric_code_col, school_level_col, month_col, year_col]
+        cols_to_check = [cols.district, cols.name, cols.desig, cols.metric_code, cols.school_level, cols.month_col, cols.year_col]
 
         # Check if ranking data already exists
         if (utilities.is_any_row_common(df_master_ranking[cols_to_check], df_ranking[cols_to_check])):

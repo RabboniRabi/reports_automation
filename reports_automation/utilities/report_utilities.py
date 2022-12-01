@@ -8,12 +8,18 @@ import pandas as pd
 import os
 import utilities.file_utilities as file_utilities
 import utilities.ranking_utilities as ranking_utilities
+import utilities.column_names_utilities as cols
 
 brc_file_name = 'BRC_CRC_Master_sheet.xlsx'
 brc_master_sheet_name = 'BRC-CRC Updated sheet'
 
 # Columns to be dropped from the BRC mapping sheet
 brc_master_drop_cols = ['Cluster ID', 'CRC Udise','CRC School Name']
+
+# Define column names
+beo_rank = 'BEO Rank'
+deo_elem_rank = 'DEO (Elementary) Rank'
+deo_sec_rank = 'DEO (Secondary) Rank'
 
 total_student_count  = 'total'
 students_ageing30_count = 'last_30days'
@@ -30,14 +36,13 @@ beo_name = 'beo_name'
 deo_user_elm = 'deo_name (elementary)'
 deo_user_sec = 'deo_name (secondary)'
 cwsn_students ='cwsn'
-beo_rank = 'BEO Rank'
 deo_rank_elm = 'DEO Rank Elementary'
 deo_rank_sec = 'DEO Rank Secondary'
 
 # Define the list of columns to group by for rankings
-beo_ranking_group_cols = [district_name, beo_user, beo_name]
-deo_elem_ranking_group_cols = [district_name, deo_user_elm]
-deo_secnd_ranking_group_cols = [district_name, deo_user_sec]
+beo_ranking_group_cols = [cols.district_name, beo_user, cols.beo_name]
+deo_elem_ranking_group_cols = [cols.district_name, cols.deo_name_elm]
+deo_secnd_ranking_group_cols = [cols.district_name, cols.deo_name_sec]
 
 
 def map_data_with_brc(raw_data, merge_dict):
@@ -63,7 +68,7 @@ def map_data_with_brc(raw_data, merge_dict):
 
     brc_master_sheet = get_brc_master()
     brc_master_sheet = brc_master_sheet.drop(brc_master_drop_cols, axis=1)
-    report_summary = pd.merge(brc_master_sheet,raw_data,on=merge_dict['on_values'],how=merge_dict['how'])
+    report_summary = pd.merge(raw_data, brc_master_sheet,on=merge_dict['on_values'],how=merge_dict['how'])
 
     return report_summary
 
@@ -87,7 +92,7 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
 
     """
     Function create and return the elementary report on given data by calculating
-    the BEO ranking, EO(Elementary) ranking and updating the data.
+    the BEO ranking, DEO(Elementary) ranking and updating the data.
 
     The master ranking data is also updated when this function is called.
 
@@ -119,31 +124,68 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
     # Filter the data to Elementary school type
     df_summary = df_summary[df_summary[school_level].isin(['Elementary School'])]
 
-    file_utilities.save_to_excel({'Elementary shcools': df_summary}, 'Elementary_Schools.xlsx')
-
-    print('df_summary filtered to elementary: ', df_summary)
-
     # Get the ranking for the BEOs
     beo_ranking = ranking_utilities.calc_ranking(df_summary, beo_ranking_group_cols, ranking_type, ranking_args_dict)
 
-    print('beo_ranking', beo_ranking)
+    # Make a copy of the ranking to update master sheet
+    beo_ranking_for_master = beo_ranking.copy()
+
+    # Update the BEO ranked data with designation
+    beo_ranking_for_master[cols.desig] = 'BEO'
+
+    # Rename the BEO name column
+    beo_ranking_for_master.rename(columns={cols.beo_name: cols.name, cols.district_name: cols.district}, inplace = True)
 
     file_utilities.save_to_excel({'BEO Ranking': beo_ranking}, 'beo_ranking.xlsx')
 
+
     # Update the master ranking with the BEO ranking
-    """ranking_utilities.update_ranking_master(beo_ranking, metric_code, metric_category, 'Elementary')
+    ranking_utilities.update_ranking_master(beo_ranking_for_master, metric_code, metric_category, 'Elementary')
 
-    deo_elm_ranking = ranking.get_ranking(df, deo_user_elm, CP)
+    deo_elm_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols, ranking_type, ranking_args_dict)
 
-    elementary_report = pd.append([df_summary,beo_ranking,deo_elm_ranking], axis=1)
+    file_utilities.save_to_excel({'DEO Ranking': deo_elm_ranking}, 'deo_elem_ranking.xlsx')
 
-    return elementary_report"""
+    # Make a copy of the ranking to update master sheet
+    deo_elm_ranking_for_master = deo_elm_ranking.copy()
+
+    # Update the DEO ranked data with designation
+    deo_elm_ranking_for_master[cols.desig] = 'DEO'
+
+    # Rename the DEO name column
+    deo_elm_ranking_for_master.rename(columns={cols.deo_name_elm: cols.name, cols.district_name: cols.district}, inplace = True)
+
+    # Update the master ranking with the BEO ranking
+    ranking_utilities.update_ranking_master(deo_elm_ranking_for_master, metric_code, metric_category, 'Elementary')
+
+    # Merge the data with the ranks
+
+    # Take only subset columns of BEO ranked data
+    beo_ranking = beo_ranking[[cols.beo_user, cols.beo_name, cols.rank_col, cols.ranking_value, cols.ranking_value_desc]]
+    # Rename the rank column
+    beo_ranking.rename(columns={cols.rank_col: beo_rank}, inplace=True)
+
+    # Take only subset columns of DEO ranked data
+    deo_elm_ranking = deo_elm_ranking[[cols.deo_name_elm, cols.rank_col]]
+    # Rename the rank column
+    deo_elm_ranking.rename(columns={cols.rank_col: deo_elem_rank}, inplace=True)
+
+    elementary_report = pd.merge(df_summary, beo_ranking, on=[cols.beo_user, cols.beo_name])
+    elementary_report = pd.merge(elementary_report, deo_elm_ranking, on=[cols.deo_name_elm])
+    
+    # Sort the data by district and rank
+    elementary_report.sort_values(by=[deo_elem_rank, cols.deo_name_elm, beo_rank], ascending=True, inplace=True)
+    #elementary_report = df_summary.merge(beo_ranking[cols.beo_user, cols.beo_name, cols.rank_col])
+
+    """elementary_report = pd.append([df_summary, beo_ranking, deo_elm_ranking], axis=1)"""
+
+    return elementary_report
 
 
-def get_secondary_report(report_summary):
+def get_secondary_report(df_summary, ranking_type, ranking_args_dict, metric_code, metric_category):
     """
-    Function create and return the elementary report on given data by calculating
-    the BEO ranking, DEO(Secondary) ranking and updating the data.
+    Function create and return the secondary report on given data by calculating
+    the DEO (Secondary) ranking and updating the data.
 
     The master ranking data is also updated when this function is called.
 
@@ -173,15 +215,36 @@ def get_secondary_report(report_summary):
     """
 
     # Filter the data to Secondary school type
-    df_summary = df_summary[df_summary[school_level].isin('Secondary')]
+    df_summary = df_summary[df_summary[school_level].isin(['Secondary School'])]
 
     # Get the ranking for the secondary DEOs
-    deo_sec_ranking = ranking_utilities.calc_ranking(df, ranking_type, ranking_args_dict)
+    deo_sec_ranking = ranking_utilities.calc_ranking(df_summary, deo_secnd_ranking_group_cols, ranking_type, ranking_args_dict)
+
+    # Make a copy of the ranking to update master sheet
+    deo_sec_ranking_for_master = deo_sec_ranking.copy()
+
+    # Update the BDEO ranked data with designation
+    deo_sec_ranking_for_master[cols.desig] = 'DEO'
+
+    # Rename the DEO name column
+    deo_sec_ranking_for_master.rename(columns={cols.deo_name_sec: cols.name, cols.district_name: cols.district}, inplace = True)
+
+    file_utilities.save_to_excel({'DEO Ranking': deo_sec_ranking_for_master}, 'deo_sec_ranking_for_master.xlsx')
 
     # Update the master ranking with the DEOs ranking
-    ranking_utilities.update_ranking_master(deo_sec_ranking, metric_code, metric_category, 'Secondary')
+    ranking_utilities.update_ranking_master(deo_sec_ranking_for_master, metric_code, metric_category, 'Secondary')
 
-    secondary_report = pd.append([report_summary, deo_sec_ranking], axis=1)
+    #secondary_report = pd.append([report_summary, deo_sec_ranking], axis=1)
+
+    # Take only subset columns of DEO ranked data
+    deo_sec_ranking = deo_sec_ranking[[cols.deo_name_sec, cols.rank_col, cols.ranking_value, cols.ranking_value_desc]]
+    # Rename the rank column
+    deo_sec_ranking.rename(columns={cols.rank_col: deo_sec_rank}, inplace=True)
+
+    secondary_report = pd.merge(df_summary, deo_sec_ranking, on=[cols.deo_name_sec])
+
+    # Sort the data by district and rank
+    secondary_report.sort_values(by=[deo_sec_rank, cols.deo_name_sec], ascending=True, inplace=True)
 
     return secondary_report
 
