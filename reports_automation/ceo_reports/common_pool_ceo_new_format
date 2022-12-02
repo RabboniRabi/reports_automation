@@ -136,7 +136,6 @@ def main():
 
     data_final = data_final.loc[:,col_order]
 
-    file_utilities.save_to_excel({'test2':data_final,'test3':data_pivot_ageing},'test7.xlsx')
     # Post creating data summary
     # Get the elementary report
     ranking_args_dict = {
