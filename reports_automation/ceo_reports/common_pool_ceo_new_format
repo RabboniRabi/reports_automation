@@ -108,26 +108,28 @@ def main():
 
     data_pivot_total = pd.pivot_table(data_with_brc_mapping, values=total_cp_students, index=[district_name,beo_user,beo_name,school_category],
                           aggfunc='sum').reset_index()
-
+    print('pivot:',data_pivot_total)
     data_pivot_cwsn = pd.pivot_table(data_with_brc_mapping, values=total_cwsn_students, index=[district_name,beo_user,beo_name,school_category],
                            aggfunc='sum').reset_index()
-
+    print('pivot:',data_pivot_cwsn)
     # Need to rewrite code below
     data_to_addback = data_with_brc_mapping[[district_name,beo_user,beo_name,school_category,school_level,
-                                            deo_user_elm,deo_user_sec]].drop_duplicates()
+                                            deo_user_elm,deo_user_sec]]
 
 
+    data_to_addback = data_to_addback.drop_duplicates(subset=[district_name,beo_user,beo_name,school_category],keep='first')
 
-
-    data_frames_merge = [data_to_addback,data_pivot_ageing,data_pivot_total,data_pivot_cwsn]
+    data_frames_merge = [data_pivot_ageing,data_pivot_total,data_pivot_cwsn,data_to_addback]
 
     data_final = ft.reduce(lambda left, right: pd.merge(left, right, how='left',on=[district_name,beo_user,beo_name,school_category]), data_frames_merge)
 
     cols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     data_final['ageing'] = data_final[cols].sum(axis=1)
-    data_final = data_final.drop_duplicates(subset=[district_name,beo_user,beo_name,school_category,school_level],keep='first')
 
-    file_utilities.save_to_excel({'test1':data_to_addback,'test2':data_final,'test3':data_pivot_ageing,'test4':data_with_brc_mapping,'test5':raw_data},'test7.xlsx')
+    data_final = data_final.loc[:, [district_name,deo_user_sec,deo_user_elm,beo_user,beo_name,school_level,school_category,1,2,3,4,5,6,7,8,9,10,11,'ageing',
+               total_cp_students,total_cwsn_students]]
+
+    file_utilities.save_to_excel({'test2':data_final},'test7.xlsx')
     # Post creating data summary
     # Get the elementary report
     ranking_args_dict = {
@@ -139,9 +141,15 @@ def main():
         'sort': True,
         'ascending': True
     }
-    elem_report = report_utilities.get_elementary_report(data_final, 'percent_ranking', ranking_args_dict, 'CP', 'Elementary')
+    elem_report = report_utilities.get_elementary_report(data_final, 'percent_ranking', ranking_args_dict, 'CP', 'Enrollment')
+    sec_report = report_utilities.get_secondary_report(data_final, 'percent_ranking', ranking_args_dict, 'CP', 'Enrollment')
 
 
+    file_utilities.save_to_excel({'CP_Elm': elem_report}, 'CP_Elm.xlsx',\
+             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())
+
+    file_utilities.save_to_excel({'CP_Sec': sec_report}, 'CP_Sec.xlsx',\
+             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())
 
 if __name__ == "__main__":
     main()
