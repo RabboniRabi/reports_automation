@@ -37,6 +37,10 @@ students_ageing30_count = 'last_30days'
 # Health report specific column names
 total = 'Total'
 screened = 'Screened'
+fully_comp = 'Fully Completed'
+part_comp = 'Partially Completed'
+not_started = 'Not started'
+perc_screened = '% Screened'
 
 # BRC-CRC mapping specific column names
 beo_user = 'beo_user'
@@ -46,6 +50,11 @@ deo_name_sec = 'deo_name (secondary)'
 school_level = 'school_level'
 
 
+# Report specific column names
+elem_schl_lvl = 'Elementary School'
+scnd_schl_lvl = 'Secondary School'
+
+
 # Ranking specific column names
 desig = 'Designation'
 metric_code = 'metric_code'
@@ -53,3 +62,7 @@ metric_category = 'metric_category'
 rank_col = 'Rank'
 ranking_value = 'Ranking Value'
 ranking_value_desc = 'Ranking Value Description'
+beo_rank = 'BEO Rank'
+deo_elem_rank = 'DEO (Elementary) Rank'
+deo_sec_rank = 'DEO (Secondary) Rank'
+

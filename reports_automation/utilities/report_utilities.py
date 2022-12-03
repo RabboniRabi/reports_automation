@@ -121,8 +121,11 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
         The category of the metric on which the data is ranked
     """
 
-    # Filter the data to Elementary school type
-    df_summary = df_summary[df_summary[school_level].isin(['Elementary School'])]
+    # If the data is at school level, filter the data to Elementary school type
+    if (any(cols.elem_schl_lvl in col_name for col_name in df_summary.columns.to_list())):
+        df_summary = df_summary[df_summary[school_level].isin([cols.elem_schl_lvl])]
+        # Drop the school level column as it will no longer be needed
+        df_summary.drop(columns=[cols.school_level],axis=1, inplace=True)                     
 
     # Get the ranking for the BEOs
     #beo_ranking = ranking_utilities.calc_ranking(df_summary, beo_ranking_group_cols, ranking_type, ranking_args_dict)
@@ -161,7 +164,7 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
     # Merge the data with the ranks
 
     # Take only subset columns of BEO ranked data
-    #beo_ranking = beo_ranking[[cols.beo_user, cols.beo_name, cols.rank_col, cols.ranking_value, cols.ranking_value_desc]]
+    #beo_ranking = beo_ranking[[cols.beo_user, cols.beo_name, cols.rank_col, cols.ranking_value]]
     # Rename the rank column
     #beo_ranking.rename(columns={cols.rank_col: beo_rank}, inplace=True)
 
@@ -173,18 +176,17 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
     # Since the ranking values will be grouped to beo level, the ranking values of each individual row
     # of data before being grouped and ranked is missed. That data will be more useful for review.
     # That data is inserted here. Not a clean way of doing things. Yes.
-    #ranking_args_dict['group_levels'] = ''
-    #data_level_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols, ranking_type, ranking_args_dict)
-    #print('data_level_ranking: ', data_level_ranking)
-
-
+    ranking_args_dict['group_levels'] = ''
+    data_level_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols, ranking_type, ranking_args_dict)
 
 
     #elementary_report = pd.merge(df_summary, beo_ranking, on=[cols.beo_user, cols.beo_name])
     #elementary_report = pd.merge(elementary_report, deo_elm_ranking, on=[cols.deo_name_elm])
+    #elementary_report = pd.merge(elementary_report, data_level_ranking[[cols.deo_name_elm, cols.ranking_value]], on=[cols.deo_name_elm])
 
-    # Replace the line below with the two lines above when beo ranking is enabled
+    # Replace the two lines below with the three lines above when beo ranking is enabled
     elementary_report = pd.merge(df_summary, deo_elm_ranking, on=[cols.deo_name_elm])
+    elementary_report = pd.merge(elementary_report, data_level_ranking[[cols.deo_name_elm, cols.ranking_value]], on=[cols.deo_name_elm])
 
     # Sort the data by district and rank
     #elementary_report.sort_values(by=[deo_elem_rank, cols.deo_name_elm, beo_rank], ascending=True, inplace=True)
@@ -227,8 +229,11 @@ def get_secondary_report(df_summary, ranking_type, ranking_args_dict, metric_cod
         The category of the metric on which the data is ranked
     """
 
-    # Filter the data to Secondary school type
-    df_summary = df_summary[df_summary[school_level].isin(['Secondary School'])]
+    # If the data is at school level, filter the data to Secondary school type
+    if (any(cols.elem_schl_lvl in col_name for col_name in df_summary.columns.to_list())):
+        df_summary = df_summary[df_summary[school_level].isin([scnd_schl_lvl])]
+        # Drop the school level column as it will no longer be needed
+        df_summary.drop(columns=[cols.school_level],axis=1, inplace=True)
 
     # Get the ranking for the secondary DEOs
     deo_sec_ranking = ranking_utilities.calc_ranking(df_summary, deo_secnd_ranking_group_cols, ranking_type, ranking_args_dict)
@@ -236,7 +241,7 @@ def get_secondary_report(df_summary, ranking_type, ranking_args_dict, metric_cod
     # Make a copy of the ranking to update master sheet
     deo_sec_ranking_for_master = deo_sec_ranking.copy()
 
-    # Update the BDEO ranked data with designation
+    # Update the DEO ranked data with designation
     deo_sec_ranking_for_master[cols.desig] = 'DEO'
 
     # Rename the DEO name column
@@ -250,11 +255,22 @@ def get_secondary_report(df_summary, ranking_type, ranking_args_dict, metric_cod
     #secondary_report = pd.append([report_summary, deo_sec_ranking], axis=1)
 
     # Take only subset columns of DEO ranked data
-    deo_sec_ranking = deo_sec_ranking[[cols.deo_name_sec, cols.rank_col, cols.ranking_value, cols.ranking_value_desc]]
+    deo_sec_ranking = deo_sec_ranking[[cols.deo_name_sec, cols.rank_col, cols.ranking_value]]
     # Rename the rank column
     deo_sec_ranking.rename(columns={cols.rank_col: deo_sec_rank}, inplace=True)
 
+    # Since the ranking values will be grouped to DEO level, the ranking values of each individual row
+    # of data before being grouped and ranked is missed. That data will be more useful for review.
+    # That data is inserted here. Not a clean way of doing things. Yes.
+    ranking_args_dict['group_levels'] = ''
+    data_level_ranking = ranking_utilities.calc_ranking(df_summary, deo_secnd_ranking_group_cols, ranking_type, ranking_args_dict)
+
     secondary_report = pd.merge(df_summary, deo_sec_ranking, on=[cols.deo_name_sec])
+    # Drop the DEO level ranking value
+    secondary_report.drop(columns=[cols.ranking_value], axis = 1, inplace=True)
+    # Add the data level ranking value
+    #secondary_report[cols.ranking_value] = data_level_ranking[cols.ranking_value]
+    secondary_report = pd.merge(secondary_report, data_level_ranking[[cols.deo_name_sec, cols.ranking_value]], on=[cols.deo_name_sec])
 
     # Sort the data by district and rank
     secondary_report.sort_values(by=[deo_sec_rank, cols.deo_name_sec], ascending=True, inplace=True)
