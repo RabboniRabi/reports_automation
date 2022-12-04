@@ -19,6 +19,8 @@ sys.path.append('../')
 
 import utilities.file_utilities as file_utilities
 import utilities.utilities as utilities
+import utilities.column_names_utilities as cols
+
 import pandas as pd
 import numpy as np
 
@@ -155,11 +157,11 @@ def main():
     }
 
     # Get block level wise total students count
-    block_wise_total_students_count = get_grouping_level_wise_student_count (df_report, group_levels, 'Name')
+    block_wise_total_students_count = get_grouping_level_wise_student_count (df_report, group_levels, cols.cwsn_name)
 
     # Get the block level wise count of students in school and in common pool
     block_wise_status_count = utilities.get_grouping_level_wise_col_values_count(
-        df_report, group_levels, 'Student_Status', student_statuses)
+        df_report, group_levels, cols.cwsn_status, student_statuses)
     
     # Get block level wise count of valid student IDs
     block_wise_IDs_issued_count = get_grouping_level_wise_IDs_issued_count(df_report, group_levels, id_columns_regex_dict)
@@ -171,7 +173,7 @@ def main():
     block_wise_supp_cat_wise_count = utilities.get_grouping_level_wise_col_values_count(
         df_report, group_levels, 'SupportedIn', supported_in_vals )
 
-    block_wise_has_account_count = pd.pivot_table(df_report, index=group_levels, columns='HavingAccount',
+    block_wise_has_account_count = pd.pivot_table(df_report, index=group_levels, columns=cols.cwsn_has_acct,
                 aggfunc='size', fill_value=0, sort=False).reset_index()    
     
     # Merge the results into one block level summary

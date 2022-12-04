@@ -16,6 +16,8 @@ total_student_count  = 'total'
 name = 'Name'
 month_col = 'Month'
 year_col = 'Year'
+yes_col = 'Yes'
+no_col = 'No'
 
 
 school_category = 'category'
@@ -41,6 +43,18 @@ fully_comp = 'Fully Completed'
 part_comp = 'Partially Completed'
 not_started = 'Not started'
 perc_screened = '% Screened'
+
+
+# CWSN report specific column names
+cwsn_tot = 'Total CWSN Students'
+cwsn_name = 'Name'
+cwsn_in_School = 'In_School'
+cwsn_cp = 'Common Pool'
+cwsn_schl_name = 'SchoolName'
+cwsn_has_acct = 'HavingAccount'
+cwsn_status = 'Student_Status'
+nid = 'NID'
+udid = 'UDID'
 
 # BRC-CRC mapping specific column names
 beo_user = 'beo_user'

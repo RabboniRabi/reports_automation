@@ -32,8 +32,7 @@ cols.school_category, cols.school_level]
 
 # Build the arguments dictionary to do ranking for the report
 ranking_args_dict = {
-    'agg_cols': [cols.total, cols.fully_comp],
-    'agg_func': 'sum',
+    'agg_dict': {cols.total: 'count', cols.fully_comp: 'sum'},
     'ranking_val_desc': '% Fully completed',
     'num_col': cols.fully_comp,
     'den_col': cols.total,
@@ -63,15 +62,8 @@ def _get_data_with_brc_mapping():
     file_path = os.path.join(file_utilities.get_source_data_dir_path(), 'health_screening_status.xlsx')
     df_report = pd.read_excel(file_path)
 
-    #print('df_report: ', df_report)
-
-    #print('df_report columns: ', df_report.columns.to_list())
-
     # Update the data with the BRC-CRC mapping
     data_with_brc_mapping = report_utilities.map_data_with_brc(df_report, merge_dict)
-
-    # Intermediate saves to test each save
-    file_utilities.save_to_excel({'Test': data_with_brc_mapping}, 'data_with_brc_mapping_health.xlsx')
 
     return data_with_brc_mapping
 
@@ -134,8 +126,6 @@ def _get_data_with_school_level_scrn_status(df):
     df.insert(school_col_index+2,cols.part_comp, series_partially_completed)
     df.insert(school_col_index+3,cols.not_started, series_not_started)
 
-    # Intermediate saves to test each save
-    file_utilities.save_to_excel({'Test': df}, 'data_with_schl_screening_status.xlsx')
 
     return df
 
@@ -186,13 +176,10 @@ def get_students_secondary_health_report(df_data = None):
         # Get the BRC-CRC mapped health data
         df_data = _get_data_with_brc_mapping()
 
-    scnd_report = _get_students_health_report(df_data, scnd_rep_group_level, [cols.screened, cols.total], cols.scnd_schl_lvl)
+    #scnd_report = _get_students_health_report(df_data, scnd_rep_group_level, [cols.screened, cols.total], cols.scnd_schl_lvl)
 
     # Replace the line below with the line above when restoring beo level ranking
-    #scnd_report = _get_students_health_report(df_data, [cols.district_name, cols.deo_name_sec, cols.school_category], [cols.screened, cols.total], cols.scnd_schl_lvl)
-
-    # Intermediate saves to test each save
-    file_utilities.save_to_excel({'scnd_report': scnd_report}, 'scnd_report.xlsx')
+    scnd_report = _get_students_health_report(df_data, [cols.district_name, cols.deo_name_sec, cols.school_category], [cols.screened, cols.total], cols.scnd_schl_lvl)
 
     return scnd_report
 
@@ -227,7 +214,10 @@ def get_schools_elementary_health_report(df_data = None):
     #data_for_elem = df_data.groupby(elem_rep_group_level, as_index=False)[cols.total, cols.fully_comp].agg('sum')
 
     # Replace the line below with the line above when restoring BEO level ranking
-    data_for_elem = df_data.groupby([cols.district_name, cols.deo_name_elm, cols.school_category, cols.school_level], as_index=False)[cols.total, cols.fully_comp].agg('sum')
+    data_for_elem = df_data.groupby([cols.district_name, cols.deo_name_elm, cols.school_category, cols.school_level], as_index=False).agg({
+        cols.total: 'count',
+        cols.fully_comp: 'sum'
+    })
 
     # Get the Elementary report
     elem_report = report_utilities.get_elementary_report(\
@@ -261,11 +251,20 @@ def get_schools_secondary_health_report(df_data = None):
     # Update the data with schools' screening status
     df_data = _get_data_with_school_level_scrn_status(df_data)
 
-    # Filter the data to Elementary school type
+    # Filter the data to Secondary school type
     df_data = df_data[df_data[cols.school_level].isin([cols.scnd_schl_lvl])]
     
     # Group the data for secondary reports generation
-    data_for_secnd = df_data.groupby(scnd_rep_group_level, as_index=False)[cols.total, cols.fully_comp].agg('sum')
+    """data_for_secnd = df_data.groupby(scnd_rep_group_level, as_index=False).agg({
+        cols.total: 'count',
+        cols.fully_comp: 'sum'
+    })"""
+
+    # Replae the line below with the line above
+    data_for_secnd = df_data.groupby([cols.district_name, cols.deo_name_sec, cols.school_category], as_index=False).agg({
+        cols.total: 'count',
+        cols.fully_comp: 'sum'
+    })
     
     # Get the Secondary report
     secnd_report = report_utilities.get_secondary_report(\
@@ -279,7 +278,7 @@ def run():
     """
     Function to call other internal functions and create the Health screening status reports
     """
-    # Get the health data updated BRC mapping
+    # Get the health data updated with BRC mapping
     data_with_brc_mapping = _get_data_with_brc_mapping()
 
     students_elem_report = get_students_elementary_health_report(data_with_brc_mapping.copy())

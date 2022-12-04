@@ -45,9 +45,7 @@ def calc_ranking(df, group_cols, ranking_type, ranking_args_dict):
     ranking_args_dict: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {
-        'group_levels' : ['district', 'name', 'designation'],
-        'agg_cols' : ['class_1', 'Total'],
-        'agg_func' : 'sum',
+        'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
         'ranking_val_desc' : '% moved to CP',
         'num_col' : 'class_1',
         'den_col' : 'Total',

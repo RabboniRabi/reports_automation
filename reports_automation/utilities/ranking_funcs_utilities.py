@@ -22,8 +22,7 @@ def percent_ranking(df, group_levels, ranking_args_dict):
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {
         'group_levels' : ['district', 'name', 'designation'],
-        'agg_cols' : ['class_1', 'Total'],
-        'agg_func' : 'sum',
+        'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
         'ranking_val_desc' : '% moved to CP',
         'num_col' : 'class_1',
         'den_col' : 'Total',
@@ -40,17 +39,21 @@ def percent_ranking(df, group_levels, ranking_args_dict):
 
     # Get the values from the ranking arguments dictionary
     sort = ranking_args_dict['sort']
-    agg_cols = ranking_args_dict['agg_cols']
-    agg_func = ranking_args_dict['agg_func']
+    agg_dict = ranking_args_dict['agg_dict']
     ranking_val_desc = ranking_args_dict['ranking_val_desc']
     num_col = ranking_args_dict['num_col']
     den_col = ranking_args_dict['den_col']
     sort = ranking_args_dict['sort']
     ascending = ranking_args_dict['ascending']
 
+    print('group_levels: ', group_levels)
 
-    # Group by grouping levels and aggregate by given columns and aggregate function
-    df_rank = df.groupby(group_levels, as_index=False, sort=sort)[agg_cols].agg(agg_func)
+    # If grouping levels is given
+    if (group_levels is not None):
+        # Group by grouping levels and aggregate by given columns and aggregate function
+        df_rank = df.groupby(group_levels, as_index=False, sort=sort).agg(agg_dict)
+    else:
+        df_rank = df.copy()
 
     # Calculate fraction of values (to be used for ranking)
     df_rank[cols.ranking_value] = (df_rank[num_col]/df_rank[den_col])
