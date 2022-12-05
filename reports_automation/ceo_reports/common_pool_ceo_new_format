@@ -15,6 +15,7 @@ import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.report_utilities as report_utilities
+import utilities.column_names_utilities as cols
 
 
 import pandas as pd
@@ -74,7 +75,38 @@ index = [district_name,deo_user_sec,deo_user_elm,school_category]
 # Column order the final report will display
 col_order = [district_name,deo_user_sec,deo_user_elm,school_level,school_category,1,2,3,4,5,6,7,8,9,10,11,'ageing',
                total_cp_students,total_cwsn_students]
+
+ranking_args_dict = {
+    'agg_dict': {'ageing': 'sum', 'total': 'sum'},
+    'ranking_val_desc': '% ageing in CP',
+    'num_col': 'ageing',
+    'den_col': 'total',
+    'sort': True,
+    'ascending': True
+}
 "-----------------------------------------------------------------------------------------------------------------------"
+
+
+#def get_cp_elementary_report(df_data):
+"""
+    Function to get the elementary report
+    Parameters
+    ----------
+    df_data
+
+    Returns
+    -------
+
+"""
+
+"""# Filter the data to Elementary school type
+    #df_data = df_data[df_data[cols.school_level].isin([cols.elem_schl_lvl])]
+
+    #df_data.drop(columns=[cols.deo_name_sec], inplace=True)
+
+    elem_Report = report_utilities.get_elementary_report(df_data, 'percent_ranking', ranking_args_dict, 'CP', 'Enrollment')
+
+    return elem_Report"""
 
 
 
@@ -136,19 +168,13 @@ def main():
 
     data_final = data_final.loc[:,col_order]
 
+    #elem_report = get_cp_elementary_report(data_final)
+
     # Post creating data summary
     # Get the elementary report
-    ranking_args_dict = {
-        'agg_cols': ['ageing', 'total'],
-        'agg_func': 'sum',
-        'ranking_val_desc': '% ageing in CP',
-        'num_col': 'ageing',
-        'den_col': 'total',
-        'sort': True,
-        'ascending': True
-    }
-    elem_report = report_utilities.get_elementary_report(data_final, 'percent_ranking', ranking_args_dict, 'CP', 'Enrollment')
-    sec_report = report_utilities.get_secondary_report(data_final, 'percent_ranking', ranking_args_dict, 'CP', 'Enrollment')
+
+    elem_report = report_utilities.get_elementary_report((data_final.drop(deo_user_sec,axis=1).drop_duplicates(subset=[deo_user_elm,school_category])), 'percent_ranking', ranking_args_dict, 'CP', 'Enrollment')
+    sec_report = report_utilities.get_secondary_report((data_final.drop(deo_user_elm,axis=1).drop_duplicates(subset=[deo_user_sec,school_category])), 'percent_ranking', ranking_args_dict, 'CP', 'Enrollment')
 
 
     file_utilities.save_to_excel({'CP_Elm': elem_report}, 'CP_Elm.xlsx',\

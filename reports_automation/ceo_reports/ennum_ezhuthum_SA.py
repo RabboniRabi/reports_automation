@@ -76,24 +76,33 @@ cls1_cmpltd = 'class 1 completed'
 cls2_cmpltd = 'class 2 completed'
 cls3_cmpltd = 'class 3 completed'
 
-
-
-
-
-
 # Dictionary to define how the values to merge on and the how the merge will work.
 merge_dict = {
     'on_values' : [district_name,block_name,school_name,udise_col],
     'how' : 'left'
 }
-
-# index for pivoting
-index = [district_name,deo_user_sec,deo_user_elm,school_category]
-
-
 # Column order the final report will display
-col_order = [district_name,deo_user_sec,deo_user_elm,school_level,school_category,1,2,3,4,5,6,7,8,9,10,11,'ageing',
-               total_cp_students,total_cwsn_students]
+col_order = [district_name,deo_user_sec,deo_user_elm,school_level,school_category,cls1_assess,cls1_tot,cls2_assess,cls2_tot,
+             cls3_assess,cls3_tot,cls3_assess,'Total Assessed','Total Assessed']
+
+# Define aggregate dictionary for summarising raw data
+summarize_dict = {
+    cls1_assess: 'sum',
+    cls1_tot: 'sum',
+    cls2_assess: 'sum',
+    cls2_tot: 'sum',
+    cls3_assess: 'sum',
+    'Total Students': 'sum',
+    'Total Assessed': 'sum'}
+
+ranking_args_dict = {
+    'agg_dict': summarize_dict,
+    'ranking_val_desc': '% Summative Assessment Completion',
+    'num_col': 'Total Assessed',
+    'den_col': 'Total Students',
+    'sort': True,
+    'ascending': False
+}
 "-----------------------------------------------------------------------------------------------------------------------"
 
 
@@ -124,69 +133,38 @@ def main():
     raw_data[cls3_tot] = raw_data[cls3_tot] - (raw_data[cls3_long_abs]+raw_data[cls3_cwsn])
     raw_data = raw_data.drop(columns = [cls1_long_abs,cls1_cwsn,cls2_long_abs,cls2_cwsn,cls3_long_abs,cls3_cwsn])
     raw_data[cls1_cmpltd] = raw_data[cls1_assess]/raw_data[cls1_tot]
-    raw_data[cls2_cmpltd] = raw_data[cls1_assess]/raw_data[cls1_tot]
-    raw_data[cls3_cmpltd] = raw_data[cls1_assess]/raw_data[cls1_tot]
+    raw_data[cls2_cmpltd] = raw_data[cls2_assess]/raw_data[cls2_tot]
+    raw_data[cls3_cmpltd] = raw_data[cls3_assess]/raw_data[cls3_tot]
     raw_data['Total Students'] = raw_data[cls1_tot]+raw_data[cls2_tot]+raw_data[cls3_tot]
     raw_data['Total Assessed'] = raw_data[cls1_assess]+raw_data[cls2_assess]+raw_data[cls3_assess]
+
 
 
     # Update the data with the BRC-CRC mapping
     data_with_brc_mapping = report_utilities.map_data_with_brc(raw_data, merge_dict)
     data_with_brc_mapping.replace('Null', value=0, inplace=True)
     data_with_brc_mapping = data_with_brc_mapping[~data_with_brc_mapping[school_level].isin([0])]
-    file_utilities.save_to_excel({'test1':data_with_brc_mapping},'test1.xlsx')
+
     #list_touse =  list(set(brc_crc_master_sheet.columns.to_list() + raw_data.columns.to_list()))
     #print(list_touse)
 
-    # Pivot the data, grouping on
+    # Data re-structure, groupby
 
-
-    data_pivot_ageing = pd.pivot_table(data_with_brc_mapping, values=students_ageing30_count, index=index
-                              ,columns=[class_number], aggfunc='sum',fill_value=0).reset_index()
-    print(data_pivot_ageing)
-
-
-    data_pivot_total = pd.pivot_table(data_with_brc_mapping, values=total_cp_students, index=index,
-                          aggfunc='sum').reset_index()
-
-    data_pivot_cwsn = pd.pivot_table(data_with_brc_mapping, values=total_cwsn_students, index=index,
-                           aggfunc='sum').reset_index()
-
-    # Need to rewrite code below - add back deo details here???
-    data_to_addback = data_with_brc_mapping[index + [school_level]]
-
-
-    data_to_addback = data_to_addback.drop_duplicates(subset=index,keep='first')
-
-    data_frames_merge = [data_pivot_ageing,data_pivot_total,data_pivot_cwsn,data_to_addback]
-
-    data_final = ft.reduce(lambda left, right: pd.merge(left, right, how='left',on=index), data_frames_merge)
-
-    cols = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    data_final['ageing'] = data_final[cols].sum(axis=1)
-
-
-    data_final = data_final.loc[:,col_order]
+    data_final = data_with_brc_mapping.groupby([district_name,deo_user_sec,deo_user_elm,school_level,school_category])\
+        .aggregate(summarize_dict).reset_index()
+    file_utilities.save_to_excel({'test1':data_with_brc_mapping,'test2':data_final},'test1.xlsx')
 
     # Post creating data summary
     # Get the elementary report
-    ranking_args_dict = {
-        'agg_cols': ['ageing', 'total'],
-        'agg_func': 'sum',
-        'ranking_val_desc': '% ageing in CP',
-        'num_col': 'ageing',
-        'den_col': 'total',
-        'sort': True,
-        'ascending': True
-    }
-    elem_report = report_utilities.get_elementary_report(data_final, 'percent_ranking', ranking_args_dict, 'CP', 'Enrollment')
-    sec_report = report_utilities.get_secondary_report(data_final, 'percent_ranking', ranking_args_dict, 'CP', 'Enrollment')
+
+    elem_report = report_utilities.get_elementary_report((data_final.drop(deo_user_sec,axis=1).drop_duplicates(subset=[deo_user_elm,school_category])), 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
+    sec_report = report_utilities.get_secondary_report((data_final.drop(deo_user_elm,axis=1).drop_duplicates(subset=[deo_user_sec,school_category])), 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
 
 
-    file_utilities.save_to_excel({'CP_Elm': elem_report}, 'CP_Elm.xlsx',\
+    file_utilities.save_to_excel({'EE_SA_Elm': elem_report}, 'EE_SA_Elm.xlsx',\
              dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())
 
-    file_utilities.save_to_excel({'CP_Sec': sec_report}, 'CP_Sec.xlsx',\
+    file_utilities.save_to_excel({'EE_SA_Sec': sec_report}, 'EE_SA_Sec.xlsx',\
              dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())
 
 if __name__ == "__main__":
