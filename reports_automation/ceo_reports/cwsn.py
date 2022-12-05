@@ -205,7 +205,7 @@ def get_cwsn_elementary_report(df_data = None):
 
     # Get the Elementary report
     elem_report = report_utilities.get_elementary_report(\
-        data_for_elem, 'percent_ranking', ranking_args_dict, 'CWSN', 'Enrolment')
+        data_for_elem, 'percent_ranking', ranking_args_dict, 'CWSN', 'Data Quality')
 
     return elem_report    
 
@@ -236,7 +236,7 @@ def get_cwsn_secondary_report(df_data = None):
 
     # Get the Secondary report
     secnd_report = report_utilities.get_secondary_report(\
-        data_for_secnd, 'percent_ranking', ranking_args_dict, 'CWSN', 'Enrolment')
+        data_for_secnd, 'percent_ranking', ranking_args_dict, 'CWSN', 'Data Quality')
 
     return secnd_report
     
