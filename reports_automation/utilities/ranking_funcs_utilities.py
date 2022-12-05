@@ -46,8 +46,6 @@ def percent_ranking(df, group_levels, ranking_args_dict):
     sort = ranking_args_dict['sort']
     ascending = ranking_args_dict['ascending']
 
-    print('group_levels: ', group_levels)
-
     # If grouping levels is given
     if (group_levels is not None):
         # Group by grouping levels and aggregate by given columns and aggregate function

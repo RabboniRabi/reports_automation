@@ -223,9 +223,6 @@ def get_schools_elementary_health_report(df_data = None):
     elem_report = report_utilities.get_elementary_report(\
         data_for_elem, 'percent_ranking', ranking_args_dict, 'HC', 'Health')
 
-     # Intermediate saves to test each save
-    file_utilities.save_to_excel({'Test': elem_report}, 'elem_report_schools.xlsx')    
-
     return elem_report
 
 
@@ -260,7 +257,7 @@ def get_schools_secondary_health_report(df_data = None):
         cols.fully_comp: 'sum'
     })"""
 
-    # Replae the line below with the line above
+    # Replace the line below with the line above
     data_for_secnd = df_data.groupby([cols.district_name, cols.deo_name_sec, cols.school_category], as_index=False).agg({
         cols.total: 'count',
         cols.fully_comp: 'sum'

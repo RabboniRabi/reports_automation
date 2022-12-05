@@ -5,6 +5,8 @@ import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.format_utilities as format_utilities
 import utilities.dbutilities as dbutilities
+import utilities.column_names_utilities as cols
+
 import pandas as pd
 
 # Global variables

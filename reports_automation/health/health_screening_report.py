@@ -4,10 +4,10 @@ sys.path.append('../')
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
+import utilities.column_names_utilities as cols
+
 import pandas as pd
 
-# Global variables
-district = 'District'
 
 
 # Read the excel report as a Pandas DataFrame object
@@ -95,7 +95,7 @@ def get_schools_screening_status(df, group_level):
     series_completed = (df['Total'] - df['Screened'] <= 0 ) & (df['Total']  != 0) 
     series_not_started =  df['Screened'] == 0
     series_partially_completed =  ~(series_completed | series_not_started)
-    school_col_index = df.columns.get_loc('School')            
+    school_col_index = df.columns.get_loc(cols.school_name)            
     # Insert the computed values as series into the dataframe next to the school column
     df.insert(school_col_index+1,'Fully completed', series_completed)
     df.insert(school_col_index+2,'Partially Completed', series_partially_completed)
@@ -104,7 +104,7 @@ def get_schools_screening_status(df, group_level):
     # Group the data down to given grouping level,
     # counting total schools, completed schools, partially completed school, not started schools
     df_group_level = df.groupby([group_level],sort=False).agg(
-        Total_Schools=('School', 'count'),
+        Total_Schools=(cols.school_name, 'count'),
         Fully_Completed_Schools = ('Fully completed', 'sum'),
         Partially_Completed_Schools = ('Partially Completed', 'sum'),
         Not_Started_Schools = ('Not started', 'sum')
@@ -157,11 +157,11 @@ def main():
     #df_copy = df_report.copy(deep=True)
 
     # Get the students' health screening details at district level
-    df_students_screening_status = get_students_screening_status(df_report, district)
+    df_students_screening_status = get_students_screening_status(df_report, cols.district_name)
 
 
     # Get the schools' health screening details at district level
-    df_schools_screening_status = get_schools_screening_status(df_report, district)
+    df_schools_screening_status = get_schools_screening_status(df_report, cols.district_name)
 
     df_sheet_dict = {
     'Students screening status': df_students_screening_status,
