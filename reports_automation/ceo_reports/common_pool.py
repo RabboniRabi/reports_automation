@@ -10,11 +10,9 @@ Module with functions to:
 import sys
 sys.path.append('../')
 
-import utilities.utilities as utilities
 import functools as ft
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
-import utilities.ranking_utilities as ranking_utilities
 import utilities.report_utilities as report_utilities
 import utilities.column_names_utilities as cols
 

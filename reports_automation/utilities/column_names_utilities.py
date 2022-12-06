@@ -27,6 +27,8 @@ school_type = 'school_type'
 un_aided = 'Un-aided'
 central_govt = 'Central Govt'
 
+tot_schools = 'Total Schools'
+
 cwsn_students ='cwsn'
 beo_rank = 'BEO Rank'
 deo_rank_elm = 'DEO Rank Elementary'
@@ -66,6 +68,19 @@ udid = 'UDID'
 udid_count = 'UDID Count'
 with_acct = 'Students with account'
 witht_acct = 'Students without account'
+
+
+# TPD report specific column names
+tot_teachers = 'Total_Teachers'
+train_attnd = 'Traning_Attended'
+
+# PET to school mapping specific column names
+mapping_status = 'Mapping Status'
+fully_mapped = 'Fully Mapped School'
+part_mapped = 'Partially Mapped School'
+
+
+
 
 # BRC-CRC mapping specific column names
 beo_user = 'beo_user'
