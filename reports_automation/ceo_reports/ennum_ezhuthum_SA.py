@@ -150,15 +150,18 @@ def main():
 
     # Data re-structure, groupby
 
-    data_final = data_with_brc_mapping.groupby([district_name,deo_user_sec,deo_user_elm,school_level,school_category])\
+    data_final_elm = data_with_brc_mapping.groupby([district_name,deo_user_elm,school_level,school_category])\
         .aggregate(summarize_dict).reset_index()
-    file_utilities.save_to_excel({'test1':data_with_brc_mapping,'test2':data_final},'test1.xlsx')
+    data_final_sec = data_with_brc_mapping.groupby([district_name,deo_user_sec,school_level,school_category])\
+        .aggregate(summarize_dict).reset_index()
+
+    file_utilities.save_to_excel({'test1':data_with_brc_mapping,'test2':data_final_elm,'test3':data_final_sec},'test1.xlsx')
 
     # Post creating data summary
     # Get the elementary report
 
-    elem_report = report_utilities.get_elementary_report((data_final.drop(deo_user_sec,axis=1).drop_duplicates(subset=[deo_user_elm,school_category])), 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
-    sec_report = report_utilities.get_secondary_report((data_final.drop(deo_user_elm,axis=1).drop_duplicates(subset=[deo_user_sec,school_category])), 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
+    elem_report = report_utilities.get_elementary_report(data_final_elm, 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
+    sec_report = report_utilities.get_secondary_report(data_final_sec, 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
 
 
     file_utilities.save_to_excel({'EE_SA_Elm': elem_report}, 'EE_SA_Elm.xlsx',\
