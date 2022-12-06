@@ -42,7 +42,6 @@ scnd_rep_group_level = [cols.district_name, cols.deo_name_sec, \
 cols.school_category, cols.school_level]
 
 # Build the arguments dictionary to do ranking for the report
-
 agg_dict = {
         cols.cwsn_tot: 'sum', 
         cols.stdnts_in_school: 'sum', 
@@ -257,11 +256,11 @@ def run():
     secnd_report = get_cwsn_secondary_report(data_with_brc_mapping.copy())
 
     # Save the elementary report
-    file_utilities.save_to_excel({'CWSN Elementary Report' : elem_report}, 'CWSN Report.xlsx',\
+    file_utilities.save_to_excel({'CWSN Elementary Report' : elem_report}, 'CWSN Elementary Report.xlsx',\
              dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   
 
     # Save the secondary report
-    file_utilities.save_to_excel({'CWSN Secondary Report' : secnd_report}, 'CWSN Report.xlsx',\
+    file_utilities.save_to_excel({'CWSN Secondary Report' : secnd_report}, 'CWSN Secondary Report.xlsx',\
              dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())   
 
 

@@ -45,7 +45,7 @@ def map_data_with_brc(raw_data, merge_dict):
     brc_master_sheet = get_brc_master()
     brc_master_sheet = brc_master_sheet.drop(brc_master_drop_cols, axis=1)
     report_summary = pd.merge(raw_data, brc_master_sheet,on=merge_dict['on_values'],how=merge_dict['how'])
-    print(report_summary.columns.to_list())
+    
     # Rearrage the columns so that DEO and BEO information comes at the begining of the data
     # Define rearranged order of columns
     list_of_cols = [cols.district_name] + [cols.deo_name_sec, cols.deo_name_elm, cols.beo_user, cols.beo_name, cols.school_level, cols.school_category]\
@@ -55,7 +55,6 @@ def map_data_with_brc(raw_data, merge_dict):
     list_of_cols = pd.unique(pd.Series(list_of_cols)).tolist()
 
     report_summary = report_summary.reindex(columns=list_of_cols)
-    print(report_summary.columns.to_list())
     return report_summary
 
 def get_brc_master():
