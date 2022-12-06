@@ -23,6 +23,9 @@ no_col = 'No'
 school_category = 'category'
 school_level = 'school_level'
 class_number = 'class'
+school_type = 'school_type'
+un_aided = 'Un-aided'
+central_govt = 'Central Govt'
 
 cwsn_students ='cwsn'
 beo_rank = 'BEO Rank'
@@ -30,11 +33,13 @@ deo_rank_elm = 'DEO Rank Elementary'
 deo_rank_sec = 'DEO Rank Secondary'
 perc_students_cp = '% Students ageing > 30 days'
 total_cwsn_students ='cwsn'
-total_cp_students ='total'
+
 
 
 # Common pool specific column names
 students_ageing30_count = 'last_30days'
+total_cp_students ='total'
+ageing = 'ageing'
 
 # Health report specific column names
 total = 'Total'
