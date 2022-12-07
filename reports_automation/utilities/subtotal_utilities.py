@@ -2,7 +2,17 @@
 Module with utility functions to perform subtotaling operations on datasets
 """
 
+import os
 import pandas as pd
+
+import sys
+sys.path.append('../')
+
+from openpyxl.utils.dataframe import dataframe_to_rows
+from openpyxl import Workbook
+
+
+import utilities.outlines_utilities as outlines_utilities
 import utilities.utilities as utilities
 
 def compute_insert_subtotals(df, level_subtotal_cols_dict, group_cols_agg_func_dict, text_append_dict):
@@ -103,6 +113,63 @@ def compute_insert_subtotals(df, level_subtotal_cols_dict, group_cols_agg_func_d
 
     # Return the updated DataFrame and subtotals DataFrame
     return {'updated_df': df, 'subtotals': df_subtotal_rows}
+
+
+
+
+def subtotal_outline_and_save(df, level_subtotal_cols_dict, agg_cols_func_dict, sheet_name, file_name, dir_path, text_append_dict={}):
+    """
+    Helper function to compute subotals, apply outlines and save the data.
+
+    Parameters:
+    ----------
+    df: Pandas DataFrame
+        The data to work on
+    level_subtotal_cols_dict: dict
+        A level - subtotal column key value pair dictionary. The level determines the order
+        of columns for which subtotaling aggregation operations are performed
+    agg_cols_func_dict: dict
+        A grouping column - aggregate function dictionary. This dictionary contains the columns
+        to group by as keys and their corresponding aggregating function as values
+    sheet_name: str
+        The name of the sheet to save the data in.
+    file_name: str
+        The name of the file to save the data sheet in.
+    dir_path: str
+        The directory in which to save the file in.
+    text_append_dict: dict
+        A dictionary of column names key and text values. The dictionary will be used
+        to append text to values in each subtotaled column. Default is {}
+        
+    """
+
+    # Compute sub-totals and insert into provided dataframe
+    subtotals_result_dict = compute_insert_subtotals(
+        df, level_subtotal_cols_dict, agg_cols_func_dict, text_append_dict)
+
+    # Get the updated DataFrame object - with the subtotals inserted
+    updated_df = subtotals_result_dict['updated_df']
+    # Get only the subtotal rows
+    df_subtotal_rows = subtotals_result_dict['subtotals']
+
+
+    # Build outlines levels and ranges dictionary
+    level_outline_ranges_dict = outlines_utilities.build_level_outline_ranges_dict(
+        updated_df, df_subtotal_rows, level_subtotal_cols_dict, agg_cols_func_dict)
+
+    # Convert the dataframe to an openpyxl object
+    wb = Workbook()
+    ws = wb.active
+    for r in dataframe_to_rows(updated_df, index=True, header=True):
+        ws.append(r)
+
+    # Apply the outlines function to the work sheet for the given levels and ranges
+    outlines_utilities.apply_outlines(ws, level_outline_ranges_dict)
+
+    write_path = os.path.join(dir_path, file_name)
+
+    wb.save(write_path)
+
 
         
 

@@ -12,6 +12,7 @@ import os
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.report_utilities as report_utilities
+import utilities.format_utilities as format_utilities
 import utilities.column_names_utilities as cols
 
 # Define elementary indexes for pivoting
@@ -30,7 +31,7 @@ ranking_args_dict = {
         cols.fully_mapped: 'sum', 
         cols.part_mapped: 'sum',
         cols.tot_schools: 'sum'},
-    'ranking_val_desc': '% Fully mapped',
+    'ranking_val_desc': cols.perc_fully_mapped,
     'num_col': cols.fully_mapped,
     'den_col': cols.tot_schools,
     'sort': True,
@@ -153,12 +154,18 @@ def run():
     secnd_report = get_pet_mapping_secondary_report(data_with_brc_mapping.copy())
 
     # Save the elementary report
-    file_utilities.save_to_excel({'PET Mapping Elementary Report' : elem_report}, 'PET Mapping Elementary Report.xlsx',\
-             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   
+    """file_utilities.save_to_excel({'PET Mapping Elementary Report' : elem_report}, 'PET Mapping Elementary Report.xlsx',\
+             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())"""
+
+    format_utilities.format_col_to_percent_and_save(elem_report, cols.perc_fully_mapped, 'PET Mapping Elementary Report',
+            'PET Mapping Elementary Report.xlsx', dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   
 
     # Save the secondary report
-    file_utilities.save_to_excel({'PET Mapping Secondary Report' : secnd_report}, 'PET Mapping Secondary Report.xlsx',\
-             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path()) 
+    """file_utilities.save_to_excel({'PET Mapping Secondary Report' : secnd_report}, 'PET Mapping Secondary Report.xlsx',\
+             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path()) """
+
+    format_utilities.format_col_to_percent_and_save(secnd_report, cols.perc_fully_mapped, 'PET Mapping Secondary Report',
+            'PET Mapping Secondary Report.xlsx', dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())   
 
 if __name__ == "__main__":
     run()

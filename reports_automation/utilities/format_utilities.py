@@ -2,6 +2,11 @@
 Module with utility functions to apply formatting on data using the XlsxWriter library
 """
 
+import sys
+sys.path.append('../')
+
+import utilities.file_utilities as file_utilities
+
 import xlsxwriter
 
 
@@ -79,3 +84,38 @@ def apply_frmt_cols (writer: xlsxwriter, sheet_name, start_col_index, end_col_in
 
     worksheet.set_column(col_excel_alphabet_range, width, format_obj)
 
+
+def format_col_to_percent_and_save(df, column_name, sheet_name, file_name, dir_path):
+    """
+    Helper function to format a given column to percentage format and save the data.
+
+    This function should ideally in simplifying formatting to percent and saving process.
+    
+    Parameters:
+    ----------
+    df: Pandas DataFrame
+        The data with the column to be formatted
+    column_name: str
+        The name of the column to be formatted to perentage values
+    sheet_name: str
+        The name of the sheet to save the data in.
+    file_name: str
+        The name of the file to save the data sheet in.
+    dir_path: str
+        The directory in which to save the file in.
+    """
+    
+    # Get an xlsx writer object of the data
+    writer = file_utilities.get_xlsxwriter_obj({sheet_name: df}, file_name, file_path=dir_path)
+
+    # Format values to percent
+    prcnt_frmt = {'num_format': '0.00%'}
+
+    # Get the index of the column to be formatted in the dataframe
+    col_index = df.columns.get_loc(column_name)
+
+    # Apply the formatting to the data
+    apply_frmt_cols(writer, sheet_name, col_index, col_index, prcnt_frmt)
+
+    # Save the data
+    writer.save()

@@ -42,6 +42,7 @@ total_cwsn_students ='cwsn'
 students_ageing30_count = 'last_30days'
 total_cp_students ='total'
 ageing = 'ageing'
+perc_ageing = '% ageing in CP'
 
 # Health report specific column names
 total = 'Total'
@@ -50,6 +51,7 @@ fully_comp = 'Fully Completed'
 part_comp = 'Partially Completed'
 not_started = 'Not started'
 perc_screened = '% Screened'
+perc_comp = '% Fully completed'
 
 
 # CWSN report specific column names
@@ -68,6 +70,7 @@ udid = 'UDID'
 udid_count = 'UDID Count'
 with_acct = 'Students with account'
 witht_acct = 'Students without account'
+perc_students_with_UDID = '% Students with UDID'
 
 
 # TPD report specific column names
@@ -78,8 +81,11 @@ train_attnd = 'Traning_Attended'
 mapping_status = 'Mapping Status'
 fully_mapped = 'Fully Mapped School'
 part_mapped = 'Partially Mapped School'
+perc_fully_mapped = '% Fully mapped'
 
 
+# Ennum Ezhuthum related column names
+perc_asses_comp = '% Summative Assessment Completion'
 
 
 # BRC-CRC mapping specific column names

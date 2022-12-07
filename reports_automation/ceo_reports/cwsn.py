@@ -11,6 +11,7 @@ sys.path.append('../')
 
 import utilities.file_utilities as file_utilities
 import utilities.report_utilities as report_utilities
+import utilities.format_utilities as format_utilities
 import utilities.utilities as utilities
 import utilities.column_names_utilities as cols
 
@@ -53,7 +54,7 @@ agg_dict = {
     }
 ranking_args_dict = {
     'agg_dict': agg_dict,
-    'ranking_val_desc': '% Students with UDID',
+    'ranking_val_desc': cols.perc_students_with_UDID,
     'num_col': cols.udid_count,
     'den_col': cols.cwsn_tot,
     'sort': True,
@@ -256,12 +257,18 @@ def run():
     secnd_report = get_cwsn_secondary_report(data_with_brc_mapping.copy())
 
     # Save the elementary report
-    file_utilities.save_to_excel({'CWSN Elementary Report' : elem_report}, 'CWSN Elementary Report.xlsx',\
-             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   
+    """file_utilities.save_to_excel({'CWSN Elementary Report' : elem_report}, 'CWSN Elementary Report.xlsx',\
+             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   """
+
+    format_utilities.format_col_to_percent_and_save(elem_report, cols.perc_students_with_UDID, 'CWSN Elementary Report',
+            'CWSN Elementary Report.xlsx', dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   
 
     # Save the secondary report
-    file_utilities.save_to_excel({'CWSN Secondary Report' : secnd_report}, 'CWSN Secondary Report.xlsx',\
-             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())   
+    """file_utilities.save_to_excel({'CWSN Secondary Report' : secnd_report}, 'CWSN Secondary Report.xlsx',\
+             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())  """ 
+
+    format_utilities.format_col_to_percent_and_save(secnd_report, cols.perc_students_with_UDID, 'CWSN Secondary Report',
+            'CWSN Secondary Report.xlsx', dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())
 
 
 if __name__ == "__main__":

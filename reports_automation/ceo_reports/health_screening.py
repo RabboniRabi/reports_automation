@@ -13,6 +13,7 @@ sys.path.append('../')
 import pandas as pd
 
 import utilities.file_utilities as file_utilities
+import utilities.format_utilities as format_utilities
 import utilities.dbutilities as dbutilities
 import utilities.report_utilities as report_utilities
 import utilities.column_names_utilities as cols
@@ -30,10 +31,20 @@ cols.deo_name_elm, cols.school_category, cols.school_level]
 scnd_rep_group_level = [cols.district_name, cols.block_name, cols.deo_name_sec, \
 cols.school_category, cols.school_level]
 
-# Build the arguments dictionary to do ranking for the report
-ranking_args_dict = {
+# Build the arguments dictionary to do ranking for the students health report
+students_ranking_args_dict = {
+    'agg_dict': {cols.screened: 'sum', cols.total: 'sum'},
+    'ranking_val_desc': cols.perc_screened,
+    'num_col': cols.screened,
+    'den_col': cols.total,
+    'sort': True,
+    'ascending': False
+}
+
+# Build the arguments dictionary to do ranking for the schools health report
+schools_ranking_args_dict = {
     'agg_dict': {cols.total: 'count', cols.fully_comp: 'sum'},
-    'ranking_val_desc': '% Fully completed',
+    'ranking_val_desc': cols.perc_comp,
     'num_col': cols.fully_comp,
     'den_col': cols.total,
     'sort': True,
@@ -148,10 +159,21 @@ def get_students_elementary_health_report(df_data = None):
         # Get the BRC-CRC mapped health data
         df_data = _get_data_with_brc_mapping()
 
+    # Filter the data to Elementary school type
+    df_data = df_data[df_data[cols.school_level].isin([cols.elem_schl_lvl])]
+
+    #data_grouped = df_data.groupby(elem_rep_group_level, as_index=False)[cols.screened, cols.total].agg('sum')
+
+    # Replace the line below with the line above when restoring beo level ranking
+    data_grouped = df_data.groupby([cols.district_name, cols.deo_name_elm, cols.school_category], as_index=False)[cols.screened, cols.total].agg('sum')
+
     #elem_report = _get_students_health_report(df_data, elem_rep_group_level, [cols.screened, cols.total], cols.elem_schl_lvl)
 
     # Replace the line below with the line above when restoring beo level ranking
-    elem_report = _get_students_health_report(df_data, [cols.district_name, cols.deo_name_elm, cols.school_category], [cols.screened, cols.total], cols.elem_schl_lvl)
+    #elem_report = _get_students_health_report(df_data, [cols.district_name, cols.deo_name_elm, cols.school_category], [cols.screened, cols.total], cols.elem_schl_lvl)
+
+    elem_report = report_utilities.get_elementary_report(\
+        data_grouped, 'percent_ranking', students_ranking_args_dict, 'HC_Stud', 'Health')
 
     return elem_report
 
@@ -176,10 +198,23 @@ def get_students_secondary_health_report(df_data = None):
         # Get the BRC-CRC mapped health data
         df_data = _get_data_with_brc_mapping()
 
+    # Filter the data to Secondary school type
+    df_data = df_data[df_data[cols.school_level].isin([cols.scnd_schl_lvl])]    
+
+    #data_grouped = df_data.groupby(scnd_rep_group_level, as_index=False)[cols.screened, cols.total].agg('sum')
+
+    # Replace the line below with the line above when restoring beo level ranking
+    data_grouped = df_data.groupby([cols.district_name, cols.deo_name_sec, cols.school_category], as_index=False)[cols.screened, cols.total].agg('sum')
+
+
     #scnd_report = _get_students_health_report(df_data, scnd_rep_group_level, [cols.screened, cols.total], cols.scnd_schl_lvl)
 
     # Replace the line below with the line above when restoring beo level ranking
-    scnd_report = _get_students_health_report(df_data, [cols.district_name, cols.deo_name_sec, cols.school_category], [cols.screened, cols.total], cols.scnd_schl_lvl)
+    #scnd_report = _get_students_health_report(df_data, [cols.district_name, cols.deo_name_sec, cols.school_category], [cols.screened, cols.total], cols.scnd_schl_lvl)
+
+    # Get the Secondary report
+    scnd_report = report_utilities.get_secondary_report(\
+        data_grouped, 'percent_ranking', students_ranking_args_dict, 'HC_Stud', 'Health')
 
     return scnd_report
 
@@ -221,7 +256,7 @@ def get_schools_elementary_health_report(df_data = None):
 
     # Get the Elementary report
     elem_report = report_utilities.get_elementary_report(\
-        data_for_elem, 'percent_ranking', ranking_args_dict, 'HC', 'Health')
+        data_for_elem, 'percent_ranking', schools_ranking_args_dict, 'HC_Sch', 'Health')
 
     return elem_report
 
@@ -265,11 +300,9 @@ def get_schools_secondary_health_report(df_data = None):
     
     # Get the Secondary report
     secnd_report = report_utilities.get_secondary_report(\
-        data_for_secnd, 'percent_ranking', ranking_args_dict, 'HC', 'Health')
+        data_for_secnd, 'percent_ranking', schools_ranking_args_dict, 'HC_Sch', 'Health')
 
     return secnd_report
-
-
 
 def run():
     """
@@ -286,22 +319,31 @@ def run():
 
     schools_scnd_report = get_schools_secondary_health_report(data_with_brc_mapping.copy())
 
-    # Save the elementary report
-    elem_reports_dict = {
-        'Schools screening status' : schools_elem_report, 
-        'Students screening status' : students_elem_report
-    }
-    file_utilities.save_to_excel(elem_reports_dict, 'Health Report.xlsx',\
-             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())
+    # Define the levels and columns to subtotal
+    level_subtotal_cols_dict = {1:cols.deo_name_elm, 2:cols.school_category}
+    # Define the columns to aggregate and their respective aggregate function
+    agg_cols_func_dict = {cols.total:'sum', cols.perc_screened:'mean'}
 
+    # Save the elementary students health screening report
+    format_utilities.format_col_to_percent_and_save(students_elem_report, cols.perc_screened, 'Health Screening Report',
+            'Health Screening Elementary Students Report.xlsx',
+            dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())
 
-    # Save the secondary report
-    scnd_report_dict = {
-        'Schools screening status' : schools_scnd_report, 
-        'Students screening status' : students_scnd_report
-    }
-    file_utilities.save_to_excel(scnd_report_dict, 'Health Report.xlsx',\
-             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())   
+    # Save the elementary schools health screening report
+    format_utilities.format_col_to_percent_and_save(schools_elem_report, cols.perc_comp, 'Health Screening Report',
+            'Health Screening Elementary Schools Report.xlsx',
+            dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())
+   
+    # Save the secondary students health screening report
+    format_utilities.format_col_to_percent_and_save(students_scnd_report, cols.perc_screened, 'Health Screening Report',
+            'Health Screening Secondary Students Report.xlsx',
+            dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())
+   
+    # Save the secondary schools health screening report
+    format_utilities.format_col_to_percent_and_save(schools_scnd_report, cols.perc_comp, 'Health Screening Report',
+            'Health Screening Secondary Schools Report.xlsx',
+            dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())  
+
 
 
 

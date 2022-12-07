@@ -14,6 +14,7 @@ import functools as ft
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.report_utilities as report_utilities
+import utilities.format_utilities as format_utilities
 import utilities.column_names_utilities as cols
 
 
@@ -45,7 +46,7 @@ ranking_args_dict = {
     'agg_dict': {
         cols.ageing: 'sum', 
         cols.total_cp_students: 'sum'},
-    'ranking_val_desc': '% ageing in CP',
+    'ranking_val_desc': cols.perc_ageing,
     'num_col': cols.ageing,
     'den_col': cols.total_cp_students,
     'sort': True,
@@ -221,12 +222,18 @@ def run():
     secnd_report = get_cp_secondary_report(data_with_brc_mapping.copy())
 
      # Save the elementary report
-    file_utilities.save_to_excel({'CP Elementary Report' : elem_report}, 'CP Elementary Report.xlsx',\
-             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   
+    """file_utilities.save_to_excel({'CP Elementary Report' : elem_report}, 'CP Elementary Report.xlsx',\
+             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path()) """  
+
+    format_utilities.format_col_to_percent_and_save(elem_report, cols.perc_ageing, 'CP Elementary Report',
+            'CP Elementary Report.xlsx', dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())
 
     # Save the secondary report
-    file_utilities.save_to_excel({'CP Secondary Report' : secnd_report}, 'CP Secondary Report.xlsx',\
-             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())   
+    """file_utilities.save_to_excel({'CP Secondary Report' : secnd_report}, 'CP Secondary Report.xlsx',\
+             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path()) """  
+
+    format_utilities.format_col_to_percent_and_save(secnd_report, cols.perc_ageing, 'CP Secondary Report',
+            'CP Secondary Report.xlsx', dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())
     
     
     

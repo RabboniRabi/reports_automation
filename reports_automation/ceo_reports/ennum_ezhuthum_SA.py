@@ -9,9 +9,11 @@ sys.path.append('../')
 import utilities.utilities as utilities
 import functools as ft
 import utilities.file_utilities as file_utilities
+import utilities.format_utilities as format_utilities
 import utilities.dbutilities as dbutilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.report_utilities as report_utilities
+import utilities.column_names_utilities as cols
 
 
 import pandas as pd
@@ -97,7 +99,7 @@ summarize_dict = {
 
 ranking_args_dict = {
     'agg_dict': summarize_dict,
-    'ranking_val_desc': '% Summative Assessment Completion',
+    'ranking_val_desc': cols.perc_asses_comp,
     'num_col': 'Total Assessed',
     'den_col': 'Total Students',
     'sort': True,
@@ -155,8 +157,6 @@ def main():
     data_final_sec = data_with_brc_mapping.groupby([district_name,deo_user_sec,school_level,school_category])\
         .aggregate(summarize_dict).reset_index()
 
-    file_utilities.save_to_excel({'test1':data_with_brc_mapping,'test2':data_final_elm,'test3':data_final_sec},'test1.xlsx')
-
     # Post creating data summary
     # Get the elementary report
 
@@ -164,11 +164,17 @@ def main():
     sec_report = report_utilities.get_secondary_report(data_final_sec, 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
 
 
-    file_utilities.save_to_excel({'EE_SA_Elm': elem_report}, 'EE_SA_Elm.xlsx',\
-             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())
+    """file_utilities.save_to_excel({'EE_SA_Elm': elem_report}, 'EE_SA_Elm.xlsx',\
+             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())"""
 
-    file_utilities.save_to_excel({'EE_SA_Sec': sec_report}, 'EE_SA_Sec.xlsx',\
-             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())
+    format_utilities.format_col_to_percent_and_save(elem_report, cols.perc_asses_comp, 'EE_SA_Elm',
+            'EE SA Elementary Report.xlsx', dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())
+
+    """file_utilities.save_to_excel({'EE_SA_Sec': sec_report}, 'EE_SA_Sec.xlsx',\
+             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())"""
+
+    format_utilities.format_col_to_percent_and_save(sec_report, cols.perc_asses_comp, 'EE_SA_Sec',
+            'EE SA Secondary Report.xlsx', dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())
 
 if __name__ == "__main__":
     main()
