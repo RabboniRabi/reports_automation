@@ -1,7 +1,7 @@
 """
 
 Module with functions to:
-    -Will report the completion rate of the Ennum Ezhuthum Summative Assessment for each district
+    -Will report the % of observations conducted vs the target no.of observations to be conducted by the CEOs and DEOs
 """
 import sys
 sys.path.append('../')
@@ -12,6 +12,7 @@ import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.report_utilities as report_utilities
+from datetime import datetime
 
 
 import pandas as pd
@@ -29,11 +30,12 @@ Define the all the variables in the report
 # Step 0:
 # Global variables
 # Column names are defined here so that they can be edited in one place
-total_student_count  = 'total'
-students_ageing30_count = 'last_30days'
-district_name = 'district_name'
+observation_date  = 'Date of Observation'
+designation_user_id = 'Observed by'
+designation = 'stackholders'
+district_name = 'District'
 udise_col = 'udise_code'
-school_name ='school_name'
+school_name ='School_Observed'
 edu_district_name = 'edu_dist_name'
 block_name = 'block_name'
 school_category = 'category'
@@ -47,34 +49,10 @@ cwsn_students ='cwsn'
 beo_rank = 'BEO Rank'
 deo_rank_elm = 'DEO Rank Elementary'
 deo_rank_sec = 'DEO Rank Secondary'
-perc_students_cp = '% Students ageing > 30 days'
-total_cwsn_students ='cwsn'
-total_cp_students ='total'
 school_type ='school_type'
-subjects='subjects'
-#Class 1
-
-
-cls1_tot = 'Class1 Total student'
-cls1_assess ='Class 1 Assessed'
-cls1_long_abs = 'Cls1 Long Absent'
-cls1_cwsn = 'Cls1 Cwsn'
-
-#Class 2
-cls2_tot = 'Class2 Total student'
-cls2_assess ='Class 2 Assessed'
-cls2_long_abs = 'Cls2 Long Absent'
-cls2_cwsn = 'Cls2 Cwsn'
-
-#Class 3
-cls3_tot = 'Class3 Total student'
-cls3_assess ='Class 3 Assessed'
-cls3_long_abs = 'Cls3 Long Absent'
-cls3_cwsn = 'Cls3 Cwsn'
-
-cls1_cmpltd = 'class 1 completed'
-cls2_cmpltd = 'class 2 completed'
-cls3_cmpltd = 'class 3 completed'
+edu_dist_id = 'edu_dist_id'
+deo_elm_target = 'deo_elm_target'
+deo_sec_target ='deo_sec_target'
 
 # Dictionary to define how the values to merge on and the how the merge will work.
 merge_dict = {
@@ -82,18 +60,10 @@ merge_dict = {
     'how' : 'left'
 }
 # Column order the final report will display
-col_order = [district_name,deo_user_sec,deo_user_elm,school_level,school_category,cls1_assess,cls1_tot,cls2_assess,cls2_tot,
-             cls3_assess,cls3_tot,cls3_assess,'Total Assessed','Total Assessed']
+col_order = [district_name,deo_user_sec,deo_user_elm,school_level,school_category]
 
 # Define aggregate dictionary for summarising raw data
-summarize_dict = {
-    cls1_assess: 'sum',
-    cls1_tot: 'sum',
-    cls2_assess: 'sum',
-    cls2_tot: 'sum',
-    cls3_assess: 'sum',
-    'Total Students': 'sum',
-    'Total Assessed': 'sum'}
+summarize_dict = {}
 
 ranking_args_dict = {
     'agg_dict': summarize_dict,
@@ -121,11 +91,33 @@ def main():
     print('df_report fetched from db: ', df_report)
     """
 
+    # Getting the raw data for the particular month
     ee_sa_basefile = file_utilities.user_sel_excel_filename()
-    raw_data = pd.read_excel(ee_sa_basefile, sheet_name='Report')
+    raw_data = pd.read_excel(ee_sa_basefile, sheet_name='Report',skiprows=4)
 
-    cols = raw_data.columns.drop([district_name,edu_district_name,block_name,udise_col,school_name,subjects])
-    raw_data.drop(columns=[edu_district_name], axis=1, inplace=True)
+    raw_data[observation_date] = raw_data[observation_date].dt.month
+    raw_data =raw_data[raw_data[observation_date] == (datetime.now().month-1)]
+    raw_data = raw_data[raw_data['Observed by'].str.contains('|'.join(['ceo','deo']))]
+    print(raw_data)
+    target_data = report_utilities.get_brc_master('DEO - Numbers')
+    target_data[deo_elm_target] = target_data['DEO(E)']*12
+    target_data[deo_sec_target] = target_data['DEO(S)']*12
+    print(target_data)
+
+    raw_data = raw_data.concat(target_data[[deo_sec_target,deo_elm_target]])
+
+    print(raw_data)
+
+
+
+    raw_data = raw_data[raw_data['Observed by'].str.contains('|'.join(['ceo','deo']))]
+
+
+
+
+
+    #cols = raw_data.columns.drop([district_name,edu_district_name,block_name,udise_col,school_name,subjects])
+    raw_data.drop(columns=[edu_district_name,edu_dist_id], axis=1, inplace=True)
     raw_data[cols] = raw_data[cols].apply(pd.to_numeric, errors='coerce')
     raw_data = raw_data.groupby([district_name,block_name,udise_col,school_name]).mean().round(0).reset_index()
     raw_data[cls1_tot] = raw_data[cls1_tot] - (raw_data[cls1_long_abs]+raw_data[cls1_cwsn])

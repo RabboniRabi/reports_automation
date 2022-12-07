@@ -57,10 +57,12 @@ def map_data_with_brc(raw_data, merge_dict):
     report_summary = report_summary.reindex(columns=list_of_cols)
     return report_summary
 
-def get_brc_master():
+def get_brc_master(sheet_name=brc_master_sheet_name):
     """
     This function would return the master brc-crc file that would be required for merging with the raw data required
     in all other reports- CEO review or otherwise.
+    sheet_name: str
+        Name of the sheet to read from BRC Master. Default is brc_master_sheet_name.
 
     Returns:
     -------
@@ -69,7 +71,7 @@ def get_brc_master():
     mapping_data_dir = file_utilities.get_mapping_data_dir_path()
     # read from excel, get sub columns
     brc_mapping_file_path = os.path.join(mapping_data_dir, brc_file_name)
-    brc_master = pd.read_excel(brc_mapping_file_path,brc_master_sheet_name)
+    brc_master = pd.read_excel(brc_mapping_file_path,sheet_name=sheet_name)
     return brc_master
 
 
