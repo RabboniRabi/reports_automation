@@ -60,7 +60,7 @@ arrive at the CEO Review Reports in a single file:
 ------------------------------------------------------------------------------------------------------------------------
 3. map_data_with_brc(raw_data, merge_dict):
     Function:
-        Function to map the raw data with BRC CRC mapping. The join is done on school the UDISE Code.
+        This function maps the raw data with BRC CRC mapping. The join is done on school the UDISE Code.
 
         Parameters:
         raw_data: Pandas DataFrame
@@ -75,10 +75,25 @@ arrive at the CEO Review Reports in a single file:
     Returns:
         The mapped df updated with BRC-CRC mapping at a school level.
 ------------------------------------------------------------------------------------------------------------------------
+4. post_processing_data_after_brc_merge():
+    Function:
+        This function uses the mapped raw data and processes it further to bring to the required format before splitting
+        it up into elementary or secondary reports.
 
+        Parameters:
 
-4. post_processing_data_after_brc_merge:
+    Returns:
+        The final processed data required before splitting the data up into elementary and secondary reports.
+------------------------------------------------------------------------------------------------------------------------
 5.a.(i). filter_elementary_report
+   Function:
+        This function uses the processed data and splits into the elementary report.
+
+        Parameters:
+
+    Returns:
+        The final processed data required before splitting the data up into elementary and secondary reports.
+------------------------------------------------------------------------------------------------------------------------
 5.a.(ii). elm_school_category_level_report
 5.a.(iii). get_elementary_report
 5.b.(i). filter_secondary_report
