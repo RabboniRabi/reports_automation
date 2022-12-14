@@ -166,7 +166,7 @@ def student_count_tracking(master_file_name, sheet_name, df_today, dist_col, udi
         # Create a new column to mark the presence of all UDISes fetched today as TRUE
         df_master = df_today.copy().groupby([dist_col,udise_col])[student_count_col].sum().reset_index()
 
-        df_master.rename(columns={student_count_col: today_date + ' count'})
+        df_master.rename(columns={student_count_col: today_date + ' count'},inplace=True)
     else:
         # Read the master data
         df_master = pd.read_excel(master_file_path, sheet_name=sheet_name)
@@ -230,7 +230,7 @@ def teacher_count_tracking(master_file_name, sheet_name, df_today, dist_col, udi
         # Create a new column to mark the presence of all UDISes fetched today as TRUE
         df_master = df_today.copy().groupby([dist_col,udise_col])[teacher_count_col].sum().reset_index()
 
-        df_master.rename(columns={teacher_count_col: today_date + ' count'})
+        df_master.rename(columns={teacher_count_col: today_date + ' count'},inplace=True)
     else:
         # Read the master data
         df_master = pd.read_excel(master_file_path, sheet_name=sheet_name)
