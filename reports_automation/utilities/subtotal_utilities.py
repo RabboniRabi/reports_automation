@@ -78,7 +78,7 @@ def compute_insert_subtotals(df, level_subtotal_cols_dict, group_cols_agg_func_d
             else:
                 # Merge grouped-aggregate values for subtotal column
                 df_agg_cols_merged = df_agg_cols_merged.merge(df_grouped[[subtotal_col, agg_col]])
-                print('df_agg_cols_merged:', df_agg_cols_merged)
+                #print('df_agg_cols_merged:', df_agg_cols_merged)
         
         # Merge all aggregagted values for column to be subtotaled into a single row
         # and insert into the original DataFrame object
@@ -108,7 +108,7 @@ def compute_insert_subtotals(df, level_subtotal_cols_dict, group_cols_agg_func_d
                 df_subtotal_rows.loc[df_subtotal_rows.shape[0]] = row_to_insert
 
                 # Insert the aggregated row for this value below the last matching index
-                print('Going to insert: ', row_to_insert, ' at index: ' , last_matching_index+1)
+                #print('Going to insert: ', row_to_insert, ' at index: ' , last_matching_index+1)
                 df = utilities.insert_row(df, last_matching_index + 1, row_to_insert )
 
     # Return the updated DataFrame and subtotals DataFrame
