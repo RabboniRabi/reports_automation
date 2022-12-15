@@ -88,6 +88,12 @@ perc_fully_mapped = '% Fully mapped'
 perc_asses_comp = '% Summative Assessment Completion'
 
 
+# Kalai thiruvizha specific column
+participants = 'Participations'
+tot_students = 'Total Students'
+per_participants = '% Student participations'
+
+
 # BRC-CRC mapping specific column names
 beo_user = 'beo_user'
 beo_name ='beo_name'

@@ -1,5 +1,5 @@
 """
-Module to functions to create PET to School mapping report for CEO review
+Module with functions to create PET to School mapping report for CEO review
 - The report will rank data based on % of schools that have fully completed mapping
 """
 
@@ -13,6 +13,7 @@ import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.report_utilities as report_utilities
 import utilities.format_utilities as format_utilities
+import utilities.subtotal_utilities as subtotal_utilities
 import utilities.column_names_utilities as cols
 
 # Define elementary indexes for pivoting
@@ -40,11 +41,11 @@ ranking_args_dict = {
 
 def _get_data_with_brc_mapping():
     """
-    Function to fetch the Commpon Pool data, clean and  merge with BRC-CRC mapping data
+    Function to fetch the PET to school mapping data, clean and  merge with BRC-CRC mapping data
 
     Returns:
     -------
-    DataFrame object of Common Pool data updated with BRc-CRC mapping
+    DataFrame object of PET to school mapping data updated with BRc-CRC mapping
     """
     # Read the database connection credentials
     #credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
@@ -72,7 +73,7 @@ def _process_data_for_report(df_data, pivot_index):
     df_data_pivot = pd.pivot_table(df_data, values=cols.school_name, \
                         index=pivot_index ,columns=[cols.mapping_status], aggfunc='count',fill_value=0).reset_index()
 
-    # Update with the total ageing data
+    # Update with the total schools count
     df_data_pivot[cols.tot_schools] = df_data_pivot[[cols.fully_mapped, cols.part_mapped]].sum(axis=1)
 
     return df_data_pivot                    
@@ -141,10 +142,10 @@ def get_pet_mapping_secondary_report(df_data = None):
 
 def run():
     """
-    Function to call other internal functions and create the Common Pool reports
+    Function to call other internal functions and create the PET to School mapping reports
     """
 
-    # Get the Commpon Pool data updated with BRC mapping
+    # Get the PET to school mapping data updated with BRC mapping
     data_with_brc_mapping = _get_data_with_brc_mapping()
 
     # Get the elementary report
@@ -157,8 +158,11 @@ def run():
     """file_utilities.save_to_excel({'PET Mapping Elementary Report' : elem_report}, 'PET Mapping Elementary Report.xlsx',\
              dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())"""
 
-    format_utilities.format_col_to_percent_and_save(elem_report, cols.perc_fully_mapped, 'PET Mapping Elementary Report',
-            'PET Mapping Elementary Report.xlsx', dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   
+    """format_utilities.format_col_to_percent_and_save(elem_report, cols.perc_fully_mapped, 'PET Mapping Elementary Report',
+            'PET Mapping Elementary Report.xlsx', dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   """
+
+
+    
 
     # Save the secondary report
     """file_utilities.save_to_excel({'PET Mapping Secondary Report' : secnd_report}, 'PET Mapping Secondary Report.xlsx',\
@@ -166,6 +170,20 @@ def run():
 
     format_utilities.format_col_to_percent_and_save(secnd_report, cols.perc_fully_mapped, 'PET Mapping Secondary Report',
             'PET Mapping Secondary Report.xlsx', dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())   
+
+    # Testing subtotal utilities
+    subtotal_utilities.subtotal_outline_and_save(secnd_report, \
+                {1:cols.deo_name_sec},\
+                 {cols.fully_mapped:'sum',
+                 cols.part_mapped: 'sum',
+                 cols.tot_schools: 'sum',
+                 cols.deo_sec_rank: 'mean'},
+                 'PET Mapping Secondary Report',
+                 'PET Mapping Secondary Report.xlsx',
+                 dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path(),
+                 text_append_dict = {
+                    cols.deo_name_sec: 'Total'
+                 })              
 
 if __name__ == "__main__":
     run()
