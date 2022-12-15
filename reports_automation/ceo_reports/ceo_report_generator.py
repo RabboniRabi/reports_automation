@@ -3,7 +3,26 @@
 Module with functions will be the master code that will run the CEO reports in blocks/functions of code.
 This will entail 2 main functions:
     1. generate_all(): Run all the code and generator all the reports in one go
-    2. generate_ceo_report(): Generate Generate specific reports by calling a specific definition
+    2. generate_ceo_report(cp, report_type, report_level='ranked' ): Generate Generate specific reports by calling a specific definition
+    generate_ceo_report (report_name, report_type)
+    open_report_types = ['raw_data', 'brc_merged', 'elem_before_ranking', 'elementary_ranking', 'second_before_ranking', 'secondary']
+    internal_report_types = ['full']
+    all_report_types = open_report_types + internal_report_types
+
+    data_server/reports/get_report/cp/ranking -> generate_ceo_report() -> df -> return
+
+    1. raw data
+    2. processed data
+    3. raw data with brc-crc mapping
+
+    4. prepare for elem/sec
+    5. get elem/sec
+
+
+    2 functions:?
+        get_ceo_report_raw_data(report_name/code, raw_data_level):?
+        get_ceo_report(report_name/code, report_type, report_level):?
+
 ------------------------------------------------------------------------------------------------------------------------
 Requirements apart from the functions:
     1. Report wise dictionary:
@@ -85,17 +104,17 @@ arrive at the CEO Review Reports in a single file:
     Returns:
         The final processed data required before splitting the data up into elementary and secondary reports.
 ------------------------------------------------------------------------------------------------------------------------
-5.a.(i). filter_elementary_report
+5.a.(i). prepare_for_elementary_report
    Function:
-        This function uses the processed data and splits into the elementary report.
+        This function uses the processed data and prepares  the elementary report.
 
         Parameters:
 
     Returns:
         The final processed data required before splitting the data up into elementary and secondary reports.
 ------------------------------------------------------------------------------------------------------------------------
-5.a.(ii). elm_school_category_level_report
-5.a.(iii). get_elementary_report
+
+5.a.(ii). get_elementary_report
 5.b.(i). filter_secondary_report
 5.b.(ii). sec_school_category_level_report
 5.b.(iii). get_secondary_report
