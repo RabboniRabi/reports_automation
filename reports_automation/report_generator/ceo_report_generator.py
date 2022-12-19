@@ -4,6 +4,22 @@ Module with functions will be the master code that will run the CEO reports in b
 This will entail 2 main functions:
     1. Run all the code and generator all the reports in one go: generate_all():
 
+    generate_all():
+        for each active config
+            ceo_raw_data = get_ceo_report_raw_data(config[code], 'raw data with brc-crc mapping', save_source=True)
+            elementary_report = get_ceo_report(config[code], 'Elementary', 'ranked')
+            secondary_report = get_ceo_report(config[code], 'Secondary', 'ranked')
+            review_view_utilities.prepare_report_for_review(elementary_report)
+            review_view_utilities.prepare_report_for_review(secondary_report)
+
+
+
+
+    def get_ceo_report_raw_data(code, temp, param, save_source = False):
+        raw_data = data_fetcher.get_data(config_code)
+
+
+
     2. Generate Generate specific reports by calling a specific definition:
 
     for public use:

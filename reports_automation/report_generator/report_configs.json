@@ -6,8 +6,7 @@
         "generate_report": true,
         "source_config" : {
             "query_file_name" : "PET_query.sql",
-            "source_file_name" : "PET_raw_data.xlsx"
-
+            "source_file_name" : "PET_raw_data.xlsx",
         },
         "elementary_report" : {
             "generate_report": true,
