@@ -290,7 +290,7 @@ def main():
         'teacher_count_tracking': df_teacher_count}
 
     file_utilities.save_to_excel(df_sheet_dict_school, 'school_count_trends.xlsx')
-    #file_utilities.save_to_excel(df_sheet_dict_st_teach, 'stu_teach_count_trends.xlsx')
+    file_utilities.save_to_excel(df_sheet_dict_st_teach, 'stu_teach_count_trends.xlsx')
 
 
 
