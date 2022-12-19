@@ -28,7 +28,7 @@ cols_to_save = [cols.district, cols.name, cols.desig, cols.rank_col, cols.rankin
 
 
 
-def calc_ranking(df, group_cols, ranking_type, ranking_args_dict):
+def calc_ranking(df, group_cols, ranking_args_dict):
     """
     Function to calculate ranking for data based on the type of ranking given.
     The function uses the dictionary in ranking_utilities to match the ranking type and 
@@ -40,22 +40,22 @@ def calc_ranking(df, group_cols, ranking_type, ranking_args_dict):
         The data to be ranked
     group_levels: list
         The list of columns to group by
-    ranking_type: str
-        The type of ranking to be used to calculate the ranking for the data
     ranking_args_dict: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {
-        'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
-        'ranking_val_desc' : '% moved to CP',
-        'num_col' : 'class_1',
-        'den_col' : 'Total',
-        'sort' : True,
-        'ascending' : False
-        }
+                'ranking_type' : 'percent_ranking',
+                'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
+                'ranking_val_desc' : '% moved to CP',
+                'num_col' : 'class_1',
+                'den_col' : 'Total',
+                'sort' : True,
+                'ascending' : False
+                }
     Returns:
     --------
     Ranked DataFrame object
     """
+    ranking_type = ranking_args_dict['ranking_type']
     ranking_func = ranking_funcs_utilities.get_ranking_funcs().get(ranking_type)
     
     return ranking_func(df, group_cols, ranking_args_dict)

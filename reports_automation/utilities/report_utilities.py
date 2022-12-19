@@ -75,7 +75,7 @@ def get_brc_master(sheet_name=brc_master_sheet_name):
     return brc_master
 
 
-def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_code, metric_category):
+def get_elementary_report(df_summary, ranking_args_dict, metric_code, metric_category):
 
     """
     Function create and return the elementary report on given data by calculating
@@ -88,12 +88,10 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
 
     df_summary: Pandas DataFrame
         The raw processed, summarised and ready for ranking
-    ranking_type: str
-        The type of ranking to be used to calculate the ranking for the data
     ranking_args_dict: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {
-        'group_levels' : ['district', 'name', 'designation'],
+        ranking_type' : 'percent_ranking',
         'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
         'ranking_val_desc' : '% moved to CP',
         'num_col' : 'class_1',
@@ -114,7 +112,7 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
         df_summary.drop(columns=[cols.school_level],axis=1, inplace=True)                     
 
     # Get the ranking for the BEOs
-    #beo_ranking = ranking_utilities.calc_ranking(df_summary, beo_ranking_group_cols, ranking_type, ranking_args_dict)
+    #beo_ranking = ranking_utilities.calc_ranking(df_summary, beo_ranking_group_cols, ranking_args_dict)
 
     # Make a copy of the ranking to update master sheet
     #beo_ranking_for_master = beo_ranking.copy()
@@ -128,7 +126,7 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
     # Update the master ranking with the BEO ranking
     #ranking_utilities.update_ranking_master(beo_ranking_for_master, metric_code, metric_category, 'Elementary')
 
-    deo_elm_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols, ranking_type, ranking_args_dict)
+    deo_elm_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols, ranking_args_dict)
 
 
     # Make a copy of the ranking to update master sheet
@@ -158,7 +156,7 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
     # Since the ranking values will be grouped to beo level, the ranking values of each individual row
     # of data before being grouped and ranked is missed. That data will be more useful for review.
     # That data is inserted here. Not a clean way of doing things. Yes.
-    data_level_ranking = ranking_utilities.calc_ranking(df_summary, None, ranking_type, ranking_args_dict)
+    data_level_ranking = ranking_utilities.calc_ranking(df_summary, None, ranking_args_dict)
 
     # Add the data level ranking value
     #elementary_report = pd.merge(df_summary, data_level_ranking[[cols.deo_name_elm, \
@@ -187,7 +185,7 @@ def get_elementary_report(df_summary, ranking_type, ranking_args_dict, metric_co
     return elementary_report
 
 
-def get_secondary_report(df_summary, ranking_type, ranking_args_dict, metric_code, metric_category):
+def get_secondary_report(df_summary, ranking_args_dict, metric_code, metric_category):
     """
     Function create and return the secondary report on given data by calculating
     the DEO (Secondary) ranking and updating the data.
@@ -199,12 +197,10 @@ def get_secondary_report(df_summary, ranking_type, ranking_args_dict, metric_cod
 
     df_summary: Pandas DataFrame
         The raw processed, summarised and ready for ranking
-    ranking_type: str
-        The type of ranking to be used to calculate the ranking for the data
     ranking_args_dict: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {
-        'group_levels' : ['district', 'name', 'designation'],
+        ranking_type' : 'percent_ranking',
         'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
         'ranking_val_desc' : '% moved to CP',
         'num_col' : 'class_1',
@@ -225,7 +221,7 @@ def get_secondary_report(df_summary, ranking_type, ranking_args_dict, metric_cod
         df_summary.drop(columns=[cols.school_level], inplace=True)
 
     # Get the ranking for the secondary DEOs
-    deo_sec_ranking = ranking_utilities.calc_ranking(df_summary, deo_secnd_ranking_group_cols, ranking_type, ranking_args_dict)
+    deo_sec_ranking = ranking_utilities.calc_ranking(df_summary, deo_secnd_ranking_group_cols, ranking_args_dict)
 
     # Make a copy of the ranking to update master sheet
     deo_sec_ranking_for_master = deo_sec_ranking.copy()
@@ -249,7 +245,7 @@ def get_secondary_report(df_summary, ranking_type, ranking_args_dict, metric_cod
     # Since the ranking values will be grouped to DEO level, the ranking values of each individual row
     # of data before being grouped and ranked is missed. That data will be more useful for review.
     # That data is inserted here. Not a clean way of doing things. Yes.
-    data_level_ranking = ranking_utilities.calc_ranking(df_summary, None, ranking_type, ranking_args_dict)
+    data_level_ranking = ranking_utilities.calc_ranking(df_summary, None, ranking_args_dict)
 
 
     # Add the data level ranking value

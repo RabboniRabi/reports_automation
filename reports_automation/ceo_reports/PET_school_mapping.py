@@ -14,6 +14,7 @@ import utilities.dbutilities as dbutilities
 import utilities.report_utilities as report_utilities
 import utilities.format_utilities as format_utilities
 import utilities.subtotal_utilities as subtotal_utilities
+import utilities.review_view_utilities as review_view_utilities
 import utilities.column_names_utilities as cols
 
 # Define elementary indexes for pivoting
@@ -28,6 +29,7 @@ merge_dict = {
 
 # Build the arguments dictionary to do ranking for the report
 ranking_args_dict = {
+    'ranking_type': 'percent_ranking',
     'agg_dict': {
         cols.fully_mapped: 'sum', 
         cols.part_mapped: 'sum',
@@ -105,7 +107,7 @@ def get_pet_mapping_elementary_report(df_data = None):
     # Prepare the data for elementary report
     elem_processed_data = _process_data_for_report(df_data, elem_pivot_index)
 
-    elem_report = report_utilities.get_elementary_report(elem_processed_data, 'percent_ranking', ranking_args_dict, 'PET', 'Operations')                    
+    elem_report = report_utilities.get_elementary_report(elem_processed_data, ranking_args_dict, 'PET', 'Operations')                    
 
     return elem_report
 
@@ -135,7 +137,7 @@ def get_pet_mapping_secondary_report(df_data = None):
     secnd_processed_data = _process_data_for_report(df_data, scnd_pivot_index)
 
     # Get the Secondary report
-    secnd_report = report_utilities.get_secondary_report(secnd_processed_data, 'percent_ranking', ranking_args_dict, 'PET', 'Operations')
+    secnd_report = report_utilities.get_secondary_report(secnd_processed_data, ranking_args_dict, 'PET', 'Operations')
 
     return secnd_report
     
@@ -168,11 +170,11 @@ def run():
     """file_utilities.save_to_excel({'PET Mapping Secondary Report' : secnd_report}, 'PET Mapping Secondary Report.xlsx',\
              dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path()) """
 
-    format_utilities.format_col_to_percent_and_save(secnd_report, cols.perc_fully_mapped, 'PET Mapping Secondary Report',
-            'PET Mapping Secondary Report.xlsx', dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())   
+    """format_utilities.format_col_to_percent_and_save(secnd_report, cols.perc_fully_mapped, 'PET Mapping Secondary Report',
+            'PET Mapping Secondary Report.xlsx', dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())   """
 
     # Testing subtotal utilities
-    subtotal_utilities.subtotal_outline_and_save(secnd_report, \
+    """subtotal_utilities.subtotal_outline_and_save(secnd_report, \
                 {1:cols.deo_name_sec},\
                  {cols.fully_mapped:'sum',
                  cols.part_mapped: 'sum',
@@ -183,7 +185,40 @@ def run():
                  dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path(),
                  text_append_dict = {
                     cols.deo_name_sec: 'Total'
-                 })              
+                 })"""
+
+    # Testing review view utilities
+    secondary_report_config_dict = {
+            "generate_report": False,
+            "ranking_args": {
+                'ranking_type': 'percent_ranking',
+                'agg_dict': {
+                    cols.fully_mapped: 'sum', 
+                    cols.part_mapped: 'sum',
+                    cols.tot_schools: 'sum'},
+                'ranking_val_desc': cols.perc_fully_mapped,
+                'num_col': cols.fully_mapped,
+                'den_col': cols.tot_schools,
+                'sort': True,
+                'ascending': False
+            },
+            "subtotal_outlines_dict" : {
+                "level_subtotal_cols_dict" : {"1" : cols.deo_name_sec},
+                "agg_cols_func_dict" : {
+                    cols.fully_mapped: "sum",
+                    cols.part_mapped: "sum",
+                    cols.tot_schools: "sum",
+                    cols.deo_sec_rank: "mean"
+                },
+                "text_append_dict" : {cols.deo_name_sec: "Total"}
+            }
+    }
+        
+    review_view_utilities.prepare_report_for_review(secnd_report, \
+            secondary_report_config_dict,
+            'PET Mapping Secondary Report',
+            'PET Mapping Secondary Report.xlsx',
+            dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())              
 
 if __name__ == "__main__":
     run()

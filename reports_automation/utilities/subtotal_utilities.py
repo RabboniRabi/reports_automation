@@ -15,7 +15,7 @@ from openpyxl import Workbook
 import utilities.outlines_utilities as outlines_utilities
 import utilities.utilities as utilities
 
-def compute_insert_subtotals(df, level_subtotal_cols_dict, group_cols_agg_func_dict, text_append_dict):
+def compute_insert_subtotals(df, level_subtotal_cols_dict, agg_cols_func_dict, text_append_dict):
     """
     Function to compute subtotals for a given set of columns. The order of computation
     of subtotals is based on the ascending order of levels. For each column to subtotal,
@@ -32,7 +32,7 @@ def compute_insert_subtotals(df, level_subtotal_cols_dict, group_cols_agg_func_d
     level_subtotal_cols_dict: dict
         A level - subtotal column key value pair dictionary. The level determines the order
         of columns for which subtotaling aggregation operations are performed
-    group_cols_agg_func_dict: dict
+    agg_cols_func_dict: dict
         A grouping column - aggregate function dictionary. This dictionary contains the columns
         to group by as keys and their corresponding aggregating function as values
     text_append_dict: dict
@@ -65,27 +65,15 @@ def compute_insert_subtotals(df, level_subtotal_cols_dict, group_cols_agg_func_d
         subtotal_col = level_subtotal_cols_dict[level]
         first_agg_col = True # Flag for merging grouped-aggregated values
 
-        # For the column to be subtotaled, group and aggregate specified columns
-        for agg_col in group_cols_agg_func_dict.keys():
-            # Get the aggregate function for the column
-            agg_func = group_cols_agg_func_dict[agg_col]
-            # Group by the subtotal and aggregate the column by the aggregate function
-            df_grouped = df.groupby([subtotal_col], as_index=False,sort=False)[agg_col].agg(agg_func)
-            # Merge the aggregated columns into a single dataframe object
-            if (first_agg_col):
-                df_agg_cols_merged = df_grouped
-                first_agg_col = False
-            else:
-                # Merge grouped-aggregate values for subtotal column
-                df_agg_cols_merged = df_agg_cols_merged.merge(df_grouped[[subtotal_col, agg_col]])
-                #print('df_agg_cols_merged:', df_agg_cols_merged)
+        # Group by grouping levels and aggregate by given columns and aggregate function
+        df_group_agg = df.groupby([subtotal_col], as_index=False,sort=False).agg(agg_cols_func_dict)
         
         # Merge all aggregagted values for column to be subtotaled into a single row
         # and insert into the original DataFrame object
-        for i in range(0, df_agg_cols_merged.shape[0]):
+        for i in range(0, df_group_agg.shape[0]):
             # Get the value of the cell in ith row and in column: subtotal_col
             
-            subtotal_col_val = df_agg_cols_merged.loc[i, subtotal_col]
+            subtotal_col_val = df_group_agg.loc[i, subtotal_col]
             
             # For non empty subtotal column values,
             if (subtotal_col_val != ''):
@@ -96,10 +84,8 @@ def compute_insert_subtotals(df, level_subtotal_cols_dict, group_cols_agg_func_d
                 matching_indices.sort()
                 # Get the largest index value in the list
                 last_matching_index = matching_indices[len(matching_indices) - 1]
-                #print('largest_matching_index', last_matching_index)
                 # Get the row with aggregated values to insert
-                row_to_insert = df_agg_cols_merged.iloc[[i]]
-                #print('row before building:', row_to_insert)
+                row_to_insert = df_group_agg.iloc[[i]]
                 
                 # Make the row compatible for insertion with the original data frame
                 row_to_insert = utilities.build_row(master_columns, row_to_insert, text_append_dict)

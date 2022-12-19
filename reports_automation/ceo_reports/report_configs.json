@@ -4,6 +4,11 @@
         "report_name": "PET",
         "report_desc": "PET to school mapping report",
         "generate_report": true,
+        "source_config" : {
+            "query_file_name" : "PET_query.sql",
+            "source_file_name" : "PET_raw_data.xlsx"
+
+        },
         "elementary_report" : {
             "generate_report": true,
             "grouping_cols" : ["cols.deo_name"],
@@ -22,6 +27,7 @@
         "secondary_report" : {
             "generate_report": false,
             "ranking_args": {
+                "ranking_type" : "percent_ranking",
                 "agg_dict": {
                     "cols.ageing": "sum", 
                     "cols.total_cp_students": "sum"
