@@ -55,7 +55,7 @@ def day_wise_school_count_tracking(master_file_name, sheet_name, df_today, group
 
         # Merge the data for the day with the master data
         df_master = df_master.merge(df_today_grouped)
-    
+
     else:
         # If file doesnt exist, create data and save for day 1
         df_master = df_today_grouped
@@ -106,8 +106,10 @@ def day_wise_tracking(master_file_name, sheet_name, df_today, dist_col, udise_co
         df_master = pd.read_excel(master_file_path, sheet_name=sheet_name)
         
         # Get a True/False series of all UDISES that are present in currently fetched data but not in master (True)
-        udise_present_today_not_in_master = ~df_today[udise_col].isin(df_master[udise_col])
+        udise_present_today_not_in_master = ~df_today[cols.udise_col].isin(df_master[cols.udise_col])
+
         df_new_UDISEs = df_today[udise_present_today_not_in_master].dropna()
+
 
         # Create a column in df_new_UDISEs marking all new UDISEs present today as TRUE
         df_new_UDISEs[today_date] = 'True'
@@ -164,31 +166,30 @@ def student_count_tracking(master_file_name, sheet_name, df_today, dist_col, udi
     # If file does not exist
     if not os.path.exists(master_file_path):
         # Create a new column to mark the presence of all UDISes fetched today as TRUE
-        df_master = df_today.copy().groupby([dist_col,udise_col])[student_count_col].sum().reset_index()
+        df_master = df_today.copy().groupby([dist_col,udise_col])[[student_count_col]].sum().reset_index()
 
         df_master.rename(columns={student_count_col: today_date + ' count'},inplace=True)
+
+        df_master['No. of days data changes'] = '1'
     else:
         # Read the master data
         df_master = pd.read_excel(master_file_path, sheet_name=sheet_name)
 
         # Get a True/False series of all UDISES that are present in currently fetched data but not in master (True)
-        udise_present_today_not_in_master = ~df_today[udise_col].isin(df_master[udise_col])
-
-        df_new_UDISEs = df_today[udise_present_today_not_in_master].groupby([dist_col,udise_col])[student_count_col].sum().reset_index()\
-            .dropna()
+        df_today = df_today.groupby([dist_col,udise_col])[[student_count_col]].sum().reset_index()
 
         # Concatenate the new UDISES found for today with the master data, filling FALSE for previous days
-        df_master = pd.concat([df_master, df_new_UDISEs], axis=0).fillna(0)
-
-        # The concatenation of new UDISEs to the master data will mark the presence of rest of UDISES as FALSE
-        # in the new column (with today's date)
-        # This is updated by checking those UDISEs present both in master and today and marking them as TRUE
-        df_master[today_date] = df_master[udise_col].isin(df_today[udise_col])
+        df_master = df_master.merge(df_today).fillna(0)
 
     # Rename the column with today's date
-    df_master.rename(columns={today_date: today_date + ' count'}, inplace=True)
+    df_master.rename(columns={student_count_col: today_date + ' count'}, inplace=True)
     # Sort the data
     df_master.sort_values(by=[dist_col, udise_col], ascending=[True, True], inplace=True)
+
+    df_master['No. of days data changes'] = df_master.drop(columns=[cols.district_name, cols.udise_col, 'No. of days data changes']).nunique(axis=1)
+
+    df_master.insert(2,'No. of days data changes',df_master.pop('No. of days data changes'))
+
     return df_master
 
 def teacher_count_tracking(master_file_name, sheet_name, df_today, dist_col, udise_col,teacher_count_col):
@@ -228,30 +229,31 @@ def teacher_count_tracking(master_file_name, sheet_name, df_today, dist_col, udi
     # If file does not exist
     if not os.path.exists(master_file_path):
         # Create a new column to mark the presence of all UDISes fetched today as TRUE
-        df_master = df_today.copy().groupby([dist_col,udise_col])[teacher_count_col].sum().reset_index()
+        df_master = df_today.copy().groupby([dist_col,udise_col])[[teacher_count_col]].sum().reset_index()
 
         df_master.rename(columns={teacher_count_col: today_date + ' count'},inplace=True)
+
+        df_master['No. of days data changes'] = '1'
     else:
         # Read the master data
         df_master = pd.read_excel(master_file_path, sheet_name=sheet_name)
 
         # Get a True/False series of all UDISES that are present in currently fetched data but not in master (True)
-        udise_present_today_not_in_master = ~df_today[udise_col].isin(df_master[udise_col])
-        df_new_UDISEs = udise_present_today_not_in_master.groupby([dist_col,udise_col])[teacher_count_col].sum().reset_index()\
-            .dropna()
+
+        df_today = df_today.groupby([dist_col,udise_col])[[teacher_count_col]].sum().reset_index()
 
         # Concatenate the new UDISES found for today with the master data, filling FALSE for previous days
-        df_master = pd.concat([df_master, df_new_UDISEs], axis=0).fillna(0)
-
-        # The concatenation of new UDISEs to the master data will mark the presence of rest of UDISES as FALSE
-        # in the new column (with today's date)
-        # This is updated by checking those UDISEs present both in master and today and marking them as TRUE
-        df_master[today_date] = df_master[udise_col].isin(df_today[udise_col])
+        df_master = df_master.merge(df_today).fillna(0)
 
     # Rename the column with today's date
-    df_master.rename(columns={today_date: today_date + ' count'}, inplace=True)
+    df_master.rename(columns={teacher_count_col: today_date + ' count'}, inplace=True)
     # Sort the data
     df_master.sort_values(by=[dist_col, udise_col], ascending=[True, True], inplace=True)
+
+    df_master['No. of days data changes'] = df_master.drop(columns=[cols.district_name, cols.udise_col,'No. of days data changes']).nunique(axis=1)
+
+    df_master.insert(2,'No. of days data changes',df_master.pop('No. of days data changes'))
+
     return df_master
 
 
@@ -272,24 +274,24 @@ def main():
 
 
     # Get a data frame updated with the latest school count
-    #df_school_count = day_wise_school_count_tracking('school_count_trends.xlsx', 'school_count_tracking', df_report,['District'],'UDISE_Code')
+    df_school_count = day_wise_school_count_tracking('school_count_trends.xlsx', 'school_count_tracking', df_report,cols.district_name, cols.udise_col)
 
     # Get a data frame updated with latest UDISE tracking (present/absent)
-    #df_daywise_tracking = day_wise_tracking('school_count_trends.xlsx', 'daywise_UDISE_tracking', df_report, 'District', 'UDISE_Code')
+    df_daywise_tracking = day_wise_tracking('school_count_trends.xlsx', 'daywise_UDISE_tracking', df_report, cols.district_name, cols.udise_col)
+    df_student_count =student_count_tracking('stu_teach_count_trends.xlsx', 'student_count_tracking', df_report, cols.district_name, cols.udise_col, 'Total_Students')
 
-    df_student_count =student_count_tracking('stu_teach_count_trends.xlsx', 'student_count_tracking', df_report, 'District', 'UDISE_Code', 'Total_Students')
-
-    df_teacher_count =teacher_count_tracking('stu_teach_count_trends.xlsx', 'teacher_count_tracking', df_report, 'District', 'UDISE_Code', 'Teaching_Staff')
+    df_teacher_count =teacher_count_tracking('stu_teach_count_trends.xlsx', 'teacher_count_tracking', df_report, cols.district_name, cols.udise_col, 'Teaching_Staff')
     # Save the updated master data
-    df_sheet_dict = {
-        #'school_count_tracking': df_school_count,
-        #'daywise_UDISE_tracking': df_daywise_tracking
-       'student_count_tracking':df_student_count,
-        'teacher_count_tracking': df_teacher_count
+    df_sheet_dict_school = {
+        'school_count_tracking': df_school_count,
+        'daywise_UDISE_tracking': df_daywise_tracking
         }
+    df_sheet_dict_st_teach = {'student_count_tracking':df_student_count,
+        'teacher_count_tracking': df_teacher_count}
 
+    file_utilities.save_to_excel(df_sheet_dict_school, 'school_count_trends.xlsx')
+    file_utilities.save_to_excel(df_sheet_dict_st_teach, 'stu_teach_count_trends.xlsx')
 
-    file_utilities.save_to_excel(df_sheet_dict, 'stu_teach_count_trends.xlsx')
 
 
 if __name__ == "__main__":

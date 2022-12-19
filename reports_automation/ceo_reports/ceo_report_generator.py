@@ -2,8 +2,38 @@
 ========================================================================================================================
 Module with functions will be the master code that will run the CEO reports in blocks/functions of code.
 This will entail 2 main functions:
-    1. generate_all(): Run all the code and generator all the reports in one go
-    2. generate_ceo_report(): Generate Generate specific reports by calling a specific definition
+    1. Run all the code and generator all the reports in one go: generate_all():
+
+    2. Generate Generate specific reports by calling a specific definition:
+
+    for public use:
+    ===============
+
+        A. get_ceo_report_raw_data(report_code,raw_data_level):
+            [file path: reports > ceo_report_generator.py]
+        ---------------------------------------------------------
+            Available raw_data_level-
+                1. raw data: get_data(code)
+                [file path:reports > data_fetcher.py ]
+                2. processed data: pre_processing_data_before_brc_merge()
+                3. raw data with brc-crc mapping:  post_processing_data_after_brc_merge()
+
+        B. get_ceo_report(report_code,report_type,report_level):
+            (file path: reports > ceo_report_generator.py)
+        ---------------------------------------------------------
+            Available report_type-
+                    (i) elementary
+                    (ii) secondary
+
+            Available raw_data_level-
+                4. unranked: unranked_elementary_report()/unranked_secondary_report()
+                5. ranked: ranked_elementary_report()/ranked_secondary_report()
+
+    for internal use:
+    =================
+                6. format_save_elementary_report()/format_save_secondary_report()
+                7. consolidate_and_index_report()
+
 ------------------------------------------------------------------------------------------------------------------------
 Requirements apart from the functions:
     1. Report wise dictionary:
@@ -84,30 +114,79 @@ arrive at the CEO Review Reports in a single file:
 
     Returns:
         The final processed data required before splitting the data up into elementary and secondary reports.
-------------------------------------------------------------------------------------------------------------------------
-5.a.(i). filter_elementary_report
+========================================================================================================================
+5.a.(i). unranked_elementary_report():
    Function:
-        This function uses the processed data and splits into the elementary report.
+        This function uses the processed data and prepares the elementary report up to the ranking step.
 
         Parameters:
 
     Returns:
-        The final processed data required before splitting the data up into elementary and secondary reports.
+        The final elementary data that will be used for ranking the reports.
 ------------------------------------------------------------------------------------------------------------------------
-5.a.(ii). elm_school_category_level_report
-5.a.(iii). get_elementary_report
-5.b.(i). filter_secondary_report
-5.b.(ii). sec_school_category_level_report
-5.b.(iii). get_secondary_report
-6.a. format_save_elementary_report
-6.b. format_save_secondary_report
+5.a.(ii). ranked_elementary_report():
+   Function:
+       This function ranks the elementary report, whilst updating the ranking master as well.
 
-Both 6.a. and 6.b. would entail the following:
-    (i) Outlines
-    (ii) Adding back ranks
-    (iii) Font formatting
-    (iv) Merging the top row for the heading
-    (v) Adding a row for the column index
-    (vi) Consolidation and Overall Indexing
+        Parameters:
+
+    Returns:
+        The final elementary report that will be printed, and ready for formatting.
+------------------------------------------------------------------------------------------------------------------------
+5.b.(i). unranked_for_secondary_report():
+   Function:
+        This function uses the processed data and prepares the secondary report up to the ranking step.
+
+        Parameters:
+
+    Returns:
+        The final secondary data that will be used for ranking the reports.
+------------------------------------------------------------------------------------------------------------------------
+5.b.(ii). ranked_secondary_report():
+   Function:
+       This function ranks the secondary report, whilst updating the ranking master as well.
+
+        Parameters:
+
+    Returns:
+        The final secondary report that will be printed, and ready for formatting.
+------------------------------------------------------------------------------------------------------------------------
+6.a. format_save_elementary_report():
+    Function:
+        This function performs the following formatting actions specific to the elementary report:
+        (i) Outlines
+        (ii) Adding back ranks
+        (iii) Font formatting
+        (iv) Merging the top row for the heading
+        (v) Adding a row for the column index
+
+        Parameters:
+
+    Returns:
+        This is the report that will be saved into the elementary reports folder.
+------------------------------------------------------------------------------------------------------------------------
+6.b. format_save_secondary_report():
+    Function:
+        This function performs the following formatting actions specific to the secondary report:
+        (i) Outlines
+        (ii) Adding back ranks
+        (iii) Font formatting
+        (iv) Merging the top row for the heading
+        (v) Adding a row for the column index
+
+        Parameters:
+
+    Returns:
+        This is the report that will be saved into the secondary reports folder.
+------------------------------------------------------------------------------------------------------------------------
+7. consolidate_and_index_report():
+        Function:
+            This function will merge all the individual reports in the elementary and secondary report folders separately
+            and index them in their respective files.
+
+            Parameters:
+
+        Returns:
+            The 2 final CEO Review Reports that will be extracted as excel files.
 ========================================================================================================================
 """
