@@ -4,9 +4,11 @@ from sqlalchemy import create_engine
 
 import json
 import os
+import sys
 
 import utilities.file_utilities as file_utilities
 import pandas as pd
+from pandas.io.sql import DatabaseError 
 
 def read_conn_credentials(file_name):
     """
@@ -135,9 +137,11 @@ def fetch_data_as_df (credentials_dict, script_file_name, params=None):
     try:
         df_data = pd.read_sql_query(query, connection, params) 
         print('Query Execution Successful')
-    except Error as err:
-            print(f'Error: ', err)
-            
+    except (DatabaseError, Error) as err:
+        print(f'Error: ', err)
+        err_msg = 'Error in executing query in ' + script_file_name
+        sys.exit(err_msg)
+
     # Close the database connection
     connection.close()
 

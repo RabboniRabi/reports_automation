@@ -74,8 +74,13 @@ def open_script(script_file_name):
         file_path = os.path.join(curr_dir_path.parents[0], 'sql_scripts', script_file_name)
 
         file = open(file_path,'r')
-    except OSError:
-            print(OSError)
+    except OSError as e:
+            if hasattr(e, 'message'):
+                print(e.message)
+            else:
+                print(e)
+            err_msg = 'Unable to open file: ' + script_file_name 
+            sys.exit(err_msg)
     return file
 
 def get_download_dir_path():

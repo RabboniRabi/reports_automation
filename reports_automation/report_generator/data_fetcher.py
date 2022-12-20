@@ -2,15 +2,16 @@
 This module contains functions to fetch raw data
 """
 
+import os
 import sys
 sys.path.append('../')
 
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 
-
 import pandas as pd
 
+import config_reader
 
 
 def get_data_from_config(source_config_dict, save_source=False):
@@ -34,11 +35,18 @@ def get_data_from_config(source_config_dict, save_source=False):
 
     Returns
     -------
-        A dataframe with the raw data based on the source_config
+    Raw data as a Pandas DataFrame object
     """
 
     # Read the database connection credentials
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+
+    df_data = None
+
+    if source_config_dict is None:
+        # No source configuration was found
+        sys.exit('The provided source configuration is empty')
+
 
     # If query file name is given in source configuration
     if "query_file_name" in source_config_dict:
@@ -55,8 +63,17 @@ def get_data_from_config(source_config_dict, save_source=False):
     elif "source_file_name" in source_config_dict:
 
         # Fetch from Excel source data location
-        source_file_name = source_config_dict.get('source_file_name')
-        df_data = pd.read_excel(source_file_name,'r')
+        source_file_name = source_config_dict['source_file_name']
+        try:
+            sheet_name = source_config_dict['source_sheet_name']
+            skip_rows = source_config_dict['skip_rows']
+        except KeyError as err:
+            err_msg = 'Missing configurations in: ' + str(source_config_dict)
+            sys.exit(err_msg)
+        # The file is assumed to be in the current month's source data folder
+        file_path = os.path.join(file_utilities.get_curr_month_source_data_dir_path(), source_file_name)
+        
+        df_data = pd.read_excel(file_path, sheet_name, skiprows=skip_rows)
     else:
         # No source configuration was found
         sys.exit('No source configuration found')
@@ -77,10 +94,36 @@ def get_data(report_code, save_source=False):
 
     Parameters
     ----------
-    report_code
-    save_source
+    report_code: str
+        The name/code of the report/metric to fetch the data for
+    save_source: bool
+        Flag indicating if a copy of data fetched from database needs to be saved.
+        To be used within the application. Default is False.
 
     Returns
     -------
-
+    Raw data as a Pandas DataFrame object
     """
+    # Get the overall configuration for the report
+    config = config_reader.get_config(report_code)
+
+    # Get the source data configuration for the report
+    source_config = config.get('source_config')
+
+    # Get the data
+    df_data = get_data_from_config(source_config, save_source)
+
+    return df_data
+
+
+# For testing
+if __name__ == "__main__":
+    # Declare a source config
+    source_config = {
+            "source_file_name" : "Pet-to-school-Mapping-Rpt.xlsx",
+            "source_sheet_name" : "Report",
+            "skip_rows" : 4
+        }
+    #df_raw_data = get_data_from_config(source_config)
+    df_raw_data = get_data('PET')
+    print('columns of df_raw_data fetched: ', df_raw_data.columns.to_list())
