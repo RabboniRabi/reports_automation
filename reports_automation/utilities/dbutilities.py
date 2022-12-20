@@ -132,9 +132,12 @@ def fetch_data_as_df (credentials_dict, script_file_name, params=None):
     query = file_utilities.open_script(script_file_name).read()
 
     print('Executing Query...')
-    df_data = pd.read_sql_query(query, connection, params) 
-    print('Query Execution Successful')
-
+    try:
+        df_data = pd.read_sql_query(query, connection, params) 
+        print('Query Execution Successful')
+    except Error as err:
+            print(f'Error: ', err)
+            
     # Close the database connection
     connection.close()
 

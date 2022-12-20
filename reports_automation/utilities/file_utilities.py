@@ -69,11 +69,13 @@ def open_script(script_file_name):
     Returns:
     -------
     """
-    curr_dir_path = Path(os.getcwd())
-    file_path = os.path.join(curr_dir_path.parents[0], 'sql_scripts', script_file_name)
+    try:
+        curr_dir_path = Path(os.getcwd())
+        file_path = os.path.join(curr_dir_path.parents[0], 'sql_scripts', script_file_name)
 
-    file = open(file_path,'r')
-
+        file = open(file_path,'r')
+    except OSError:
+            print(OSError)
     return file
 
 def get_download_dir_path():
@@ -99,6 +101,9 @@ def get_reports_dir_path():
     # Get the path to parent three levels up
     parent_dir_three_lvls_up = curr_dir_path.parents[2]
     dir_path = os.path.join(parent_dir_three_lvls_up, 'reports')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
     return dir_path
 
 
@@ -112,6 +117,9 @@ def get_gen_reports_dir_path():
     """    
 
     dir_path = os.path.join(get_reports_dir_path(), 'generated')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
     return dir_path
 
 
@@ -125,6 +133,9 @@ def get_mapping_data_dir_path():
     """    
 
     dir_path = os.path.join(get_reports_dir_path(), 'mapping_data')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
     return dir_path
 
 def get_source_data_dir_path():
@@ -137,6 +148,28 @@ def get_source_data_dir_path():
     """    
 
     dir_path = os.path.join(get_reports_dir_path(), 'source_data')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+    return dir_path
+
+def get_curr_month_source_data_dir_path():
+    """
+    Function to get the directory path to the current month's source data.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the current month's CEO reports directory
+    """
+    # Get the current month and year
+    curr_month_year = datetime.now().strftime('%h_%y')
+    dir_path = os.path.join(get_source_data_dir_path(), curr_month_year)
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
     return dir_path
 
 
