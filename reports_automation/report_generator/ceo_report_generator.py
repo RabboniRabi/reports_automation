@@ -12,11 +12,12 @@ This will entail 2 main functions:
             review_view_utilities.prepare_report_for_review(elementary_report)
             review_view_utilities.prepare_report_for_review(secondary_report)
 
-
-
-
     def get_ceo_report_raw_data(code, temp, param, save_source = False):
-        raw_data = data_fetcher.get_data(config_code)
+        config = config_reader.get_config(code)
+        source_config = config['source_config']
+        raw_data = data_fetcher.get_data_from_config(source_config)
+
+a source config - > there are 2 options in the json -> if query name except OSerror -> excel file name -> except error in input
 
 
 
