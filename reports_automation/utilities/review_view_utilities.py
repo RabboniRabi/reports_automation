@@ -17,6 +17,7 @@ import utilities.file_utilities as file_utilities
 import utilities.subtotal_utilities as subtotal_utilities
 import utilities.outlines_utilities as outlines_utilities
 import utilities.ranking_utilities as ranking_utilities
+import utilities.format_utilities as format_utilities
 
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl import Workbook
@@ -94,8 +95,7 @@ def prepare_report_for_review(df, report_config_dict, sheet_name, file_name, dir
 
 
     # Compute sub-totals and insert into provided dataframe
-    subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, \
-        level_subtotal_cols_dict, agg_cols_func_dict, text_append_dict)
+    subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, report_config_dict)
 
     # Get the updated DataFrame object - with the subtotals inserted
     updated_df = subtotals_result_dict['updated_df']
@@ -109,6 +109,8 @@ def prepare_report_for_review(df, report_config_dict, sheet_name, file_name, dir
     # Convert the dataframe to an openpyxl object
     wb = Workbook()
     ws = wb.active
+    ws.title = sheet_name
+    
     for r in dataframe_to_rows(updated_df, index=True, header=True):
         ws.append(r)
 
@@ -120,20 +122,49 @@ def prepare_report_for_review(df, report_config_dict, sheet_name, file_name, dir
     # Save the data with subtotals and outlines
     wb.save(write_path)
 
+    # Commenting out the section below as converting to xlsxWriter for formatting loses subtotaling and outlines.
+
     # Read the data again as XlsxWriter object
     # Needed to apply formatting on the data using XlsxWriter library functions
-    df_subtotaled = pd.read_excel(write_path)
+    #df_subtotaled = pd.read_excel(write_path)
 
-    # The cells with ranking values in subtotal rows will be blank
-    # Updating those rows
-    ranking_args_dict = report_config_dict['ranking_args']
-    ranking_args_dict['sort'] = False
+    # Get an xlsx writer object of the data
+    #writer = file_utilities.get_xlsxwriter_obj({sheet_name: df_subtotaled}, file_name, file_path=dir_path)
     
-    data_level_ranking = ranking_utilities.calc_ranking(df_subtotaled, None, ranking_args_dict)
+    # Get the formatting dictionary
+    #format_dict = report_config_dict['format_dict']
+    # If formatting dictionary has been provided
+    #if (format_dict):
+    """# Get the conditional format configuaration
+    cond_format = format_dict['conditional_format']
+    if cond_format:
+        format = cond_format['format']
+        # Apply this formatting to given list of columns
+        for col_name in cond_format['columns']:
+            # Get the index of the column
+            col_index = df_subtotaled.columns.get_loc(col_name)
+            no_of_rows = df_subtotaled.shape[0]
+            # Apply the conditional formatting
+            format_utilities.apply_cond_frmt(writer, sheet_name, col_index, format, no_of_rows)"""
+    
+    """# Get the cell format configuration
+    format_cells = format_dict['format_cells']
+    if format_cells:
+        format = format_cells['format']
+        # Apply cell formatting to given list of columns
+        for col_name in format_cells['columns']:
+            # Get the index of the column
+            col_index = df_subtotaled.columns.get_loc(col_name)
+            # Apply the cell formatting
+            format_utilities.apply_cell_formatting(writer, sheet_name, col_index, format)"""
+    
+    # Save the formatting changes
+    #writer.save()
 
-    print('data_level_ranking: ', data_level_ranking)
 
-    file_utilities.save_to_excel({'Test': data_level_ranking}, 'Test review view.xlsx')
+    
+
+    
 
 
     #print('df_subtotaled read columns: ', df_subtotaled.columns.to_list())

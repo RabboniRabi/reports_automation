@@ -211,6 +211,14 @@ def run():
                     cols.deo_sec_rank: "mean"
                 },
                 "text_append_dict" : {cols.deo_name_sec: "Total"}
+            },
+            "format_dict" : {
+                
+                "format_cells" : {
+                    "columns" : [cols.perc_fully_mapped],
+                    "format" : {"num_format": "0.00%"}
+
+                }
             }
     }
         
