@@ -5,6 +5,7 @@
         "report_desc": "PET to school mapping report",
         "generate_report": true,
         "source_config" : {
+            "query_file_name" : "",
             "source_file_name" : "Pet-to-school-Mapping-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 4

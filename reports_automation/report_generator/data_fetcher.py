@@ -35,7 +35,7 @@ def get_data_from_config(source_config_dict, save_source=False):
 
     Returns
     -------
-    Raw data as a Pandas DataFrame object
+        A dataframe with the raw data based on the source_config
     """
 
     # Read the database connection credentials
@@ -58,6 +58,7 @@ def get_data_from_config(source_config_dict, save_source=False):
             # If save source flag has been enabled, save to the source data folder
             if save_source:
                 file_utilities.save_to_excel({query_file_name: df_data}, query_file_name + '.xlsx')
+            return df_data
         except Exception as err:
             print(f'Error: ', err)
     elif "source_file_name" in source_config_dict:
@@ -72,7 +73,7 @@ def get_data_from_config(source_config_dict, save_source=False):
             sys.exit(err_msg)
         # The file is assumed to be in the current month's source data folder
         file_path = os.path.join(file_utilities.get_curr_month_source_data_dir_path(), source_file_name)
-        
+
         df_data = pd.read_excel(file_path, sheet_name, skiprows=skip_rows)
     else:
         # No source configuration was found
