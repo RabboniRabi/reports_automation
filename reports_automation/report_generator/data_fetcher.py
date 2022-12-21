@@ -8,10 +8,12 @@ sys.path.append('../')
 
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
+import utilities.utilities as utilities
 
 import pandas as pd
 
 import config_reader
+
 
 
 def get_data_from_config(source_config_dict, save_source=False):
@@ -52,12 +54,16 @@ def get_data_from_config(source_config_dict, save_source=False):
     if "query_file_name" in source_config_dict:
 
         query_file_name = source_config_dict.get('query_file_name')
+
+
         try:
             # Fetch the data from the query
             df_data = dbutilities.fetch_data_as_df(credentials_dict, query_file_name)
             # If save source flag has been enabled, save to the source data folder
             if save_source:
-                file_utilities.save_to_excel({query_file_name: df_data}, query_file_name + '.xlsx')
+                save_file_name = query_file_name.split(".")[0] +'_'+utilities.get_today_date() + '.xlsx'
+                file_utilities.save_to_excel({query_file_name: df_data}, save_file_name,
+                                dir_path=file_utilities.get_curr_month_source_data_dir_path())
             return df_data
         except Exception as err:
             print(f'Error: ', err)
@@ -120,11 +126,11 @@ def get_data(report_code, save_source=False):
 # For testing
 if __name__ == "__main__":
     # Declare a source config
-    source_config = {
+    """source_config = {
             "source_file_name" : "Pet-to-school-Mapping-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 4
-        }
+        }"""
     #df_raw_data = get_data_from_config(source_config)
-    df_raw_data = get_data('PET')
+    df_raw_data = get_data('PET',save_source=True)
     print('columns of df_raw_data fetched: ', df_raw_data.columns.to_list())

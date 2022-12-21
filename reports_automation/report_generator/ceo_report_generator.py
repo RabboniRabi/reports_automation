@@ -38,7 +38,7 @@ a source config - > there are 2 options in the json -> if query name except OSer
 
         B. get_ceo_report(report_code,report_type,report_level):
             (file path: reports > ceo_report_generator.py)
-        ---------------------------------------------------------
+        -------------------------l--------------------------------
             Available report_type-
                     (i) elementary
                     (ii) secondary
