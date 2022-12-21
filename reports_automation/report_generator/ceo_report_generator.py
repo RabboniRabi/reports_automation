@@ -5,6 +5,7 @@ This will entail 2 main functions:
     1. Run all the code and generator all the reports in one go: generate_all():
 
     generate_all():
+        active_configs = config_reader.get_Active_configs()
         for each active config
             ceo_raw_data = get_ceo_report_raw_data(config[code], 'raw data with brc-crc mapping', save_source=True)
             elementary_report = get_ceo_report(config[code], 'Elementary', 'ranked')
@@ -75,7 +76,7 @@ Ripple Effects:
 The module will work as blocks as mentioned above. The following is the list of blocks/functions that will collectively
 arrive at the CEO Review Reports in a single file:
 
-1. get_source_data():
+1. get_data_from_config(source_config_dict, save_source=False):
     Function:
         This function would get the raw data from either the database or an excel file.
         If the query does not run, it would expect an excel file, all of the raw data will be saved in a folder.
