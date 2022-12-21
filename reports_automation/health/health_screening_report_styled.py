@@ -136,13 +136,15 @@ def get_schools_screening_status(df, group_level):
 def main():
     
     # Read the database connection credentials
-    credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+    #credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Get the students' health screening details from the database as a Pandas DataFrame object
-    df_report = dbutilities.fetch_data_as_df(credentials_dict, 'health_screening_status.sql')
+    #df_report = dbutilities.fetch_data_as_df(credentials_dict, 'health_screening_status.sql')
 
     # Temporarily reading from excel
     #df_report = pd.read_excel(r'/home/rabboni/Downloads/health.xlsx', sheet_name='Report')
+    file_name = file_utilities.user_sel_excel_filename()
+    df_report = pd.read_excel(file_name, sheet_name='Report', skiprows=4)
 
 
     # Get the students' health screening details at district level

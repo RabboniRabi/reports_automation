@@ -131,7 +131,7 @@ def _get_data_with_brc_mapping():
 
 
     # Use the fetched data for testing, instead of reading from db
-    file_path = os.path.join(file_utilities.get_source_data_dir_path(), 'CWSN-Report.xlsx')
+    file_path = os.path.join(file_utilities.get_curr_month_source_data_dir_path(), 'CWSN-Report.xlsx')
     df_report = pd.read_excel(file_path, sheet_name='Report', skiprows=4)
 
     # As the data is at student level, group the data to school level and count values needed for report
