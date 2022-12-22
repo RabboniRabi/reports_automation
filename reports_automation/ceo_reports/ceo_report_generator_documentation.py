@@ -1,15 +1,3 @@
-
-import os
-import sys
-sys.path.append('../')
-
-import utilities.file_utilities as file_utilities
-import utilities.report_utilities as report_utilities
-import utilities.dbutilities as dbutilities
-import utilities.utilities as utilities
-import report_generator.data_fetcher as data_fetcher
-import utilities.column_names_utilities as cols
-import pandas as pd
 """
 ========================================================================================================================
 Module with functions will be the master code that will run the CEO reports in blocks/functions of code.
@@ -83,15 +71,12 @@ Ripple Effects:
     1. The ranking master would get updated each time a report is generated. This will happen only when the generate_all
     function is run. As this would affect the rankings for each month, and must reflect the rank that was provided in
     the actual report shared.
-    
+
 ========================================================================================================================
 The module will work as blocks as mentioned above. The following is the list of blocks/functions that will collectively
 arrive at the CEO Review Reports in a single file:
-"""
 
-
-def get_data_from_config(source_config_dict, save_source=False):
-    """
+1. get_data_from_config(source_config_dict, save_source=False):
     Function:
         This function would get the raw data from either the database or an excel file.
         If the query does not run, it would expect an excel file, all of the raw data will be saved in a folder.
@@ -104,38 +89,25 @@ def get_data_from_config(source_config_dict, save_source=False):
 
         When generate_all is called,
         get_source_data will run sequentially across the whole list as a loop, completing each report one by one.
-        
-        Parameters: 
-        
+
+        Parameters:
+
     Returns:
         A dataframe object(df) with the raw data for each report without any processing (depending on which of the 2
         main functions are called).
-    """
-
-
-
-    raw_data = report_generator.data_fetcher.get_data_from_config(source_config_dict, save_source=False)
-
-    return raw_data
-
-
-"""
 ------------------------------------------------------------------------------------------------------------------------
 2. pre_processing_data_before_brc_merge():
     Function:
         Using the df returned by get_source_data(), this function would ensure that the raw data is crunched down to a
-        school level (using UDISE Code as the primary key). This would vary depending on level of the source data. 
-        
+        school level (using UDISE Code as the primary key). This would vary depending on level of the source data.
+
         Parameters:
 
     Returns:
-        The final df that will be used before mapping with the master BRC-CRC file. 
-
+        The final df that will be used before mapping with the master BRC-CRC file.
 ------------------------------------------------------------------------------------------------------------------------
-"""
-def map_data_with_brc(pre_processed_data, merge_dict):
-    """
-Function:
+3. map_data_with_brc(pre_processed_data, merge_dict):
+    Function:
         This function maps the raw data with BRC CRC mapping. The join is done on school the UDISE Code.
 
         Parameters:
@@ -146,29 +118,12 @@ Function:
                 Eg: merge_dict = {
                     'on_values' : ['district', 'block','school_name', 'school_category', 'udise_col'],
                     'how' : 'outer'
-          Returns:
+                        }
+
+    Returns:
         The mapped df updated with BRC-CRC mapping at a school level.
-                   }
-"""
-    merge_dict = {
-        'on_values': [cols.district_name, cols.block_name, cols.school_name, cols.school_category, cols.udise_col],
-        'how': 'left'}
-    brc_master_drop_cols = ['Cluster ID', 'CRC Udise', 'CRC School Name', 'BRTE']
-    brc_master_sheet = utilities.report_utilities.get_brc_master()
-    brc_master_sheet = brc_master_sheet.drop(brc_master_drop_cols, axis=1)
-    report_summary = pd.merge(pre_processed_data, brc_master_sheet,on=merge_dict['on_values'],how=merge_dict['how'])
 
-    # Rearrage the columns so that DEO and BEO information comes at the begining of the data
-    # Define rearranged order of columns
-    list_of_cols = [cols.district_name] + [cols.deo_name_sec, cols.deo_name_elm, cols.beo_user, cols.beo_name, cols.school_level, cols.school_category]\
-                     +  pre_processed_data.columns.to_list()
 
-    # Get the unique list of columns in the same order
-    list_of_cols = pd.unique(pd.Series(list_of_cols)).tolist()
-
-    raw_data_with_brc_mapping = report_summary.reindex(columns=list_of_cols)
-    return raw_data_with_brc_mapping
-"""
 ------------------------------------------------------------------------------------------------------------------------
 4. post_processing_data_after_brc_merge():
     Function:
