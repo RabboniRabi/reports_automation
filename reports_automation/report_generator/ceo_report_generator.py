@@ -32,7 +32,50 @@ This will entail 2 main functions:
 
 a source config - > there are 2 options in the json -> if query name except OSerror -> excel file name -> except error in input
 
+"""
 
+def get_ceo_report_raw_data(source_config_dict,raw_data_level):
+    """
+    Function:
+        This function would get the raw data from either the database or an excel file.
+        If the query does not run, it would expect an excel file, all of the raw data will be saved in a folder.
+        A specific code and source file information will be stored as dictionary.
+        For example: If the students ageing in common pool report is requested, the code will be CP in the dictionary.
+
+        When generate_ceo_report is called:
+        get_source_data will run only for the specific code mentioned in the function. To continue the example above,
+        only the raw data for the common pool report report will be generated.
+
+        When generate_all is called,
+        get_source_data will run sequentially across the whole list as a loop, completing each report one by one.
+
+        Parameters:
+
+    Returns:
+        A dataframe object(df) with the raw data for each report without any processing (depending on which of the 2
+        main functions are called).
+    """
+
+    if raw_data_level is "raw data":
+        raw_data = report_generator.data_fetcher.get_data_from_config(source_config_dict, save_source=False)
+
+        return raw_data
+
+    elif raw_data_level is "processed data":
+
+        pre_processed_Data = file_utilities.get_ceo_rpts_dir_path(open(source_config_dict+'.py'))
+
+        return
+
+
+
+
+
+
+
+
+
+"""
 
     2. Generate Generate specific reports by calling a specific definition:
 
@@ -91,32 +134,9 @@ arrive at the CEO Review Reports in a single file:
 
 
 def get_data_from_config(source_config_dict, save_source=False):
-    """
-    Function:
-        This function would get the raw data from either the database or an excel file.
-        If the query does not run, it would expect an excel file, all of the raw data will be saved in a folder.
-        A specific code and source file information will be stored as dictionary.
-        For example: If the students ageing in common pool report is requested, the code will be CP in the dictionary.
-
-        When generate_ceo_report is called:
-        get_source_data will run only for the specific code mentioned in the function. To continue the example above,
-        only the raw data for the common pool report report will be generated.
-
-        When generate_all is called,
-        get_source_data will run sequentially across the whole list as a loop, completing each report one by one.
-        
-        Parameters: 
-        
-    Returns:
-        A dataframe object(df) with the raw data for each report without any processing (depending on which of the 2
-        main functions are called).
-    """
 
 
 
-    raw_data = report_generator.data_fetcher.get_data_from_config(source_config_dict, save_source=False)
-
-    return raw_data
 
 
 """
