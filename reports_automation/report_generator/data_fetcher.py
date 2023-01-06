@@ -32,16 +32,14 @@ def get_data_from_config(source_config_dict, save_source=False):
         pulled.
 
     save_source: bool
-            This parameter would by default not save the raw data pulled by the function. If the raw data needs to be
-            saved, the flag should be true and the data will be to the mentioned folder.
+        Flag to indicate if a copy of the source data pulled from the database needs to be saved.
+        Default is False. If the raw data needs to be saved, the flag should be true 
+        and the data will be saved to the current month's source data folder.
 
     Returns
     -------
         A dataframe with the raw data based on the source_config
     """
-
-    # Read the database connection credentials
-    credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     df_data = None
 
@@ -57,6 +55,8 @@ def get_data_from_config(source_config_dict, save_source=False):
 
 
         try:
+            # Read the database connection credentials
+            credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
             # Fetch the data from the query
             df_data = dbutilities.fetch_data_as_df(credentials_dict, query_file_name)
             # If save source flag has been enabled, save to the source data folder
