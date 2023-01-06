@@ -1,17 +1,12 @@
 """
-Module with functions to create CWSN reports for CEO reports.
-This module contains functions to create reports for:
-    - UDID numbers
-    - Accounts
+Module with function for custom pre-processing of CWSN raw data
 """
 
-import os
+
 import sys
 sys.path.append('../')
 
-import utilities.file_utilities as file_utilities
-import utilities.report_utilities as report_utilities
-import utilities.format_utilities as format_utilities
+
 import utilities.utilities as utilities
 import utilities.column_names_utilities as cols
 
@@ -29,42 +24,12 @@ id_columns_regex_dict = {
         'UDID': 'TN.'  # Accept only values starting with TN
     }
 
-merge_dict = {
-    'on_values' : [cols.district_name, cols.block_name, cols.school_name, cols.school_category, cols.udise_col],
-    'how' : 'left'
-}
 
-# Define the grouping levels for elementary report
-elem_rep_group_level = [cols.district_name, cols.block_name, cols.beo_user, cols.beo_name, \
-cols.deo_name_elm, cols.school_category, cols.school_level]
-
-# Define the grouping levels for secondary report
-scnd_rep_group_level = [cols.district_name, cols.deo_name_sec, \
-cols.school_category, cols.school_level]
-
-# Build the arguments dictionary to do ranking for the report
-agg_dict = {
-        cols.cwsn_tot: 'sum', 
-        cols.stdnts_in_school: 'sum', 
-        cols.stdnts_in_cp : 'sum',
-        cols.nid_count : 'sum',
-        cols.udid_count : 'sum',
-        cols.with_acct: 'sum',
-        cols.witht_acct : 'sum'
-    }
-ranking_args_dict = {
-    'agg_dict': agg_dict,
-    'ranking_val_desc': cols.perc_students_with_UDID,
-    'num_col': cols.udid_count,
-    'den_col': cols.cwsn_tot,
-    'sort': True,
-    'ascending': False
-}
 
 
 def _get_grouping_level_wise_IDs_issued_count(df, group_levels, columns_regex_dict):
     """
-    Function to get the grouping levels wise count of students with disability IDs.
+    Internal function to get the grouping levels wise count of students with disability IDs.
 
     Parameters:
     -----------
@@ -94,7 +59,7 @@ def _get_grouping_level_wise_IDs_issued_count(df, group_levels, columns_regex_di
 
 def _get_grouping_level_wise_student_count(df, group_levels, student_count_col):
     """
-    Function to get the grouping levels wise count of CWSN students
+    Internal function to get the grouping levels wise count of CWSN students
 
     Parameters:
     -----------
@@ -115,40 +80,37 @@ def _get_grouping_level_wise_student_count(df, group_levels, student_count_col):
 
     return df_grouped    
 
-def _get_data_with_brc_mapping():
+def pre_process_BRC_merge(raw_data):
     """
-    Function to fetch the CWSN data merged with BRC-CRC mapping data
+    Function to process the CWSN raw data before merging with BRC-CRC mapping data
+
+    Parameters:
+    ----------
+    raw_data: Pandas DataFrame
+        The raw CWSN data
 
     Returns:
     -------
-    DataFrame object of CWSN data updated with BRc-CRC mapping
+    DataFrame object of CWSN data processed and ready for mapping with BRC-CRC data
     """
-    # Read the database connection credentials
-    #credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
-    # Get the students' health screening details from the database as a Pandas DataFrame object
-    #df_report = dbutilities.fetch_data_as_df(credentials_dict, 'to_be_filled.sql')
+    print('oooo, I getcalled!')
 
-
-    # Use the fetched data for testing, instead of reading from db
-    file_path = os.path.join(file_utilities.get_curr_month_source_data_dir_path(), 'CWSN-Report.xlsx')
-    df_report = pd.read_excel(file_path, sheet_name='Report', skiprows=4)
-
-    # As the data is at student level, group the data to school level and count values needed for report
+    # As the raw data is at student level, group the data to school level and count values needed for report
 
     # Get school level wise total students count
-    school_wise_total_students_count = _get_grouping_level_wise_student_count (df_report, initial_group_levels, cols.cwsn_name)
+    school_wise_total_students_count = _get_grouping_level_wise_student_count (raw_data, initial_group_levels, cols.cwsn_name)
 
     # Get the school level wise count of students in school and in common pool
     school_wise_status_count = utilities.get_grouping_level_wise_col_values_count(
-        df_report, initial_group_levels, cols.cwsn_status, student_statuses)
+        raw_data, initial_group_levels, cols.cwsn_status, student_statuses)
 
     # Get block level wise count of valid student IDs
-    school_wise_IDs_issued_count = _get_grouping_level_wise_IDs_issued_count(df_report, initial_group_levels,\
+    school_wise_IDs_issued_count = _get_grouping_level_wise_IDs_issued_count(raw_data, initial_group_levels,\
          id_columns_regex_dict)    
 
     # Get the school level wise count of students with account
-    school_wise_has_account_count = pd.pivot_table(df_report, index=initial_group_levels, columns=cols.cwsn_has_acct,
+    school_wise_has_account_count = pd.pivot_table(raw_data, index=initial_group_levels, columns=cols.cwsn_has_acct,
                 aggfunc='size', fill_value=0, sort=False).reset_index()
 
 
@@ -168,108 +130,6 @@ def _get_data_with_brc_mapping():
         cols.no_col : cols.witht_acct
         }, inplace = True)
 
-    # Update the data with the BRC-CRC mapping
-    data_with_brc_mapping = report_utilities.map_data_with_brc(df_data_schl_lvl, merge_dict)
-
-    return data_with_brc_mapping
+    return df_data_schl_lvl
 
 
-
-def get_cwsn_elementary_report(df_data = None):
-    """
-    Function to get the CWSN elementary level report
-    
-    Parameters:
-    -----------
-    df_data: Pandas DataFrame
-        The school level CWSN data updated with BRC mapping. (Default is None)
-
-    Returns:
-    -------
-    DataFrame object of elementary students' CWSN report
-    """
-
-    # If no data was passed, fetch it
-    if (df_data is None):
-        # Get the BRC-CRC mapped health data
-        df_data = _get_data_with_brc_mapping()
-
-    # Filter the data to Elementary school type
-    df_data = df_data[df_data[cols.school_level].isin([cols.elem_schl_lvl])]
-
-    # Group the data to school category level for elementary reports generation
-    #data_for_elem = df_data.groupby(elem_rep_group_level, as_index=False).agg(agg_dict)
-
-    # Replace the line below with the line above when restoring BEO level ranking
-    data_for_elem = df_data.groupby([cols.district_name, cols.deo_name_elm, cols.school_category, cols.school_level], as_index=False).agg(agg_dict)
-
-    # Get the Elementary report
-    elem_report = report_utilities.get_elementary_report(\
-        data_for_elem, 'percent_ranking', ranking_args_dict, 'CWSN', 'Data Quality')
-
-    return elem_report    
-
-def get_cwsn_secondary_report(df_data = None):
-    """
-    Function to get the CWSN secondary level report
-    
-    Parameters:
-    -----------
-    df_data: Pandas DataFrame
-        The school level CWSN data updated with BRC mapping. (Default is None)
-
-    Returns:
-    -------
-    DataFrame object of secondary students' CWSN report
-    """
-
-    # If no data was passed, fetch it
-    if (df_data is None):
-        # Get the BRC-CRC mapped health data
-        df_data = _get_data_with_brc_mapping()    
-
-    # Filter the data to Secondary school type
-    df_data = df_data[df_data[cols.school_level].isin([cols.scnd_schl_lvl])]    
-
-    # Group the data to school category level for secondary reports generation
-    data_for_secnd = df_data.groupby(scnd_rep_group_level, as_index=False).agg(agg_dict)
-
-    # Get the Secondary report
-    secnd_report = report_utilities.get_secondary_report(\
-        data_for_secnd, 'percent_ranking', ranking_args_dict, 'CWSN', 'Data Quality')
-
-    return secnd_report
-    
-
-
-def run():
-    """
-    Function to call other internal functions and create the Health screening status reports
-    """
-
-    # Get the CWSN data updated with BRC mapping
-    data_with_brc_mapping = _get_data_with_brc_mapping()
-
-    # Get the elementary report
-    elem_report = get_cwsn_elementary_report(data_with_brc_mapping.copy())
-
-    # Get the secondary report
-    secnd_report = get_cwsn_secondary_report(data_with_brc_mapping.copy())
-
-    # Save the elementary report
-    """file_utilities.save_to_excel({'CWSN Elementary Report' : elem_report}, 'CWSN Elementary Report.xlsx',\
-             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   """
-
-    format_utilities.format_col_to_percent_and_save(elem_report, cols.perc_students_with_UDID, 'CWSN Elementary Report',
-            'CWSN Elementary Report.xlsx', dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())   
-
-    # Save the secondary report
-    """file_utilities.save_to_excel({'CWSN Secondary Report' : secnd_report}, 'CWSN Secondary Report.xlsx',\
-             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())  """ 
-
-    format_utilities.format_col_to_percent_and_save(secnd_report, cols.perc_students_with_UDID, 'CWSN Secondary Report',
-            'CWSN Secondary Report.xlsx', dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())
-
-
-if __name__ == "__main__":
-    run()

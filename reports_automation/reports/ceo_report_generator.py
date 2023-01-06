@@ -10,6 +10,7 @@ import utilities.utilities as utilities
 import data_fetcher
 import utilities.column_names_utilities as cols
 import pandas as pd
+import importlib
 """
 ========================================================================================================================
 Module with functions will be the master code that will run the CEO reports in blocks/functions of code.
@@ -34,38 +35,54 @@ a source config - > there are 2 options in the json -> if query name except OSer
 
 """
 
-def get_ceo_report_raw_data(source_config_dict,raw_data_level):
+def get_ceo_report_raw_data(report_config: dict, save_source=False):
     """
-    Function:
-        This function would get the raw data from either the database or an excel file.
-        If the query does not run, it would expect an excel file, all of the raw data will be saved in a folder.
-        A specific code and source file information will be stored as dictionary.
-        For example: If the students ageing in common pool report is requested, the code will be CP in the dictionary.
+    Function to fetch the raw data for CEO reports. This data would be
+    the raw data processed and merged with BRC-CRC mapping data.
+    
+    The processing can be pre-processing, post-processing or both. 
+    This is determined in the configuration provided. 
 
-        When generate_ceo_report is called:
-        get_source_data will run only for the specific code mentioned in the function. To continue the example above,
-        only the raw data for the common pool report report will be generated.
+    The function calls the processing functions in the corresponding module for the report
+    as pre and post processing wil be unique to each report
 
-        When generate_all is called,
-        get_source_data will run sequentially across the whole list as a loop, completing each report one by one.
-
-        Parameters:
+    Parameters:
+    ----------
+    report_config: dict
+        Dictionary with the report configuration information
 
     Returns:
-        A dataframe object(df) with the raw data for each report without any processing (depending on which of the 2
-        main functions are called).
+    -------
+        Raw data processed and merged with BRC-CRC mapping as a DataFrame object.
     """
 
-    if raw_data_level is "raw data":
-        raw_data = data_fetcher.get_data_from_config(source_config_dict, save_source=False)
+    source_config = report_config['source_config']
+    df_data = data_fetcher.get_data_from_config(source_config, save_source)
 
-        return raw_data
+    report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
 
-    elif raw_data_level is "processed data":
+    # Check if pre-processing before merging with BRC-CRC mapping is required
+    if (report_config['pre_process_brc_merge']):
+        print('Going to pre-process data')
+        # Call the custom pre-processing function for the report
+        pre_proc_func = getattr(report_module_name, 'pre_process_BRC_merge')
+        df_data = pre_proc_func(df_data)
 
-        pre_processed_data = file_utilities.get_ceo_rpts_dir_path(open(source_config_dict+'.py'))
+    # Merge the data with BRC-CRC mapping
+    brc_merge_config = report_config['brc_merge_config']
+    if brc_merge_config is None:
+        # No BRC merge configuration was found
+        sys.exit('BRC Merge configuration not provided for report: ', report_config['report_name'])
+    print('brc_merge_config join values: ', brc_merge_config['join_on'])
+    df_data = report_utilities.map_data_with_brc(df_data, brc_merge_config)
 
-        return pre_processed_data
+     # Check if post-processing after merging with BRC-CRC mapping is required
+    if (report_config['post_process_brc_merge']):
+        # Call the custom post-processing function for the report
+        post_proc_func = getattr(report_module_name, 'post_process_BRC_merge')
+        df_data = post_proc_func(df_data)   
+
+    return df_data
 
 
 
@@ -133,55 +150,21 @@ arrive at the CEO Review Reports in a single file:
 
 def get_data_from_config(source_config_dict, save_source=False):
 
-"""
-------------------------------------------------------------------------------------------------------------------------
-2. pre_processing_data_before_brc_merge():
-    Function:
-        Using the df returned by get_source_data(), this function would ensure that the raw data is crunched down to a
-        school level (using UDISE Code as the primary key). This would vary depending on level of the source data. 
-        
-        Parameters:
-
-    Returns:
-        The final df that will be used before mapping with the master BRC-CRC file. 
-
-------------------------------------------------------------------------------------------------------------------------
-"""
-def map_data_with_brc(pre_processed_data, merge_dict):
     """
-Function:
-        This function maps the raw data with BRC CRC mapping. The join is done on school the UDISE Code.
+    ------------------------------------------------------------------------------------------------------------------------
+    2. pre_processing_data_before_brc_merge():
+        Function:
+            Using the df returned by get_source_data(), this function would ensure that the raw data is crunched down to a
+            school level (using UDISE Code as the primary key). This would vary depending on level of the source data. 
+            
+            Parameters:
 
-        Parameters:
-        raw_data: Pandas DataFrame
-            The raw data to be updated with brc-crc mapping.
-        merge_dict: dict
-            A merge param - merge param value key-value pair to be used to specify the type of merging
-                Eg: merge_dict = {
-                    'on_values' : ['district', 'block','school_name', 'school_category', 'udise_col'],
-                    'how' : 'outer'
-          Returns:
-        The mapped df updated with BRC-CRC mapping at a school level.
-                   }
-"""
-    merge_dict = {
-        'on_values': [cols.district_name, cols.block_name, cols.school_name, cols.school_category, cols.udise_col],
-        'how': 'left'}
-    brc_master_drop_cols = ['Cluster ID', 'CRC Udise', 'CRC School Name', 'BRTE']
-    brc_master_sheet = utilities.report_utilities.get_brc_master()
-    brc_master_sheet = brc_master_sheet.drop(brc_master_drop_cols, axis=1)
-    report_summary = pd.merge(pre_processed_data, brc_master_sheet,on=merge_dict['on_values'],how=merge_dict['how'])
+        Returns:
+            The final df that will be used before mapping with the master BRC-CRC file. 
 
-    # Rearrage the columns so that DEO and BEO information comes at the begining of the data
-    # Define rearranged order of columns
-    list_of_cols = [cols.district_name] + [cols.deo_name_sec, cols.deo_name_elm, cols.beo_user, cols.beo_name, cols.school_level, cols.school_category]\
-                     +  pre_processed_data.columns.to_list()
+    ------------------------------------------------------------------------------------------------------------------------
+    """
 
-    # Get the unique list of columns in the same order
-    list_of_cols = pd.unique(pd.Series(list_of_cols)).tolist()
-
-    raw_data_with_brc_mapping = report_summary.reindex(columns=list_of_cols)
-    return raw_data_with_brc_mapping
 """
 ------------------------------------------------------------------------------------------------------------------------
 4. post_processing_data_after_brc_merge():
@@ -269,3 +252,31 @@ Function:
             The 2 final CEO Review Reports that will be extracted as excel files.
 ========================================================================================================================
 """
+
+# For testing
+if __name__ == "__main__":
+    """
+    Testing get_ceo_report_raw_data
+    """
+    # Declare a report configuration
+    report_config = {
+        "report_name": "cwsn",
+        "report_code" : "CWSN",
+        "report_desc": "CWSN CEO report",
+        "generate_report": True,
+        "source_config" : {
+            "source_file_name" : "CWSN-Report.xlsx",
+            "source_sheet_name" : "Report",
+            "skip_rows" : 4
+        },
+        "pre_process_brc_merge": True,
+        "brc_merge_config" : {
+            "join_on" : [cols.district_name, cols.block_name, cols.school_name, cols.school_category, cols.udise_col],
+            "merge_type" : "left"
+        },
+        "post_process_brc_merge" : False,
+    }
+
+    merged_data = get_ceo_report_raw_data(report_config)
+
+    file_utilities.save_to_excel({'Merged data' : merged_data}, 'Merged Data.xlsx')

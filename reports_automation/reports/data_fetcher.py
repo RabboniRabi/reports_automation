@@ -70,6 +70,7 @@ def get_data_from_config(source_config_dict, save_source=False):
     elif "source_file_name" in source_config_dict:
 
         # Fetch from Excel source data location
+        print('Reading data from Excel file...')
         source_file_name = source_config_dict['source_file_name']
         try:
             sheet_name = source_config_dict['source_sheet_name']
@@ -79,8 +80,9 @@ def get_data_from_config(source_config_dict, save_source=False):
             sys.exit(err_msg)
         # The file is assumed to be in the current month's source data folder
         file_path = os.path.join(file_utilities.get_curr_month_source_data_dir_path(), source_file_name)
-
+        
         df_data = pd.read_excel(file_path, sheet_name, skiprows=skip_rows)
+        print('Data read successful.')
     else:
         # No source configuration was found
         sys.exit('No source configuration found')
