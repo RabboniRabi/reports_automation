@@ -10,6 +10,8 @@
             "source_sheet_name" : "Report",
             "skip_rows" : 4
         },
+          "pre_process_brc_merge": true,
+          "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
             "grouping_cols" : ["cols.deo_name"],

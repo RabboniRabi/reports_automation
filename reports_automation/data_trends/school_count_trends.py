@@ -47,7 +47,7 @@ def day_wise_school_count_tracking(master_file_name, sheet_name, df_today, group
     df_today_grouped.loc['Grand Total'] = ['Grand Total', df_today_grouped[udise_col].sum()]
 
     # Rename the UDISE column with date + count string
-    df_today_grouped.rename(columns={udise_col: utilities.get_today_date() + ' count'}, inplace=True)
+    df_today_grouped.rename(columns={udise_col: utilities.get_today_date()}, inplace=True)
 
     if(os.path.exists(master_file_path)):
         # If the file exists, update and save the data with today's count
@@ -129,7 +129,7 @@ def day_wise_tracking(master_file_name, sheet_name, df_today, dist_col, udise_co
     return df_master
 
 
-def student_count_tracking(master_file_name, sheet_name, df_today, dist_col, udise_col,student_count_col):
+def student_count_tracking(master_file_name, sheet_name, df_today, group_levels, udise_col,student_count_col):
     """
     Function to track the count of students on the day the script is run.
     The function also updates the master tracking excel file with any new UDISE codes found.
@@ -168,7 +168,7 @@ def student_count_tracking(master_file_name, sheet_name, df_today, dist_col, udi
         # Create a new column to mark the presence of all UDISes fetched today as TRUE
         df_master = df_today.copy().groupby([dist_col,udise_col])[[student_count_col]].sum().reset_index()
 
-        df_master.rename(columns={student_count_col: today_date + ' count'},inplace=True)
+        df_master.rename(columns={student_count_col: today_date},inplace=True)
 
         df_master['No. of days data changes'] = '1'
     else:
@@ -182,7 +182,7 @@ def student_count_tracking(master_file_name, sheet_name, df_today, dist_col, udi
         df_master = df_master.merge(df_today).fillna(0)
 
     # Rename the column with today's date
-    df_master.rename(columns={student_count_col: today_date + ' count'}, inplace=True)
+    df_master.rename(columns={student_count_col: today_date}, inplace=True)
     # Sort the data
     df_master.sort_values(by=[dist_col, udise_col], ascending=[True, True], inplace=True)
 
@@ -246,7 +246,7 @@ def teacher_count_tracking(master_file_name, sheet_name, df_today, dist_col, udi
         df_master = df_master.merge(df_today).fillna(0)
 
     # Rename the column with today's date
-    df_master.rename(columns={teacher_count_col: today_date + ' count'}, inplace=True)
+    df_master.rename(columns={teacher_count_col: today_date}, inplace=True)
     # Sort the data
     df_master.sort_values(by=[dist_col, udise_col], ascending=[True, True], inplace=True)
 

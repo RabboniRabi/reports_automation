@@ -7,7 +7,7 @@ import utilities.file_utilities as file_utilities
 import utilities.report_utilities as report_utilities
 import utilities.dbutilities as dbutilities
 import utilities.utilities as utilities
-import report_generator.data_fetcher as data_fetcher
+import data_fetcher
 import utilities.column_names_utilities as cols
 import pandas as pd
 """
@@ -57,17 +57,15 @@ def get_ceo_report_raw_data(source_config_dict,raw_data_level):
     """
 
     if raw_data_level is "raw data":
-        raw_data = report_generator.data_fetcher.get_data_from_config(source_config_dict, save_source=False)
+        raw_data = data_fetcher.get_data_from_config(source_config_dict, save_source=False)
 
         return raw_data
 
     elif raw_data_level is "processed data":
 
-        pre_processed_Data = file_utilities.get_ceo_rpts_dir_path(open(source_config_dict+'.py'))
+        pre_processed_data = file_utilities.get_ceo_rpts_dir_path(open(source_config_dict+'.py'))
 
-        return
-
-
+        return pre_processed_data
 
 
 
@@ -88,8 +86,8 @@ def get_ceo_report_raw_data(source_config_dict,raw_data_level):
             Available raw_data_level-
                 1. raw data: get_data(code)
                 [file path:reports > data_fetcher.py ]
-                2. processed data: pre_processing_data_before_brc_merge()
-                3. raw data with brc-crc mapping:  post_processing_data_after_brc_merge()
+                2. processed_with_brc - (pre-processing - optional) + Merge + (post-processing - optional)
+                
 
         B. get_ceo_report(report_code,report_type,report_level):
             (file path: reports > ceo_report_generator.py)
@@ -134,10 +132,6 @@ arrive at the CEO Review Reports in a single file:
 
 
 def get_data_from_config(source_config_dict, save_source=False):
-
-
-
-
 
 """
 ------------------------------------------------------------------------------------------------------------------------
