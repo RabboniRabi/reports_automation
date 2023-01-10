@@ -11,6 +11,8 @@ import data_fetcher
 import utilities.column_names_utilities as cols
 import pandas as pd
 import importlib
+
+import json
 """
 ========================================================================================================================
 Module with functions will be the master code that will run the CEO reports in blocks/functions of code.
@@ -74,6 +76,9 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         # No BRC merge configuration was found
         sys.exit('BRC Merge configuration not provided for report: ', report_config['report_name'])
     print('brc_merge_config join values: ', brc_merge_config['join_on'])
+    first_str_val = brc_merge_config['join_on'][0]
+    print('Configured joining values: ', first_str_val)
+    print('converting str to object. Value is now: ', globals()[first_str_val])
     df_data = report_utilities.map_data_with_brc(df_data, brc_merge_config)
 
      # Check if post-processing after merging with BRC-CRC mapping is required
