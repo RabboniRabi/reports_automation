@@ -12,6 +12,9 @@ import utilities.column_names_utilities as cols
 import pandas as pd
 import importlib
 
+from school_levels import SchoolLevels as school_levels
+import ceo_report_levels as report_levels
+
 import json
 """
 ========================================================================================================================
@@ -39,7 +42,7 @@ a source config - > there are 2 options in the json -> if query name except OSer
 
 def get_ceo_report_raw_data(report_config: dict, save_source=False):
     """
-    Function to fetch the raw data for CEO reports. This data would be
+    Function to generate the raw data for CEO reports. This data would be
     the raw data processed and merged with BRC-CRC mapping data.
     
     The processing can be pre-processing, post-processing or both. 
@@ -75,10 +78,12 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
     if brc_merge_config is None:
         # No BRC merge configuration was found
         sys.exit('BRC Merge configuration not provided for report: ', report_config['report_name'])
-    print('brc_merge_config join values: ', brc_merge_config['join_on'])
-    first_str_val = brc_merge_config['join_on'][0]
-    print('Configured joining values: ', first_str_val)
-    print('converting str to object. Value is now: ', globals()[first_str_val])
+
+    # Update the config by replacing variable string names with corresponding values
+    # This is done as the variable name in defined as a string in the JSON config
+    join_on_vars = brc_merge_config['join_on']
+    brc_merge_config['join_on'] = cols.get_values(join_on_vars)
+    
     df_data = report_utilities.map_data_with_brc(df_data, brc_merge_config)
 
      # Check if post-processing after merging with BRC-CRC mapping is required
@@ -90,7 +95,24 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
     return df_data
 
 
+def get_ceo_report(report_config: dict, school_level, report_level, save_source=False):
+    """
+    Function to generate the CEO report for a metric with given report configuration. 
 
+    The report can be generated for Elementary or Secondary school level.
+
+    The report is also generated for given reporting level
+    """
+
+    # Get the raw data merged with the BRC-CRC mapping
+    df_data = get_ceo_report_raw_data(report_config, save_source)
+
+    # Check if school level for report is Elementary
+    if school_level == school_levels.ELEMENTARY.value:
+        # Filter the data to Elementary school type
+        df_data = df_data[df_data[cols.school_level].isin([cols.elem_schl_lvl])]
+
+        elem_report = report_utilities.get_elementary_report(df_data, )
 
 
 
@@ -276,12 +298,14 @@ if __name__ == "__main__":
         },
         "pre_process_brc_merge": True,
         "brc_merge_config" : {
-            "join_on" : [cols.district_name, cols.block_name, cols.school_name, cols.school_category, cols.udise_col],
+            "join_on" : ["cols.district_name", "cols.block_name", "cols.school_name", "cols.school_category", "cols.udise_col"],
             "merge_type" : "left"
         },
         "post_process_brc_merge" : False,
     }
 
-    merged_data = get_ceo_report_raw_data(report_config)
+    get_ceo_report(report_config, 'Elementary', 'UNRANKED')
 
-    file_utilities.save_to_excel({'Merged data' : merged_data}, 'Merged Data.xlsx')
+    #merged_data = get_ceo_report_raw_data(report_config)
+
+    #file_utilities.save_to_excel({'Merged data' : merged_data}, 'Merged Data.xlsx')

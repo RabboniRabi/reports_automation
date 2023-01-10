@@ -118,3 +118,46 @@ beo_rank = 'BEO Rank'
 deo_elem_rank = 'DEO (Elementary) Rank'
 deo_sec_rank = 'DEO (Secondary) Rank'
 
+def get_value(var_name: str):
+    """
+    Function to get the value mapped to the variable defined here.
+    This function is used to fetch the value when the 
+    variable name gets coverted to string (when reading from JSON)
+    
+    Parameters:
+    ----------
+    var_name: str
+        The name of the variable to look up the value for
+    Returns:
+        The value mapped to the variable    
+    """
+
+    # Remove module part of variable name if it exists
+    module_import_name = 'cols.'
+    if (module_import_name in var_name):
+        var_name = var_name.removeprefix(module_import_name)
+    
+    # Get the value mapped to the variable
+    value = globals()[var_name]
+    return value
+
+def get_values(var_names_list: list):
+    """
+    Function to get the values for string list of variable names.
+
+    This function is usef to fetch the values when the 
+    variable names get converted to strings (When reading from JSON)
+
+    Parameters:
+    ----------
+    var_names_arr: list
+        List of variable names of strings whose values need to be fetched
+    Returns:
+    --------
+        List of values corresponding to given list of string variable names
+    """
+    values = []
+    for var_name in var_names_list:
+        value = get_value(var_name)
+        values.append(value)
+    return values
