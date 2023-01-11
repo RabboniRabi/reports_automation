@@ -170,7 +170,7 @@ def get_cp_elementary_report(df_data = None):
     # Get classwise common pool data
     classwise_cp_data = _get_classwise_common_pool_data(df_data, elem_pivot_index, elem_classes)
 
-    elem_report = report_utilities.get_elementary_report(classwise_cp_data, 'percent_ranking', ranking_args_dict, 'CP', 'Enrolment')
+    elem_report = report_utilities.get_elem_ranked_report(classwise_cp_data, 'percent_ranking', ranking_args_dict, 'CP', 'Enrolment')
 
     return elem_report
 
@@ -201,7 +201,7 @@ def get_cp_secondary_report(df_data = None):
     classwise_cp_data = _get_classwise_common_pool_data(df_data, scnd_pivot_index, scnd_classes)
 
     # Get the Secondary report
-    secnd_report = report_utilities.get_secondary_report(\
+    secnd_report = report_utilities.get_sec_ranked_report(\
         classwise_cp_data, 'percent_ranking', ranking_args_dict, 'CP', 'Enrolment')
 
     return secnd_report

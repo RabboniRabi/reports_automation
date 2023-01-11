@@ -160,8 +160,8 @@ def main():
     # Post creating data summary
     # Get the elementary report
 
-    elem_report = report_utilities.get_elementary_report(data_final_elm, 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
-    sec_report = report_utilities.get_secondary_report(data_final_sec, 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
+    elem_report = report_utilities.get_elem_ranked_report(data_final_elm, 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
+    sec_report = report_utilities.get_sec_ranked_report(data_final_sec, 'percent_ranking', ranking_args_dict, 'EE_SA', 'Ennum Ezhuthum')
 
 
     """file_utilities.save_to_excel({'EE_SA_Elm': elem_report}, 'EE_SA_Elm.xlsx',\

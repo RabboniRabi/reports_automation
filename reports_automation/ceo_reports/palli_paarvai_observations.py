@@ -120,8 +120,8 @@ def main():
     data_final_sec['% School Observations by CEOs'] = data_final_sec['CEO']/data_final_sec[ceo_target]
 
     # Saving the report
-    elem_report = report_utilities.get_elementary_report(data_final_elm, 'percent_ranking', ranking_args_dict, 'PPO', 'Palli Parvai')
-    sec_report = report_utilities.get_secondary_report(data_final_sec, 'percent_ranking', ranking_args_dict, 'PPO', 'Palli Parvai')
+    elem_report = report_utilities.get_elem_ranked_report(data_final_elm, 'percent_ranking', ranking_args_dict, 'PPO', 'Palli Parvai')
+    sec_report = report_utilities.get_sec_ranked_report(data_final_sec, 'percent_ranking', ranking_args_dict, 'PPO', 'Palli Parvai')
 
 
     file_utilities.save_to_excel({'PPO_Elm': elem_report}, 'PPO_Elm.xlsx',\

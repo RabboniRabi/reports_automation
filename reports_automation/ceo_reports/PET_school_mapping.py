@@ -107,7 +107,7 @@ def get_pet_mapping_elementary_report(df_data = None):
     # Prepare the data for elementary report
     elem_processed_data = _process_data_for_report(df_data, elem_pivot_index)
 
-    elem_report = report_utilities.get_elementary_report(elem_processed_data, ranking_args_dict, 'PET', 'Operations')                    
+    elem_report = report_utilities.get_elem_ranked_report(elem_processed_data, ranking_args_dict, 'PET', 'Operations')                    
 
     return elem_report
 
@@ -137,7 +137,7 @@ def get_pet_mapping_secondary_report(df_data = None):
     secnd_processed_data = _process_data_for_report(df_data, scnd_pivot_index)
 
     # Get the Secondary report
-    secnd_report = report_utilities.get_secondary_report(secnd_processed_data, ranking_args_dict, 'PET', 'Operations')
+    secnd_report = report_utilities.get_sec_ranked_report(secnd_processed_data, ranking_args_dict, 'PET', 'Operations')
 
     return secnd_report
     

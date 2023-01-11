@@ -3,6 +3,7 @@
       {
         "report_name": "PET_school_mapping",
         "report_code" : "PET",
+        "report_category": "Attendance",
         "report_desc": "PET to school mapping report",
         "generate_report": true,
         "source_config" : {
@@ -73,6 +74,7 @@
     {
         "report_name": "cwsn",
         "report_code" : "CWSN",
+        "report_category": "Enrolment",
         "report_desc": "CWSN CEO report",
         "generate_report": true,
         "source_config" : {
@@ -88,7 +90,19 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
-            "grouping_cols" : ["cols.deo_name"],
+            "un_ranked_report_args" : {
+                "custom_unranked_report": true,
+                "grouping_cols" : ["cols.deo_name"],
+                "grouping_agg_dict" : {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.stdnts_in_school": "sum", 
+                    "cols.stdnts_in_cp" : "sum",
+                    "cols.nid_count" : "sum",
+                    "cols.udid_count" : "sum",
+                    "cols.with_acct" : "sum",
+                    "cols.witht_acct" : "sum"
+                }
+            },
             "ranking_args": {
                 "agg_dict": {
                     "cols.ageing": "sum", 
@@ -103,6 +117,19 @@
         },
         "secondary_report" : {
             "generate_report": false,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": true,
+                "grouping_cols" : ["cols.deo_name"],
+                "grouping_agg_dict" : {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.stdnts_in_school": "sum", 
+                    "cols.stdnts_in_cp" : "sum",
+                    "cols.nid_count" : "sum",
+                    "cols.udid_count" : "sum",
+                    "cols.with_acct" : "sum",
+                    "cols.witht_acct" : "sum"
+                }
+            },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {

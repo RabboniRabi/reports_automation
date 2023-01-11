@@ -172,7 +172,7 @@ def get_students_elementary_health_report(df_data = None):
     # Replace the line below with the line above when restoring beo level ranking
     #elem_report = _get_students_health_report(df_data, [cols.district_name, cols.deo_name_elm, cols.school_category], [cols.screened, cols.total], cols.elem_schl_lvl)
 
-    elem_report = report_utilities.get_elementary_report(\
+    elem_report = report_utilities.get_elem_ranked_report(\
         data_grouped, 'percent_ranking', students_ranking_args_dict, 'HC_Stud', 'Health')
 
     return elem_report
@@ -213,7 +213,7 @@ def get_students_secondary_health_report(df_data = None):
     #scnd_report = _get_students_health_report(df_data, [cols.district_name, cols.deo_name_sec, cols.school_category], [cols.screened, cols.total], cols.scnd_schl_lvl)
 
     # Get the Secondary report
-    scnd_report = report_utilities.get_secondary_report(\
+    scnd_report = report_utilities.get_sec_ranked_report(\
         data_grouped, 'percent_ranking', students_ranking_args_dict, 'HC_Stud', 'Health')
 
     return scnd_report
@@ -255,7 +255,7 @@ def get_schools_elementary_health_report(df_data = None):
     })
 
     # Get the Elementary report
-    elem_report = report_utilities.get_elementary_report(\
+    elem_report = report_utilities.get_elem_ranked_report(\
         data_for_elem, 'percent_ranking', schools_ranking_args_dict, 'HC_Sch', 'Health')
 
     return elem_report
@@ -299,7 +299,7 @@ def get_schools_secondary_health_report(df_data = None):
     })
     
     # Get the Secondary report
-    secnd_report = report_utilities.get_secondary_report(\
+    secnd_report = report_utilities.get_sec_ranked_report(\
         data_for_secnd, 'percent_ranking', schools_ranking_args_dict, 'HC_Sch', 'Health')
 
     return secnd_report

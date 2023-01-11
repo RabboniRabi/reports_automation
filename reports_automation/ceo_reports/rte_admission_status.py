@@ -104,7 +104,7 @@ def run():
         'ascending' : False
     }
     # Get the Elementary report
-    elem_report = report_utilities.get_elementary_report(\
+    elem_report = report_utilities.get_elem_ranked_report(\
         df_admission_status_summary, 'percent_ranking', ranking_args_dict, 'RTE', 'Operations')
 
     # Save the elementary report
@@ -112,7 +112,7 @@ def run():
             dir_path = get_curr_month_elem_ceo_rpts_dir_path())    
 
     # Get the Secondary report
-    elem_report = report_utilities.get_secondary_report(\
+    elem_report = report_utilities.get_sec_ranked_report(\
         df_admission_status_summary, 'percent_ranking', ranking_args_dict, 'RTE', 'Operations')    
 
     # Save the secondary report

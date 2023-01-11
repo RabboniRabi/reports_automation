@@ -75,10 +75,10 @@ def get_brc_master(sheet_name=brc_master_sheet_name):
     return brc_master
 
 
-def get_elementary_report(df_summary, ranking_args_dict, metric_code, metric_category):
+def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_category):
 
     """
-    Function create and return the elementary report on given data by calculating
+    Function create and return the elementary ranked report on given data by calculating
     the BEO ranking, DEO(Elementary) ranking and updating the data.
 
     The master ranking data is also updated when this function is called.
@@ -185,9 +185,9 @@ def get_elementary_report(df_summary, ranking_args_dict, metric_code, metric_cat
     return elementary_report
 
 
-def get_secondary_report(df_summary, ranking_args_dict, metric_code, metric_category):
+def get_sec_ranked_report(df_summary, ranking_args_dict, metric_code, metric_category):
     """
-    Function create and return the secondary report on given data by calculating
+    Function create and return the ranked secondary report on given data by calculating
     the DEO (Secondary) ranking and updating the data.
 
     The master ranking data is also updated when this function is called.

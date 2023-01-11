@@ -161,3 +161,33 @@ def get_values(var_names_list: list):
         value = get_value(var_name)
         values.append(value)
     return values
+
+
+def update_dictionary_var_strs(var_names_keys_dict: dict):
+    """
+    Function to update the keys in a given dictionary.
+    The keys are strings of variable names and will be updated
+    by mapping to the value assigned to the variable names.
+
+    Parameters:
+    -----------
+    var_names_keys_dict: dict
+        Dictionary whose keys (which are strings of variables) need to be updated with
+        the values of the variable names
+    
+    Returns:
+    -------
+    The updated dictionary
+    """
+
+    for key in var_names_keys_dict.keys():
+        dict_key_value = var_names_keys_dict[key]
+        updated_key = get_value(key)
+
+        # Set the updated key-value pair
+        var_names_keys_dict[updated_key] = dict_key_value
+
+        # Remove the older key-value pair
+        var_names_keys_dict.pop(key)
+
+    return var_names_keys_dict

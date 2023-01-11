@@ -92,7 +92,7 @@ def get_kalai_vizha_particp_elementary_report(df_data = None):
     # Remove the line below and replace it with the line above when restoring BEO level reports
     data_grouped = df_data.groupby([cols.district_name, cols.deo_name_elm, cols.school_category, cols.school_level], as_index=False)[cols.participants, cols.tot_students].agg('sum')
 
-    elem_report = report_utilities.get_elementary_report(data_grouped, 'percent_ranking', ranking_args_dict, 'KT', 'Attendance')                    
+    elem_report = report_utilities.get_elem_ranked_report(data_grouped, 'percent_ranking', ranking_args_dict, 'KT', 'Attendance')                    
 
     return elem_report
 
@@ -122,7 +122,7 @@ def get_kalai_vizha_particp_secondary_report(df_data = None):
     # Prepare the data for secondary report
     data_grouped = df_data.groupby(scnd_rep_group_level, as_index=False)[cols.participants, cols.tot_students].agg('sum')
 
-    secnd_report = report_utilities.get_secondary_report(data_grouped, 'percent_ranking', ranking_args_dict, 'KT', 'Attendance')                    
+    secnd_report = report_utilities.get_sec_ranked_report(data_grouped, 'percent_ranking', ranking_args_dict, 'KT', 'Attendance')                    
 
     return secnd_report
 
