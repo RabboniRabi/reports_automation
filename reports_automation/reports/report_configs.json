@@ -22,6 +22,7 @@
             "generate_report": true,
             "grouping_cols" : ["cols.deo_name"],
             "ranking_args": {
+                "ranking_type" : "percent_ranking",
                 "agg_dict": {
                     "cols.ageing": "sum", 
                     "cols.total_cp_students": "sum"
@@ -91,35 +92,8 @@
         "elementary_report" : {
             "generate_report": true,
             "un_ranked_report_args" : {
-                "custom_unranked_report": true,
-                "grouping_cols" : ["cols.deo_name"],
-                "grouping_agg_dict" : {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.stdnts_in_school": "sum", 
-                    "cols.stdnts_in_cp" : "sum",
-                    "cols.nid_count" : "sum",
-                    "cols.udid_count" : "sum",
-                    "cols.with_acct" : "sum",
-                    "cols.witht_acct" : "sum"
-                }
-            },
-            "ranking_args": {
-                "agg_dict": {
-                    "cols.ageing": "sum", 
-                    "cols.total_cp_students": "sum"
-                },
-                "ranking_val_desc": "cols.perc_ageing",
-                "num_col": "cols.ageing",
-                "den_col": "cols.total_cp_students",
-                "sort": "True",
-                "ascending": "True"
-            }
-        },
-        "secondary_report" : {
-            "generate_report": false,
-            "un_ranked_report_args" : {
-                "custom_unranked_report": true,
-                "grouping_cols" : ["cols.deo_name"],
+                "custom_unranked_report": false,
+                "grouping_cols" : ["cols.district_name", "cols.deo_name_elm", "cols.school_category", "cols.school_level"],
                 "grouping_agg_dict" : {
                     "cols.cwsn_tot": "sum", 
                     "cols.stdnts_in_school": "sum", 
@@ -133,14 +107,52 @@
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.ageing": "sum", 
-                    "cols.total_cp_students": "sum"
+                    "cols.cwsn_tot": "sum", 
+                    "cols.stdnts_in_school": "sum", 
+                    "cols.stdnts_in_cp" : "sum",
+                    "cols.nid_count" : "sum",
+                    "cols.udid_count" : "sum",
+                    "cols.with_acct": "sum",
+                    "cols.witht_acct" : "sum"
                 },
-                "ranking_val_desc": "cols.perc_ageing",
-                "num_col": "cols.ageing",
-                "den_col": "cols.total_cp_students",
-                "sort": true,
-                "ascending": true
+                "ranking_val_desc": "cols.perc_students_with_UDID",
+                "num_col": "cols.udid_count",
+                "den_col": "cols.cwsn_tot",
+                "sort": "True",
+                "ascending": "True"
+            }
+        },
+        "secondary_report" : {
+            "generate_report": false,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": false,
+                "grouping_cols" : ["cols.district_name", "cols.deo_name_sec", "cols.school_category", "cols.school_level"],
+                "grouping_agg_dict" : {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.stdnts_in_school": "sum", 
+                    "cols.stdnts_in_cp" : "sum",
+                    "cols.nid_count" : "sum",
+                    "cols.udid_count" : "sum",
+                    "cols.with_acct" : "sum",
+                    "cols.witht_acct" : "sum"
+                }
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.stdnts_in_school": "sum", 
+                    "cols.stdnts_in_cp" : "sum",
+                    "cols.nid_count" : "sum",
+                    "cols.udid_count" : "sum",
+                    "cols.with_acct": "sum",
+                    "cols.witht_acct" : "sum"
+                },
+                "ranking_val_desc": "cols.perc_students_with_UDID",
+                "num_col": "cols.udid_count",
+                "den_col": "cols.cwsn_tot",
+                "sort": "True",
+                "ascending": "True"
             },
             "subtotal_outlines_dict" : {
                 "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},

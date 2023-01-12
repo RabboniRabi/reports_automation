@@ -180,14 +180,13 @@ def update_dictionary_var_strs(var_names_keys_dict: dict):
     The updated dictionary
     """
 
+    updated_dict = {}
+
     for key in var_names_keys_dict.keys():
         dict_key_value = var_names_keys_dict[key]
         updated_key = get_value(key)
 
         # Set the updated key-value pair
-        var_names_keys_dict[updated_key] = dict_key_value
+        updated_dict[updated_key] = dict_key_value
 
-        # Remove the older key-value pair
-        var_names_keys_dict.pop(key)
-
-    return var_names_keys_dict
+    return updated_dict

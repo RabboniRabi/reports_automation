@@ -94,7 +94,7 @@ def pre_process_BRC_merge(raw_data):
     DataFrame object of CWSN data processed and ready for mapping with BRC-CRC data
     """
 
-    print('oooo, I getcalled!')
+    print('Pre Processing before BRC merge called in CWSN')
 
     # As the raw data is at student level, group the data to school level and count values needed for report
 

@@ -1,20 +1,17 @@
 
-import os
+
 import sys
 sys.path.append('../')
 
 import utilities.file_utilities as file_utilities
 import utilities.report_utilities as report_utilities
-import utilities.dbutilities as dbutilities
-import utilities.utilities as utilities
 import data_fetcher
 import utilities.column_names_utilities as cols
-import pandas as pd
 import importlib
 
 from school_levels import SchoolLevels as school_levels
 from ceo_report_levels import CEOReportLevels as ceo_report_levels
-import ceo_report_levels as report_levels
+from ceo_report_ranking_types import CEOReportRankingTypes as ranking_types
 
 import json
 """
@@ -123,6 +120,9 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
     # Get the raw data merged with the BRC-CRC mapping
     df_data = get_ceo_report_raw_data(report_config, save_source)
 
+    print('raw data post merge columns: ', df_data.columns.to_list())
+    print('raw data post merge: ', df_data)
+
     # Check if school level for report is Elementary
     if school_level == school_levels.ELEMENTARY.value:
 
@@ -148,6 +148,8 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
         # Get the aggregate functions to apply on the grouped columns
         agg_dict = un_ranked_report_config['grouping_agg_dict']
 
+        print('agg_dict before updating vars: ', agg_dict)
+
         # Update the keys in the aggregate dictionary as the string variable
         # names will not be resolved after being read from JSON
         agg_dict = cols.update_dictionary_var_strs(agg_dict)
@@ -160,14 +162,21 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
             report = pre_proc_func(df_data, grouping_cols, agg_dict)
         else:
             # Just group the data to grouping level
-            report = df_data.groupby(grouping_cols).agg(agg_dict)
+            report = df_data.groupby(grouping_cols, as_index=False).agg(agg_dict)
+
+        print('Unranked report columns: ', report.columns.to_list())
+        print('Unranked report: ', report)
 
         # Check if ranking is required in report
         if report_level == ceo_report_levels.RANKED.value:
             # Generate ranking and update report
             ranking_dict = elem_report_config['ranking_args']
+            # Update the values in ranking argument
+            ranking_dict = _update_ranking_args_dict(ranking_dict)
+            # Get the report metric code and category
             metric_code = report_config['report_code']
             metric_category = report_config['report_category']
+            # Get the elementary ranked report
             report = report_utilities.get_elem_ranked_report(report, ranking_dict, metric_code, metric_category)
 
         return report
@@ -209,18 +218,52 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
             report = pre_proc_func(df_data, grouping_cols, agg_dict)
         else:
             # Just group the data to grouping level
-            report = df_data.groupby(grouping_cols).agg(agg_dict)
+            report = df_data.groupby(grouping_cols, as_index=False).agg(agg_dict)
 
         # Check if ranking is required in report
         if report_level == ceo_report_levels.RANKED.value:
             # Generate ranking and update report
             ranking_dict = sec_report_config['ranking_args']
+            # Update the values in ranking argument
+            ranking_dict = _update_ranking_args_dict(ranking_dict)
+            # Get the report metric code and category
             metric_code = report_config['report_code']
             metric_category = report_config['report_category']
+            # Get the secondary ranked report
             report = report_utilities.get_sec_ranked_report(report, ranking_dict, metric_code, metric_category)
 
         return report
 
+
+def _update_ranking_args_dict(ranking_args:dict):
+    """
+    Helper function to update the ranking arguments read from the JSON configuration.
+    As variable names are stored as strings in JSON, the values mapped to these
+    names dont resolve automatically and need to be updated.
+
+    Parameters:
+    ----------
+    ranking_args: dict
+        The ranking arguments fetched from the JSON configuration
+    Returns:
+    --------
+    Updated ranking arguments dictionary
+    """
+    # Update the keys in the raking aggregation dict to resolve string variable names
+    updated_ranking_args_dict = cols.update_dictionary_var_strs(ranking_args['agg_dict'])
+    ranking_args['agg_dict'] = updated_ranking_args_dict
+
+    ranking_type = ranking_args['ranking_type']
+
+    if ranking_type == ranking_types.PERCENT_RANKING.value:
+        # Update the numerator and denominator columns
+        num_col_val = cols.get_value(ranking_args['num_col'])
+        ranking_args['num_col'] = num_col_val
+        den_col_val = cols.get_value(ranking_args['den_col'])
+        ranking_args['den_col'] = den_col_val
+
+    return ranking_args
+    
 """
 
     2. Generate Generate specific reports by calling a specific definition:
@@ -409,6 +452,7 @@ if __name__ == "__main__":
     }
 
     get_ceo_report(report_config, 'Elementary', 'UNRANKED')
+    
 
     #merged_data = get_ceo_report_raw_data(report_config)
 

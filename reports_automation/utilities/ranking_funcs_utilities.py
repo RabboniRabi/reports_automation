@@ -37,6 +37,9 @@ def percent_ranking(df, group_levels, ranking_args_dict):
         The updated DataFrame object with the fractional values used for ranking and the ranking
     """
 
+    print('columns in given data: ', df.columns.to_list())
+    
+
     # Get the values from the ranking arguments dictionary
     sort = ranking_args_dict['sort']
     agg_dict = ranking_args_dict['agg_dict']
@@ -45,6 +48,9 @@ def percent_ranking(df, group_levels, ranking_args_dict):
     den_col = ranking_args_dict['den_col']
     sort = ranking_args_dict['sort']
     ascending = ranking_args_dict['ascending']
+
+    print('given group levels: ', group_levels)
+    print('Given agg dict: ', agg_dict)
 
     # If grouping levels is given
     if (group_levels is not None):

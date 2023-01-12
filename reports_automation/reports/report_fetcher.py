@@ -7,6 +7,10 @@ This module can be paired with a constructor in the future to create APIs to the
 import config_reader
 import ceo_report_generator
 
+import sys
+sys.path.append('../')
+
+import utilities.file_utilities as file_utilities
 
 def get_ceo_report_raw_data (report_code):
     """
@@ -32,11 +36,55 @@ def get_ceo_report_raw_data (report_code):
     return ceo_rpt_raw_data
 
 
+def get_ceo_report(report_code, school_level, report_level):
+    """
+    Function to generate & fetch the CEO report for a given report code/name. 
+
+    The report can be generated for Elementary/Secondary school level and
+    can be Ranked/Unranked report
+
+    Parameters:
+    ----------
+    report_code: str
+        The name/code of the report/metric to fetch the CEO report for
+    school_level: str
+        The school level to filter and generate the report for (Elementary/Secondary)
+    report_level: str
+        The level of report to be generated. (Unranked/Ranked)
+
+    Returns:
+    -------
+    The generated report for the given report code
+    """
+
+    # Get the overall configuration for the report code
+    report_config = config_reader.get_config(report_code)
+
+    # Get the CEO report
+    ceo_rpt = ceo_report_generator.get_ceo_report(report_config, school_level, report_level)
+
+    return ceo_rpt
+
+
+
 # For testing
 if __name__ == "__main__":
     """
     Testing get_ceo_report_raw_data
     """
-    merged_data = get_ceo_report_raw_data('cwsn')
+    #merged_data = get_ceo_report_raw_data('cwsn')
 
-    print('merged data columns: ', merged_data.columns.to_list())
+    #print('merged data columns: ', merged_data.columns.to_list())
+
+    """
+    Testing get_ceo_report
+    """
+    cwsn_elem_report = get_ceo_report('cwsn', 'Elementary', 'Ranked')
+    file_utilities.save_to_excel({'Report': cwsn_elem_report}, 'CWSN Elementary Report.xlsx')
+
+    cwsn_sec_report = get_ceo_report('cwsn', 'Secondary', 'Ranked')
+    file_utilities.save_to_excel({'Report': cwsn_sec_report}, 'CWSN Secondary Report.xlsx')
+
+    
+
+    
