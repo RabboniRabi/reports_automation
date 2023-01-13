@@ -59,7 +59,7 @@ def get_config(config_name, config_file_name='report_configs.json'):
         all_configs = json.load(read_file)["report_configs"]
 
     for config in all_configs:
-        if config["report_name"] == config_name:
+        if config["report_name"] == config_name or config["report_code"] == config_name:
             # Close the file
             read_file.close()
             return config

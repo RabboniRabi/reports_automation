@@ -62,6 +62,8 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
     source_config = report_config['source_config']
     df_data = data_fetcher.get_data_from_config(source_config, save_source)
 
+    print('columns in data read: ', df_data.columns.to_list())
+
     report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
 
     # Check if pre-processing before merging with BRC-CRC mapping is required
@@ -81,6 +83,9 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
     # This is done as the variable name in defined as a string in the JSON config
     join_on_vars = brc_merge_config['join_on']
     brc_merge_config['join_on'] = cols.get_values(join_on_vars)
+
+    print('df_data columns: ', df_data.columns.to_list())
+    print('brc_merge_config: ' , brc_merge_config['join_on'])
     
     df_data = report_utilities.map_data_with_brc(df_data, brc_merge_config)
 
@@ -297,6 +302,10 @@ def _update_ranking_args_dict(ranking_args:dict):
     # Update the keys in the raking aggregation dict to resolve string variable names
     updated_ranking_args_dict = cols.update_dictionary_var_strs(ranking_args['agg_dict'])
     ranking_args['agg_dict'] = updated_ranking_args_dict
+
+    # Update ranking value description
+    ranking_val_desc = cols.get_value(ranking_args['ranking_val_desc'])
+    ranking_args['ranking_val_desc'] = ranking_val_desc
 
     ranking_type = ranking_args['ranking_type']
 
