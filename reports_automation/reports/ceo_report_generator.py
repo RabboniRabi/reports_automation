@@ -123,6 +123,10 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
     print('raw data post merge columns: ', df_data.columns.to_list())
     print('raw data post merge: ', df_data)
 
+    # Get the report metric code and category
+    metric_code = report_config['report_code']
+    metric_category = report_config['report_category']
+
     # Check if school level for report is Elementary
     if school_level == school_levels.ELEMENTARY.value:
 
@@ -134,50 +138,8 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
             # No elementary report configuration was found
             sys.exit('Elementary report configuration not provided for report: ', report_config['report_name'])
 
-        # Filter the data to Elementary school type
-        df_data = df_data[df_data[cols.school_level].isin([cols.elem_schl_lvl])]
-
-        # Get the arguments for generating elementary unranked report
-        un_ranked_report_config  = elem_report_config['un_ranked_report_args']
-
-        # Get the columns to group by
-        grouping_cols = un_ranked_report_config['grouping_cols']
-        # Update the values of column names to group by (To resolve string variable names).
-        grouping_cols = cols.get_values(grouping_cols)
-
-        # Get the aggregate functions to apply on the grouped columns
-        agg_dict = un_ranked_report_config['grouping_agg_dict']
-
-        print('agg_dict before updating vars: ', agg_dict)
-
-        # Update the keys in the aggregate dictionary as the string variable
-        # names will not be resolved after being read from JSON
-        agg_dict = cols.update_dictionary_var_strs(agg_dict)
-
-        # If a custom unranked report is configured to be called
-        if (un_ranked_report_config['custom_unranked_report']):
-            # Call the corresponding function for the report
-            report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
-            pre_proc_func = getattr(report_module_name, 'get_unranked_elem_report')
-            report = pre_proc_func(df_data, grouping_cols, agg_dict)
-        else:
-            # Just group the data to grouping level
-            report = df_data.groupby(grouping_cols, as_index=False).agg(agg_dict)
-
-        print('Unranked report columns: ', report.columns.to_list())
-        print('Unranked report: ', report)
-
-        # Check if ranking is required in report
-        if report_level == ceo_report_levels.RANKED.value:
-            # Generate ranking and update report
-            ranking_dict = elem_report_config['ranking_args']
-            # Update the values in ranking argument
-            ranking_dict = _update_ranking_args_dict(ranking_dict)
-            # Get the report metric code and category
-            metric_code = report_config['report_code']
-            metric_category = report_config['report_category']
-            # Get the elementary ranked report
-            report = report_utilities.get_elem_ranked_report(report, ranking_dict, metric_code, metric_category)
+        # Call the helper function to generate the elementary report
+        report = _generate_elem_report(df_data, elem_report_config, report_level, metric_code, metric_category)
 
         return report
     
@@ -192,47 +154,130 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
             # No Secondary report configuration was found
             sys.exit('Secondary report configuration not provided for report: ', report_config['report_name'])
 
-        # Filter the data to secondary school type
-        df_data = df_data[df_data[cols.school_level].isin([cols.scnd_schl_lvl])]
-
-        # Get the arguments for generating secondary unranked report
-        un_ranked_report_config  = sec_report_config['un_ranked_report_args']
-
-        # Get the columns to group by
-        grouping_cols = un_ranked_report_config['grouping_cols']
-        # Update the values of column names to group by (To resolve string variable names).
-        grouping_cols = cols.get_values(grouping_cols)
-
-        # Get the aggregate functions to apply on the grouped columns
-        agg_dict = un_ranked_report_config['grouping_agg_dict']
-
-        # Update the keys in the aggregate dictionary as the string variable
-        # names will not be resolved after being read from JSON
-        agg_dict = cols.update_dictionary_var_strs(agg_dict)
-
-        # If a custom unranked report is configured to be called
-        if (un_ranked_report_config['custom_unranked_report']):
-            # Call the corresponding function for the report
-            report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
-            pre_proc_func = getattr(report_module_name, 'get_unranked_sec_report')
-            report = pre_proc_func(df_data, grouping_cols, agg_dict)
-        else:
-            # Just group the data to grouping level
-            report = df_data.groupby(grouping_cols, as_index=False).agg(agg_dict)
-
-        # Check if ranking is required in report
-        if report_level == ceo_report_levels.RANKED.value:
-            # Generate ranking and update report
-            ranking_dict = sec_report_config['ranking_args']
-            # Update the values in ranking argument
-            ranking_dict = _update_ranking_args_dict(ranking_dict)
-            # Get the report metric code and category
-            metric_code = report_config['report_code']
-            metric_category = report_config['report_category']
-            # Get the secondary ranked report
-            report = report_utilities.get_sec_ranked_report(report, ranking_dict, metric_code, metric_category)
+        # Call the helper function to generate the elementary report
+        report = _generate_sec_report(df_data, sec_report_config, report_level, metric_code, metric_category)
 
         return report
+
+def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_level:str, metric_code, metric_category):
+    """
+    Internal helper function to generate the elementary report for given ceo report raw data
+
+    Parameters:
+    ------------
+    ceo_rpt_raw_data: Pandas DataFrame
+        The raw data in CEO report format (merged with BRC CRC Mapping)
+    elem_report_config: dict
+        The configuration to generate the elementary report
+    report_level: str
+        The level of report to be generated. (Unranked/Ranked)
+    metric_code: str
+        The report/metric code
+    metric_Category: str
+        The report/metric category
+
+    Returns:
+    --------
+    The generated secondary report as a Pandas DataFrame object.
+    """
+    # Filter the data to Elementary school type
+    ceo_rpt_raw_data = ceo_rpt_raw_data[ceo_rpt_raw_data[cols.school_level].isin([cols.elem_schl_lvl])]
+
+    # Get the arguments for generating elementary unranked report
+    un_ranked_report_config  = elem_report_config['un_ranked_report_args']
+
+    # Get the columns to group by
+    grouping_cols = un_ranked_report_config['grouping_cols']
+    # Update the values of column names to group by (To resolve string variable names).
+    grouping_cols = cols.get_values(grouping_cols)
+
+    # Get the aggregate functions to apply on the grouped columns
+    agg_dict = un_ranked_report_config['grouping_agg_dict']
+    # Update the keys in the aggregate dictionary as the string variable
+    # names will not be resolved after being read from JSON
+    agg_dict = cols.update_dictionary_var_strs(agg_dict)
+
+    # If a custom unranked report is configured to be called
+    if (un_ranked_report_config['custom_unranked_report']):
+        # Call the corresponding function for the report
+        report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
+        cust_rpt_func = getattr(report_module_name, 'get_unranked_elem_report')
+        report = cust_rpt_func(ceo_rpt_raw_data, grouping_cols, agg_dict)
+    else:
+        # Just group the data to grouping level
+        report = ceo_rpt_raw_data.groupby(grouping_cols, as_index=False).agg(agg_dict)
+
+    # Check if ranking is required in report
+    if report_level == ceo_report_levels.RANKED.value:
+        # Generate ranking and update report
+        ranking_dict = elem_report_config['ranking_args']
+        # Update the values in ranking argument
+        ranking_dict = _update_ranking_args_dict(ranking_dict)
+        # Get the elementary ranked report
+        report = report_utilities.get_elem_ranked_report(report, ranking_dict, metric_code, metric_category)
+
+    return report
+
+
+def _generate_sec_report(ceo_rpt_raw_data, sec_report_config:dict, report_level:str, metric_code, metric_category):
+    """
+    Internal helper function to generate the secondary report for given ceo report raw data
+
+    Parameters:
+    ------------
+    ceo_rpt_raw_data: Pandas DataFrame
+        The raw data in CEO report format (merged with BRC CRC Mapping)
+    sec_report_config: dict
+        The configuration to generate the secondary report
+    report_level: str
+        The level of report to be generated. (Unranked/Ranked)
+    metric_code: str
+        The report/metric code
+    metric_Category: str
+        The report/metric category
+
+    Returns:
+    --------
+    The generated secondary report as a Pandas DataFrame object.
+    """
+    # Filter the data to secondary school type
+    ceo_rpt_raw_data = ceo_rpt_raw_data[ceo_rpt_raw_data[cols.school_level].isin([cols.scnd_schl_lvl])]
+
+    # Get the arguments for generating secondary unranked report
+    un_ranked_report_config  = sec_report_config['un_ranked_report_args']
+
+    # Get the columns to group by
+    grouping_cols = un_ranked_report_config['grouping_cols']
+    # Update the values of column names to group by (To resolve string variable names).
+    grouping_cols = cols.get_values(grouping_cols)
+
+    # Get the aggregate functions to apply on the grouped columns
+    agg_dict = un_ranked_report_config['grouping_agg_dict']
+    # Update the keys in the aggregate dictionary as the string variable
+    # names will not be resolved after being read from JSON
+    agg_dict = cols.update_dictionary_var_strs(agg_dict)
+
+    # If a custom unranked report is configured to be called
+    if (un_ranked_report_config['custom_unranked_report']):
+        # Call the corresponding function for the report
+        report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
+        cust_rpt_func = getattr(report_module_name, 'get_unranked_sec_report')
+        report = cust_rpt_func(ceo_rpt_raw_data, grouping_cols, agg_dict)
+    else:
+        # Just group the data to grouping level
+        report = ceo_rpt_raw_data.groupby(grouping_cols, as_index=False).agg(agg_dict)
+
+    # Check if ranking is required in report
+    if report_level == ceo_report_levels.RANKED.value:
+        # Generate ranking and update report
+        ranking_dict = sec_report_config['ranking_args']
+        # Update the values in ranking argument
+        ranking_dict = _update_ranking_args_dict(ranking_dict)
+        # Get the secondary ranked report
+        report = report_utilities.get_sec_ranked_report(report, ranking_dict, metric_code, metric_category)
+
+    return report
+
 
 
 def _update_ranking_args_dict(ranking_args:dict):
