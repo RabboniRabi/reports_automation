@@ -24,9 +24,6 @@ id_columns_regex_dict = {
         'UDID': 'TN.'  # Accept only values starting with TN
     }
 
-
-
-
 def _get_grouping_level_wise_IDs_issued_count(df, group_levels, columns_regex_dict):
     """
     Internal function to get the grouping levels wise count of students with disability IDs.

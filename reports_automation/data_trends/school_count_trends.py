@@ -129,7 +129,7 @@ def day_wise_tracking(master_file_name, sheet_name, df_today, dist_col, udise_co
     return df_master
 
 
-def student_count_tracking(master_file_name, sheet_name, df_today, group_levels, udise_col,student_count_col):
+def student_count_tracking(master_file_name, sheet_name, df_today, dist_col, udise_col,student_count_col):
     """
     Function to track the count of students on the day the script is run.
     The function also updates the master tracking excel file with any new UDISE codes found.
