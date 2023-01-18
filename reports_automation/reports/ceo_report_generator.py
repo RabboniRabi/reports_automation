@@ -307,6 +307,10 @@ def _update_ranking_args_dict(ranking_args:dict):
     ranking_val_desc = cols.get_value(ranking_args['ranking_val_desc'])
     ranking_args['ranking_val_desc'] = ranking_val_desc
 
+    # Update the boolean values for sorting and ascending flags
+    ranking_args['sort'] = ranking_args['sort'] == 'True'
+    ranking_args['ascending'] = ranking_args['ascending'] == 'True'
+
     ranking_type = ranking_args['ranking_type']
 
     if ranking_type == ranking_types.PERCENT_RANKING.value:
