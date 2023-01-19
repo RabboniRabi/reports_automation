@@ -131,6 +131,7 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
     # Get the report metric code and category
     metric_code = report_config['report_code']
     metric_category = report_config['report_category']
+    report_name = report_config['report_name']
 
     # Check if school level for report is Elementary
     if school_level == school_levels.ELEMENTARY.value:
@@ -144,7 +145,7 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
             sys.exit('Elementary report configuration not provided for report: ', report_config['report_name'])
 
         # Call the helper function to generate the elementary report
-        report = _generate_elem_report(df_data, elem_report_config, report_level, metric_code, metric_category)
+        report = _generate_elem_report(df_data, elem_report_config, report_name, report_level, metric_code, metric_category)
 
         return report
     
@@ -160,11 +161,11 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
             sys.exit('Secondary report configuration not provided for report: ', report_config['report_name'])
 
         # Call the helper function to generate the elementary report
-        report = _generate_sec_report(df_data, sec_report_config, report_level, metric_code, metric_category)
+        report = _generate_sec_report(df_data, sec_report_config, report_name, report_level, metric_code, metric_category)
 
         return report
 
-def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_level:str, metric_code, metric_category):
+def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name:str, report_level:str, metric_code, metric_category):
     """
     Internal helper function to generate the elementary report for given ceo report raw data
 
@@ -174,6 +175,9 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_leve
         The raw data in CEO report format (merged with BRC CRC Mapping)
     elem_report_config: dict
         The configuration to generate the elementary report
+    report_name: dict
+        The name of the report which will be used to call the custom unranked report function
+        for the report if needed
     report_level: str
         The level of report to be generated. (Unranked/Ranked)
     metric_code: str
@@ -205,7 +209,7 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_leve
     # If a custom unranked report is configured to be called
     if (un_ranked_report_config['custom_unranked_report']):
         # Call the corresponding function for the report
-        report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
+        report_module_name = importlib.import_module('ceo_reports.' + report_name)
         cust_rpt_func = getattr(report_module_name, 'get_unranked_elem_report')
         report = cust_rpt_func(ceo_rpt_raw_data, grouping_cols, agg_dict)
     else:
@@ -224,7 +228,7 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_leve
     return report
 
 
-def _generate_sec_report(ceo_rpt_raw_data, sec_report_config:dict, report_level:str, metric_code, metric_category):
+def _generate_sec_report(ceo_rpt_raw_data, sec_report_config:dict, report_name, report_level:str, metric_code, metric_category):
     """
     Internal helper function to generate the secondary report for given ceo report raw data
 
@@ -234,6 +238,9 @@ def _generate_sec_report(ceo_rpt_raw_data, sec_report_config:dict, report_level:
         The raw data in CEO report format (merged with BRC CRC Mapping)
     sec_report_config: dict
         The configuration to generate the secondary report
+    report_name: dict
+        The name of the report which will be used to call the custom unranked report function
+        for the report if needed
     report_level: str
         The level of report to be generated. (Unranked/Ranked)
     metric_code: str
@@ -265,7 +272,7 @@ def _generate_sec_report(ceo_rpt_raw_data, sec_report_config:dict, report_level:
     # If a custom unranked report is configured to be called
     if (un_ranked_report_config['custom_unranked_report']):
         # Call the corresponding function for the report
-        report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
+        report_module_name = importlib.import_module('ceo_reports.' + report_name)
         cust_rpt_func = getattr(report_module_name, 'get_unranked_sec_report')
         report = cust_rpt_func(ceo_rpt_raw_data, grouping_cols, agg_dict)
     else:
