@@ -31,6 +31,8 @@ tot_schools = 'Total Schools'
 
 cwsn_students ='cwsn'
 beo_rank = 'BEO Rank'
+deo = 'DEO'
+beo = 'BEO'
 deo_rank_elm = 'DEO Rank Elementary'
 deo_rank_sec = 'DEO Rank Secondary'
 perc_students_cp = '% Students ageing > 30 days'
@@ -93,6 +95,16 @@ participants = 'Participations'
 tot_students = 'Total Students'
 per_participants = '% Student participations'
 
+# Palli Parvai specific column names
+observation_date = 'Date of Observation'
+observed_by = 'Observed by'
+designation_user_id = 'Observed by'
+pp_designation = 'stackholders'
+deo_target = 'deo_target'
+ceo_target ='ceo_target'
+perc_DEO_obs = '% School Observations by DEOs'
+perc_CEO_obs = '% School Observations by CEOs'
+perc_obs_comp = '% Overall Observation Completion'
 
 # BRC-CRC mapping specific column names
 beo_user = 'beo_user'

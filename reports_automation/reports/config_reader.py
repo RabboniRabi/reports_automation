@@ -6,6 +6,7 @@ import json
 
 config_files = ['report_configs.json',
                 'ceo_report_attendance_configs.json',
+                'ceo_report_observations_configs.json',
                 'ceo_report_operations_configs.json']
 
 def get_all_active_configs(config_files:list=config_files):
