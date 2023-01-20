@@ -59,6 +59,10 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         Raw data processed and merged with BRC-CRC mapping as a DataFrame object.
     """
 
+    if report_config is None:
+        # No BRC merge configuration was found
+        sys.exit('No report configuration found!')
+
     source_config = report_config['source_config']
     df_data = data_fetcher.get_data_from_config(source_config, save_source)
 

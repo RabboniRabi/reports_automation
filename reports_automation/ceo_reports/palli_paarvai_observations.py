@@ -7,42 +7,19 @@ import sys
 sys.path.append('../')
 
 import utilities.column_names_utilities as cols
-import functools as ft
-import utilities.file_utilities as file_utilities
-import utilities.dbutilities as dbutilities
-import utilities.ranking_utilities as ranking_utilities
-import utilities.report_utilities as report_utilities
+
 from datetime import datetime
 import utilities.column_names_utilities as cols
 
 
 import pandas as pd
-import os
 from datetime import date
-from pathlib import Path
+
 
 # Define elementary indexes for pivoting
 elem_pivot_index = [cols.district_name, cols.deo_name_elm, cols.school_level, cols.school_category]
 # Define secondary indexes for pivoting
 sec_pivot_index = [cols.district_name, cols.deo_name_sec, cols.school_level, cols.school_category]
-
-
-
-
-# Dictionary to define how the values to merge on and the how the merge will work.
-merge_dict = {
-    'on_values' : [district_name, udise_col],
-    'how' : 'left'
-}
-ranking_args_dict = {
-    'agg_dict': 'sum',
-    'ranking_val_desc': '% Overall Observation Completion',
-    'num_col': 'DEO',
-    'den_col': deo_target,
-    'sort': True,
-    'ascending': False
-}
-"-----------------------------------------------------------------------------------------------------------------------"
 
 
 
@@ -110,7 +87,7 @@ def post_process_BRC_merge(raw_data_brc_merged:pd.DataFrame):
     Parameters:
     ----------
     raw_data_brc_merged: Pandas DataFrame
-        The raw Palli Parvai screening data merged with BRC-CRC mapping data
+        The raw Palli Parvai data merged with BRC-CRC mapping data
 
     Returns:
     -------

@@ -79,11 +79,11 @@ if __name__ == "__main__":
     """
     Testing get_ceo_report
     """
-    elem_report = get_ceo_report('kalai_thiruvizha_participation', 'Elementary', 'Ranked')
-    file_utilities.save_to_excel({'Report': elem_report}, 'KTP Elementary Report.xlsx')
+    elem_report = get_ceo_report('students_ageing_in_common_pool', 'Elementary', 'Ranked')
+    file_utilities.save_to_excel({'Report': elem_report}, 'CP Elementary Report.xlsx')
 
-    sec_report = get_ceo_report('KTP', 'Secondary', 'Ranked')
-    file_utilities.save_to_excel({'Report': sec_report}, 'KTP Secondary Report.xlsx')
+    sec_report = get_ceo_report('CP', 'Secondary', 'Ranked')
+    file_utilities.save_to_excel({'Report': sec_report}, 'CP Secondary Report.xlsx')
 
     
 
