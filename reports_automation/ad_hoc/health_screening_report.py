@@ -4,10 +4,10 @@ sys.path.append('../')
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
+import utilities.column_names_utilities as cols
+
 import pandas as pd
 
-# Global variables
-district = 'District'
 
 
 # Read the excel report as a Pandas DataFrame object
@@ -92,10 +92,10 @@ def get_schools_screening_status(df, group_level):
     """
 
     # Compute whether a school has completed screening, partially completed or not started
-    series_completed = (df['Total'] - df['Screened'] == 0 ) & (df['Total']  != 0) 
+    series_completed = (df['Total'] - df['Screened'] <= 0 ) & (df['Total']  != 0) 
     series_not_started =  df['Screened'] == 0
     series_partially_completed =  ~(series_completed | series_not_started)
-    school_col_index = df.columns.get_loc('School')            
+    school_col_index = df.columns.get_loc(cols.school_name)            
     # Insert the computed values as series into the dataframe next to the school column
     df.insert(school_col_index+1,'Fully completed', series_completed)
     df.insert(school_col_index+2,'Partially Completed', series_partially_completed)
@@ -104,7 +104,7 @@ def get_schools_screening_status(df, group_level):
     # Group the data down to given grouping level,
     # counting total schools, completed schools, partially completed school, not started schools
     df_group_level = df.groupby([group_level],sort=False).agg(
-        Total_Schools=('School', 'count'),
+        Total_Schools=(cols.school_name, 'count'),
         Fully_Completed_Schools = ('Fully completed', 'sum'),
         Partially_Completed_Schools = ('Partially Completed', 'sum'),
         Not_Started_Schools = ('Not started', 'sum')
@@ -143,46 +143,13 @@ def get_schools_screening_status(df, group_level):
 
 
 
-
-def fetch_data_as_df (credentials_dict, script_file_name):
-    """
-    Function to query the database for students' health screening details and return the data as a pandas dataframe object
-    
-    Parameters
-    ---------
-    credentials_dict: dict
-        A dictionary of credentials to use to connect to the database
-        eg: {
-        "username": "<username>",
-        "password": "<password>",
-        "db_name": "<dbname>",
-        "host_name": "<hostname>"
-        }
-    script_file_name: str
-        The file name with the sql script to be executed to fetch the data
-    Returns
-    -------
-    Students' health screening details as a dataframe object
-    """
-    connection = dbutilities.create_server_connection(credentials_dict)
-    query = file_utilities.open_script(script_file_name).read()
-
-    print('Executing Query...')
-    df_data = pd.read_sql_query(query, connection) 
-    print('Query Execution Successful')
-
-    # Close the database connection
-    connection.close()
-
-    return df_data
-
 def main():
     
     # Read the database connection credentials
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Get the students' health screening details from the database as a Pandas DataFrame object
-    df_report = fetch_data_as_df(credentials_dict, 'health_screening_status.sql')
+    df_report = dbutilities.fetch_data_as_df(credentials_dict, 'health_screening_status.sql')
 
     # Temporarily reading from excel
     #df_report = pd.read_excel(r'/home/rabboni/Downloads/health.xlsx', sheet_name='Report')
@@ -190,11 +157,11 @@ def main():
     #df_copy = df_report.copy(deep=True)
 
     # Get the students' health screening details at district level
-    df_students_screening_status = get_students_screening_status(df_report, district)
+    df_students_screening_status = get_students_screening_status(df_report, cols.district_name)
 
 
     # Get the schools' health screening details at district level
-    df_schools_screening_status = get_schools_screening_status(df_report, district)
+    df_schools_screening_status = get_schools_screening_status(df_report, cols.district_name)
 
     df_sheet_dict = {
     'Students screening status': df_students_screening_status,

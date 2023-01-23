@@ -6,6 +6,15 @@ from datetime import datetime
 
 import pandas as pd
 
+def get_today_date():
+    """
+    Function to return a string representation of the current day's date
+
+    Returns:
+    -------
+    The current date as a 'DD:MM:YY' format string
+    """
+    return datetime.now().strftime('%d-%m-%y')
 
 
 def xlookup(lookup_value, lookup_array, return_array, if_not_found = ''):
@@ -330,3 +339,29 @@ def get_grouping_level_wise_col_values_count(df, group_levels, column, col_value
     df_supp_cat_count = df_pivot[selected_columns]
 
     return df_supp_cat_count
+
+
+def is_any_row_common(df_larger, df_smaller):
+    """
+    Function to check if atleast one row in both of the given dataframes is common.
+    Returns True if so. False otherwise.
+
+    Parameters:
+    -----------
+    df_larger: The larger of the two dataframes to be compared. Nominal.
+    df_smaller: The smaller of the two dataframes to be compared. Nominal.
+
+    Returns:
+    -------
+    True if atleast one row is common in both of the given dataframes. False otherwise.
+    """
+
+    # Get the cell wise matches of the smaller data frame with the larger dataframe
+    df_cell_wise_matches = df_smaller.isin(df_larger)
+    # Get the row wise True matches (True if all cells in a row are True. False otherwise)
+    df_rows_wise_matches = df_cell_wise_matches.all(axis='columns')
+    # Check if any row match done above was true
+    any_row_matches = df_rows_wise_matches.any(axis=None)
+
+    return any_row_matches
+

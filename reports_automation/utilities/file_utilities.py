@@ -9,6 +9,7 @@ import pandas as pd
 
 from easygui import fileopenbox
 from pathlib import Path
+from datetime import datetime
 
 def ask_open_filename(file_types, initialdir):
     """
@@ -68,11 +69,18 @@ def open_script(script_file_name):
     Returns:
     -------
     """
-    curr_dir_path = Path(os.getcwd())
-    file_path = os.path.join(curr_dir_path.parents[0], 'sql_scripts', script_file_name)
+    try:
+        curr_dir_path = Path(os.getcwd())
+        file_path = os.path.join(curr_dir_path.parents[0], 'sql_scripts', script_file_name)
 
-    file = open(file_path,'r')
-
+        file = open(file_path,'r')
+    except OSError as e:
+            if hasattr(e, 'message'):
+                print(e.message)
+            else:
+                print(e)
+            err_msg = 'Unable to open file: ' + script_file_name 
+            sys.exit(err_msg)
     return file
 
 def get_download_dir_path():
@@ -84,21 +92,175 @@ def get_download_dir_path():
     --------
     The path to the user's download path
     """
-    return str(os.path.join(Path.home(), 'Downloads'))
+    return os.path.join(Path.home(), 'Downloads')
+
+def get_reports_dir_path():
+    """
+    Function to get the path to the folder where all generated reports, 
+    mapping data and source data for reports are stored
+    Returns:
+    -------
+    The path to the reports folder
+    """    
+    curr_dir_path = Path(os.getcwd())
+    # Get the path to parent three levels up
+    parent_dir_three_lvls_up = curr_dir_path.parents[2]
+    dir_path = os.path.join(parent_dir_three_lvls_up, 'reports')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+    return dir_path
+
 
 def get_gen_reports_dir_path():
     """
     Function to get the path to the folder where generated reports are to be saved.
 
-    Retunrs:
+    Returns:
     -------
     The path to the generated reports folder
     """    
-    curr_dir_path = Path(os.getcwd())
-    # Get the path to parent three levels up
-    parent_dir_three_lvls_up = curr_dir_path.parents[2]
-    file_path = os.path.join(parent_dir_three_lvls_up, 'reports', 'generated')
-    return file_path
+
+    dir_path = os.path.join(get_reports_dir_path(), 'generated')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+    return dir_path
+
+
+def get_mapping_data_dir_path():
+    """
+    Function to get the path to the folder where mapping data is saved.
+
+    Returns:
+    -------
+    The path to the mapping data folder
+    """    
+
+    dir_path = os.path.join(get_reports_dir_path(), 'mapping_data')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+    return dir_path
+
+def get_source_data_dir_path():
+    """
+    Function to get the path to the folder where source data is saved.
+
+    Returns:
+    -------
+    The path to the source data folder
+    """    
+
+    dir_path = os.path.join(get_reports_dir_path(), 'source_data')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+    return dir_path
+
+def get_curr_month_source_data_dir_path():
+    """
+    Function to get the directory path to the current month's source data.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the current month's CEO reports directory
+    """
+    # Get the current month and year
+    curr_month_year = datetime.now().strftime('%h_%y')
+    dir_path = os.path.join(get_source_data_dir_path(), curr_month_year)
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
+
+
+def get_ceo_rpts_dir_path():
+    """
+    Function to get the directory path to CEO reports folder.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the CEO reports directory
+    """
+    dir_path = os.path.join(get_gen_reports_dir_path(), 'ceo_reports')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
+
+def get_curr_month_ceo_rpts_dir_path():
+    """
+    Function to get the directory path with the current month's ceo reports.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the current month's CEO reports directory
+    """
+    # Get the current month and year
+    curr_month_year = datetime.now().strftime('%h_%y')
+    dir_path = os.path.join(get_ceo_rpts_dir_path(), curr_month_year)
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
+
+def get_curr_month_elem_ceo_rpts_dir_path():
+    """
+    Function to get the directory path to the current month's Elementary level ceo reports.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the current month's CEO reports directory
+    """
+    dir_path = os.path.join(get_curr_month_ceo_rpts_dir_path(), 'Elementary')
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path    
+
+def get_curr_month_secnd_ceo_rpts_dir_path():
+    """
+    Function to get the directory path to the current month's Secondary level ceo reports.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the current month's CEO reports directory
+    """
+    dir_path = os.path.join(get_curr_month_ceo_rpts_dir_path(), 'Secondary')
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path   
+
+def create_dir(dir_path):
+    """
+    Function to create a directory with the given directory path
+    """
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        try:
+            # Make directory
+            os.makedirs(dir_path)
+        except OSError:
+            print(OSError)
+        # Check that directory has been created
+        if not os.path.isdir(dir_path):
+            raise
 
 def read_sheet(file_path, sheet_name, skiprows=0):
     """
@@ -128,21 +290,23 @@ def read_sheet(file_path, sheet_name, skiprows=0):
         
 
 
-def save_to_excel(df_sheet_dict, file_name, index=False):
+def save_to_excel(df_sheet_dict, file_name, dir_path = get_gen_reports_dir_path(), index=False):
     """
     Function to save a data frame to excel using openpyxl engine
 
     Parameters:
     ----------
     df_sheet_dict: dictionary
-        A dictionary containing sheet-dataframe key-value paits
+        A dictionary containing sheet-dataframe key-value pairs
     file_name: str
         File name to save the data in
-    index: bool
+    dir_path: str, optional
+        The directory path to save the file in. Default is the generated reports directory path
+    index: bool, optional
         Boolean value indicating if row names need to be written. Default is False
 
     """
-    file_path = os.path.join(get_gen_reports_dir_path(), file_name)
+    file_path = os.path.join(dir_path, file_name)
     datatoexcel = pd.ExcelWriter(file_path, engine='openpyxl')
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(datatoexcel, sheet_name=key, index=index)
@@ -151,7 +315,7 @@ def save_to_excel(df_sheet_dict, file_name, index=False):
     print('Save done')
 
 
-def get_xlsxwriter_obj(df_sheet_dict, file_name, index=False):
+def get_xlsxwriter_obj(df_sheet_dict, file_name, file_path = get_gen_reports_dir_path(), index=False):
     """
     Function to convert the Pandas DataFrame object to 
     a ready to use and save XlsxWriter object.
@@ -162,6 +326,8 @@ def get_xlsxwriter_obj(df_sheet_dict, file_name, index=False):
         A dictionary containing sheet-dataframe key-value paits
     file_name: str
         File name to save the data in
+    file_path: str, optional
+        The directory path to save the file in. Default is generated reports directory path    
     index: bool
         Boolean value indicating if row names need to be written. Default is False
 
@@ -170,7 +336,7 @@ def get_xlsxwriter_obj(df_sheet_dict, file_name, index=False):
     An XlsxWriter object    
     """
 
-    file_path = os.path.join(get_gen_reports_dir_path(), file_name)
+    file_path = os.path.join(file_path, file_name)
     writer = pd.ExcelWriter(file_path, engine='xlsxwriter')
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(writer, sheet_name=key, index=index)        

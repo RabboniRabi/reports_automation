@@ -4,6 +4,11 @@ from sqlalchemy import create_engine
 
 import json
 import os
+import sys
+
+import utilities.file_utilities as file_utilities
+import pandas as pd
+from pandas.io.sql import DatabaseError 
 
 def read_conn_credentials(file_name):
     """
@@ -104,3 +109,40 @@ def fetch_data(connection, query):
     except Error as err:
             print(f'Error: ', err)    
 
+
+def fetch_data_as_df (credentials_dict, script_file_name, params=None):
+    """
+    Function to query the database for students' health screening details and return the data as a pandas dataframe object
+    
+    Parameters
+    ---------
+    credentials_dict: dict
+        A dictionary of credentials to use to connect to the database
+        eg: {
+        "username": "<username>",
+        "password": "<password>",
+        "db_name": "<dbname>",
+        "host_name": "<hostname>"
+        }
+    script_file_name: str
+        The file name with the sql script to be executed to fetch the data
+    Returns
+    -------
+    Students' health screening details as a dataframe object
+    """
+    connection = create_server_connection(credentials_dict)
+    query = file_utilities.open_script(script_file_name).read()
+
+    print('Executing Query...')
+    try:
+        df_data = pd.read_sql_query(query, connection, params) 
+        print('Query Execution Successful')
+    except (DatabaseError, Error) as err:
+        print(f'Error: ', err)
+        err_msg = 'Error in executing query in ' + script_file_name
+        sys.exit(err_msg)
+
+    # Close the database connection
+    connection.close()
+
+    return df_data
