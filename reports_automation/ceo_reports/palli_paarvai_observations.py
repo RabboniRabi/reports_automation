@@ -6,130 +6,151 @@ Module with functions to:
 import sys
 sys.path.append('../')
 
-import utilities.utilities as utilities
-import functools as ft
-import utilities.file_utilities as file_utilities
-import utilities.dbutilities as dbutilities
-import utilities.ranking_utilities as ranking_utilities
-import utilities.report_utilities as report_utilities
+import utilities.column_names_utilities as cols
+
 from datetime import datetime
 import utilities.column_names_utilities as cols
 
 
 import pandas as pd
-import os
 from datetime import date
-from pathlib import Path
-
-"""
-Step 0:
-Define the all the variables in the report
-
-"""
-
-"-----------------------------------------------------------------------------------------------------------------------"
-# Step 0:
-# Global variables
-# Column names are defined here so that they can be edited in one place
-observation_date  = 'Date of Observation'
-designation_user_id = 'Observed by'
-designation = 'stackholders'
-district_name = 'district_name'
-udise_col = 'udise_code'
-school_name ='School_Observed'
-edu_district_name = 'edu_dist_name'
-block_name = 'block_name'
-school_category = 'category'
-school_level = 'school_level'
-class_number = 'class'
-beo_user = 'beo_user'
-beo_name ='beo_name'
-deo_user_elm = 'deo_name (elementary)'
-deo_user_sec = 'deo_name (secondary)'
-cwsn_students ='cwsn'
-beo_rank = 'BEO Rank'
-deo_rank_elm = 'DEO Rank Elementary'
-deo_rank_sec = 'DEO Rank Secondary'
-school_type ='school_type'
-edu_dist_id = 'edu_dist_id'
-deo_target = 'deo_target'
-ceo_target ='ceo_target'
-management = 'management'
 
 
-# Dictionary to define how the values to merge on and the how the merge will work.
-merge_dict = {
-    'on_values' : [district_name, udise_col],
-    'how' : 'left'
-}
-ranking_args_dict = {
-    'agg_dict': 'sum',
-    'ranking_val_desc': '% Overall Observation Completion',
-    'num_col': 'DEO',
-    'den_col': deo_target,
-    'sort': True,
-    'ascending': False
-}
-"-----------------------------------------------------------------------------------------------------------------------"
+# Define elementary indexes for pivoting
+elem_pivot_index = [cols.district_name, cols.deo_name_elm, cols.school_level, cols.school_category]
+# Define secondary indexes for pivoting
+sec_pivot_index = [cols.district_name, cols.deo_name_sec, cols.school_level, cols.school_category]
 
 
 
-def main():
+def _process_data_for_report(df_data, pivot_index, ceo_target_val, deo_target_val):
+    """
+    Internal function to get a report ready data by:
+        - Pivoting and getting mapped statuses count of schools at grouping level
+        - Total count of schools at grouping level
+    
+    Parameters:
+    ----------
+    df_data: Pandas DataFrame
+        DataFrame object of the data to be processed for report
+    pivot_index: list
+        The list of values to pivot by
+    ceo_target_val: str
+        The value of the CEO target
+    deo_target_val: str
+        The value of the DEO target
+    """
+    df_data_pivot = pd.pivot_table(df_data, index=pivot_index, columns=cols.pp_designation, values=cols.udise_col,\
+        aggfunc='count').reset_index().fillna(0)
 
-    """""
-    #code for running the sql script:
+    # Targets are kept as 12 for both the designations
+    # Merging both target and raw data
+    df_data_pivot[cols.deo_target] = deo_target_val
+    df_data_pivot[cols.perc_DEO_obs] = df_data_pivot['DEO']/df_data_pivot[cols.deo_target]
+    df_data_pivot[cols.ceo_target] = ceo_target_val
+    df_data_pivot[cols.perc_DEO_obs] = df_data_pivot['CEO']/df_data_pivot[cols.ceo_target]
 
-    # Read the database connection credentials
-    credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+    return df_data_pivot
 
-    # Get the latest students and teachers count
-    df_report = dbutilities.fetch_data_as_df(credentials_dict, 'common_pool_latest.sql')
+def pre_process_BRC_merge(raw_data:pd.DataFrame):
+    """
+    Function to process the Palli Parvai raw data before merging with BRC-CRC mapping data
 
-    print('df_report fetched from db: ', df_report)
+    Parameters:
+    ----------
+    raw_data: Pandas DataFrame
+        The raw Palli Parvai data
+
+    Returns:
+    -------
+    DataFrame object of Palli Parvai data processed and ready for mapping with BRC-CRC data
     """
 
-    # Getting the raw data
-    ee_sa_basefile = file_utilities.user_sel_excel_filename()
-    raw_data = pd.read_excel(ee_sa_basefile, sheet_name='Report',skiprows=4)
-    #raw data only for the specific month we need - previous month
-    raw_data[observation_date] = raw_data[observation_date].dt.month
-    raw_data =raw_data[raw_data[observation_date] == (datetime.now().month-1)]
-    #taking only the ceo and deo observations
-    raw_data = raw_data[raw_data['Observed by'].str.contains('|'.join(['ceo','deo']))]
-    raw_data = raw_data[~(raw_data[designation] == 'Null')]
+    print('Pre Processing before BRC merge called in Palli Parvai')
 
-    data_with_brc_mapping = report_utilities.map_data_with_brc(raw_data, merge_dict)
-    data_with_brc_mapping.replace('Null', value=0, inplace=True)
-    data_with_brc_mapping = data_with_brc_mapping[~data_with_brc_mapping[school_level].isin([0])]
+    # Raw data only for the specific month - previous month
+    raw_data[cols.observation_date] = raw_data[cols.observation_date].dt.month
+    raw_data = raw_data[raw_data[cols.observation_date] == (datetime.now().month - 1)]
+    
+    # Filter the data to only the ceo and deo observations
+    raw_data = raw_data[raw_data[cols.observed_by].str.contains('|'.join(['ceo','deo']))]
+    # Filter data by removing entries with null designations
+    raw_data = raw_data[~(raw_data[cols.designation] == 'Null')]
 
-    data_final_elm = pd.pivot_table(data_with_brc_mapping,index=[district_name,deo_user_elm,school_level,school_category],columns=designation,values=udise_col
-                    ,aggfunc='count').reset_index().fillna(0)
-
-    data_final_sec = pd.pivot_table(data_with_brc_mapping, columns=designation, values=udise_col,
-                                    index=[district_name,deo_user_sec,school_level,school_category], aggfunc='count').fillna(0).reset_index()
-
-    #targets are 12 for both the designations
-    #merging both target and raw data
-    data_final_elm[deo_target] = 6
-    data_final_elm['% School Observations by DEOs'] = data_final_elm['DEO']/data_final_elm[deo_target]
-    data_final_elm[ceo_target] = 3
-    data_final_elm['% School Observations by CEOs'] = data_final_elm['CEO']/data_final_elm[ceo_target]
-    data_final_sec[deo_target] = 6
-    data_final_sec['% School Observations by DEOs'] = data_final_sec['DEO']/data_final_sec[deo_target]
-    data_final_sec[ceo_target] = 3
-    data_final_sec['% School Observations by CEOs'] = data_final_sec['CEO']/data_final_sec[ceo_target]
-
-    # Saving the report
-    elem_report = report_utilities.get_elem_ranked_report(data_final_elm, 'percent_ranking', ranking_args_dict, 'PPO', 'Palli Parvai')
-    sec_report = report_utilities.get_sec_ranked_report(data_final_sec, 'percent_ranking', ranking_args_dict, 'PPO', 'Palli Parvai')
+    return raw_data
 
 
-    file_utilities.save_to_excel({'PPO_Elm': elem_report}, 'PPO_Elm.xlsx',\
-             dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path())
+def post_process_BRC_merge(raw_data_brc_merged:pd.DataFrame):
+    """
+    Function to process the Palli Parvai raw data after being merged with BRC-CRC mapping data
 
-    file_utilities.save_to_excel({'PPO_Sec': sec_report}, 'PPO_Sec.xlsx',\
-             dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path())
+    Parameters:
+    ----------
+    raw_data_brc_merged: Pandas DataFrame
+        The raw Palli Parvai data merged with BRC-CRC mapping data
 
-if __name__ == "__main__":
-    main()
+    Returns:
+    -------
+    DataFrame object of Palli Parvai data ready for report generation
+    """
 
+    print('post process called for Palli Parvai report')
+
+    # Replace null values with 0s
+    raw_data_brc_merged.replace('Null', value=0, inplace=True)
+    # Filter out data whose school level values are 0
+    raw_data_brc_merged = raw_data_brc_merged[~raw_data_brc_merged[cols.school_level].isin([0])]
+
+    return raw_data_brc_merged
+
+
+def get_unranked_elem_report(df_data:pd.DataFrame, grouping_cols:list, agg_dict:dict):
+    """
+    Custom function to generate the elementary report until unranked level
+
+    Parameters:
+    -----------
+    ceo_rpt_raw_data: Pandas DataFrame 
+        DataFrame object of the processed raw data
+    grouping_cols: list
+        The list of columns to group by
+    agg_dict: dict
+        The columns to aggregate and their corresponding functions
+    
+    Returns:
+    --------
+    Pandas DataFrame object of the unranked secondary level report
+    """
+    # Filter the data to elementary school type
+    df_data = df_data[df_data[cols.school_level].isin([cols.elem_schl_lvl])]
+
+    # Prepare the data for elementary report
+    df_data = _process_data_for_report(df_data, elem_pivot_index, ceo_target_val=3, deo_target_val=6)
+
+    return df_data
+
+
+def get_unranked_sec_report(df_data:pd.DataFrame, grouping_cols:list, agg_dict:dict):
+    """
+    Custom function to generate the secondary report until unranked level
+
+    Parameters:
+    -----------
+    ceo_rpt_raw_data: Pandas DataFrame 
+        DataFrame object of the processed raw data
+    grouping_cols: list
+        The list of columns to group by
+    agg_dict: dict
+        The columns to aggregate and their corresponding functions
+    
+    Returns:
+    --------
+    Pandas DataFrame object of the unranked secondary level report
+    """
+    # Filter the data to secondary school type
+    df_data = df_data[df_data[cols.school_level].isin([cols.scnd_schl_lvl])]
+
+    # Prepare the data for secondary report
+    df_data = _process_data_for_report(df_data, sec_pivot_index, ceo_target_val=3, deo_target_val=6)
+
+    return df_data

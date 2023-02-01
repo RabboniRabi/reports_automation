@@ -41,7 +41,6 @@ def percent_ranking(df, group_levels, ranking_args_dict):
     
 
     # Get the values from the ranking arguments dictionary
-    sort = ranking_args_dict['sort']
     agg_dict = ranking_args_dict['agg_dict']
     ranking_val_desc = ranking_args_dict['ranking_val_desc']
     num_col = ranking_args_dict['num_col']
