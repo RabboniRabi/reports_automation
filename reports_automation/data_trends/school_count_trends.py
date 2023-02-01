@@ -92,7 +92,7 @@ def day_wise_tracking(master_file_name, sheet_name, df_today, dist_col, udise_co
     today_date = utilities.get_today_date()
 
     # Update df_today to be the subset of district and UDISE columns
-    df_today = df_today[[dist_col, udise_col]]
+    df_today = df_today[[dist_col, udise_col,cols.block_name,cols.category_type,cols.management_type]]
 
     # If file does not exist
     if not os.path.exists(master_file_path):
@@ -274,23 +274,23 @@ def main():
 
 
     # Get a data frame updated with the latest school count
-    df_school_count = day_wise_school_count_tracking('school_count_trends.xlsx', 'school_count_tracking', df_report,cols.district_name, cols.udise_col)
+    #df_school_count = day_wise_school_count_tracking('school_count_trends.xlsx', 'school_count_tracking', df_report,cols.district_name, cols.udise_col)
 
     # Get a data frame updated with latest UDISE tracking (present/absent)
     df_daywise_tracking = day_wise_tracking('school_count_trends.xlsx', 'daywise_UDISE_tracking', df_report, cols.district_name, cols.udise_col)
-    df_student_count =student_count_tracking('stu_teach_count_trends.xlsx', 'student_count_tracking', df_report, cols.district_name, cols.udise_col, 'Total_Students')
+    #df_student_count =student_count_tracking('stu_teach_count_trends.xlsx', 'student_count_tracking', df_report, cols.district_name, cols.udise_col, 'Total_Students')
 
-    df_teacher_count =teacher_count_tracking('stu_teach_count_trends.xlsx', 'teacher_count_tracking', df_report, cols.district_name, cols.udise_col, 'Teaching_Staff')
+    #df_teacher_count =teacher_count_tracking('stu_teach_count_trends.xlsx', 'teacher_count_tracking', df_report, cols.district_name, cols.udise_col, 'Teaching_Staff')
     # Save the updated master data
     df_sheet_dict_school = {
-        'school_count_tracking': df_school_count,
+        #'school_count_tracking': df_school_count,
         'daywise_UDISE_tracking': df_daywise_tracking
         }
-    df_sheet_dict_st_teach = {'student_count_tracking':df_student_count,
-        'teacher_count_tracking': df_teacher_count}
+    #df_sheet_dict_st_teach = {'student_count_tracking':df_student_count,
+        #'teacher_count_tracking': df_teacher_count}
 
     file_utilities.save_to_excel(df_sheet_dict_school, 'school_count_trends.xlsx')
-    file_utilities.save_to_excel(df_sheet_dict_st_teach, 'stu_teach_count_trends.xlsx')
+    #file_utilities.save_to_excel(df_sheet_dict_st_teach, 'stu_teach_count_trends.xlsx')
 
 
 
