@@ -22,7 +22,6 @@ import utilities.utilities as utilities
 import utilities.column_names_utilities as cols
 
 import pandas as pd
-import numpy as np
 
 
 def get_grouping_level_wise_student_count(df, group_levels, student_count_col):
@@ -142,7 +141,7 @@ def main():
     # List of columns with student IDs
     id_columns = ['NID', 'UDID']
     # Levels to apply grouping by
-    group_levels = ['District', 'Edu_District', 'Block']
+    group_levels = ['District']
     # List of places student is supported in
     supported_in_vals = ['SRP Center', 'Home Based']
 
