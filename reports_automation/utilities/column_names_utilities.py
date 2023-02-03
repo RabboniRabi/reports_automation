@@ -120,9 +120,11 @@ elem_schl_lvl = 'Elementary School'
 scnd_schl_lvl = 'Secondary School'
 
 
-# OSC report specific column names
+# OoSC report specific column names
 reason_type = 'Reason_type'
-
+to_be_surveyed = 'To be surveyed'
+perc_to_be_admitted = '% to be admitted'
+to_be_admitted = 'To be admitted'
 # Hi-tech lab report specific column names
 up_time_hrs = 'up_time_hrs'
 mediam_up_time_hrs = 'Median Uptime Hours'
