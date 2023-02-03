@@ -31,6 +31,7 @@ central_govt = 'Central Govt'
 
 tot_schools = 'Total Schools'
 
+student_name = 'student_name'
 cwsn_students ='cwsn'
 beo_rank = 'BEO Rank'
 deo = 'DEO'
@@ -119,6 +120,14 @@ school_level = 'school_level'
 # Report specific column names
 elem_schl_lvl = 'Elementary School'
 scnd_schl_lvl = 'Secondary School'
+
+
+# OSC report specific column names
+reason_type = 'Reason_type'
+
+# Hi-tech lab report specific column names
+up_time_hrs = 'up_time_hrs'
+mediam_up_time_hrs = 'Median Uptime Hours'
 
 
 # Ranking specific column names
