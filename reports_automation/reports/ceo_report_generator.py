@@ -37,8 +37,8 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
     """
 
     if report_config is None:
-        # No BRC merge configuration was found
-        sys.exit('No report configuration found!')
+        # No report configuration was found.
+        sys.exit('No report configuration found. Cannot generate the report!')
 
     source_config = report_config['source_config']
     df_data = data_fetcher.get_data_from_config(source_config, save_source)

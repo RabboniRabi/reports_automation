@@ -130,6 +130,19 @@ up_time_hrs = 'up_time_hrs'
 mediam_up_time_hrs = 'Median Uptime Hours'
 
 
+# Attendance specific column names
+tot_tchrs = 'Total_teachers'
+updt_tchrs = 'Updated_Teachers'
+appld_tchrs = 'Applied_Teachers'
+perc_tchrs_updated = '% Updated'
+per_tchrs_applied = '% Applied'
+
+
+# Updation specific column names
+up_tot_tchrs = 'total_teachers'
+not_updt_tchrs = 'notupdated_teachers'
+perc_not_updt = '% Not Updated'
+
 # Ranking specific column names
 desig = 'Designation'
 metric_code = 'metric_code'
