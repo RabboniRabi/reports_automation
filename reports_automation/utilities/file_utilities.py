@@ -288,7 +288,26 @@ def read_sheet(file_path, sheet_name, skiprows=0):
         print('Loading done.')
         return data_frame
         
+def file_exists(file_name: str, dir_path:str):
+    """
+    Function to check if a given file name exists in a given directory path.
 
+    Parameters:
+    -----------
+    file_name: str
+        The name of the file whose existence has to be checked
+    dir_path: str
+        The path to the directory where the file existence needs to be checked
+
+    Returns:
+    --------
+    True if file exists. False otherwise.
+    """
+    file_path = os.path.join(dir_path, file_name)
+
+    file_exists = os.path.isfile(file_path)
+
+    return file_exists
 
 def save_to_excel(df_sheet_dict, file_name, dir_path = get_gen_reports_dir_path(), index=False):
     """

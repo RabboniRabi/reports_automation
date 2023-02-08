@@ -11,11 +11,11 @@ config_files = ['report_configs.json',
                 'ceo_report_operations_configs.json']
                 
 
-ceo_rpt_config_files = ['ceo_rpt/report_configs.json',
-                'ceo_rpt/attendance_configs.json',
-                'ceo_rpt/enrolment_configs.json',
-                'ceo_rpt/observations_configs.json',
-                'ceo_rpt/operations_configs.json']
+ceo_review_config_files = ['ceo_review/report_configs.json',
+                'ceo_review/attendance_configs.json',
+                'ceo_review/enrolment_configs.json',
+                'ceo_review/observations_configs.json',
+                'ceo_review/operations_configs.json']
 
 ad_hoc_config_files = ['ad_hoc/attendance_configs.json',
                         'ad_hoc/updation_status_configs.json']
@@ -35,15 +35,13 @@ def get_all_active_configs(config_files:list=config_files):
     -------
     Returns array of configurations dictionaries where each item in the dictionary is for each report
     """
-    all_active_configs = []
+    # Define a list of active configurations
+    active_configs = []
 
     for config_file_name in config_files:
 
         with open('configs/' + config_file_name, 'r') as read_file:
             all_configs = json.load(read_file)["report_configs"]
-
-        # Define a list of active configurations
-        active_configs = []
 
         for config in all_configs:
             if config["generate_report"]:
@@ -52,10 +50,7 @@ def get_all_active_configs(config_files:list=config_files):
         # Close the file
         read_file.close()
 
-        # Update the full list of active configurations with the newly read configs
-        all_active_configs.append(active_configs)
-
-    return all_active_configs
+    return active_configs
 
 
 def get_config(config_name:str, config_category:str=None, config_files:list=config_files):
@@ -136,7 +131,7 @@ def get_adhoc_config(config_name:str, config_category:str=None, config_files:lis
     """
     return get_config(config_name, config_category, config_files)
 
-def get_ceo_rpt_config(config_name:str, config_category:str=None, config_files:list=ceo_rpt_config_files):
+def get_ceo_rpt_config(config_name:str, config_category:str=None, config_files:list=ceo_review_config_files):
     """
     Function to use the given ceo report config name and fetch the configuration to generate a report. 
     If no config is found, None is returned

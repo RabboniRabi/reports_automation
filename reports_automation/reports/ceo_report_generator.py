@@ -6,7 +6,9 @@ import sys
 sys.path.append('../')
 
 import utilities.report_utilities as report_utilities
+import utilities.file_utilities as file_utilities
 import data_fetcher
+import config_reader
 import utilities.column_names_utilities as cols
 import importlib
 
@@ -64,9 +66,6 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
     # This is done as the variable name in defined as a string in the JSON config
     join_on_vars = brc_merge_config['join_on']
     brc_merge_config['join_on'] = cols.get_values(join_on_vars)
-
-    print('df_data columns: ', df_data.columns.to_list())
-    print('brc_merge_config: ' , brc_merge_config['join_on'])
     
     df_data = report_utilities.map_data_with_brc(df_data, brc_merge_config)
 
@@ -106,9 +105,6 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
     # Get the raw data merged with the BRC-CRC mapping
     df_data = get_ceo_report_raw_data(report_config, save_source)
 
-    print('raw data post merge columns: ', df_data.columns.to_list())
-    print('raw data post merge: ', df_data)
-
     # Get the report metric code and category
     metric_code = report_config['report_code']
     metric_category = report_config['report_category']
@@ -145,6 +141,83 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
         report = _generate_sec_report(df_data, sec_report_config, report_name, report_level, metric_code, metric_category)
 
         return report
+
+def generate_all(generate_fresh:bool = True):
+    """
+    Function to generate all configured and active reports for CEO review in one shot.
+
+    This function will iterate through each active configuration, call the get_ceo_report function
+    to generate the report, format the report and save.
+
+    Parameters:
+    ----------
+    generate_fresh: bool
+        Flag to indicate if all reports for the month needed need to be generated fresh.
+        Default is True. If False, already generated reports for the month are ignored.
+    """
+    active_configs = config_reader.get_all_active_configs(config_reader.ceo_review_config_files)
+
+    for config in active_configs:
+
+        # Define elementary report name and get existence flag
+        elem_report_name = config['report_desc'] + '-Elementary.xlsx'
+        curr_month_elem_ceo_rpts_dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path()
+        elem_file_exists = file_utilities.file_exists(elem_report_name, curr_month_elem_ceo_rpts_dir_path)
+        
+        # Define secondary report name and get existence flag
+        sec_report_name = config['report_desc'] + '-Secondary.xlsx'
+        curr_month_secnd_ceo_rpts_dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path()
+        sec_file_exists = file_utilities.file_exists(sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
+
+        # Get the report metric code and category
+        metric_code = config['report_code']
+        metric_category = config['report_category']
+        report_name = config['report_name']
+
+        # Get the raw data merged with the BRC-CRC mapping
+        df_data = get_ceo_report_raw_data(config, True)
+
+        # Get the arguments for Elementary report
+        elem_report_config = config['elementary_report']
+
+        # Check that the configuration for elementary report exists
+        if elem_report_config is None:
+            # No elementary report configuration was found
+            sys.exit('Elementary report configuration not provided for report: ', report_config['report_name'])
+
+        # Check if elementary report needs to be generated
+        if (generate_fresh or not elem_file_exists):
+
+            if elem_report_config['generate_report']:
+                # Call the helper function to generate the elementary report
+                elem_report = _generate_elem_report(df_data, elem_report_config, report_name, ceo_report_levels.RANKED, metric_code, metric_category)
+
+                #elem_report = get_ceo_report(config, 'Elementary', ceo_report_levels.RANKED)
+
+                # Save the report
+                file_utilities.save_to_excel({'Report': elem_report}, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
+        
+        # Get the ranking arguments for secondary report
+        sec_report_config = config['secondary_report']
+
+        # Check that the configuration for secondary report exists
+        if sec_report_config is None:
+            # No Secondary report configuration was found
+            sys.exit('Secondary report configuration not provided for report: ', report_config['report_name'])
+
+        # Check if secondary report needs to be generated
+        if (generate_fresh or not sec_file_exists):
+
+            if sec_report_config['generate_report']:
+
+                # Call the helper function to generate the elementary report
+                sec_report = _generate_sec_report(df_data, sec_report_config, report_name, ceo_report_levels.RANKED, metric_code, metric_category)
+
+                #sec_report = get_ceo_report(config, 'Secondary', ceo_report_levels.RANKED)
+
+                # Save the report
+                file_utilities.save_to_excel({'Report': sec_report}, sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
+
 
 def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name:str, report_level:str, metric_code, metric_category):
     """
@@ -198,12 +271,14 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name
         report = ceo_rpt_raw_data.groupby(grouping_cols, as_index=False).agg(agg_dict)
 
     # Check if ranking is required in report
-    if report_level == ceo_report_levels.RANKED.value:
+    print('report level given: ', report_level)
+    if report_level == ceo_report_levels.RANKED.value or report_level == ceo_report_levels.RANKED:
         # Generate ranking and update report
         ranking_dict = elem_report_config['ranking_args']
         # Update the values in ranking argument
         ranking_dict = _update_ranking_args_dict(ranking_dict)
         # Get the elementary ranked report
+        print('Ranking called on report.....')
         report = report_utilities.get_elem_ranked_report(report, ranking_dict, metric_code, metric_category)
 
     return report
@@ -261,7 +336,7 @@ def _generate_sec_report(ceo_rpt_raw_data, sec_report_config:dict, report_name, 
         report = ceo_rpt_raw_data.groupby(grouping_cols, as_index=False).agg(agg_dict)
 
     # Check if ranking is required in report
-    if report_level == ceo_report_levels.RANKED.value:
+    if report_level == ceo_report_levels.RANKED.value or report_level == ceo_report_levels.RANKED:
         # Generate ranking and update report
         ranking_dict = sec_report_config['ranking_args']
         # Update the values in ranking argument
@@ -309,4 +384,8 @@ def _update_ranking_args_dict(ranking_args:dict):
         ranking_args['den_col'] = den_col_val
 
     return ranking_args
-    
+
+
+# For testing
+if __name__ == "__main__":
+    generate_all()
