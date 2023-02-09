@@ -36,6 +36,28 @@
                     "den_col": "cols.total_cp_students",
                     "sort": "True",
                     "ascending": "True"
+                },
+                "format_config" : {
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.ageing": "sum",
+                            "cols.total_cp_students": "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                    },
+                    "format_dict" : {
+                        "conditional_format" : {
+                            "columns" : ["cols.perc_ageing"],
+                            "format": {"type": "3_color_scale"}
+                        },
+                        "format_cells" : {
+                            "columns" : ["cols.perc_ageing"],
+                            "format" : {"num_format": "0.00%"}
+            
+                        }
+                    }
                 }
             },
             "secondary_report" : {
@@ -56,28 +78,27 @@
                     "den_col": "cols.total_cp_students",
                     "sort": "True",
                     "ascending": "True"
-                }
-            },
-            "format_config" : {
-                "subtotal_outlines_dict" : {
-                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
-                    "agg_cols_func_dict" : {
-                        "cols.fully_mapped": "sum",
-                        "cols.part_mapped": "sum",
-                        "cols.tot_schools": "sum",
-                        "cols.deo_sec_rank": "mean"
-                    },
-                    "text_append_dict" : {"cols.deo_name_sec": "Total"}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_fully_mapped"],
-                        "format": {"type": "3_color_scale"}
+                "format_config" : {
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.ageing": "sum",
+                            "cols.total_cp_students": "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": "Summary"}
                     },
-                    "format_cells" : {
-                        "columns" : ["cols.perc_fully_mapped"],
-                        "format" : {"num_format": "0.00%"}
-        
+                    "format_dict" : {
+                        "conditional_format" : {
+                            "columns" : ["cols.perc_ageing"],
+                            "format": {"type": "3_color_scale"}
+                        },
+                        "format_cells" : {
+                            "columns" : ["cols.perc_ageing"],
+                            "format" : {"num_format": "0.00%"}
+            
+                        }
                     }
                 }
             }

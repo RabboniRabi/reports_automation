@@ -7,6 +7,7 @@ sys.path.append('../')
 
 import utilities.report_utilities as report_utilities
 import utilities.file_utilities as file_utilities
+import utilities.review_view_utilities as review_view_utilities
 import data_fetcher
 import config_reader
 import utilities.column_names_utilities as cols
@@ -45,14 +46,11 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
     source_config = report_config['source_config']
     df_data = data_fetcher.get_data_from_config(source_config, save_source)
 
-    print('columns in data read: ', df_data.columns.to_list())
-
-    report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
-
     # Check if pre-processing before merging with BRC-CRC mapping is required
     if (report_config['pre_process_brc_merge']):
         print('Going to pre-process data')
         # Call the custom pre-processing function for the report
+        report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
         pre_proc_func = getattr(report_module_name, 'pre_process_BRC_merge')
         df_data = pre_proc_func(df_data)
 
@@ -72,6 +70,7 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
      # Check if post-processing after merging with BRC-CRC mapping is required
     if (report_config['post_process_brc_merge']):
         # Call the custom post-processing function for the report
+        report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
         post_proc_func = getattr(report_module_name, 'post_process_BRC_merge')
         df_data = post_proc_func(df_data)   
 
@@ -169,6 +168,13 @@ def generate_all(generate_fresh:bool = True):
         curr_month_secnd_ceo_rpts_dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path()
         sec_file_exists = file_utilities.file_exists(sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
 
+        # Check if report report for current configuration needs to be generated
+        if (elem_file_exists and sec_file_exists and not generate_fresh):
+            print('Report already generated for', config['report_name'])
+            continue
+
+        print('Generating report for: ', config['report_name'], '...')
+
         # Get the report metric code and category
         metric_code = config['report_code']
         metric_category = config['report_category']
@@ -194,8 +200,15 @@ def generate_all(generate_fresh:bool = True):
 
                 #elem_report = get_ceo_report(config, 'Elementary', ceo_report_levels.RANKED)
 
-                # Save the report
-                file_utilities.save_to_excel({'Report': elem_report}, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
+                # Check if formatting needs to be done
+                format_config = elem_report_config['format_config']
+                if format_config is not None:
+                    # Call review view utilities to format and save the report
+                    review_view_utilities.prepare_report_for_review(elem_report\
+                            , format_config, elem_report_config['ranking_args'], 'Report', elem_report_name, curr_month_elem_ceo_rpts_dir_path)
+                else:
+                    # Save the report without any formatting
+                    file_utilities.save_to_excel({'Report': elem_report}, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
         
         # Get the ranking arguments for secondary report
         sec_report_config = config['secondary_report']
@@ -215,8 +228,15 @@ def generate_all(generate_fresh:bool = True):
 
                 #sec_report = get_ceo_report(config, 'Secondary', ceo_report_levels.RANKED)
 
-                # Save the report
-                file_utilities.save_to_excel({'Report': sec_report}, sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
+                # Check if formatting needs to be done
+                format_config = sec_report_config['format_config']
+                if format_config is not None:
+                    # Call review view utilities to format and save the report
+                    review_view_utilities.prepare_report_for_review(sec_report\
+                            , format_config, sec_report_config['ranking_args'], 'Report', sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
+                else:
+                    # Save the report without any formatting
+                    file_utilities.save_to_excel({'Report': sec_report}, sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
 
 
 def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name:str, report_level:str, metric_code, metric_category):
@@ -388,4 +408,4 @@ def _update_ranking_args_dict(ranking_args:dict):
 
 # For testing
 if __name__ == "__main__":
-    generate_all()
+    generate_all(generate_fresh=False)

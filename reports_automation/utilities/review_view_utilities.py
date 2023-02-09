@@ -18,11 +18,12 @@ import utilities.subtotal_utilities as subtotal_utilities
 import utilities.outlines_utilities as outlines_utilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.format_utilities as format_utilities
+import utilities.column_names_utilities as cols
 
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl import Workbook
 
-def prepare_report_for_review(df, report_config_dict, sheet_name, file_name, dir_path):
+def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_name, file_name, dir_path):
     """
     Function to prepare the final report for viewing by:
         - computing subtotals
@@ -88,14 +89,15 @@ def prepare_report_for_review(df, report_config_dict, sheet_name, file_name, dir
     """
 
     # Get the subtotal and outlines specific configurations
-    subtotal_outlines_dict = report_config_dict['subtotal_outlines_dict']
+    subtotal_outlines_dict = _update_subtotal_outlines_dict(report_config_dict['subtotal_outlines_dict'])
+    print('subtotal_outlines_dict: ', subtotal_outlines_dict)
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
     agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
     text_append_dict = subtotal_outlines_dict['text_append_dict']
 
 
     # Compute sub-totals and insert into provided dataframe
-    subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, report_config_dict)
+    subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, report_config_dict, ranking_args_dict)
 
     # Get the updated DataFrame object - with the subtotals inserted
     updated_df = subtotals_result_dict['updated_df']
@@ -168,3 +170,42 @@ def prepare_report_for_review(df, report_config_dict, sheet_name, file_name, dir
 
 
     #print('df_subtotaled read columns: ', df_subtotaled.columns.to_list())
+
+
+
+def _update_subtotal_outlines_dict(subtotal_outlines_dict:dict):
+    """
+    Internal function to update subtotal outline dict keys and values.
+    
+    When JSON configuration with variable keys and variable values are read
+    as a dict, the variable resolution does not manually happen. 
+    
+    This utility function resolves the keys and values in the subtotal outlines dict
+    
+    Parameters:
+    -----------
+    subtotal_outlines_dict: dict
+        The subtotal and outlines configuration dictionary fetched from JSON
+    
+    Returns:
+    --------
+    The updated subtotal outlines dictionary
+    """
+
+    # Update the subtotal level values
+    level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
+    for key in level_subtotal_cols_dict.keys():
+        var_val = level_subtotal_cols_dict[key]
+        updated_val = cols.get_value(var_val)
+        level_subtotal_cols_dict[key] = updated_val
+
+    # Update the aggregate columns function dictionary
+    updated_agg_cols_func_dict = cols.update_dictionary_var_strs(subtotal_outlines_dict['agg_cols_func_dict'])
+    subtotal_outlines_dict['agg_cols_func_dict'] = updated_agg_cols_func_dict
+
+    # Update text append dict
+    updated_text_append_dict = cols.update_dictionary_var_strs(subtotal_outlines_dict['text_append_dict'])
+    subtotal_outlines_dict['text_append_dict'] = updated_text_append_dict
+
+    return subtotal_outlines_dict
+    

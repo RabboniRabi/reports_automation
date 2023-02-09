@@ -17,7 +17,7 @@ import utilities.ranking_utilities as ranking_utilities
 import utilities.column_names_utilities as cols
 import utilities.utilities as utilities
 
-def compute_insert_subtotals(df, report_config_dict):
+def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
     """
     Function to compute subtotals for a given set of columns. The order of computation
     of subtotals is based on the ascending order of levels. For each column to subtotal,
@@ -53,10 +53,11 @@ def compute_insert_subtotals(df, report_config_dict):
     """
 
     subtotal_outlines_dict = report_config_dict['subtotal_outlines_dict']
+
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
     agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
     text_append_dict = subtotal_outlines_dict['text_append_dict']
-    ranking_args_dict = report_config_dict['ranking_args']
+    #ranking_args_dict = report_config_dict['ranking_args']
 
     # Get all the column names in the master data frame
     master_columns = df.columns.values
@@ -80,6 +81,9 @@ def compute_insert_subtotals(df, report_config_dict):
         if (ranking_args_dict):
             # Update the subtotal rows with ranking values
             df_group_agg = update_subtotaled_row_with_ranking_val(df_group_agg, ranking_args_dict)
+        
+        # Update the indices of the data frame before matching and inserting subtotal rows below
+        df.reset_index(inplace=True, drop=True)
         
         # Merge all aggregagted values for column to be subtotaled into a single row
         # and insert into the original DataFrame object
@@ -208,3 +212,5 @@ def subtotal_outline_and_save(df, level_subtotal_cols_dict, agg_cols_func_dict, 
         
 
 
+
+    
