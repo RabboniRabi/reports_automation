@@ -18,6 +18,8 @@ month_col = 'Month'
 year_col = 'Year'
 yes_col = 'Yes'
 no_col = 'No'
+management_type = "management_type"
+category_type ="category_type"
 
 
 school_category = 'category'
