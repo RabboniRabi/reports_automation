@@ -9,6 +9,17 @@ config_files = ['report_configs.json',
                 'ceo_report_enrolment_configs.json',
                 'ceo_report_observations_configs.json',
                 'ceo_report_operations_configs.json']
+                
+
+ceo_review_config_files = ['ceo_review/cwsn_configs.json',
+                'ceo_review/health_configs.json',
+                'ceo_review/observations_configs.json',
+                'ceo_review/enrolment_configs.json',
+                'ceo_review/operations_configs.json',
+                'ceo_review/attendance_configs.json']
+
+ad_hoc_config_files = ['ad_hoc/attendance_configs.json',
+                        'ad_hoc/updation_status_configs.json']
 
 def get_all_active_configs(config_files:list=config_files):
     """
@@ -25,15 +36,13 @@ def get_all_active_configs(config_files:list=config_files):
     -------
     Returns array of configurations dictionaries where each item in the dictionary is for each report
     """
-    all_active_configs = []
+    # Define a list of active configurations
+    active_configs = []
 
     for config_file_name in config_files:
 
         with open('configs/' + config_file_name, 'r') as read_file:
             all_configs = json.load(read_file)["report_configs"]
-
-        # Define a list of active configurations
-        active_configs = []
 
         for config in all_configs:
             if config["generate_report"]:
@@ -42,10 +51,7 @@ def get_all_active_configs(config_files:list=config_files):
         # Close the file
         read_file.close()
 
-        # Update the full list of active configurations with the newly read configs
-        all_active_configs.append(active_configs)
-
-    return all_active_configs
+    return active_configs
 
 
 def get_config(config_name:str, config_category:str=None, config_files:list=config_files):
@@ -102,7 +108,52 @@ def get_config(config_name:str, config_category:str=None, config_files:list=conf
                 read_file.close()
         return None
 
+
+def get_adhoc_config(config_name:str, config_category:str=None, config_files:list=ad_hoc_config_files):
+    """
+    Function to use the given ad hoc config name and fetch the configuration to generate a report. 
+    If no config is found, None is returned
+
+    Parameters:
+    ----------
+    config_name: str
+        The name/code of the ad hoc config to search for
+    config_category: str
+        The category of configuration. This will be used to search for the 
+        configuration in the JSON file matching the config category. 
+        Default is None. All available configuration files will be searched.
+    config_files: list
+        The file names of all the configurations in JSON format. 
+        Default is the list of ad hoc config files declared in the script
     
+    Returns:
+    --------
+    A dictionary of config values for the report. None Object if no config is found.
+    """
+    return get_config(config_name, config_category, config_files)
+
+def get_ceo_rpt_config(config_name:str, config_category:str=None, config_files:list=ceo_review_config_files):
+    """
+    Function to use the given ceo report config name and fetch the configuration to generate a report. 
+    If no config is found, None is returned
+
+    Parameters:
+    ----------
+    config_name: str
+        The name/code of the ceo report config to search for
+    config_category: str
+        The category of configuration. This will be used to search for the 
+        configuration in the JSON file matching the config category. 
+        Default is None. All available configuration files will be searched.
+    config_files: list
+        The file names of all the configurations in JSON format. 
+        Default is the list of ad hoc config files declared in the script
+    
+    Returns:
+    --------
+    A dictionary of config values for the report. None Object if no config is found.
+    """
+    return get_config(config_name, config_category, config_files)       
 
 if __name__ == "__main__":
     #print(type(get_config('PETS')))

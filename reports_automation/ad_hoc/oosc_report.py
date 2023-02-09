@@ -1,7 +1,11 @@
+"""
+Module to generate the OoSC report with focus on % to be admitted
+"""
 import sys
 sys.path.append('../')
 
 import utilities.file_utilities as file_utilities
+import utilities.dbutilities as dbutilities
 
 import utilities.column_names_utilities as cols
 import pandas as pd
@@ -25,11 +29,7 @@ def _get_reason_type_summary(df, grouping_level):
     """
 
     # Clean the reason type values
-    #to_be_admitted_vals = df[reason_type_col] == '"To be Admitted"' or 'To be admitted'
-    #df_admitted_vals = df[df[reason_type_col] == '"To be Admitted"' or 'To be admitted']
-    df[reason_type_col].replace(to_replace=['To be admitted', 'To be Admitted '] , value='To be Admitted', inplace=True)
-
-
+    df[reason_type_col].replace(to_replace=['To be admitted', 'To be Admitted '] , value=cols.to_be_admitted, inplace=True)
 
     # Get reason type wise summary of OSC data
     df_pivot = pd.pivot_table(df, values=cols.student_name, \
@@ -48,9 +48,31 @@ def run():
 
     # Define the levels to group the data by
     grouping_levels = [cols.district_name]
-    df_reason_type_summ = _get_reason_type_summary(df_report, grouping_levels)
 
-    file_utilities.save_to_excel({'Report':df_reason_type_summ}, 'OoSC_test.xlsx')
+    # Summarise the data to grouping levels and reasons types
+    df_reason_type_sum = _get_reason_type_summary(df_report, grouping_levels)
+
+    # Get the common pool to be surveyed data
+    # Read the database connection credentials
+    credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+
+    # Get the common pool to be surveyed details from the database as a Pandas DataFrame object
+    common_pool_to_be_surveyed = dbutilities.fetch_data_as_df(credentials_dict, 'common_pool_to_be_surveyed.sql')
+
+    # Group to district and count number of students
+    common_pool_to_be_surveyed_grouped = common_pool_to_be_surveyed.groupby(cols.district_name)[cols.school_name].count().reset_index()
+    common_pool_to_be_surveyed_grouped.rename(columns={cols.school_name: cols.to_be_surveyed}, inplace=True)
+
+    # Merge the data
+    df_oosc = df_reason_type_sum.merge(common_pool_to_be_surveyed_grouped, on=cols.district_name)
+
+    # Calculate the grouping wise % to be admitted 
+    df_oosc[cols.perc_to_be_admitted] = df_oosc[cols.to_be_admitted]/ df_oosc[cols.to_be_surveyed]
+
+    # sort the data by % to be admitted
+    df_oosc.sort_values(cols.perc_to_be_admitted, ascending=False, inplace=True)
+
+    file_utilities.save_to_excel({'Report':df_oosc}, 'OoSC_Report.xlsx')
 
 if __name__ == "__main__":
     run()

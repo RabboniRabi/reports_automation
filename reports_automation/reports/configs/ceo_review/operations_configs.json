@@ -1,0 +1,115 @@
+{
+    "report_configs": [
+
+        {    
+        "report_name": "PET_school_mapping",
+        "report_code" : "PET",
+        "report_category": "Operations",
+        "report_desc": "PET to school mapping report",
+        "generate_report": true,
+        "source_config" : {
+            "source_file_name" : "Pet-to-school-Mapping-Rpt.xlsx",
+            "source_sheet_name" : "Report",
+            "skip_rows" : 4
+        },
+        "pre_process_brc_merge": false,
+        "brc_merge_config" : {
+            "join_on" : ["cols.district_name", "cols.block_name", "cols.school_name", "cols.school_category", "cols.udise_col"],
+            "merge_type" : "left"
+        },
+        "post_process_brc_merge" : false,
+        "elementary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": true,
+                "grouping_cols" : [],
+                "grouping_agg_dict" : {}
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.fully_mapped": "sum", 
+                    "cols.part_mapped" : "sum",
+                    "cols.tot_schools" : "sum"
+                },
+                "ranking_val_desc": "cols.perc_fully_mapped",
+                "num_col": "cols.fully_mapped",
+                "den_col": "cols.tot_schools",
+                "sort": "True",
+                "ascending": "False"
+            },
+            "format_config" : {
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                    "agg_cols_func_dict" : {
+                        "cols.fully_mapped": "sum", 
+                        "cols.part_mapped" : "sum",
+                        "cols.tot_schools" : "sum",
+                        "cols.deo_elem_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                },
+                "format_dict" : {
+                    "conditional_format" : {
+                        "columns" : ["cols.perc_fully_mapped"],
+                        "format": {"type": "3_color_scale"}
+                    },
+                    "format_cells" : {
+                        "columns" : ["cols.perc_fully_mapped"],
+                        "format" : {"num_format": "0.00%"}
+        
+                    }
+                }
+            }
+        },
+        "secondary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": true,
+                "grouping_cols" : ["cols.district_name", "cols.deo_name_sec", "cols.school_category"],
+                "grouping_agg_dict" : {
+                    "cols.total" : "count",
+                    "cols.fully_comp": "sum"
+                     }
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.fully_mapped": "sum", 
+                    "cols.part_mapped" : "sum",
+                    "cols.tot_schools" : "sum"
+                },
+                "ranking_val_desc": "cols.perc_fully_mapped",
+                "num_col": "cols.fully_mapped",
+                "den_col": "cols.tot_schools",
+                "sort": "True",
+                "ascending": "False"
+            },
+            "format_config" : {
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                    "agg_cols_func_dict" : {
+                        "cols.fully_mapped": "sum",
+                        "cols.part_mapped": "sum",
+                        "cols.tot_schools" : "sum",
+                        "cols.deo_sec_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                },
+                "format_dict" : {
+                    "conditional_format" : {
+                        "columns" : ["cols.perc_fully_mapped"],
+                        "format": {"type": "3_color_scale"}
+                    },
+                    "format_cells" : {
+                        "columns" : ["cols.perc_fully_mapped"],
+                        "format" : {"num_format": "0.00%"}
+        
+                    }
+                }
+            }
+        }
+    }
+
+    ]
+}

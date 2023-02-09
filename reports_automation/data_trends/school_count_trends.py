@@ -122,8 +122,6 @@ def day_wise_tracking(master_file_name, sheet_name, df_today, dist_col, udise_co
         # This is updated by checking those UDISEs present both in master and today and marking them as TRUE
         df_master[today_date] = df_master[udise_col].isin(df_today[udise_col])
 
-    # Rename the column with today's date
-    df_master.rename(columns={today_date: today_date + ' present'}, inplace=True)
     # Sort the data
     df_master.sort_values(by=[dist_col, udise_col], ascending=[True, True], inplace=True)
     return df_master
@@ -186,9 +184,12 @@ def student_count_tracking(master_file_name, sheet_name, df_today, dist_col, udi
     # Sort the data
     df_master.sort_values(by=[dist_col, udise_col], ascending=[True, True], inplace=True)
 
-    df_master['No. of days data changes'] = df_master.drop(columns=[cols.district_name, cols.udise_col, 'No. of days data changes']).nunique(axis=1)
+    df_master['No. of days data changes'] = df_master.drop(columns=[cols.district_name, cols.udise_col,
+                                                                    cols.block_name,cols.school_name,cols.category_type,cols.management_type,
+                                                                    'No. of days data changes']).nunique(axis=1)
+    df_master['No. of days data changes'] = df_master['No. of days data changes'] - 1
 
-    df_master.insert(2,'No. of days data changes',df_master.pop('No. of days data changes'))
+    df_master.insert(6,'No. of days data changes',df_master.pop('No. of days data changes'))
 
     return df_master
 
@@ -250,9 +251,12 @@ def teacher_count_tracking(master_file_name, sheet_name, df_today, dist_col, udi
     # Sort the data
     df_master.sort_values(by=[dist_col, udise_col], ascending=[True, True], inplace=True)
 
-    df_master['No. of days data changes'] = df_master.drop(columns=[cols.district_name, cols.udise_col,'No. of days data changes']).nunique(axis=1)
+    df_master['No. of days data changes'] = df_master.drop(columns=[cols.district_name, cols.udise_col,
+                                                                    cols.block_name,cols.school_name,cols.category_type,cols.management_type,
+                                                                    'No. of days data changes']).nunique(axis=1)
+    df_master['No. of days data changes'] = df_master['No. of days data changes'] - 1
 
-    df_master.insert(2,'No. of days data changes',df_master.pop('No. of days data changes'))
+    df_master.insert(6,'No. of days data changes',df_master.pop('No. of days data changes'))
 
     return df_master
 

@@ -70,8 +70,8 @@ def get_data_from_config(source_config_dict, save_source=False):
     elif "source_file_name" in source_config_dict:
 
         # Fetch from Excel source data location
-        print('Reading data from Excel file...')
         source_file_name = source_config_dict['source_file_name']
+        print('Reading data from ' + source_file_name + ' file...')
         try:
             sheet_name = source_config_dict['source_sheet_name']
             skip_rows = source_config_dict['skip_rows']

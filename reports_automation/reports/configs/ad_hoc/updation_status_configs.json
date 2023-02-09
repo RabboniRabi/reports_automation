@@ -1,0 +1,31 @@
+{
+    "report_configs": [
+
+        {
+        "report_name": "IFHRMS_not_updated",
+        "report_code" : "IFHRMSNU",
+        "report_category": "Updation",
+        "report_desc": "IFHRMS employee ID not updated report",
+        "generate_report": true,
+        "source_config" : {
+            "source_file_name" : "IFHRMS-Emp-Id-not-updated-Abstract-rpt.xlsx",
+            "source_sheet_name" : "Report",
+            "skip_rows" : 4
+            },
+        "custom_logic" : false,
+        "summary_args": {
+            "grouping_levels" : ["cols.district_name"],
+            "agg_dict": {
+                "cols.not_updt_tchrs": "sum", 
+                "cols.up_tot_tchrs" : "sum"
+                },
+            "metric_col_name": "cols.perc_not_updt",
+            "num_col": "cols.not_updt_tchrs",
+            "den_col": "cols.up_tot_tchrs",
+            "sort": "True",
+            "ascending": "True"
+            }
+        }
+
+    ]
+}
