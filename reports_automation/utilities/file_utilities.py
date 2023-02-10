@@ -165,7 +165,7 @@ def get_curr_month_source_data_dir_path():
 
     Returns:
     -------
-    The path to the current month's CEO reports directory
+    The path to the current month's source data directory
     """
     # Get the current month and year
     curr_month_year = datetime.now().strftime('%h_%y')
@@ -177,6 +177,43 @@ def get_curr_month_source_data_dir_path():
 
     return dir_path
 
+def get_curr_month_gen_reports_dir_path():
+    """
+    Function to get the directory path to the current month's generated reports.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the current month's generated reports directory
+    """
+    # Get the current month and year
+    curr_month_year = datetime.now().strftime('%h_%y')
+    dir_path = os.path.join(get_gen_reports_dir_path(), curr_month_year)
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
+
+def get_curr_day_month_gen_reports_dir_path():
+    """
+    Function to get the directory path to the current day's generated reports.
+    The function also creates the directory if it does not already exist.
+
+    Returns:
+    -------
+    The path to the current month's generated reports directory
+    """
+    # Get the current month and year
+    curr_day_month = datetime.now().strftime('%d_%h')
+    dir_path = os.path.join(get_curr_month_gen_reports_dir_path(), curr_day_month)
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
 
 def get_ceo_rpts_dir_path():
     """
@@ -309,7 +346,30 @@ def file_exists(file_name: str, dir_path:str):
 
     return file_exists
 
-def save_to_excel(df_sheet_dict, file_name, dir_path = get_gen_reports_dir_path(), index=False):
+
+def get_file_path(file_name: str, dir_path:str):
+    """
+    OS independent function to append file name to directory path
+    and return the full file path.
+    Parameters:
+    -----------
+    file_name: str
+        The name of the file full path has to be retrieved
+    dir_path: str
+        The path to the directory where the file exists
+
+    Returns:
+    --------
+    The full path to the file
+    """
+    file_path = os.path.join(dir_path, file_name)
+
+    if(not os.path.isfile(file_path)):
+        sys.exit('File does not exist in given directory')
+
+    return file_path
+
+def save_to_excel(df_sheet_dict, file_name, dir_path = get_gen_reports_dir_path(), index=False, engine='openpyxl'):
     """
     Function to save a data frame to excel using openpyxl engine
 
@@ -323,10 +383,11 @@ def save_to_excel(df_sheet_dict, file_name, dir_path = get_gen_reports_dir_path(
         The directory path to save the file in. Default is the generated reports directory path
     index: bool, optional
         Boolean value indicating if row names need to be written. Default is False
-
+    engine: str
+        The name of the Excel engine to be used. xlsxwriter or openpyxl. Default is openpyxl.
     """
     file_path = os.path.join(dir_path, file_name)
-    datatoexcel = pd.ExcelWriter(file_path, engine='openpyxl')
+    datatoexcel = pd.ExcelWriter(file_path, engine=engine)
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(datatoexcel, sheet_name=key, index=index)
         print('Saving ', key, ' sheet in excel file: ', file_name, '....')

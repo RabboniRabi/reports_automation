@@ -23,7 +23,7 @@
             "num_col": "cols.not_updt_tchrs",
             "den_col": "cols.up_tot_tchrs",
             "sort": "True",
-            "ascending": "True"
+            "ascending": "False"
             }
         }
 

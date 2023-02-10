@@ -13,7 +13,7 @@ groupby_index = ['district_name']
 groupby_criteria = {"udise_code":"count"}
 
 # Read the database connection credentials
-credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+credentials_dict = dbutilities.read_conn_credentials('db_credentials_attendance.json')
 
 # Get the latest Schools unmarked details from the SQL query file
 df_report = dbutilities.fetch_data_as_df(credentials_dict, 'teacher_unmarked_weekly.sql')

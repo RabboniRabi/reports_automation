@@ -14,7 +14,7 @@ groupby_index = ['district_name']
 groupby_criteria = {"Total Marked Schools":"sum","Total Unmarked Schools":"sum"}
 
 # Read the database connection credentials
-credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+credentials_dict = dbutilities.read_conn_credentials('db_credentials_attendance.json')
 
 # Get the latest students and teachers count
 df_report = dbutilities.fetch_data_as_df(credentials_dict, 'teacher_attendance_last2days.sql')

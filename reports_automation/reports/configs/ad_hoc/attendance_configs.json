@@ -20,10 +20,10 @@
                 "cols.tot_tchrs" : "sum"
                 },
             "metric_col_name": "cols.perc_tchrs_updated",
-            "num_col": "cols.uptd_tchrs",
+            "num_col": "cols.updt_tchrs",
             "den_col": "cols.tot_tchrs",
             "sort": "True",
-            "ascending": "False"
+            "ascending": "True"
             }
         },
 
@@ -49,7 +49,7 @@
                 "num_col": "cols.appld_tchrs",
                 "den_col": "cols.tot_tchrs",
                 "sort": "True",
-                "ascending": "False"
+                "ascending": "True"
                 }
             }
     ]

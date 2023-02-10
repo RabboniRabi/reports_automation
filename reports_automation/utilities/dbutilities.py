@@ -58,8 +58,6 @@ def create_server_connection(credentials_dict):
     A database connection object if connection is successful. Error otherwise.
     """
     connection = None
-    print( 'user: ', credentials_dict['username'])
-    print('user: ', credentials_dict['password'])
 
     try:
         connection = mysql.connector.connect(

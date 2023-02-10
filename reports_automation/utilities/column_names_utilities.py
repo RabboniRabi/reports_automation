@@ -20,6 +20,7 @@ yes_col = 'Yes'
 no_col = 'No'
 management_type = "management_type"
 category_type ="category_type"
+distinct_udise_count = 'count(DISTINCT udise_code)'
 
 
 school_category = 'category'
@@ -138,6 +139,13 @@ updt_tchrs = 'Updated_Teachers'
 appld_tchrs = 'Applied_Teachers'
 perc_tchrs_updated = '% Updated'
 per_tchrs_applied = '% Applied'
+tot_marked_schls = 'Total Marked Schools'
+unmarked_schools = 'Unmarked Schools'
+tot_unmarked_schls = 'Total Unmarked Schools'
+perc_marked_schls = '% Marked Schools'
+tot_marked = 'totalmarked'
+tot_unmarked = 'totalunmarked'
+perc_7_days_unmarked_schls = '% Unmarked Schools for 7 days'
 
 
 # Updation specific column names
