@@ -1,0 +1,56 @@
+{
+    "report_configs": [
+
+        {
+        "report_name": "teacher_leave_absence_update",
+        "report_code" : "TLAUR",
+        "report_category": "Attendance",
+        "report_desc": "Teacher leave absence updation report",
+        "generate_report": true,
+        "source_config" : {
+            "source_file_name" : "teacher_leave_balance_updt_report.xlsx",
+            "source_sheet_name" : "Abstract",
+            "skip_rows" : 4
+            },
+        "custom_logic" : false,
+        "summary_args": {
+            "grouping_levels" : ["cols.district_name"],
+            "agg_dict": {
+                "cols.updt_tchrs": "sum", 
+                "cols.tot_tchrs" : "sum"
+                },
+            "metric_col_name": "cols.perc_tchrs_updated",
+            "num_col": "cols.updt_tchrs",
+            "den_col": "cols.tot_tchrs",
+            "sort": "True",
+            "ascending": "True"
+            }
+        },
+
+        {
+            "report_name": "teacher_leave_applied",
+            "report_code" : "TLAR",
+            "report_category": "Attendance",
+            "report_desc": "Teacher leave applied report",
+            "generate_report": true,
+            "source_config" : {
+                "source_file_name" : "teacher_leave_application_report.xlsx",
+                "source_sheet_name" : "Detailed",
+                "skip_rows" : 0
+                },
+            "custom_logic" : false,
+            "summary_args": {
+                "grouping_levels" : ["cols.district_name"],
+                "agg_dict": {
+                    "cols.appld_tchrs": "sum", 
+                    "cols.tot_tchrs" : "sum"
+                    },
+                "metric_col_name": "cols.per_tchrs_applied",
+                "num_col": "cols.appld_tchrs",
+                "den_col": "cols.tot_tchrs",
+                "sort": "True",
+                "ascending": "True"
+                }
+            }
+    ]
+}

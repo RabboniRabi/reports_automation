@@ -20,6 +20,7 @@ yes_col = 'Yes'
 no_col = 'No'
 management_type = "management_type"
 category_type ="category_type"
+distinct_udise_count = 'count(DISTINCT udise_code)'
 
 
 school_category = 'category'
@@ -122,13 +123,49 @@ elem_schl_lvl = 'Elementary School'
 scnd_schl_lvl = 'Secondary School'
 
 
-# OSC report specific column names
+# OoSC report specific column names
 reason_type = 'Reason_type'
-
+to_be_surveyed = 'To be surveyed'
+perc_to_be_admitted = '% to be admitted'
+to_be_admitted = 'To be admitted'
 # Hi-tech lab report specific column names
 up_time_hrs = 'up_time_hrs'
 mediam_up_time_hrs = 'Median Uptime Hours'
 
+# Library specific column names
+tot_secs = 'Total_Sections'
+total_tchrs = 'Total Teachers'
+tchrs_assigning_books = 'Teachers assigning books'
+tchrs_not_assigning_books = 'Teachers not assigning books'
+perc_tchrs_assigning_books = '% Teachers assigning books'
+shelves_created = 'No_of_Section_created_shelves'
+shelves_not_created = 'No_of_Section_Not_created_shelves'
+perc_shelves_created = '% Shelves created'
+class_teacher_id = 'class_teacher_id'
+book_assigning_status = 'Book_Assigning_Status'
+books_not_assigned = 'Books Not Assigned'
+books_assigned = 'Books Assigned'
+
+
+# Attendance specific column names
+tot_tchrs = 'Total_teachers'
+updt_tchrs = 'Updated_Teachers'
+appld_tchrs = 'Applied_Teachers'
+perc_tchrs_updated = '% Updated'
+per_tchrs_applied = '% Applied'
+tot_marked_schls = 'Total Marked Schools'
+unmarked_schools = 'Unmarked Schools'
+tot_unmarked_schls = 'Total Unmarked Schools'
+perc_marked_schls = '% Marked Schools'
+tot_marked = 'totalmarked'
+tot_unmarked = 'totalunmarked'
+perc_7_days_unmarked_schls = '% Unmarked Schools for 7 days'
+
+
+# Updation specific column names
+up_tot_tchrs = 'total_teachers'
+not_updt_tchrs = 'notupdated_teachers'
+perc_not_updt = '% Not Updated'
 
 # Ranking specific column names
 desig = 'Designation'

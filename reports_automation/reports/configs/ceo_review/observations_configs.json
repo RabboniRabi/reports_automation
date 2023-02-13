@@ -1,0 +1,108 @@
+{
+    "report_configs": [
+
+        {    
+        "report_name": "palli_parvai_observations",
+        "report_code" : "PPO",
+        "report_category": "observations",
+        "report_desc": "Palli Parvai observations report",
+        "generate_report": false,
+        "source_config" : {
+            "source_file_name" : "kalai_thiruvizha_participants_count.xlsx",
+            "source_sheet_name" : "Report",
+            "skip_rows" : 0
+        },
+        "pre_process_brc_merge": true,
+        "brc_merge_config" : {
+            "join_on" : ["cols.district_name", "cols.udise_col"],
+            "merge_type" : "left"
+        },
+        "post_process_brc_merge" : true,
+        "elementary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": true,
+                "grouping_cols" : [],
+                "grouping_agg_dict" : {}
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.participants": "sum", 
+                    "cols.tot_students" : "sum"
+                },
+                "ranking_val_desc": "cols.perc_obs_comp",
+                "num_col": "cols.deo",
+                "den_col": "cols.deo_target",
+                "sort": "True",
+                "ascending": "False"
+            },
+            "format_config" : {
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                    "agg_cols_func_dict" : {
+                        "cols.participants": "sum",
+                        "cols.tot_students": "sum",
+                        "cols.deo_elem_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                },
+                "format_dict" : {
+                    "conditional_format" : {
+                        "columns" : ["cols.perc_obs_comp"],
+                        "format": {"type": "3_color_scale"}
+                    },
+                    "format_cells" : {
+                        "columns" : ["cols.perc_obs_comp"],
+                        "format" : {"num_format": "0.00%"}
+        
+                    }
+                }
+            }
+        },
+        "secondary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": true,
+                "grouping_cols" : [],
+                "grouping_agg_dict" : {}
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.participants": "sum", 
+                    "cols.tot_students" : "sum"
+                },
+                "ranking_val_desc": "cols.per_participants",
+                "num_col": "cols.participants",
+                "den_col": "cols.tot_students",
+                "sort": "True",
+                "ascending": "False"
+            },
+            "format_config" : {
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                    "agg_cols_func_dict" : {
+                        "cols.participants": "sum",
+                        "cols.tot_students": "sum",
+                        "cols.deo_sec_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                },
+                "format_dict" : {
+                    "conditional_format" : {
+                        "columns" : ["cols.per_participants"],
+                        "format": {"type": "3_color_scale"}
+                    },
+                    "format_cells" : {
+                        "columns" : ["cols.per_participants"],
+                        "format" : {"num_format": "0.00%"}
+        
+                    }
+                }
+            }
+        }
+    }
+
+    ]
+}

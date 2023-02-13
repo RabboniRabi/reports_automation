@@ -16,23 +16,6 @@ elem_pivot_index = [cols.district_name, cols.deo_name_elm, cols.school_category]
 scnd_pivot_index = [cols.district_name, cols.deo_name_sec, cols.school_category]
 
 
-
-# Build the arguments dictionary to do ranking for the report
-ranking_args_dict = {
-    'ranking_type': 'percent_ranking',
-    'agg_dict': {
-        cols.fully_mapped: 'sum', 
-        cols.part_mapped: 'sum',
-        cols.tot_schools: 'sum'},
-    'ranking_val_desc': cols.perc_fully_mapped,
-    'num_col': cols.fully_mapped,
-    'den_col': cols.tot_schools,
-    'sort': True,
-    'ascending': False
-}
-
-
-
 def _process_data_for_report(df_data, pivot_index):
     """
     Internal function to get a report ready data by:

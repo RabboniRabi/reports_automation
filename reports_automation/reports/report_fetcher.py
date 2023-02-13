@@ -6,6 +6,7 @@ This module can be paired with a constructor in the future to create APIs to the
 
 import config_reader
 import ceo_report_generator
+import ad_hoc_report_generator
 
 import sys
 sys.path.append('../')
@@ -66,6 +67,28 @@ def get_ceo_report(report_code, school_level, report_level):
     return ceo_rpt
 
 
+def get_ad_hoc_report(report_code):
+    """
+    Function to generate & fetch the ad hoc report for a given report code/name. 
+
+    Parameters:
+    ----------
+    report_code: str
+        The name/code of the report/metric to fetch the CEO report for
+
+    Returns:
+    -------
+    The generated report for the given report code
+    """
+
+    # Get the overall configuration for the report code
+    report_config = config_reader.get_adhoc_config(report_code)
+
+    # Get the ad hoc report
+    ad_hoc_rpt = ad_hoc_report_generator.get_report(report_config)
+
+    return ad_hoc_rpt
+
 
 # For testing
 if __name__ == "__main__":
@@ -79,11 +102,20 @@ if __name__ == "__main__":
     """
     Testing get_ceo_report
     """
-    elem_report = get_ceo_report('students_ageing_in_common_pool', 'Elementary', 'Ranked')
+    """elem_report = get_ceo_report('students_ageing_in_common_pool', 'Elementary', 'Ranked')
     file_utilities.save_to_excel({'Report': elem_report}, 'CP Elementary Report.xlsx')
 
     sec_report = get_ceo_report('CP', 'Secondary', 'Ranked')
-    file_utilities.save_to_excel({'Report': sec_report}, 'CP Secondary Report.xlsx')
+    file_utilities.save_to_excel({'Report': sec_report}, 'CP Secondary Report.xlsx')"""
+
+
+    """
+    Testing get_ad_hoc_report
+    """
+    adhoc_report = get_ad_hoc_report('teacher_leave_applied')
+    dir_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
+    file_utilities.save_to_excel({'Report': adhoc_report}, 'Teacher leave applied.xlsx', dir_path)
+
 
     
 
