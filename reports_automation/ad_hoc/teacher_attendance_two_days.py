@@ -79,7 +79,7 @@ def _format_report(df_report):
     """
 
     # Set the text alignment, border and colour gradient using Pandas
-    df_formatted = df_report.set_properties(**{'text-align': 'center','border-color':'black','border-width':'0.1em'}).\
+    df_formatted = df_report.style.set_properties(**{'text-align': 'center','border-color':'black','border-width':'0.1em'}).\
     background_gradient(cmap='RdYlGn',subset=cols.perc_marked_schls)
 
     df_formatted.set_table_styles([dict(selector='th', props=[('text-align', 'center','border-color','Black','border-width','0.1em')])])
@@ -99,7 +99,7 @@ def _format_report(df_report):
     main_page.insert_rows(idx=0,amount=1)
 
     prcnt_frmt = {'num_format': '0.00%'}
-    comp_schools_col_index = df_formatted.columns.get_loc('% Fully completed')
+    comp_schools_col_index = df_formatted.columns.get_loc('% Marked Schools')
     format_utilities.apply_frmt_cols(df_formatted, 'Schools screening status', comp_schools_col_index, comp_schools_col_index,
                                     prcnt_frmt)
 
@@ -124,7 +124,7 @@ def run():
     """
 
     # Read the database connection credentials
-    credentials_dict = dbutilities.read_conn_credentials('db_credentials_attendance.json')
+    credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Get the latest students and teachers count
     df_data = dbutilities.fetch_data_as_df(credentials_dict, 'teacher_attendance_last2days.sql')
