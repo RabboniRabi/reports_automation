@@ -291,14 +291,12 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name
         report = ceo_rpt_raw_data.groupby(grouping_cols, as_index=False).agg(agg_dict)
 
     # Check if ranking is required in report
-    print('report level given: ', report_level)
     if report_level == ceo_report_levels.RANKED.value or report_level == ceo_report_levels.RANKED:
         # Generate ranking and update report
         ranking_dict = elem_report_config['ranking_args']
         # Update the values in ranking argument
         ranking_dict = _update_ranking_args_dict(ranking_dict)
         # Get the elementary ranked report
-        print('Ranking called on report.....')
         report = report_utilities.get_elem_ranked_report(report, ranking_dict, metric_code, metric_category)
 
     return report
@@ -408,4 +406,4 @@ def _update_ranking_args_dict(ranking_args:dict):
 
 # For testing
 if __name__ == "__main__":
-    generate_all(generate_fresh=False)
+    generate_all(generate_fresh=True)

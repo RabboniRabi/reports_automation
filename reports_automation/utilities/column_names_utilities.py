@@ -132,6 +132,20 @@ to_be_admitted = 'To be admitted'
 up_time_hrs = 'up_time_hrs'
 mediam_up_time_hrs = 'Median Uptime Hours'
 
+# Library specific column names
+tot_secs = 'Total_Sections'
+total_tchrs = 'Total Teachers'
+tchrs_assigning_books = 'Teachers assigning books'
+tchrs_not_assigning_books = 'Teachers not assigning books'
+perc_tchrs_assigning_books = '% Teachers assigning books'
+shelves_created = 'No_of_Section_created_shelves'
+shelves_not_created = 'No_of_Section_Not_created_shelves'
+perc_shelves_created = '% Shelves created'
+class_teacher_id = 'class_teacher_id'
+book_assigning_status = 'Book_Assigning_Status'
+books_not_assigned = 'Books Not Assigned'
+books_assigned = 'Books Assigned'
+
 
 # Attendance specific column names
 tot_tchrs = 'Total_teachers'

@@ -15,8 +15,7 @@ ceo_review_config_files = ['ceo_review/cwsn_configs.json',
                 'ceo_review/health_configs.json',
                 'ceo_review/observations_configs.json',
                 'ceo_review/enrolment_configs.json',
-                'ceo_review/operations_configs.json',
-                'ceo_review/attendance_configs.json']
+                'ceo_review/library_configs.json']
 
 ad_hoc_config_files = ['ad_hoc/attendance_configs.json',
                         'ad_hoc/updation_status_configs.json']

@@ -1,13 +1,13 @@
 {
     "report_configs": [
     {
-        "report_name": "health_screening_students",
-        "report_code" : "H_STU",
-        "report_category": "Enrolment",
-        "report_desc": "Students' health screening report",
+        "report_name": "library_shelves",
+        "report_code" : "LIBSHELV",
+        "report_category": "Library",
+        "report_desc": "Library shelves created report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "Student-health-checkup-rpt.xlsx",
+            "source_file_name" : "Library-shelf-report.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 4
         },
@@ -23,19 +23,21 @@
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.district_name", "cols.deo_name_elm", "cols.school_category"],
                 "grouping_agg_dict" : {
-                    "cols.screened": "sum", 
-                    "cols.total": "sum"
+                    "cols.tot_secs": "sum", 
+                    "cols.shelves_created": "sum", 
+                    "cols.shelves_not_created": "sum"
                 }
             },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.screened": "sum", 
-                    "cols.total": "sum"
+                    "cols.tot_secs": "sum", 
+                    "cols.shelves_created": "sum", 
+                    "cols.shelves_not_created": "sum"
                 },
-                "ranking_val_desc": "cols.perc_screened",
-                "num_col": "cols.screened",
-                "den_col": "cols.total",
+                "ranking_val_desc": "cols.perc_shelves_created",
+                "num_col": "cols.shelves_created",
+                "den_col": "cols.tot_secs",
                 "sort": "True",
                 "ascending": "False"
             },
@@ -43,19 +45,20 @@
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
-                        "cols.screened": "sum",
-                        "cols.total": "sum",
+                        "cols.tot_secs": "sum", 
+                        "cols.shelves_created": "sum", 
+                        "cols.shelves_not_created": "sum",
                         "cols.deo_elem_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_elm": "Summary"}
                 },
                 "format_dict" : {
                     "conditional_format" : {
-                        "columns" : ["cols.perc_screened"],
+                        "columns" : ["cols.perc_shelves_created"],
                         "format": {"type": "3_color_scale"}
                     },
                     "format_cells" : {
-                        "columns" : ["cols.perc_screened"],
+                        "columns" : ["cols.perc_shelves_created"],
                         "format" : {"num_format": "0.00%"}
         
                     }
@@ -68,19 +71,21 @@
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.district_name", "cols.deo_name_sec", "cols.school_category"],
                 "grouping_agg_dict" : {
-                    "cols.screened": "sum", 
-                    "cols.total": "sum"
+                    "cols.tot_secs": "sum", 
+                    "cols.shelves_created": "sum", 
+                    "cols.shelves_not_created": "sum"
                 }
             },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.screened": "sum", 
-                    "cols.total": "sum"
+                    "cols.tot_secs": "sum", 
+                    "cols.shelves_created": "sum", 
+                    "cols.shelves_not_created": "sum"
                 },
-                "ranking_val_desc": "cols.perc_screened",
-                "num_col": "cols.screened",
-                "den_col": "cols.total",
+                "ranking_val_desc": "cols.perc_shelves_created",
+                "num_col": "cols.shelves_created",
+                "den_col": "cols.tot_secs",
                 "sort": "True",
                 "ascending": "False"
             },
@@ -88,19 +93,20 @@
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
-                        "cols.screened": "sum",
-                        "cols.total": "sum",
+                        "cols.tot_secs": "sum", 
+                        "cols.shelves_created": "sum", 
+                        "cols.shelves_not_created": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_sec": "Summary"}
                 },
                 "format_dict" : {
                     "conditional_format" : {
-                        "columns" : ["cols.perc_screened"],
+                        "columns" : ["cols.perc_shelves_created"],
                         "format": {"type": "3_color_scale"}
                     },
                     "format_cells" : {
-                        "columns" : ["cols.perc_screened"],
+                        "columns" : ["cols.perc_shelves_created"],
                         "format" : {"num_format": "0.00%"}
         
                     }
@@ -108,42 +114,45 @@
             }
         }
     },
-    {    
-        "report_name": "health_screening_schools",
-        "report_code" : "H_SCH",
-        "report_category": "Enrolment",
-        "report_desc": "Schools' health screening report",
+
+    {
+        "report_name": "library_book_assigning_by_tchrs",
+        "report_code" : "LIBBAT",
+        "report_category": "Library",
+        "report_desc": "Library book assigning teachers report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "Student-health-checkup-rpt.xlsx",
+            "source_file_name" : "Library-Books-Assigning-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 4
         },
-        "pre_process_brc_merge": false,
+        "pre_process_brc_merge": true,
         "brc_merge_config" : {
             "join_on" : ["cols.district_name", "cols.block_name", "cols.school_name", "cols.school_category", "cols.udise_col"],
             "merge_type" : "left"
         },
-        "post_process_brc_merge" : true,
+        "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.district_name", "cols.deo_name_elm", "cols.school_category"],
                 "grouping_agg_dict" : {
-                    "cols.total" : "count",
-                    "cols.fully_comp": "sum"
-                    }
+                    "cols.total_tchrs": "sum", 
+                    "cols.tchrs_not_assigning_books": "sum", 
+                    "cols.tchrs_assigning_books": "sum"
+                }
             },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.total" : "sum", 
-                    "cols.fully_comp": "sum"
+                    "cols.total_tchrs": "sum", 
+                    "cols.tchrs_not_assigning_books": "sum", 
+                    "cols.tchrs_assigning_books": "sum"
                 },
-                "ranking_val_desc": "cols.perc_comp",
-                "num_col": "cols.fully_comp",
-                "den_col": "cols.total",
+                "ranking_val_desc": "cols.perc_tchrs_assigning_books",
+                "num_col": "cols.tchrs_assigning_books",
+                "den_col": "cols.total_tchrs",
                 "sort": "True",
                 "ascending": "False"
             },
@@ -151,19 +160,20 @@
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
-                        "cols.fully_comp": "sum",
-                        "cols.total": "sum",
+                        "cols.total_tchrs": "sum", 
+                        "cols.tchrs_not_assigning_books": "sum", 
+                        "cols.tchrs_assigning_books": "sum",
                         "cols.deo_elem_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_elm": "Summary"}
                 },
                 "format_dict" : {
                     "conditional_format" : {
-                        "columns" : ["cols.perc_comp"],
+                        "columns" : ["cols.perc_tchrs_assigning_books"],
                         "format": {"type": "3_color_scale"}
                     },
                     "format_cells" : {
-                        "columns" : ["cols.perc_comp"],
+                        "columns" : ["cols.perc_tchrs_assigning_books"],
                         "format" : {"num_format": "0.00%"}
         
                     }
@@ -176,69 +186,48 @@
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.district_name", "cols.deo_name_sec", "cols.school_category"],
                 "grouping_agg_dict" : {
-                    "cols.total" : "count",
-                    "cols.fully_comp": "sum"
-                    }
+                    "cols.total_tchrs": "sum", 
+                    "cols.tchrs_not_assigning_books": "sum", 
+                    "cols.tchrs_assigning_books": "sum"
+                }
             },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.total" : "sum", 
-                    "cols.fully_comp": "sum"
+                    "cols.total_tchrs": "sum", 
+                    "cols.tchrs_not_assigning_books": "sum", 
+                    "cols.tchrs_assigning_books": "sum"
                 },
-                "ranking_val_desc": "cols.perc_comp",
-                "num_col": "cols.fully_comp",
-                "den_col": "cols.total",
+                "ranking_val_desc": "cols.perc_tchrs_assigning_books",
+                "num_col": "cols.tchrs_assigning_books",
+                "den_col": "cols.total_tchrs",
                 "sort": "True",
                 "ascending": "False"
-                },
+            },
             "format_config" : {
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
-                        "cols.fully_comp": "sum",
-                        "cols.total": "sum",
+                        "cols.total_tchrs": "sum", 
+                        "cols.tchrs_not_assigning_books": "sum", 
+                        "cols.tchrs_assigning_books": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_sec": "Summary"}
                 },
                 "format_dict" : {
                     "conditional_format" : {
-                        "columns" : ["cols.perc_comp"],
+                        "columns" : ["cols.perc_tchrs_assigning_books"],
                         "format": {"type": "3_color_scale"}
                     },
                     "format_cells" : {
-                        "columns" : ["cols.perc_comp"],
+                        "columns" : ["cols.perc_tchrs_assigning_books"],
                         "format" : {"num_format": "0.00%"}
         
                     }
                 }
-            }    
-        },
-        "format_config" : {
-            "subtotal_outlines_dict" : {
-                "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
-                "agg_cols_func_dict" : {
-                    "cols.fully_mapped": "sum",
-                    "cols.part_mapped": "sum",
-                    "cols.tot_schools": "sum",
-                    "cols.deo_sec_rank": "mean"
-                },
-                "text_append_dict" : {"cols.deo_name_sec": "Total"}
-            },
-            "format_dict" : {
-                "conditional_format" : {
-                    "columns" : ["cols.perc_fully_mapped"],
-                    "format": {"type": "3_color_scale"}
-                },
-                "format_cells" : {
-                    "columns" : ["cols.perc_fully_mapped"],
-                    "format" : {"num_format": "0.00%"}
-
-                }
             }
         }
     }
-
     ]
 }
