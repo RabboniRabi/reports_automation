@@ -7,7 +7,7 @@
         "report_desc": "CWSN CEO report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "CWSN-Report.xlsx",
+            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 4
         },

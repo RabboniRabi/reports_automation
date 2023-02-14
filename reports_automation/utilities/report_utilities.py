@@ -13,7 +13,7 @@ brc_file_name = 'BRC_CRC_Master_sheet.xlsx'
 brc_master_sheet_name = 'BRC-CRC Updated sheet'
 
 # Columns to be dropped from the BRC mapping sheet
-brc_master_drop_cols = ['Cluster ID', 'CRC Udise','CRC School Name','BRTE']
+brc_master_drop_cols = ['CRC Udise','CRC School Name']
 
 # Define the list of columns to group by for rankings
 beo_ranking_group_cols = [cols.district_name, cols.beo_user, cols.beo_name]

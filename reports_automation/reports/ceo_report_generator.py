@@ -406,4 +406,4 @@ def _update_ranking_args_dict(ranking_args:dict):
 
 # For testing
 if __name__ == "__main__":
-    generate_all(generate_fresh=True)
+    generate_all(generate_fresh=False)
