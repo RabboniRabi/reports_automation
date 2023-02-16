@@ -5,13 +5,15 @@ Module to create report for teacher attendance over two days
 from datetime import datetime
 from datetime import timedelta
 import sys
+sys.path.append('../')
+
 import os
 import utilities.format_utilities as format_utilities
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.column_names_utilities as cols
 import excel2img
-sys.path.append('../')
+
 
 # Define the grouping levels and aggregation dictionary
 grouping_levels = [cols.district_name]

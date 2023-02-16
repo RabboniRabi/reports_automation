@@ -120,7 +120,7 @@ def run():
     """
 
     # Read the database connection credentials
-    credentials_dict = dbutilities.read_conn_credentials('db_credentials_attendance.json')
+    credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
     # Get the latest Schools unmarked details from the SQL query file
     df_tchrs_attendance = dbutilities.fetch_data_as_df(credentials_dict, 'teacher_unmarked_weekly.sql')
