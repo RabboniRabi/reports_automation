@@ -58,7 +58,6 @@ def create_server_connection(credentials_dict):
     A database connection object if connection is successful. Error otherwise.
     """
     connection = None
-
     try:
         connection = mysql.connector.connect(
             host = credentials_dict['host_name'],
