@@ -44,7 +44,7 @@ def _get_classwise_common_pool_data(df_data, pivot_index, classes):
     -------
     Pandas DataFrame object of classwise common pool data
     """
-    # Get chool category wise ageing count in each class
+    # Get school category wise ageing count in each class
     data_pivot_ageing = pd.pivot_table(df_data, values=cols.students_ageing30_count, \
                         index=pivot_index ,columns=[cols.class_number], aggfunc='sum',fill_value=0).reset_index()
 

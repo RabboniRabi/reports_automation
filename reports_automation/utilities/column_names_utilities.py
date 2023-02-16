@@ -188,6 +188,13 @@ beo_rank = 'BEO Rank'
 deo_elem_rank = 'DEO (Elementary) Rank'
 deo_sec_rank = 'DEO (Secondary) Rank'
 
+# Sports specific column names
+test_comp_status = 'Completion Status'
+test_in_progress = 'In Progress'
+test_completed = 'Completed'
+test_not_started = 'Not Yet Started'
+perc_test_comp = '% Completed'
+
 def get_value(var_name: str):
     """
     Function to get the value mapped to the variable defined here.
