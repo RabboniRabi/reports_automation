@@ -31,7 +31,7 @@
                     "cols.participants": "sum", 
                     "cols.tot_students" : "sum"
                 },
-                "ranking_val_desc": "cols.perc_obs_comp",
+                "ranking_val_desc": "cols.perc_DEO_obs",
                 "num_col": "cols.deo",
                 "den_col": "cols.deo_target",
                 "sort": "True",

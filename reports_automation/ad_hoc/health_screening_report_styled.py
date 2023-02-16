@@ -159,7 +159,8 @@ def main():
     'Schools screening status': df_schools_screening_status
     }
 
-    writer = file_utilities.get_xlsxwriter_obj(df_sheet_dict, 'health_screening_status_styled.xlsx')
+    file_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
+    writer = file_utilities.get_xlsxwriter_obj(df_sheet_dict, 'health_screening_status_styled.xlsx', file_path=file_path)
 
     # Format and stylize the data
     

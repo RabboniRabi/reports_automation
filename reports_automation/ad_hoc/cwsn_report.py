@@ -201,7 +201,8 @@ def main():
     # Sort the values
     df_overview.sort_values(group_levels, inplace = True)    
 
-    file_utilities.save_to_excel({'Report':df_overview}, 'CWSN_Summary.xlsx')
+    dir_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
+    file_utilities.save_to_excel({'Report':df_overview}, 'CWSN_Summary.xlsx', dir_path=dir_path)
 
 if __name__ == "__main__":
     main()

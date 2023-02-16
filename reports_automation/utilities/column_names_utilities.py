@@ -41,6 +41,7 @@ deo_rank_elm = 'DEO Rank Elementary'
 deo_rank_sec = 'DEO Rank Secondary'
 perc_students_cp = '% Students ageing > 30 days'
 total_cwsn_students ='cwsn'
+emis_number = 'EMIS_Number'
 
 
 
@@ -127,7 +128,16 @@ scnd_schl_lvl = 'Secondary School'
 reason_type = 'Reason_type'
 to_be_surveyed = 'To be surveyed'
 perc_to_be_admitted = '% to be admitted'
+perc_admitted_oosc = '% Students Admitted' 
 to_be_admitted = 'To be admitted'
+oosc_student_status = 'student_status'
+not_admttd = 'Not Admitted'
+to_be_verified = 'To be verified'
+non_target = 'Non-Target'
+stdnt_admttd = 'Student Admitted'
+stdnts_admttd = 'Students Admitted'
+oosc_tot_surveyed = 'Total Surveyed'
+
 # Hi-tech lab report specific column names
 up_time_hrs = 'up_time_hrs'
 mediam_up_time_hrs = 'Median Uptime Hours'

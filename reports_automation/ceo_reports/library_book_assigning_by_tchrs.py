@@ -1,5 +1,5 @@
 """
-Module with function for custom pre-processing of CWSN raw data
+Module with function for custom pre-processing of Library book assigning report
 """
 
 
@@ -16,16 +16,16 @@ initial_group_levels = [cols.district_name, cols.block_name, cols.udise_col, col
 
 def pre_process_BRC_merge(raw_data):
     """
-    Function to process the CWSN raw data before merging with BRC-CRC mapping data
+    Function to process the Library raw data before merging with BRC-CRC mapping data
 
     Parameters:
     ----------
     raw_data: Pandas DataFrame
-        The raw CWSN data
+        The raw Library book assigining data
 
     Returns:
     -------
-    DataFrame object of CWSN data processed and ready for mapping with BRC-CRC data
+    DataFrame object of library book assigning data processed and ready for mapping with BRC-CRC data
     """
 
     print('Pre Processing before BRC merge called in Library book assigning by teachers report')
@@ -40,8 +40,5 @@ def pre_process_BRC_merge(raw_data):
 
     df_pivot[cols.total_tchrs] = df_pivot[cols.tchrs_assigning_books] + df_pivot[cols.tchrs_not_assigning_books]
 
-    print('df_pivot columns: ', df_pivot.columns.to_list())
-
-    print('df_pivot: ', df_pivot)
 
     return df_pivot

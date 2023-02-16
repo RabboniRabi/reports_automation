@@ -17,7 +17,7 @@ elem_pivot_index = [cols.district_name, cols.deo_name_elm, cols.school_category]
 sec_pivot_index = [cols.district_name, cols.deo_name_sec, cols.school_category]
 
 # Define elementary report classes
-elem_classes = [1,2,3,4,5,6,7,8,9]
+elem_classes = [1,2,3,4,5,6,7,8]
 
 # Define secondary report classes
 sec_classes = [1,2,3,4,5,6,7,8,9,10,11]

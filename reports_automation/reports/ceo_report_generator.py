@@ -198,8 +198,6 @@ def generate_all(generate_fresh:bool = True):
                 # Call the helper function to generate the elementary report
                 elem_report = _generate_elem_report(df_data, elem_report_config, report_name, ceo_report_levels.RANKED, metric_code, metric_category)
 
-                #elem_report = get_ceo_report(config, 'Elementary', ceo_report_levels.RANKED)
-
                 # Check if formatting needs to be done
                 format_config = elem_report_config['format_config']
                 if format_config is not None:
@@ -263,6 +261,7 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name
     --------
     The generated secondary report as a Pandas DataFrame object.
     """
+
     # Filter the data to Elementary school type
     ceo_rpt_raw_data = ceo_rpt_raw_data[ceo_rpt_raw_data[cols.school_level].isin([cols.elem_schl_lvl])]
 
@@ -406,4 +405,4 @@ def _update_ranking_args_dict(ranking_args:dict):
 
 # For testing
 if __name__ == "__main__":
-    generate_all(generate_fresh=True)
+    generate_all(generate_fresh=False)
