@@ -395,7 +395,7 @@ def save_to_excel(df_sheet_dict, file_name, dir_path = get_gen_reports_dir_path(
     print('Save done')
 
 
-def get_xlsxwriter_obj(df_sheet_dict, file_name, file_path = get_gen_reports_dir_path(), index=False):
+def get_xlsxwriter_obj(df_sheet_dict, file_name, file_path = get_gen_reports_dir_path(), index=False,start_row=0, start_col=0):
     """
     Function to convert the Pandas DataFrame object to 
     a ready to use and save XlsxWriter object.
@@ -410,6 +410,10 @@ def get_xlsxwriter_obj(df_sheet_dict, file_name, file_path = get_gen_reports_dir
         The directory path to save the file in. Default is generated reports directory path    
     index: bool
         Boolean value indicating if row names need to be written. Default is False
+    start_row: int
+        Integer value indicating the which row the dataframe will be printed in
+    start_col: int
+        Integer value indicating the which column the dataframe will be printed in
 
     Returns:
     -------
@@ -419,5 +423,5 @@ def get_xlsxwriter_obj(df_sheet_dict, file_name, file_path = get_gen_reports_dir
     file_path = os.path.join(file_path, file_name)
     writer = pd.ExcelWriter(file_path, engine='xlsxwriter')
     for key in df_sheet_dict.keys():
-        df_sheet_dict[key].to_excel(writer, sheet_name=key, index=index)        
-    return writer    
+        df_sheet_dict[key].to_excel(writer, sheet_name=key, index=index,startrow=start_row,startcol=start_col)
+    return writer

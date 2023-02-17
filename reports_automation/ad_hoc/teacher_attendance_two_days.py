@@ -5,17 +5,15 @@ Module to create report for teacher attendance over two days
 from datetime import datetime
 from datetime import timedelta
 import sys
+import os
 
 sys.path.append('../')
-
 import utilities.format_utilities as format_utilities
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.column_names_utilities as cols
+import excel2img
 
-import openpyxl
-from openpyxl.styles import Font, Alignment, Border, Side
-import pandas as pd
 
 # Define the grouping levels and aggregation dictionary
 grouping_levels = [cols.district_name]
@@ -38,37 +36,35 @@ def _process_data(df_data):
     -------
     The data processed as a report.
     """
-    print('df_data: ', df_data)
     #groupby district - keep this variable to add block if necessary - and sum marked and unmarked and % calc
     df_grouped = df_data.groupby(grouping_levels).agg(grouping_agg_dict).reset_index()
     # Rename columns total marked and total marked to total marked and unmarked schools as data is now grouped
-    df_grouped.rename(columns={cols.tot_marked: cols.tot_marked_schls, cols.tot_unmarked: cols.tot_unmarked_schls}, inplace=True)
+    df_grouped.rename(columns={cols.tot_marked: cols.marked_schools, cols.tot_unmarked: cols.unmarked_schools,
+                               cols.district_name:cols.district}, inplace=True)
     # Calculate total schools by summing the marked and unmarked schools
-    df_grouped[cols.tot_schools] = df_grouped[cols.tot_marked_schls] + df_grouped[cols.tot_unmarked_schls]
+    df_grouped[cols.tot_schools] = df_grouped[cols.marked_schools] + df_grouped[cols.unmarked_schools]
     # Calculate % Marked schools
-    df_grouped[cols.perc_marked_schls] =  df_grouped[cols.tot_marked_schls] / df_grouped[cols.tot_schools]
+    df_grouped[cols.perc_marked_schls] =  df_grouped[cols.marked_schools] / df_grouped[cols.tot_schools]
 
     # Sort the data by % highest marked schools
     df_grouped.sort_values([cols.perc_marked_schls], ascending=True, inplace=True)
 
     # Define a columns aggregate function to calculate a grand total row at the bottom
     cols_agg_dict = {
-        cols.tot_marked_schls : 'sum',
-        cols.tot_unmarked_schls : 'sum',
+        cols.marked_schools : 'sum',
+        cols.unmarked_schools : 'sum',
         cols.tot_schools : 'sum', 
         cols.perc_marked_schls : 'mean'
         }
 
     df_grouped.loc[-1,:] = df_grouped.aggregate(cols_agg_dict)
 
-    df_grouped.at[-1, 'District'] = "Grand Total"
-
-    print('df_grouped: ', df_grouped)
+    df_grouped.at[-1, cols.district] = "Grand Total"
 
     return df_grouped
 
 
-def _format_report(df_report):
+def _format_report(df_report,df_data):
     """
     Internal function to format the report and save
 
@@ -78,45 +74,88 @@ def _format_report(df_report):
         The report to be formatted
     """
 
-    # Set the text alignment, border and colour gradient using Pandas
-    df_formatted = df_report.style.set_properties(**{'text-align': 'center','border-color':'black','border-width':'0.1em'}).\
-    background_gradient(cmap='RdYlGn',subset=cols.perc_marked_schls)
 
-    df_formatted.set_table_styles([dict(selector='th', props=[('text-align', 'center','border-color','Black','border-width','0.1em')])])
-
-    # Save the data
-    file_utilities.save_to_excel({'School Marking': df_formatted}, 'Teacher_attendance_2_days.xlsx', \
-            dir_path=file_utilities.get_curr_day_month_gen_reports_dir_path(), engine='xlsxwriter')
-    
-    #data_to_excel = pd.ExcelWriter(r'C:\Users\Admin\Downloads\teachtest.xlsx', engine='xlsxwriter')
-    #df_formatted.to_excel(data_to_excel, sheet_name='School Marking',index=False)
-    #data_to_excel.save()
-
-    # Open the file in OpenPyXl to apply some formatting using OpenPyXl
+    # Open the file in OpenPyXl to apply some formatting using xlsxwriter
     file_path = file_utilities.get_file_path('Teacher_attendance_2_days.xlsx', file_utilities.get_curr_day_month_gen_reports_dir_path())
-    df_final = openpyxl.load_workbook(file_path)
-    main_page = df_final['School Marking']
-    main_page.insert_rows(idx=0,amount=1)
 
-    prcnt_frmt = {'num_format': '0.00%'}
-    comp_schools_col_index = df_formatted.columns.get_loc('% Marked Schools')
-    format_utilities.apply_frmt_cols(df_formatted, 'Schools screening status', comp_schools_col_index, comp_schools_col_index,
-                                    prcnt_frmt)
+    df_sheet_dict = {'School Marking': df_report,'Raw Data':df_data}
 
-    # First Row
-    day1 =(datetime.today() - timedelta(days=2)).strftime('%m/%d/%Y')
-    day2 = (datetime.today() - timedelta(days=1)).strftime('%m/%d/%Y')
-    main_page['A1'].value = '% of Schools marking Teacher Attendance from {} to {}'.format(day1,day2)
-    font1 = Font(size=12, bold=True)
-    main_page['A1'].font = font1
-    main_page.merge_cells('A1:F1')
-    alignment=Alignment(horizontal='center',vertical='center')
-    main_page['A1'].alignment = alignment
-    bd=Side(border_style='thin',color='00000000')
-    border=Border(top=bd,left=bd,right=bd,bottom=bd)
+    #Write the file on to the excel from the second row
+    writer = file_utilities.get_xlsxwriter_obj(df_sheet_dict, 'Teacher_attendance_2_days.xlsx', file_utilities.get_curr_day_month_gen_reports_dir_path(),
+                                               start_row=1)
+    #Add borders, alignment, and text wrap to the whole data frame
+    border_format = {'border': 1, 'align': 'center', 'text_wrap': True}
+    format_utilities.apply_frmt_cols(writer, 'School Marking', 0, 4, border_format)
 
 
-    df_final.save(file_path)
+    # Apply colour gradient for % Marked column
+    gradient_color_frmt = {'type': '3_color_scale'}
+    col_index = df_report.columns.get_loc(cols.perc_marked_schls)
+    format_utilities.apply_cond_frmt(writer, 'School Marking', col_index, gradient_color_frmt, 41)
+
+    #Adding a heading with the variable dates based on the previous 2 days
+    worksheet = writer.sheets['School Marking']
+    day1 = (datetime.today() - timedelta(days=2)).strftime('%d.%m.%Y')
+    day2 = (datetime.today() - timedelta(days=1)).strftime('%d.%m.%Y')
+
+    #Merge the cells to form the heading
+    worksheet.merge_range('A1:E1', "% Schools marking teacher attendance from {} to {}".format(day1,day2))
+
+    #Apply formatting for heading
+    workbook = writer.book
+    worksheet = workbook.get_worksheet_by_name('School Marking')
+    cell_format = workbook.add_format({'bold': True,'align':'vcenter','font_size':'11.62','valign':'center'})
+    worksheet.set_row(0, 18, cell_format)
+
+    #Edit the names for the column labels and format them
+    workbook = writer.book
+    worksheet = workbook.get_worksheet_by_name('School Marking')
+    format = workbook.add_format({'bold': True,'align':'vcenter','font_size':'11','bg_color':'silver','border':1,'text_wrap':True
+                                  ,'valign':'center'})
+
+    worksheet.write_row("A2:F2", ['District', 'Marked Schools', 'Unmarked Schools','Total Schools','% Marked Schools'], format)
+
+    #Edit the names for the 'Grand Total' row by adding the sum and average formula in cells and format it
+    workbook = writer.book
+    worksheet = workbook.get_worksheet_by_name('School Marking')
+    format = workbook.add_format(
+        {'bold': True, 'align': 'center', 'font_size': '11', 'bg_color': 'silver', 'border': 1})
+
+    worksheet.write_row("A41:F41", ['Grand Total', '=SUM(B2:B40)', '=SUM(C2:C40)', '=SUM(D2:D40)', '=AVERAGE(E2:E40)'],
+                        format)
+
+    #Re-enter and format the Grand Total % Marked Cell specifically
+    workbook = writer.book
+    worksheet = workbook.get_worksheet_by_name('School Marking')
+    format = workbook.add_format(
+        {'bold': True, 'align': 'center', 'font_size': '11', 'bg_color': 'silver', 'border': 1,'num_format': '0.00%'})
+
+    worksheet.write_row("E41", ['=AVERAGE(E2:E40)'],
+                        format)
+
+    # Apply percentage formatting to % Marked column
+    prcnt_frmt = {'num_format': '0.00%', 'text_wrap': True,'align':'center','bold':True,'border':1}
+    comp_schools_col_index = df_report.columns.get_loc(cols.perc_marked_schls)
+    format_utilities.apply_frmt_cols(writer, 'School Marking', comp_schools_col_index, comp_schools_col_index,
+                                     prcnt_frmt, width=10)
+    #Edit the column width for the District Column
+    workbook = writer.book
+    worksheet = workbook.get_worksheet_by_name('School Marking')
+    worksheet.set_column('A:A',20)
+
+    #Edit the column width for the rest of the columns
+    workbook = writer.book
+    worksheet = workbook.get_worksheet_by_name('School Marking')
+    worksheet.set_column('B:D',10)
+
+    #Save the file
+    writer.save()
+
+    #Name the image, establish the file path and export the excel range as an image
+    file_name = "teacher_marked_attendance_{}_to_{}.png".format(day1,day2)
+    output_image = os.path.join(file_utilities.get_curr_day_month_gen_reports_dir_path(), file_name)
+    excel2img.export_img(file_path, output_image, "School Marking", "A1:E41")
+
 
 def run():
     """
@@ -133,7 +172,7 @@ def run():
     df_report = _process_data(df_data)
 
     # Format the report and save
-    _format_report(df_report)
+    _format_report(df_report, df_data)
 
 
 
