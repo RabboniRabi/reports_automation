@@ -78,6 +78,8 @@ udid_count = 'UDID Count'
 with_acct = 'Students with account'
 witht_acct = 'Students without account'
 perc_students_with_UDID = '% Students with UDID'
+perc_students_with_acct = '% Students with account'
+stu_emis_no = 'Student_EMIS_NO'
 
 
 # TPD report specific column names

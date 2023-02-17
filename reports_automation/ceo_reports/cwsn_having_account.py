@@ -1,5 +1,6 @@
 """
 Module with function for custom pre-processing of CWSN raw data
+for CWSN students with bank account report
 """
 
 
@@ -15,44 +16,6 @@ import pandas as pd
 # Define the initial grouping level
 initial_group_levels = [cols.district_name, cols.block_name, cols.udise_col, cols.school_name, cols.school_category]
 
-# Define list of student statuses to count in report
-student_statuses = [cols.cwsn_in_School, cols.cwsn_cp]
-
-# Define regex of ID values to accept
-id_columns_regex_dict = {
-        'NID' : '^[0-9]{5}$', # Accept only 5 digit numbers
-        'UDID': 'TN.'  # Accept only values starting with TN
-    }
-
-def _get_grouping_level_wise_IDs_issued_count(df, group_levels, columns_regex_dict):
-    """
-    Internal function to get the grouping levels wise count of students with disability IDs.
-
-    Parameters:
-    -----------
-    df: Pandas DataFrame
-        The raw data
-    group_levels: list
-        The list of columns to group by
-    columns_regex_dict: dict
-        A column - regex of accepted values key - value pair dictionary
-        This dictionary will be used to filter values in the ID columns by matching only the values
-        given in the regex
-        eg: {
-            'col_a' : '[1-9].',
-            'col_b' : '(a|h|e)+
-        }           
-    Returns:
-    --------
-    DataFrame object with group level wise count of students with disability ids
-    """
-
-    # Drop missing values in IDs
-    df = df.dropna(subset=columns_regex_dict.keys())
-
-    df_filtered_grouped = utilities.filter_group_count_valid_values(df, group_levels, columns_regex_dict)
-
-    return df_filtered_grouped
 
 def _get_grouping_level_wise_student_count(df, group_levels, student_count_col):
     """
@@ -98,31 +61,21 @@ def pre_process_BRC_merge(raw_data):
     # Get school level wise total students count
     school_wise_total_students_count = _get_grouping_level_wise_student_count (raw_data, initial_group_levels, cols.cwsn_name)
 
-    # Get the school level wise count of students in school and in common pool
-    school_wise_status_count = utilities.get_grouping_level_wise_col_values_count(
-        raw_data, initial_group_levels, cols.cwsn_status, student_statuses)
-
-    # Get block level wise count of valid student IDs
-    school_wise_IDs_issued_count = _get_grouping_level_wise_IDs_issued_count(raw_data, initial_group_levels,\
-         id_columns_regex_dict)    
-
     # Get the school level wise count of students with account
     school_wise_has_account_count = pd.pivot_table(raw_data, index=initial_group_levels, columns=cols.cwsn_has_acct,
                 aggfunc='size', fill_value=0, sort=False).reset_index()
 
 
     # Merge the results into one school level summary
-    df_data_schl_lvl = school_wise_total_students_count.merge(school_wise_status_count, on=initial_group_levels)
-    df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_IDs_issued_count, on=initial_group_levels)
-    #df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_has_account_count[initial_group_levels + [cols.yes_col, cols.no_col]])
+    df_data_schl_lvl = school_wise_total_students_count.merge(school_wise_has_account_count, on=initial_group_levels)
 
     
     # Rename columns for better readability
     df_data_schl_lvl.rename(columns = {
         cols.cwsn_in_School : cols.stdnts_in_school,
-        cols.cwsn_cp : cols.stdnts_in_cp,
-        cols.nid : cols.nid_count,
-        cols.udid : cols.udid_count}, inplace = True)
+        cols.yes_col : cols.with_acct,
+        cols.no_col : cols.witht_acct
+        }, inplace = True)
 
     return df_data_schl_lvl
 

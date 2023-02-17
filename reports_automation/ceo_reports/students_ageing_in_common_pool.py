@@ -48,8 +48,6 @@ def _get_classwise_common_pool_data(df_data, pivot_index, classes):
     data_pivot_ageing = pd.pivot_table(df_data, values=cols.students_ageing30_count, \
                         index=pivot_index ,columns=[cols.class_number], aggfunc='sum',fill_value=0).reset_index()
 
-    print('Data post first pivot:', data_pivot_ageing)
-
     # Update with the total ageing data
     data_pivot_ageing[cols.ageing] = data_pivot_ageing[classes].sum(axis=1)
 

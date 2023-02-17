@@ -113,6 +113,121 @@
                 }
             }
         }
+    },
+
+    {
+        "report_name": "cwsn_having_account",
+        "report_code" : "CWSN_ACCT",
+        "report_category": "Enrolment",
+        "report_desc": "CWSN having accounts report",
+        "generate_report": true,
+        "source_config" : {
+            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_sheet_name" : "Report",
+            "skip_rows" : 4
+        },
+        "pre_process_brc_merge": true,
+        "brc_merge_config" : {
+            "join_on" : ["cols.district_name", "cols.block_name", "cols.school_name", "cols.school_category", "cols.udise_col"],
+            "merge_type" : "left"
+        },
+        "post_process_brc_merge" : false,
+        "elementary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": false,
+                "grouping_cols" : ["cols.district_name", "cols.deo_name_elm", "cols.school_category", "cols.school_level"],
+                "grouping_agg_dict" : {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.with_acct" : "sum",
+                    "cols.witht_acct" : "sum"
+                }
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.with_acct" : "sum",
+                    "cols.witht_acct" : "sum"
+                },
+                "ranking_val_desc": "cols.perc_students_with_acct",
+                "num_col": "cols.with_acct",
+                "den_col": "cols.cwsn_tot",
+                "sort": "True",
+                "ascending": "False"
+            },
+            "format_config" : {
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                    "agg_cols_func_dict" : {
+                        "cols.cwsn_tot": "sum", 
+                        "cols.with_acct" : "sum",
+                        "cols.witht_acct" : "sum",
+                        "cols.deo_elem_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                },
+                "format_dict" : {
+                    "conditional_format" : {
+                        "columns" : ["cols.perc_students_with_acct"],
+                        "format": {"type": "3_color_scale"}
+                    },
+                    "format_cells" : {
+                        "columns" : ["cols.perc_students_with_acct"],
+                        "format" : {"num_format": "0.00%"}
+        
+                    }
+                }
+            }
+        },
+        "secondary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": false,
+                "grouping_cols" : ["cols.district_name", "cols.deo_name_sec", "cols.school_category", "cols.school_level"],
+                "grouping_agg_dict" : {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.with_acct" : "sum",
+                    "cols.witht_acct" : "sum"
+                }
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.with_acct" : "sum",
+                    "cols.witht_acct" : "sum"
+                },
+                "ranking_val_desc": "cols.perc_students_with_acct",
+                "num_col": "cols.with_acct",
+                "den_col": "cols.cwsn_tot",
+                "sort": "True",
+                "ascending": "False"
+            },
+            "format_config" : {
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                    "agg_cols_func_dict" : {
+                        "cols.cwsn_tot": "sum", 
+                        "cols.with_acct" : "sum",
+                        "cols.witht_acct" : "sum",
+                        "cols.deo_sec_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                },
+                "format_dict" : {
+                    "conditional_format" : {
+                        "columns" : ["cols.perc_students_with_acct"],
+                        "format": {"type": "3_color_scale"}
+                    },
+                    "format_cells" : {
+                        "columns" : ["cols.perc_students_with_acct"],
+                        "format" : {"num_format": "0.00%"}
+        
+                    }
+                }
+            }
+        }
     }
 
     ]
