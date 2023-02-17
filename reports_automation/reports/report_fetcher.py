@@ -102,21 +102,22 @@ if __name__ == "__main__":
     """
     Testing get_ceo_report
     """
-    """elem_report = get_ceo_report('students_ageing_in_common_pool', 'Elementary', 'Ranked')
-    file_utilities.save_to_excel({'Report': elem_report}, 'CP Elementary Report.xlsx')
+    elem_report = get_ceo_report('TCH_ATT_MARK', 'Elementary', 'Ranked')
+    file_utilities.save_to_excel({'Report': elem_report}, 'TCH_ATT_MARK Elementary Report.xlsx')
 
-    sec_report = get_ceo_report('CP', 'Secondary', 'Ranked')
-    file_utilities.save_to_excel({'Report': sec_report}, 'CP Secondary Report.xlsx')"""
+    sec_report = get_ceo_report('TCH_ATT_MARK', 'Secondary', 'Ranked')
+    file_utilities.save_to_excel({'Report': sec_report}, 'TCH_ATT_MARK Secondary Report.xlsx')
 
 
     """
     Testing get_ad_hoc_report
     """
-    adhoc_report = get_ad_hoc_report('teacher_leave_applied')
+''' 
+   adhoc_report = get_ad_hoc_report('teacher_leave_applied')
     dir_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
     file_utilities.save_to_excel({'Report': adhoc_report}, 'Teacher leave applied.xlsx', dir_path)
 
-
+'''
     
 
     
