@@ -203,7 +203,7 @@
         "report_code" : "TCH_ATT_MARK",
         "report_category": "Attendance",
         "report_desc": "Teacher marked attendance report",
-        "generate_report": false,
+        "generate_report": true,
         "source_config" : {
             "source_file_name" : "Teacher_Marked_Attendance_Sample.xlsx",
             "source_sheet_name" : "Raw Data",
