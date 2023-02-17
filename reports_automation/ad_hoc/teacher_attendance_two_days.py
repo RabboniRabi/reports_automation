@@ -1,18 +1,17 @@
 """
 Module to create report for teacher attendance over two days
 """
-
-from datetime import datetime
-from datetime import timedelta
 import sys
 sys.path.append('../')
+from datetime import datetime
+from datetime import timedelta
 
-import os
+import utilities.dbutilities as dbutilities
 import utilities.format_utilities as format_utilities
 import utilities.file_utilities as file_utilities
-import utilities.dbutilities as dbutilities
 import utilities.column_names_utilities as cols
 import excel2img
+import os
 
 
 # Define the grouping levels and aggregation dictionary
@@ -73,9 +72,6 @@ def _format_report(df_report, df_data):
     df_report: Pandas DataFrame
         The report to be formatted
     """
-    # Open the file in OpenPyXl to apply some formatting using xlsxwriter
-    file_path = file_utilities.get_file_path('Teacher_attendance_2_days.xlsx',
-                                             file_utilities.get_curr_day_month_gen_reports_dir_path())
 
     df_sheet_dict = {'School Marking': df_report, 'Raw Data': df_data}
 
@@ -83,6 +79,7 @@ def _format_report(df_report, df_data):
     writer = file_utilities.get_xlsxwriter_obj(df_sheet_dict, 'Teacher_attendance_2_days.xlsx',
                                                file_utilities.get_curr_day_month_gen_reports_dir_path(),
                                                start_row=1)
+
     # Add borders, alignment, and text wrap to the whole data frame
     border_format = {'border': 1, 'align': 'center', 'text_wrap': True}
     format_utilities.apply_frmt_cols(writer, 'School Marking', 0, 4, border_format)
@@ -103,7 +100,7 @@ def _format_report(df_report, df_data):
     # Apply formatting for heading
     workbook = writer.book
     worksheet = workbook.get_worksheet_by_name('School Marking')
-    cell_format = workbook.add_format({'bold': True, 'align': 'vcenter', 'font_size': '11.62', 'valign': 'center'})
+    cell_format = workbook.add_format({'bold': True, 'align': 'vcenter', 'font_size': '11.4', 'valign': 'center'})
     worksheet.set_row(0, 18, cell_format)
 
     # Edit the names for the column labels and format them
@@ -137,15 +134,21 @@ def _format_report(df_report, df_data):
     comp_schools_col_index = df_report.columns.get_loc(cols.perc_marked_schls)
     format_utilities.apply_frmt_cols(writer, 'School Marking', comp_schools_col_index, comp_schools_col_index,
                                      prcnt_frmt, width=10)
-    # Edit the column width for the District Column
-    workbook = writer.book
-    worksheet = workbook.get_worksheet_by_name('School Marking')
-    worksheet.set_column('A:A', 20)
 
     # Edit the column width for the rest of the columns
     workbook = writer.book
     worksheet = workbook.get_worksheet_by_name('School Marking')
     worksheet.set_column('B:D', 10)
+
+    workbook = writer.book
+    worksheet = workbook.get_worksheet_by_name('School Marking')
+    border_format = {'border': 1, 'align': 'center','valign': 'center'}
+    format_utilities.apply_frmt_cols(writer, 'School Marking', 0, 3, border_format)
+
+    # Edit the column width for the District Column
+    workbook = writer.book
+    worksheet = workbook.get_worksheet_by_name('School Marking')
+    worksheet.set_column('A:A', 20, workbook.add_format(border_format))
 
     # Save the file
     writer.save()
@@ -153,6 +156,9 @@ def _format_report(df_report, df_data):
     # Name the image, establish the file path and export the excel range as an image
     file_name = "teacher_marked_attendance_{}_to_{}.png".format(day1, day2)
     output_image = os.path.join(file_utilities.get_curr_day_month_gen_reports_dir_path(), file_name)
+    # Get the file path of saved file to save PNG in same location
+    file_path = file_utilities.get_file_path('Teacher_attendance_2_days.xlsx',
+                                             file_utilities.get_curr_day_month_gen_reports_dir_path())
     excel2img.export_img(file_path, output_image, "School Marking", "A1:E41")
 
 
@@ -176,4 +182,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-

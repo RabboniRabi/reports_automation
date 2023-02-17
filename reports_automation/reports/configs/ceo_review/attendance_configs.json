@@ -231,7 +231,7 @@
                 "agg_dict": {
                     "cols.tot_marked": "sum",
                     "cols.tot_unmarked" : "sum",
-                    "cols.school_name": "count"
+                    "cols.school_name": "sum"
                 },
                 "ranking_val_desc": "cols.perc_tchrs_updated",
                 "num_col": "cols.tot_marked",
@@ -245,7 +245,7 @@
                         "agg_cols_func_dict" : {
                             "cols.tot_marked": "sum",
                             "cols.tot_unmarked" : "sum",
-                            "cols.school_name": "count",
+                            "cols.school_name": "sum",
                             "cols.deo_elem_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_elm": "Summary"}
@@ -279,7 +279,7 @@
                 "agg_dict": {
                     "cols.tot_marked": "sum",
                     "cols.tot_unmarked" : "sum",
-                    "cols.school_name": "count"
+                    "cols.school_name": "sum"
                 },
                 "ranking_val_desc": "cols.perc_tchrs_updated",
                 "num_col": "cols.tot_marked",
@@ -293,7 +293,7 @@
                     "agg_cols_func_dict" : {
                         "cols.tot_marked": "sum",
                         "cols.tot_unmarked" : "sum",
-                        "cols.school_name": "count",
+                        "cols.school_name": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_sec": "Summary"}
