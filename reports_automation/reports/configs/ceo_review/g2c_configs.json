@@ -1,0 +1,136 @@
+{
+    "report_configs": [
+    {
+        "report_name": "pending_G2C_applications",
+        "report_code" : "G2C",
+        "report_category": "Operations",
+        "report_desc": "% of Pending G2C applications greater than 30 days",
+        "generate_report": true,
+        "source_config" : {
+            "source_file_name" : "g2c_online_pstm_report (2).xlsx",
+            "source_sheet_name" : "Report",
+            "skip_rows" : 4
+        },
+        "pre_process_brc_merge": false,
+        "brc_merge_config" : {
+            "join_on" : ["cols.district_name", "cols.block_name", "cols.school_name", "cols.udise_col"],
+            "merge_type" : "left"
+        },
+        "post_process_brc_merge" : false,
+        "elementary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": false,
+                "grouping_cols" : ["cols.district_name", "cols.deo_name_elm", "cols.school_category", "cols.school_level"],
+                "grouping_agg_dict" : {
+                    "cols.tot_app_rcvd": "sum",
+                    "cols.tot_aprvd" : "sum",
+                    "cols.tot_pnding" : "sum",
+                    "cols.tot_rjctd" : "sum",
+                    "cols.tot_pnd_grtr_15_days" : "sum",
+                    "cols.tot_pnd_lessr_15_days" : "sum"
+                }
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.tot_app_rcvd": "sum",
+                    "cols.tot_aprvd" : "sum",
+                    "cols.tot_pnding" : "sum",
+                    "cols.tot_rjctd" : "sum",
+                    "cols.tot_pnd_grtr_15_days" : "sum",
+                    "cols.tot_pnd_lessr_15_days" : "sum"
+                },
+                "ranking_val_desc": "cols.perc_apps_grtr_15_days",
+                "num_col": "cols.tot_pnd_grtr_15_days",
+                "den_col": "cols.tot_app_rcvd",
+                "sort": "True",
+                "ascending": "True"
+            },
+            "format_config" : {
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                    "agg_cols_func_dict" : {
+                        "cols.tot_app_rcvd": "sum",
+                        "cols.tot_aprvd" : "sum",
+                        "cols.tot_pnding" : "sum",
+                        "cols.tot_rjctd" : "sum",
+                        "cols.tot_pnd_grtr_15_days" : "sum",
+                        "cols.tot_pnd_lessr_15_days" : "sum",
+                        "cols.deo_elem_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                },
+                "format_dict" : {
+                    "conditional_format" : {
+                        "columns" : ["cols.perc_apps_grtr_15_days"],
+                        "format": {"type": "3_color_scale"}
+                    },
+                    "format_cells" : {
+                        "columns" : ["cols.perc_apps_grtr_15_days"],
+                        "format" : {"num_format": "0.00%"}
+        
+                    }
+                }
+            }
+        },
+        "secondary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": false,
+                "grouping_cols" : ["cols.district_name", "cols.deo_name_sec", "cols.school_category", "cols.school_level"],
+                "grouping_agg_dict" : {
+                    "cols.tot_app_rcvd": "sum",
+                    "cols.tot_aprvd" : "sum",
+                    "cols.tot_pnding" : "sum",
+                    "cols.tot_rjctd" : "sum",
+                    "cols.tot_pnd_grtr_15_days" : "sum",
+                    "cols.tot_pnd_lessr_15_days" : "sum"
+                }
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.tot_app_rcvd": "sum",
+                    "cols.tot_aprvd" : "sum",
+                    "cols.tot_pnding" : "sum",
+                    "cols.tot_rjctd" : "sum",
+                    "cols.tot_pnd_grtr_15_days" : "sum",
+                    "cols.tot_pnd_lessr_15_days" : "sum"
+                },
+                "ranking_val_desc": "cols.perc_apps_grtr_15_days",
+                "num_col": "cols.tot_pnd_grtr_15_days",
+                "den_col": "cols.tot_app_rcvd",
+                "sort": "True",
+                "ascending": "True"
+            },
+            "format_config" : {
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                    "agg_cols_func_dict" : {
+                        "cols.tot_app_rcvd": "sum",
+                        "cols.tot_aprvd" : "sum",
+                        "cols.tot_pnding" : "sum",
+                        "cols.tot_rjctd" : "sum",
+                        "cols.tot_pnd_grtr_15_days" : "sum",
+                        "cols.tot_pnd_lessr_15_days" : "sum",
+                        "cols.deo_sec_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                },
+                "format_dict" : {
+                    "conditional_format" : {
+                        "columns" : ["cols.perc_apps_grtr_15_days"],
+                        "format": {"type": "3_color_scale"}
+                    },
+                    "format_cells" : {
+                        "columns" : ["cols.perc_apps_grtr_15_days"],
+                        "format" : {"num_format": "0.00%"}
+        
+                    }
+                }
+            }
+        }
+    }
+    ]
+  }

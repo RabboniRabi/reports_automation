@@ -55,6 +55,8 @@ def map_data_with_brc(raw_data, merge_dict):
     list_of_cols = pd.unique(pd.Series(list_of_cols)).tolist()
 
     report_summary = report_summary.reindex(columns=list_of_cols)
+
+    file_utilities.save_to_excel({'test':report_summary},'brc_merge_test.xlsx')
     return report_summary
 
 def get_brc_master(sheet_name=brc_master_sheet_name):
@@ -72,6 +74,7 @@ def get_brc_master(sheet_name=brc_master_sheet_name):
     # read from excel, get sub columns
     brc_mapping_file_path = os.path.join(mapping_data_dir, brc_file_name)
     brc_master = pd.read_excel(brc_mapping_file_path,sheet_name=sheet_name)
+
     return brc_master
 
 
