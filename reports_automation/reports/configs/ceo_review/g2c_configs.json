@@ -7,13 +7,13 @@
         "report_desc": "% of Pending G2C applications greater than 30 days",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "g2c_online_pstm_report (2).xlsx",
+            "source_file_name" : "g2c_online_pstm_report.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 4
         },
         "pre_process_brc_merge": false,
         "brc_merge_config" : {
-            "join_on" : ["cols.district_name", "cols.block_name", "cols.school_name", "cols.udise_col"],
+            "join_on" : ["cols.block_name", "cols.school_name", "cols.udise_col"],
             "merge_type" : "left"
         },
         "post_process_brc_merge" : false,
@@ -21,7 +21,7 @@
             "generate_report": true,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
-                "grouping_cols" : ["cols.district_name", "cols.deo_name_elm", "cols.school_category", "cols.school_level"],
+                "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                 "grouping_agg_dict" : {
                     "cols.tot_app_rcvd": "sum",
                     "cols.tot_aprvd" : "sum",
@@ -78,7 +78,7 @@
             "generate_report": true,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
-                "grouping_cols" : ["cols.district_name", "cols.deo_name_sec", "cols.school_category", "cols.school_level"],
+                "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                 "grouping_agg_dict" : {
                     "cols.tot_app_rcvd": "sum",
                     "cols.tot_aprvd" : "sum",
