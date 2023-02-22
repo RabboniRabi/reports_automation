@@ -198,6 +198,24 @@ test_completed = 'Completed'
 test_not_started = 'Not Yet Started'
 perc_test_comp = '% Completed'
 
+# G2C pending applications
+tot_app_rcvd = 'Total_applications_received'
+tot_aprvd = 'Total_Approved'
+tot_pnding = 'Total_Pending'
+tot_rjctd = 'Total_Rejected'
+tot_pnd_grtr_15_days = 'Pending_more_than_15days'
+tot_pnd_lessr_15_days = 'Pending_less_than_15days'
+perc_apps_grtr_15_days = '% Pending_more_than_15days'
+
+
+
+
+
+
+
+
+
+
 def get_value(var_name: str):
     """
     Function to get the value mapped to the variable defined here.
