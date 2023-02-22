@@ -14,7 +14,7 @@
             },
             "pre_process_brc_merge": false,
             "brc_merge_config" : {
-                "join_on" : ["cols.district_name", "cols.block_name", "cols.school_name", "cols.school_category", "cols.udise_col"],
+                "join_on" : ["cols.block_name", "cols.school_name", "cols.udise_col"],
                 "merge_type" : "left"
             },
             "post_process_brc_merge" : false,
@@ -22,7 +22,7 @@
                 "generate_report": true,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
-                    "grouping_cols" : ["cols.district_name", "cols.deo_name_elm", "cols.school_category", "cols.school_level"],
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {
                         "cols.updt_tchrs": "sum", 
                         "cols.tot_tchrs" : "sum"
@@ -67,7 +67,7 @@
                 "generate_report": true,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
-                    "grouping_cols" : ["cols.district_name", "cols.deo_name_sec", "cols.school_category", "cols.school_level"],
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {
                         "cols.updt_tchrs": "sum", 
                         "cols.tot_tchrs" : "sum"
@@ -123,7 +123,7 @@
         },
         "pre_process_brc_merge": false,
         "brc_merge_config" : {
-            "join_on" : ["cols.district_name", "cols.block_name", "cols.school_name", "cols.school_category", "cols.udise_col"],
+            "join_on" : ["cols.block_name", "cols.school_name", "cols.school_category", "cols.udise_col"],
             "merge_type" : "left"
         },
         "post_process_brc_merge" : false,
@@ -131,7 +131,7 @@
             "generate_report": true,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
-                "grouping_cols" : ["cols.district_name", "cols.deo_name_elm", "cols.school_category", "cols.school_level"],
+                "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                 "grouping_agg_dict" : {
                     "cols.participants" : "sum", 
                     "cols.tot_students" : "sum"
@@ -154,7 +154,7 @@
             "generate_report": true,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
-                "grouping_cols" : ["cols.district_name", "cols.deo_name_sec", "cols.school_category", "cols.school_level"],
+                "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                 "grouping_agg_dict" : {
                     "cols.participants" : "sum", 
                     "cols.tot_students" : "sum"
@@ -211,7 +211,7 @@
         },
         "pre_process_brc_merge": false,
         "brc_merge_config" : {
-            "join_on" : ["cols.district_name", "cols.block_name", "cols.school_name", "cols.school_category", "cols.udise_col"],
+            "join_on" : ["cols.block_name", "cols.school_name", "cols.school_category", "cols.udise_col"],
             "merge_type" : "left"
         },
         "post_process_brc_merge" : false,
@@ -219,7 +219,7 @@
             "generate_report": true,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
-                "grouping_cols" : ["cols.district_name", "cols.deo_name_elm", "cols.school_category", "cols.school_level"],
+                "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                 "grouping_agg_dict" : {
                     "cols.tot_marked": "sum",
                     "cols.tot_unmarked" : "sum",
@@ -231,7 +231,7 @@
                 "agg_dict": {
                     "cols.tot_marked": "sum",
                     "cols.tot_unmarked" : "sum",
-                    "cols.school_name": "count"
+                    "cols.school_name": "sum"
                 },
                 "ranking_val_desc": "cols.perc_tchrs_updated",
                 "num_col": "cols.tot_marked",
@@ -245,7 +245,7 @@
                         "agg_cols_func_dict" : {
                             "cols.tot_marked": "sum",
                             "cols.tot_unmarked" : "sum",
-                            "cols.school_name": "count",
+                            "cols.school_name": "sum",
                             "cols.deo_elem_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_elm": "Summary"}
@@ -267,7 +267,7 @@
             "generate_report": true,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
-                "grouping_cols" : ["cols.district_name", "cols.deo_name_sec", "cols.school_category", "cols.school_level"],
+                "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                 "grouping_agg_dict" : {
                     "cols.tot_marked": "sum",
                     "cols.tot_unmarked" : "sum",
@@ -279,7 +279,7 @@
                 "agg_dict": {
                     "cols.tot_marked": "sum",
                     "cols.tot_unmarked" : "sum",
-                    "cols.school_name": "count"
+                    "cols.school_name": "sum"
                 },
                 "ranking_val_desc": "cols.perc_tchrs_updated",
                 "num_col": "cols.tot_marked",
@@ -293,7 +293,7 @@
                     "agg_cols_func_dict" : {
                         "cols.tot_marked": "sum",
                         "cols.tot_unmarked" : "sum",
-                        "cols.school_name": "count",
+                        "cols.school_name": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_sec": "Summary"}

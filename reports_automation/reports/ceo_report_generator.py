@@ -46,8 +46,6 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
     source_config = report_config['source_config']
     df_data = data_fetcher.get_data_from_config(source_config, save_source)
 
-    print('Number of rows in raw data: ', df_data.shape[0])
-
     # Check if pre-processing before merging with BRC-CRC mapping is required
     if (report_config['pre_process_brc_merge']):
         print('Going to pre-process data')
@@ -75,8 +73,6 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
         post_proc_func = getattr(report_module_name, 'post_process_BRC_merge')
         df_data = post_proc_func(df_data) 
-
-    print('Number of rows in data post merge: ', df_data.shape[0])  
 
     return df_data
 

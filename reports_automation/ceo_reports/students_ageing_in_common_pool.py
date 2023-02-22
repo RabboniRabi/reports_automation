@@ -12,9 +12,9 @@ import utilities.column_names_utilities as cols
 
 
 # Define elementary indexes for pivoting
-elem_pivot_index = [cols.district_name, cols.deo_name_elm, cols.school_category]
+elem_pivot_index = [cols.deo_name_elm, cols.block_name]
 # Define secondary indexes for pivoting
-sec_pivot_index = [cols.district_name, cols.deo_name_sec, cols.school_category]
+sec_pivot_index = [cols.deo_name_sec, cols.block_name]
 
 # Define elementary report classes
 elem_classes = [1,2,3,4,5,6,7,8]

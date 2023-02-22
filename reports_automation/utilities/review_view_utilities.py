@@ -13,6 +13,7 @@ sys.path.append('../')
 
 
 import pandas as pd
+import numpy as np
 import utilities.file_utilities as file_utilities
 import utilities.subtotal_utilities as subtotal_utilities
 import utilities.outlines_utilities as outlines_utilities
@@ -90,7 +91,6 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
 
     # Get the subtotal and outlines specific configurations
     subtotal_outlines_dict = _update_subtotal_outlines_dict(report_config_dict['subtotal_outlines_dict'])
-    print('subtotal_outlines_dict: ', subtotal_outlines_dict)
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
     agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
     text_append_dict = subtotal_outlines_dict['text_append_dict']
@@ -103,6 +103,13 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     updated_df = subtotals_result_dict['updated_df']
     # Get only the subtotal rows
     df_subtotal_rows = subtotals_result_dict['subtotals']
+
+    # Remove rank for rows other than subtotal rows
+    appended_col = list(text_append_dict.keys())[0]
+    #if (appended_col == cols.deo_name_elm):
+        #updated_df[~updated_df[appended_col].str.contains(text_append_dict[appended_col])][cols.deo_elem_rank] = ''
+        #updated_df.loc[updated_df[~updated_df[appended_col].str.contains(text_append_dict[appended_col])] == True][cols.deo_elem_rank] = ''
+        #updated_df[cols.deo_elem_rank] = np.where(~updated_df[appended_col].str.contains(text_append_dict[appended_col]), '', updated_df[cols.deo_elem_rank])
 
     # Build outlines levels and ranges dictionary
     level_outline_ranges_dict = outlines_utilities.build_level_outline_ranges_dict(
