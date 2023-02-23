@@ -6,7 +6,7 @@ import sys
 sys.path.append('../')
 import utilities.column_names_utilities as cols
 
-
+import pandas as pd
 
 def percent_ranking(df, group_levels, ranking_args_dict):
     """
@@ -70,6 +70,75 @@ def percent_ranking(df, group_levels, ranking_args_dict):
     return df_rank
 
 
+def avg_ranking(df, group_levels, ranking_args_dict):
+    """
+    Function to rank data based on result of averaging a list of values
+    
+    Parameters:
+    -----------
+    df: Pandas DataFrame
+        The data to be ranked
+    group_levels: list
+        The list of columns to group by
+    ranking_args_dict: dict
+        A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
+        Eg: ranking_args_dict = {
+        'group_levels' : ['district', 'name', 'designation'],
+        'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
+        'ranking_val_desc' : '% moved to CP',
+        'avg_cols' : ['class_1', 'class_2', 'class_3', 'class_4']
+        'sort' : True,
+        'ascending' : False
+        }
+
+    Ref: https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rank.html                        
+    
+    Returns:
+    --------
+        The updated DataFrame object with the average values used for ranking and the ranking
+    """
+    # Get the values from the ranking arguments dictionary
+    agg_dict = ranking_args_dict['agg_dict']
+    ranking_val_desc = ranking_args_dict['ranking_val_desc']
+    avg_cols = ranking_args_dict['avg_cols']
+    sort = ranking_args_dict['sort']
+    ascending = ranking_args_dict['ascending']
+
+    # If grouping levels is given
+    if (group_levels is not None):
+        # Group by grouping levels and aggregate by given columns and aggregate function
+        df_rank = df.groupby(group_levels, as_index=False, sort=sort).agg(agg_dict).reset_index()
+    else:
+        df_rank = df.copy()
+
+
+    # Calculate average of given columns
+    for i in range(0, len(avg_cols)):
+        if i == 0:
+            total_series = pd.Series(df_rank[avg_cols[i]])
+        else:
+            total_series = total_series + df_rank[avg_cols[i]]
+
+    no_of_items = len(avg_cols)
+    df_rank[cols.ranking_value] = (total_series/no_of_items)
+    df_rank[cols.ranking_value].fillna(0, inplace=True)
+
+    # Sort and rank the values
+    df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method='min')
+    
+    # Add the ranking value description to the ranked data
+    df_rank[cols.ranking_value_desc] = ranking_val_desc
+    
+    
+    # Sort by ranking if specified
+    if sort:
+        df_rank.sort_values(by=[cols.rank_col], inplace=True)
+
+    df_rank = df_rank.reset_index()    
+
+    return df_rank
+
+
 def get_ranking_funcs():
     """
     Function to return names of available ranking functions
@@ -82,5 +151,6 @@ def get_ranking_funcs():
    
 # Define a dictionary of ranking functions
 ranking_funcs_dict = {
-    'percent_ranking': percent_ranking
+    'percent_ranking': percent_ranking,
+    'average_ranking': avg_ranking
 }    

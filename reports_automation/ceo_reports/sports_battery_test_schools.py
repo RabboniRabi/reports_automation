@@ -78,7 +78,7 @@ def get_unranked_sec_report(df_data:pd.DataFrame, grouping_cols:list, agg_dict:d
     # Filter the data to secondary school type
     df_data = df_data[df_data[cols.school_level].isin([cols.scnd_schl_lvl])]
 
-    # Get classwise common pool data
+    # Get schools' completion summary of battery tests summary
     df_data = _get_schools_completion_summary(df_data, grouping_cols)
 
     return df_data
