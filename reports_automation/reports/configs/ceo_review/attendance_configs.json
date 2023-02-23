@@ -205,9 +205,7 @@
         "report_desc": "Teacher marked attendance report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "Teacher_Marked_Attendance_Sample.xlsx",
-            "source_sheet_name" : "Raw Data",
-            "skip_rows" : 0
+            "query_file_name" : "teacher_attendance_last30days_v.2.sql"
         },
         "pre_process_brc_merge": false,
         "brc_merge_config" : {
