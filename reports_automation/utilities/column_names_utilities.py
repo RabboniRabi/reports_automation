@@ -220,8 +220,15 @@ tot_pnd_lessr_15_days = 'Pending_less_than_15days'
 perc_apps_grtr_15_days = '% Pending_more_than_15days'
 
 
-
-
+# Welfare schemes specific columns
+scheme_status = 'status'
+scheme_inprogress = 'inprogress'
+scheme_in_progress = 'In Progress'
+scheme_comp = 'completed'
+scheme_completed = 'Completed'
+scheme_nt_strt = 'not started'
+scheme_not_started = 'Not Started'
+perc_schools_issued_books = '% schools completed book issue'
 
 
 

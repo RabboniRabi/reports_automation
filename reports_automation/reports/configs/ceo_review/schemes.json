@@ -1,0 +1,115 @@
+{
+    "report_configs": [
+
+        {
+            "report_name": "students_receiving_books",
+            "report_code" : "STU_BOOKS",
+            "report_category": "Schemes",
+            "report_desc": "Students receiving books report",
+            "generate_report": true,
+            "source_config" : {
+                "source_file_name" : "students_receiving_books.xlsx",
+                "source_sheet_name" : "Report",
+                "skip_rows" : 0
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.school_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_schools_issued_books",
+                    "num_col": "cols.scheme_completed",
+                    "den_col": "cols.tot_schools",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                    },
+                    "format_dict" : {
+                        "conditional_format" : {
+                            "columns" : ["cols.perc_schools_issued_books"],
+                            "format": {"type": "3_color_scale"}
+                        },
+                        "format_cells" : {
+                            "columns" : ["cols.perc_schools_issued_books"],
+                            "format" : {"num_format": "0.00%"}
+            
+                        }
+                    }
+                }
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_schools_issued_books",
+                    "num_col": "cols.scheme_completed",
+                    "den_col": "cols.tot_schools",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                    },
+                    "format_dict" : {
+                        "conditional_format" : {
+                            "columns" : ["cols.perc_schools_issued_books"],
+                            "format": {"type": "3_color_scale"}
+                        },
+                        "format_cells" : {
+                            "columns" : ["cols.perc_schools_issued_books"],
+                            "format" : {"num_format": "0.00%"}
+            
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
