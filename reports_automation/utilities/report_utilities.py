@@ -9,8 +9,8 @@ import utilities.file_utilities as file_utilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.column_names_utilities as cols
 
-brc_file_name = 'BRC_CRC_Master_sheet.xlsx'
-brc_master_sheet_name = 'BRC-CRC Updated sheet'
+brc_file_name = 'BRC_CRC_Master_V2.xlsx'
+brc_master_sheet_name = 'BRC-CRC Updated V2 wo hyphen'
 
 # Columns to be dropped from the BRC mapping sheet
 brc_master_drop_cols = ['CRC Udise','CRC School Name', 'BRTE']
@@ -44,6 +44,7 @@ def map_data_with_brc(raw_data, merge_dict):
 
     brc_master_sheet = get_brc_master()
     brc_master_sheet = brc_master_sheet.drop(brc_master_drop_cols, axis=1)
+    print('brc_master_sheet: ', brc_master_sheet)
     report_summary = pd.merge(raw_data, brc_master_sheet,on=merge_dict['join_on'],how=merge_dict['merge_type'])
     
     # Rearrage the columns so that DEO and BEO information comes at the begining of the data
@@ -55,6 +56,8 @@ def map_data_with_brc(raw_data, merge_dict):
     list_of_cols = pd.unique(pd.Series(list_of_cols)).tolist()
 
     report_summary = report_summary.reindex(columns=list_of_cols)
+
+    print('report_summary post merge: ', report_summary)
 
     return report_summary
 

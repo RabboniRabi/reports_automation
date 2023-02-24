@@ -89,6 +89,10 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
         to append text to values in each subtotaled column. Default is {}
     """
 
+   
+
+    
+
     # Get the subtotal and outlines specific configurations
     subtotal_outlines_dict = _update_subtotal_outlines_dict(report_config_dict['subtotal_outlines_dict'])
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
@@ -103,6 +107,11 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     updated_df = subtotals_result_dict['updated_df']
     # Get only the subtotal rows
     df_subtotal_rows = subtotals_result_dict['subtotals']
+
+    # Get and update the data frame with a grand total row at the bottom of the data set  
+    grand_total_row = _get_grand_total_row(df, ranking_args_dict)
+    print('grand_total_row: ', grand_total_row)
+    updated_df.loc['Grand Total'] = grand_total_row
 
     # Remove rank for rows other than subtotal rows
     appended_col = list(text_append_dict.keys())[0]
@@ -216,3 +225,52 @@ def _update_subtotal_outlines_dict(subtotal_outlines_dict:dict):
 
     return subtotal_outlines_dict
     
+
+def _get_grand_total_row(df, ranking_args_dict):
+    """
+    Internal function to create a grand total row to insert at the bottom of the data set.
+
+    Parameters:
+    ----------
+    df: Pandas DataFrame
+        The data for which a grand total row has to be created
+    ranking_args_dict: dict
+        The ranking arguments dictionary that is reused to get the columns and aggregate functions
+        to calculate the grand total
+
+    Returns:
+    -------
+    The grand total row to insert
+    """
+    # Get the aggregate dictionary
+    agg_dict = ranking_args_dict['agg_dict']
+    no_of_columns = len(df.columns.to_list())
+    
+    # First set first cell as grand total and all cells in row to empty string. 
+    grand_total_row = []
+    for i in range(0, no_of_columns - 1):
+        if i == 0:
+            grand_total_row.append('Grand Total')
+        # Set all other cells to blank
+        grand_total_row.append('')
+    
+    # Then update specific cells present in agg_dict
+    for key in agg_dict.keys():
+        agg_func = agg_dict[key]
+        if agg_func == 'sum':
+            cell_total = df[key].sum()
+        elif agg_func == 'mean':
+            cell_total = df[key].mean()
+        elif agg_func == 'count':
+            cell_total = df[key].count()
+        elif agg_func == 'median':
+            cell_total = df[key].median()
+        
+        # Update the cell value for this column in grand total row
+        grand_total_row[df.columns.get_loc(key)] = cell_total
+
+    # Add the ranking value average to the row
+    ranking_val_desc_col  = ranking_args_dict['ranking_val_desc']
+    grand_total_row[df.columns.get_loc(ranking_val_desc_col)] = df[ranking_val_desc_col].mean()
+
+    return grand_total_row
