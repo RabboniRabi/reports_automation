@@ -57,6 +57,8 @@ def map_data_with_brc(raw_data, merge_dict):
 
     report_summary = report_summary.reindex(columns=list_of_cols)
 
+    file_utilities.save_to_excel({'Test': report_summary}, 'brc_merge_test.xlsx')
+
     print('report_summary post merge: ', report_summary)
 
     return report_summary

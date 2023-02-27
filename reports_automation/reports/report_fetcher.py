@@ -113,9 +113,9 @@ if __name__ == "__main__":
     Testing get_ad_hoc_report
     """
 
-    adhoc_report = get_ad_hoc_report('IFHRMS_not_updated')
+    adhoc_report = get_ad_hoc_report('teacher_leave_applied')
     dir_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
-    file_utilities.save_to_excel({'Report': adhoc_report}, 'IFHRMS_not_updated.xlsx', dir_path)
+    file_utilities.save_to_excel({'Report': adhoc_report}, 'teacher_leave_applied.xlsx', dir_path)
 
     
 
