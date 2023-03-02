@@ -203,7 +203,7 @@
         "report_code" : "TCH_ATT_MARK",
         "report_category": "Attendance",
         "report_desc": "Teacher marked attendance report",
-        "generate_report": true,
+        "generate_report": false,
         "source_config" : {
             "query_file_name" : "teacher_attendance_last30days_v2.sql"
         },

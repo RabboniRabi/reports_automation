@@ -10,7 +10,7 @@
             "source_config" : {
                 "source_file_name" : "Battery-test-completion-status-rpt.xlsx",
                 "source_sheet_name" : "Battery_Test_Detailed",
-                "skip_rows" : 0
+                "skip_rows" : 4
             },
             "pre_process_brc_merge": false,
             "brc_merge_config" : {
@@ -121,7 +121,7 @@
             "source_config" : {
                 "source_file_name" : "Battery-test-completion-status-rpt.xlsx",
                 "source_sheet_name" : "Battery_Test_Detailed",
-                "skip_rows" : 0
+                "skip_rows" : 4
             },
             "pre_process_brc_merge": false,
             "brc_merge_config" : {
