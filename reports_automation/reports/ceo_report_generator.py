@@ -54,6 +54,7 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         pre_proc_func = getattr(report_module_name, 'pre_process_BRC_merge')
         df_data = pre_proc_func(df_data)
 
+
     # Merge the data with BRC-CRC mapping
     brc_merge_config = report_config['brc_merge_config']
     if brc_merge_config is None:
@@ -121,7 +122,8 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
             sys.exit('Elementary report configuration not provided for report: ', report_config['report_name'])
 
         # Call the helper function to generate the elementary report
-        report = _generate_elem_report(df_data, elem_report_config, report_name, report_level, metric_code, metric_category)
+        report = _generate_elem_report(df_data, elem_report_config, report_name, report_level, metric_code,
+                                       metric_category)
 
         return report
     
@@ -141,7 +143,7 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
 
         return report
 
-def generate_all(generate_fresh:bool = True):
+def generate_all(generate_fresh: bool = True):
     """
     Function to generate all configured and active reports for CEO review in one shot.
 
@@ -169,7 +171,7 @@ def generate_all(generate_fresh:bool = True):
         sec_file_exists = file_utilities.file_exists(sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
 
         # Check if report report for current configuration needs to be generated
-        if (elem_file_exists and sec_file_exists and not generate_fresh):
+        if elem_file_exists and sec_file_exists and not generate_fresh:
             print('Report already generated for', config['report_name'])
             continue
 

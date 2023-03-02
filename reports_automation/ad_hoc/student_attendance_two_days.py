@@ -3,6 +3,7 @@ Module to create report for teacher attendance over two days
 """
 import sys
 sys.path.append('../')
+import functools as ft
 import pandas as pd
 import utilities.dbutilities as dbutilities
 import utilities.format_utilities as format_utilities
@@ -20,24 +21,23 @@ grouping_agg_dict = {
     cols.tot_unmarked: 'sum'
     }
 
+def _process_data(df_section_master, df_unmarked_sections,df_working_schools):
 
-def _process_data(df_data, df_schools):
     """
-    Internal function to process the data to generate the report
-
-    Parameters:
-    -----------
-    df_data: Pandas DataFrame
-        The data as a Pandas DataFrame object
-
-    Returns:
-    -------
-    The data processed as a report.
+    A for-loop that will create a new raw data file that will create a list of sections for each date for all the
+    dates mentioned in the unmarked schools data frame
     """
-    # Group by district - keep this variable to add block if necessary - and sum marked and unmarked and % calc
-    df_grouped = pd.pivot_table(df_data, columns='marked_date', index=[cols.district_name], values='school_name',
-                                aggfunc='count', margins=True, margins_name='Grand Total')
-    df_grouped['Grand Total'] = df_grouped['Grand Total'].div(5).apply(np.ceil).astype(int)
+    raw_data = []
+
+    for label, df_unmarked_sections in df_unmarked_sections:
+
+
+
+
+        data_frames_merge = [df_section_master, df_unmarked_sections, df_working_schools]
+
+        data_final = ft.reduce(lambda left, right: pd.merge(left, right, how='left', on=), data_frames_merge)
+
 
     # Merging the data with the total schools count from the SQL query above (from df_report)
     df_grouped = pd.merge(df_schools, df_grouped, on=[cols.district_name])
@@ -58,7 +58,7 @@ def _process_data(df_data, df_schools):
     return df_grouped
 
 
-def _format_report(df_report, df_data):
+def _format_report(df_report, df_data,):
     """
     Internal function to format the report and save
 
@@ -163,14 +163,19 @@ def run():
     # Read the database connection credentials
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
-    # Get the latest students and teachers count
-    df_data = dbutilities.fetch_data_as_df(credentials_dict, 'teacher_attendance_last2days_v2.sql')
+    # Get the master list of sections currently active in the database
+    df_section_master = dbutilities.fetch_data_as_df(credentials_dict, 'section_master_for_govt_aided_attendance.sql')
 
-    # Get the total schools abstract from the SQL query file
-    df_schools = dbutilities.fetch_data_as_df(credentials_dict, 'total_schools.sql')
+    # Get the total unmarked sections abstract from the SQL query file
+    df_unmarked_sections = dbutilities.fetch_data_as_df(credentials_dict, 'unmarked _sections.sql')
+
+    # Get the list of working schools from the SQL query file
+    df_working_schools = dbutilities.fetch_data_as_df(credentials_dict, 'school_working_status.sql')
+
+
 
     # Process the data and get the report
-    df_report = _process_data(df_data, df_schools)
+    df_report = _process_data(df_data, df_unmarked_sections,df_working_schools)
 
     # Format the report and save
     _format_report(df_report, df_data)
