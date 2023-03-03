@@ -14,7 +14,7 @@
             },
             "pre_process_brc_merge": false,
             "brc_merge_config" : {
-                "join_on" : ["cols.block_name", "cols.school_name", "cols.udise_col"],
+                "join_on" : ["cols.block_name", "cols.udise_col"],
                 "merge_type" : "left"
             },
             "post_process_brc_merge" : false,

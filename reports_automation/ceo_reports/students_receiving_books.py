@@ -34,7 +34,7 @@ def _get_book_issue_status_summary(df_data, grouping_cols):
     df_total = df_data.groupby(grouping_cols)[cols.udise_col].count().reset_index()
 
     # Merge the total to the summary data
-    df_summary = df_total.merge(data_pivot, on=grouping_cols)
+    df_summary = df_total.merge(data_pivot, on=grouping_cols, how='left')
 
     # Rename the columns to make them more readable
     df_summary.rename(columns={
