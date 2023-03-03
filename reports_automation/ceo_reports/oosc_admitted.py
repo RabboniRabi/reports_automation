@@ -53,8 +53,8 @@ def pre_process_BRC_merge(raw_data):
 
 
     # Merge the total students surveyed, reason wise summary and student admitted summary
-    df_pre_processed = df_tot_surveyed.merge(df_pivot, on=initial_group_levels)
-    df_pre_processed = df_pre_processed.merge(df_status_pivot, on=initial_group_levels)
+    df_pre_processed = df_tot_surveyed.merge(df_pivot, on=initial_group_levels, how='left')
+    df_pre_processed = df_pre_processed.merge(df_status_pivot, on=initial_group_levels, how='left')
 
     # Drop columns that will not be used for the report
     df_pre_processed.drop(columns=[cols.not_admttd, cols.to_be_verified, cols.non_target], inplace=True)

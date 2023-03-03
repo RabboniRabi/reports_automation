@@ -54,6 +54,9 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         pre_proc_func = getattr(report_module_name, 'pre_process_BRC_merge')
         df_data = pre_proc_func(df_data)
 
+    # Save the data after pre-processing 
+    file_utilities.save_to_excel({'source': df_data}, report_config['report_name']+'_source.xlsx')
+
     # Merge the data with BRC-CRC mapping
     brc_merge_config = report_config['brc_merge_config']
     if brc_merge_config is None:
