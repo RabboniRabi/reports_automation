@@ -21,8 +21,7 @@ import utilities.ranking_utilities as ranking_utilities
 import utilities.format_utilities as format_utilities
 import utilities.column_names_utilities as cols
 
-from openpyxl.utils.dataframe import dataframe_to_rows
-from openpyxl import Workbook
+import xlsxwriter
 
 def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_name, file_name, dir_path):
     """
@@ -90,9 +89,6 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     """
 
    
-
-    
-
     # Get the subtotal and outlines specific configurations
     subtotal_outlines_dict = _update_subtotal_outlines_dict(report_config_dict['subtotal_outlines_dict'])
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
@@ -124,21 +120,26 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     level_outline_ranges_dict = outlines_utilities.build_level_outline_ranges_dict(
         updated_df, df_subtotal_rows, level_subtotal_cols_dict, agg_cols_func_dict)
 
-    # Convert the dataframe to an openpyxl object
-    wb = Workbook()
-    ws = wb.active
-    ws.title = sheet_name
+
+
+
+    # Get the XlsxWriter object
+    writer = file_utilities.get_xlsxwriter_obj({sheet_name: updated_df}, file_name, file_path=dir_path)
+
+    # Get a XlsxWriter worksheet object
+    workbook = writer.book
+    worksheet = workbook.get_worksheet_by_name(sheet_name)
     
-    for r in dataframe_to_rows(updated_df, index=True, header=True):
-        ws.append(r)
+    """for r in dataframe_to_rows(updated_df, index=True, header=True):
+        ws.append(r)"""
 
     # Apply the outlines function to the work sheet for the given levels and ranges
-    outlines_utilities.apply_outlines(ws, level_outline_ranges_dict)
+    outlines_utilities.apply_outlines(worksheet, level_outline_ranges_dict)
 
-    write_path = os.path.join(dir_path, file_name)
+    #write_path = os.path.join(dir_path, file_name)
 
     # Save the data with subtotals and outlines
-    wb.save(write_path)
+    writer.save()
 
     # Commenting out the section below as converting to xlsxWriter for formatting loses subtotaling and outlines.
 
@@ -176,16 +177,7 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
             # Apply the cell formatting
             format_utilities.apply_cell_formatting(writer, sheet_name, col_index, format)"""
     
-    # Save the formatting changes
-    #writer.save()
 
-
-    
-
-    
-
-
-    #print('df_subtotaled read columns: ', df_subtotaled.columns.to_list())
 
 
 

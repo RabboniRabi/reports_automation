@@ -43,12 +43,14 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
 
     Returns:
     -------
-    A dictionary with two values: 
+    A dictionary with three values: 
     1) updated dataframe with inserted subtotals    
     2) dataframe with only subtotals rows
+    3) indices of inserted subtotal rows
     Structure: {
         'updated_df': df,
         'subtotals': df_subtotal_rows
+        'subtotal_row_indices': subtotals_row_indices_list
     }
     """
 
@@ -57,13 +59,15 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
     agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
     text_append_dict = subtotal_outlines_dict['text_append_dict']
-    #ranking_args_dict = report_config_dict['ranking_args']
 
     # Get all the column names in the master data frame
     master_columns = df.columns.values
 
-    # Initialize a data frame to hold the inserted subtotal rows
+    # Initialize a data frame to hold the inserted subtotal rows - Useful for outlines and formatting
     df_subtotal_rows = pd.DataFrame(columns=df.columns) 
+
+    # Initialize a list to hold the index locations of the inserted subtotal rows - Useful for formatting
+    subtotals_row_indices_list = []
 
     # Get sorted levels
     levels = sorted(level_subtotal_cols_dict.keys())
@@ -114,8 +118,11 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
                 #print('Going to insert: ', row_to_insert, ' at index: ' , last_matching_index+1)
                 df = utilities.insert_row(df, last_matching_index + 1, row_to_insert )
 
+                # Update the list containing subtotal row indices - to be used in formatting
+                subtotals_row_indices_list.append(last_matching_index + 1)
+
     # Return the updated DataFrame and subtotals DataFrame
-    return {'updated_df': df, 'subtotals': df_subtotal_rows}
+    return {'updated_df': df, 'subtotals': df_subtotal_rows, 'subtotal_row_indices': subtotals_row_indices_list}
 
 
 def update_subtotaled_row_with_ranking_val(df_subtotaled, ranking_args_dict):

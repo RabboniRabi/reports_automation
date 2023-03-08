@@ -66,13 +66,16 @@ def  build_level_outline_ranges_dict(df, df_subtotal_rows, level_subtotal_cols_d
 
 
 
-def apply_outlines(ws, level_ranges_dict):
+def apply_outlines(worksheet, level_ranges_dict):
     """
-    Function to apply Excel outlines to a given openpyxl workbook object
+    Function to apply Excel outlines to a given XlsxWriter workbook object.
+
     Parameters:
     ----------
-    ws: An openpyxl worksheet object
-    level_ranges_dict: A dictionary of level ranges key values
+    worksheet: XlsxWriter worksheet
+        A XlsxWriter worksheet object
+    level_ranges_dict: dict
+        A dictionary of level ranges key values
         where ranges is a list of tuples for each level
         and each tuple contains the start index and end index of the range
         Eg: {
@@ -85,14 +88,12 @@ def apply_outlines(ws, level_ranges_dict):
             }
     """
 
-    ws.sheet_properties.outlinePr.summaryBelow = False
-
-
     # For each outline level
     for level in sorted(level_ranges_dict.keys()):
         # For each range tuple at each outline level
         for outline_range in level_ranges_dict[level]:
-            # Apply the outline
-            ws.row_dimensions.group(outline_range[0]+3, outline_range[1]+3, outline_level=level,hidden=False)
+            # Apply the outline, row by row
+            for i in range(outline_range[0], outline_range[1] + 1):
+                worksheet.set_row(int(i) + 1 , None, None, {'level' : int(level)})
 
-    return ws            
+    return worksheet            
