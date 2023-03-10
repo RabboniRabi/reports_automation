@@ -67,7 +67,7 @@ def pre_process_BRC_merge(raw_data):
 
 
     # Merge the results into one school level summary
-    df_data_schl_lvl = school_wise_total_students_count.merge(school_wise_has_account_count, on=initial_group_levels)
+    df_data_schl_lvl = school_wise_total_students_count.merge(school_wise_has_account_count, on=initial_group_levels, how='left')
 
     
     # Rename columns for better readability

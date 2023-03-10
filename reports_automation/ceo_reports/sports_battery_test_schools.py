@@ -25,10 +25,11 @@ def _get_schools_completion_summary(df_data, grouping_cols):
     df_pivot = pd.pivot_table(df_data, values=cols.udise_col, \
                         index=grouping_cols, columns=[cols.test_comp_status], aggfunc='count',fill_value=0).reset_index()
 
+    # Get the total schools count
     df_total = df_data.groupby(grouping_cols)[cols.udise_col].count().reset_index()
     df_total.rename(columns={cols.udise_col:cols.tot_schools}, inplace=True)
 
-    df_summary = df_pivot.merge(df_total, on=grouping_cols)
+    df_summary = df_total.merge(df_pivot, on=grouping_cols, how='left')
 
     return df_summary
 

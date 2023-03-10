@@ -47,9 +47,9 @@ def post_process_BRC_merge(raw_data):
 
 
     # Merge the results into one school level summary
-    df_data_schl_lvl = school_wise_total_students_count.merge(school_wise_status_count, on=initial_group_levels)
-    df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_IDs_issued_count, on=initial_group_levels)
-    #df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_has_account_count[initial_group_levels + [cols.yes_col, cols.no_col]])
+    df_data_schl_lvl = school_wise_total_students_count.merge(school_wise_status_count, on=initial_group_levels, how='left')
+    df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_IDs_issued_count, on=initial_group_levels, how='left')
+    #df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_has_account_count[initial_group_levels + [cols.yes_col, cols.no_col]], how='left')
 
     
     # Rename columns for better readability
