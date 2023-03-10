@@ -29,7 +29,11 @@ class_number = 'class'
 school_type = 'school_type'
 un_aided = 'Un-aided'
 central_govt = 'Central Govt'
+cate_type = 'cate_type'
 
+section = 'section'
+
+class_id = 'class_id'
 tot_schools = 'Total Schools'
 
 student_name = 'student_name'
