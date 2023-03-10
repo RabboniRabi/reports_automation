@@ -167,18 +167,18 @@
                     },
                     "text_append_dict" : {"cols.deo_name_elm": "Summary"}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.perc_students_with_acct"],
                         "format": {"type": "3_color_scale"}
                     },
-                    "format_cells" : {
+                    {
                         "columns" : ["cols.perc_students_with_acct"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
+            
         },
         "secondary_report" : {
             "generate_report": true,
@@ -215,17 +215,16 @@
                     },
                     "text_append_dict" : {"cols.deo_name_sec": "Summary"}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.perc_students_with_acct"],
                         "format": {"type": "3_color_scale"}
                     },
-                    "format_cells" : {
+                    {
                         "columns" : ["cols.perc_students_with_acct"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         }
     }

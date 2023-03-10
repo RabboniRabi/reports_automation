@@ -108,6 +108,7 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     grand_total_row = _get_grand_total_row(df, ranking_args_dict)
     print('grand_total_row: ', grand_total_row)
     updated_df.loc['Grand Total'] = grand_total_row
+    
 
     # Remove rank for rows other than subtotal rows
     appended_col = list(text_append_dict.keys())[0]
@@ -135,6 +136,14 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
 
     # Apply the outlines function to the work sheet for the given levels and ranges
     outlines_utilities.apply_outlines(worksheet, level_outline_ranges_dict)
+
+    # Apply formatting to the subtotal rows
+    subtotal_row_indices = subtotals_result_dict['subtotal_row_indices']
+    subtotal_utilities.format_subtotal_rows(worksheet, workbook, updated_df, subtotal_row_indices)
+
+    # Format the grand total row
+    _format_grand_total_row(worksheet, workbook, updated_df)
+   
 
     #write_path = os.path.join(dir_path, file_name)
 
@@ -266,3 +275,31 @@ def _get_grand_total_row(df, ranking_args_dict):
     grand_total_row[df.columns.get_loc(ranking_val_desc_col)] = df[ranking_val_desc_col].mean()
 
     return grand_total_row
+
+
+def _format_grand_total_row(worksheet, workbook, df):
+    """
+    Internal helper function to format the Grand total row which will be the last row
+    in the data
+
+    Parameters:
+    -----------
+        worksheet: Worksheet
+        An XlsxWriter worksheet object
+    workbook: Workbook
+        An XlsxWriter workbook object
+    df: DataFrame
+        The data containing the grand total row at the end
+    """
+
+    # Get the index of the last row
+    row_index = df.shape[0]
+
+    # Define the formatting to apply for all subtotal rows
+    cell_format = workbook.add_format()
+    # Set the subtotal rows to bold
+    cell_format.set_bold() 
+    # Set the subtotal row background to grey
+    cell_format.set_bg_color('#808080')
+
+    worksheet.set_row(row_index, None, cell_format)
