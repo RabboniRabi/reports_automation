@@ -1,5 +1,5 @@
 """
-Module with utility functions to format the reports for reviews,
+Module with utility functions to format the reports for reviews
 
 The module will call the following utilities:
     - subtotal_utilities, to subtotal the data at different levels
@@ -11,13 +11,11 @@ import os
 import sys
 sys.path.append('../')
 
-
 import pandas as pd
 import numpy as np
 import utilities.file_utilities as file_utilities
 import utilities.subtotal_utilities as subtotal_utilities
 import utilities.outlines_utilities as outlines_utilities
-import utilities.ranking_utilities as ranking_utilities
 import utilities.format_utilities as format_utilities
 import utilities.column_names_utilities as cols
 
@@ -34,32 +32,31 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     ----------
     df: Pandas DataFrame
         The report data that needs to be prepared
-    report_config_dict: dict
-        A dictionary of dictionaries to be used for computing subtotals and applying outlines
-        Eg: secondary_report = {
-            "generate_report": false,
-            "ranking_args": {
-                "agg_dict": {
-                    "cols.ageing": "sum", 
-                    "cols.total_cp_students": "sum"
+    format_config: dict
+        A dictionary of format configuration to be used for computing subtotals, applying outlines and formatting
+        Eg: "format_config" : {
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                    "agg_cols_func_dict" : {
+                        "cols.cwsn_tot": "sum",
+                        "cols.nid_count": "sum",
+                        "cols.udid_count": "sum",
+                        "cols.deo_sec_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
                 },
-                "ranking_val_desc": "cols.perc_ageing",
-                "num_col": "cols.ageing",
-                "den_col": "cols.total_cp_students",
-                "sort": true,
-                "ascending": true
-            },
-            "subtotal_outlines_dict" : {
-                "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
-                "agg_cols_func_dict" : {
-                    "cols.fully_mapped": "sum",
-                    "cols.part_mapped": "sum",
-                    "cols.tot_schools": "sum",
-                    "cols.deo_sec_rank": "mean"
-                },
-                "text_append_dict" : {"cols.deo_name_sec": "Total"}
+                "format_dict" : {
+                    "conditional_format" : {
+                        "columns" : ["cols.perc_fully_mapped"],
+                        "format": {"type": "3_color_scale"}
+                    },
+                    "format_cells" : {
+                        "columns" : ["cols.perc_fully_mapped"],
+                        "format" : {"num_format": "0.00%"}
+        
+                    }
+                }
             }
-        }
     ranking_args_dict: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {
@@ -71,30 +68,19 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
         'sort' : True, 
         'ascending' : False
         }
-    level_subtotal_cols_dict: dict
-        A level - subtotal column key value pair dictionary. The level determines the order
-        of columns for which subtotaling aggregation operations are performed
-    agg_cols_func_dict: dict
-        A grouping column - aggregate function dictionary. This dictionary contains the columns
-        to group by as keys and their corresponding aggregating function as values
     sheet_name: str
         The name of the sheet to save the data in.
     file_name: str
         The name of the file to save the data sheet in.
     dir_path: str
         The directory in which to save the file in.
-    text_append_dict: dict
-        A dictionary of column names key and text values. The dictionary will be used
-        to append text to values in each subtotaled column. Default is {}
     """
 
-   
     # Get the subtotal and outlines specific configurations
     subtotal_outlines_dict = _update_subtotal_outlines_dict(report_config_dict['subtotal_outlines_dict'])
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
     agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
     text_append_dict = subtotal_outlines_dict['text_append_dict']
-
 
     # Compute sub-totals and insert into provided dataframe
     subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, report_config_dict, ranking_args_dict)
@@ -110,8 +96,8 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     updated_df.loc['Grand Total'] = grand_total_row
     
 
-    # Remove rank for rows other than subtotal rows
-    appended_col = list(text_append_dict.keys())[0]
+    # Remove rank for rows other than subtotal rows - commented as this needs to be fixed
+    #appended_col = list(text_append_dict.keys())[0]
     #if (appended_col == cols.deo_name_elm):
         #updated_df[~updated_df[appended_col].str.contains(text_append_dict[appended_col])][cols.deo_elem_rank] = ''
         #updated_df.loc[updated_df[~updated_df[appended_col].str.contains(text_append_dict[appended_col])] == True][cols.deo_elem_rank] = ''
@@ -121,7 +107,6 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     level_outline_ranges_dict = outlines_utilities.build_level_outline_ranges_dict(
         updated_df, df_subtotal_rows, level_subtotal_cols_dict, agg_cols_func_dict)
 
-
     # Get the XlsxWriter object
     writer = file_utilities.get_xlsxwriter_obj({sheet_name: updated_df}, file_name, file_path=dir_path)
 
@@ -129,15 +114,8 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     workbook = writer.book
     worksheet = workbook.get_worksheet_by_name(sheet_name)
     
-
     # Apply the outlines function to the work sheet for the given levels and ranges
     outlines_utilities.apply_outlines(worksheet, level_outline_ranges_dict)
-
-    # Apply formatting for columns as specified in the JSON configuration
-    format_dicts_list = report_config_dict['format_dicts']
-    # If formatting dictionary has been provided
-    if (format_dicts_list is not None):
-        format_utilities.apply_formatting(format_dicts_list, updated_df, worksheet, workbook)
 
     # Apply formatting to the subtotal rows
     subtotal_row_indices = subtotals_result_dict['subtotal_row_indices']
@@ -146,50 +124,17 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     # Format the grand total row
     _format_grand_total_row(worksheet, workbook, updated_df)
 
-    
-   
-
-    #write_path = os.path.join(dir_path, file_name)
-
-    # Save the data with subtotals and outlines
-    writer.save()
-
-    # Commenting out the section below as converting to xlsxWriter for formatting loses subtotaling and outlines.
-
-    # Read the data again as XlsxWriter object
-    # Needed to apply formatting on the data using XlsxWriter library functions
-    #df_subtotaled = pd.read_excel(write_path)
-
-    # Get an xlsx writer object of the data
-    #writer = file_utilities.get_xlsxwriter_obj({sheet_name: df_subtotaled}, file_name, file_path=dir_path)
-    
-    # Get the formatting dictionary
-    #format_dict = report_config_dict['format_dict']
+    # Apply formatting for columns as specified in the JSON configuration
+    format_dicts_list = report_config_dict['format_dicts']
     # If formatting dictionary has been provided
-    #if (format_dict):
-    """# Get the conditional format configuaration
-    cond_format = format_dict['conditional_format']
-    if cond_format:
-        format = cond_format['format']
-        # Apply this formatting to given list of columns
-        for col_name in cond_format['columns']:
-            # Get the index of the column
-            col_index = df_subtotaled.columns.get_loc(col_name)
-            no_of_rows = df_subtotaled.shape[0]
-            # Apply the conditional formatting
-            format_utilities.apply_cond_frmt(writer, sheet_name, col_index, format, no_of_rows)"""
-    
-    """# Get the cell format configuration
-    format_cells = format_dict['format_cells']
-    if format_cells:
-        format = format_cells['format']
-        # Apply cell formatting to given list of columns
-        for col_name in format_cells['columns']:
-            # Get the index of the column
-            col_index = df_subtotaled.columns.get_loc(col_name)
-            # Apply the cell formatting
-            format_utilities.apply_cell_formatting(writer, sheet_name, col_index, format)"""
-    
+    if (format_dicts_list is not None):
+        format_utilities.apply_formatting(format_dicts_list, updated_df, worksheet, workbook)
+
+    # Apply border to the entire data
+    format_utilities.apply_border(updated_df, worksheet, workbook)
+
+    # Save the formatted data
+    writer.save()
 
 
 

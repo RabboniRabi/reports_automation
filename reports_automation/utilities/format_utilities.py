@@ -75,16 +75,16 @@ def apply_frmt_col(worksheet, workbook, col_index, format_dict, width=None):
 
     worksheet.set_column(col_excel_alphabet_range, width, format_obj)
 
-def apply_frmt_cols (writer: xlsxwriter, sheet_name, start_col_index, end_col_index, format_dict, width=None):
+def apply_frmt_cols (worksheet, workbook, start_col_index, end_col_index, format_dict, width=None):
     """
     Apply a given formatting to a continguous range of columns in the given sheet in the given xlsxwriter object
     
     Parameters:
     ----------
-    writer: xlsxwriter
-        The data as a xlsxwriter object
-    sheet_name: str
-        The name of the excel sheet where column to format is    
+    worksheet: Worksheet
+        An XlsxWriter Worksheet object
+    workbook: Workbook
+        An XlsxWriter Workbook object    
     start_col_index: int
         The index of the starting column on which to apply the formatting
     end_col_index: int
@@ -101,11 +101,8 @@ def apply_frmt_cols (writer: xlsxwriter, sheet_name, start_col_index, end_col_in
     """
 
     # Get the format dictionary as an xlsxwriter Format object
-    workbook  = writer.book
     format_obj = workbook.add_format(format_dict)
     
-    worksheet = writer.sheets[sheet_name]
-
     # Get the excel alphabets for the columns range
     start_col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(start_col_index)
     end_col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(end_col_index)
@@ -197,3 +194,26 @@ def apply_formatting(format_dicts_list, df, worksheet, workbook):
             apply_frmt_col(worksheet, workbook, col_index, format)
 
 
+
+
+def apply_border(df, worksheet, workbook):
+    """
+    Function to apply cell border to all cells in the data
+
+    Parameters:
+    ----------
+    df: DataFrame
+        Data as an instance of Pandas DataFrame object
+    worksheet: Worksheet
+        An XlsxWriter worksheet object
+    workbook: Workbook
+        An XlsxWriter workbook object
+    """
+
+    cell_format =  {'align': 'center', 'border': 1}
+
+    columns_list = df.columns.to_list()
+    start_col_index = 0
+    end_col_index = len(columns_list) - 1
+
+    apply_frmt_cols(worksheet, workbook, start_col_index, end_col_index, cell_format)

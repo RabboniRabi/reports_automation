@@ -216,8 +216,6 @@ def subtotal_outline_and_save(df, level_subtotal_cols_dict, agg_cols_func_dict, 
     wb.save(write_path)
 
 
-        
-
 
 def format_subtotal_rows(worksheet, workbook, df, subtotal_row_indices):
     """
@@ -241,6 +239,10 @@ def format_subtotal_rows(worksheet, workbook, df, subtotal_row_indices):
     cell_format.set_bold() 
     # Set the subtotal row background to grey
     cell_format.set_bg_color('#949191')
+    # Set the border for the subtotal row
+    cell_format.set_border(3)
+    # Set the alignment of the text
+    cell_format.set_align('center')
 
     for row_index in subtotal_row_indices:
         #print('Applying subtotal formatting for row: ', row_index)
