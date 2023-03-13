@@ -1,19 +1,19 @@
 {
     "report_configs": [
     {
-        "report_name": "cwsn",
-        "report_code" : "CWSN",
-        "report_category": "Enrolment",
-        "report_desc": "CWSN having UDID report",
+        "report_name": "library_shelves",
+        "report_code" : "LIBSHELV",
+        "report_category": "Library",
+        "report_desc": "Library shelves created report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "Library-shelf-report.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 4
         },
-        "pre_process_brc_merge": true,
+        "pre_process_brc_merge": false,
         "brc_merge_config" : {
-            "join_on" : [ "cols.block_name", "cols.udise_col"],
+            "join_on" : ["cols.block_name", "cols.udise_col"],
             "merge_type" : "left"
         },
         "post_process_brc_merge" : false,
@@ -23,21 +23,21 @@
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                 "grouping_agg_dict" : {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.nid_count" : "sum",
-                    "cols.udid_count" : "sum"
+                    "cols.tot_secs": "sum", 
+                    "cols.shelves_created": "sum", 
+                    "cols.shelves_not_created": "sum"
                 }
             },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.nid_count" : "sum",
-                    "cols.udid_count" : "sum"
+                    "cols.tot_secs": "sum", 
+                    "cols.shelves_created": "sum", 
+                    "cols.shelves_not_created": "sum"
                 },
-                "ranking_val_desc": "cols.perc_students_with_UDID",
-                "num_col": "cols.udid_count",
-                "den_col": "cols.cwsn_tot",
+                "ranking_val_desc": "cols.perc_shelves_created",
+                "num_col": "cols.shelves_created",
+                "den_col": "cols.tot_secs",
                 "sort": "True",
                 "ascending": "False"
             },
@@ -45,20 +45,20 @@
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
-                        "cols.cwsn_tot": "sum",
-                        "cols.nid_count": "sum",
-                        "cols.udid_count": "sum",
+                        "cols.tot_secs": "sum", 
+                        "cols.shelves_created": "sum", 
+                        "cols.shelves_not_created": "sum",
                         "cols.deo_elem_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_elm": "Summary"}
                 },
                 "format_dict" : {
                     "conditional_format" : {
-                        "columns" : ["cols.perc_fully_mapped"],
+                        "columns" : ["cols.perc_shelves_created"],
                         "format": {"type": "3_color_scale"}
                     },
                     "format_cells" : {
-                        "columns" : ["cols.perc_fully_mapped"],
+                        "columns" : ["cols.perc_shelves_created"],
                         "format" : {"num_format": "0.00%"}
         
                     }
@@ -71,21 +71,21 @@
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                 "grouping_agg_dict" : {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.nid_count" : "sum",
-                    "cols.udid_count" : "sum"
+                    "cols.tot_secs": "sum", 
+                    "cols.shelves_created": "sum", 
+                    "cols.shelves_not_created": "sum"
                 }
             },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.nid_count" : "sum",
-                    "cols.udid_count" : "sum"
+                    "cols.tot_secs": "sum", 
+                    "cols.shelves_created": "sum", 
+                    "cols.shelves_not_created": "sum"
                 },
-                "ranking_val_desc": "cols.perc_students_with_UDID",
-                "num_col": "cols.udid_count",
-                "den_col": "cols.cwsn_tot",
+                "ranking_val_desc": "cols.perc_shelves_created",
+                "num_col": "cols.shelves_created",
+                "den_col": "cols.tot_secs",
                 "sort": "True",
                 "ascending": "False"
             },
@@ -93,20 +93,20 @@
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
-                        "cols.cwsn_tot": "sum",
-                        "cols.nid_count": "sum",
-                        "cols.udid_count": "sum",
+                        "cols.tot_secs": "sum", 
+                        "cols.shelves_created": "sum", 
+                        "cols.shelves_not_created": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_sec": "Summary"}
                 },
                 "format_dict" : {
                     "conditional_format" : {
-                        "columns" : ["cols.perc_fully_mapped"],
+                        "columns" : ["cols.perc_shelves_created"],
                         "format": {"type": "3_color_scale"}
                     },
                     "format_cells" : {
-                        "columns" : ["cols.perc_fully_mapped"],
+                        "columns" : ["cols.perc_shelves_created"],
                         "format" : {"num_format": "0.00%"}
         
                     }
@@ -116,13 +116,13 @@
     },
 
     {
-        "report_name": "cwsn_having_account",
-        "report_code" : "CWSN_ACCT",
-        "report_category": "Enrolment",
-        "report_desc": "CWSN having accounts report",
+        "report_name": "library_book_assigning_by_tchrs",
+        "report_code" : "LIBBAT",
+        "report_category": "Library",
+        "report_desc": "Library book assigning teachers report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "Library-Books-Assigning-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 4
         },
@@ -138,21 +138,21 @@
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                 "grouping_agg_dict" : {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.with_acct" : "sum",
-                    "cols.witht_acct" : "sum"
+                    "cols.total_tchrs": "sum", 
+                    "cols.tchrs_not_assigning_books": "sum", 
+                    "cols.tchrs_assigning_books": "sum"
                 }
             },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.with_acct" : "sum",
-                    "cols.witht_acct" : "sum"
+                    "cols.total_tchrs": "sum", 
+                    "cols.tchrs_not_assigning_books": "sum", 
+                    "cols.tchrs_assigning_books": "sum"
                 },
-                "ranking_val_desc": "cols.perc_students_with_acct",
-                "num_col": "cols.with_acct",
-                "den_col": "cols.cwsn_tot",
+                "ranking_val_desc": "cols.perc_tchrs_assigning_books",
+                "num_col": "cols.tchrs_assigning_books",
+                "den_col": "cols.total_tchrs",
                 "sort": "True",
                 "ascending": "False"
             },
@@ -160,20 +160,20 @@
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
-                        "cols.cwsn_tot": "sum", 
-                        "cols.with_acct" : "sum",
-                        "cols.witht_acct" : "sum",
+                        "cols.total_tchrs": "sum", 
+                        "cols.tchrs_not_assigning_books": "sum", 
+                        "cols.tchrs_assigning_books": "sum",
                         "cols.deo_elem_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_elm": "Summary"}
                 },
                 "format_dict" : {
                     "conditional_format" : {
-                        "columns" : ["cols.perc_students_with_acct"],
+                        "columns" : ["cols.perc_tchrs_assigning_books"],
                         "format": {"type": "3_color_scale"}
                     },
                     "format_cells" : {
-                        "columns" : ["cols.perc_students_with_acct"],
+                        "columns" : ["cols.perc_tchrs_assigning_books"],
                         "format" : {"num_format": "0.00%"}
         
                     }
@@ -186,21 +186,21 @@
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                 "grouping_agg_dict" : {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.with_acct" : "sum",
-                    "cols.witht_acct" : "sum"
+                    "cols.total_tchrs": "sum", 
+                    "cols.tchrs_not_assigning_books": "sum", 
+                    "cols.tchrs_assigning_books": "sum"
                 }
             },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.with_acct" : "sum",
-                    "cols.witht_acct" : "sum"
+                    "cols.total_tchrs": "sum", 
+                    "cols.tchrs_not_assigning_books": "sum", 
+                    "cols.tchrs_assigning_books": "sum"
                 },
-                "ranking_val_desc": "cols.perc_students_with_acct",
-                "num_col": "cols.with_acct",
-                "den_col": "cols.cwsn_tot",
+                "ranking_val_desc": "cols.perc_tchrs_assigning_books",
+                "num_col": "cols.tchrs_assigning_books",
+                "den_col": "cols.total_tchrs",
                 "sort": "True",
                 "ascending": "False"
             },
@@ -208,20 +208,20 @@
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
-                        "cols.cwsn_tot": "sum", 
-                        "cols.with_acct" : "sum",
-                        "cols.witht_acct" : "sum",
+                        "cols.total_tchrs": "sum", 
+                        "cols.tchrs_not_assigning_books": "sum", 
+                        "cols.tchrs_assigning_books": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_sec": "Summary"}
                 },
                 "format_dict" : {
                     "conditional_format" : {
-                        "columns" : ["cols.perc_students_with_acct"],
+                        "columns" : ["cols.perc_tchrs_assigning_books"],
                         "format": {"type": "3_color_scale"}
                     },
                     "format_cells" : {
-                        "columns" : ["cols.perc_students_with_acct"],
+                        "columns" : ["cols.perc_tchrs_assigning_books"],
                         "format" : {"num_format": "0.00%"}
         
                     }
@@ -229,6 +229,5 @@
             }
         }
     }
-
     ]
-  }
+}

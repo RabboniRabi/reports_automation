@@ -57,9 +57,6 @@ def get_report(report_config: dict, save_source:bool=False):
     summary_args['sort'] = summary_args['sort'] == 'True'
     summary_args['ascending'] = summary_args['ascending'] == 'True'
 
-
-    print('agg_dict: ', agg_dict)
-
     # Group the data to grouping_level
     df_data_grouped = df_data.groupby(grouping_levels, as_index=False).agg(agg_dict)
 

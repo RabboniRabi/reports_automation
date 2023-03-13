@@ -42,7 +42,7 @@ def  build_level_outline_ranges_dict(df, df_subtotal_rows, level_subtotal_cols_d
             [subtotal_col], as_index=False,sort=False)[agg_col].agg(agg_func)
 
         # For each row in df_without_subtotals_grouped
-        for i in range(0, df_without_subtotals_grouped.shape[0]):
+        for i in range(0, df_subtotal_rows.shape[0]):
             # Get the value of the cell in ith row and in column: subtotal_col
             subtotal_col_val = df_without_subtotals_grouped.loc[i, subtotal_col]
             if (subtotal_col_val != ''):

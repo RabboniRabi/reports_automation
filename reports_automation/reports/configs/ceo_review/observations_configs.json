@@ -14,7 +14,7 @@
         },
         "pre_process_brc_merge": true,
         "brc_merge_config" : {
-            "join_on" : ["cols.district_name", "cols.udise_col"],
+            "join_on" : ["cols.block_name", "cols.udise_col"],
             "merge_type" : "left"
         },
         "post_process_brc_merge" : true,
@@ -31,7 +31,7 @@
                     "cols.participants": "sum", 
                     "cols.tot_students" : "sum"
                 },
-                "ranking_val_desc": "cols.perc_obs_comp",
+                "ranking_val_desc": "cols.perc_DEO_obs",
                 "num_col": "cols.deo",
                 "den_col": "cols.deo_target",
                 "sort": "True",

@@ -51,7 +51,7 @@ def run():
     df_mean_uptime = _get_group_levels_wise_mean_uptime(df_report, cols.district_name)
 
 
-    report_save_path = file_utilities.get_gen_reports_dir_path() + '/hi-tech_labs_report.xlsx'
+    report_save_path = file_utilities.get_curr_day_month_gen_reports_dir_path() + '/hi-tech_labs_report.xlsx'
     file_utilities.save_to_excel({'Report': df_mean_uptime}, report_save_path)
 
 

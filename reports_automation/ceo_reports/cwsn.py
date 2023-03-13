@@ -112,9 +112,9 @@ def pre_process_BRC_merge(raw_data):
 
 
     # Merge the results into one school level summary
-    df_data_schl_lvl = school_wise_total_students_count.merge(school_wise_status_count[initial_group_levels+student_statuses])
-    df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_IDs_issued_count[initial_group_levels+[cols.nid, cols.udid]])
-    df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_has_account_count[initial_group_levels + [cols.yes_col, cols.no_col]])
+    df_data_schl_lvl = school_wise_total_students_count.merge(school_wise_status_count, on=initial_group_levels, how='left')
+    df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_IDs_issued_count, on=initial_group_levels, how='left')
+    #df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_has_account_count[initial_group_levels + [cols.yes_col, cols.no_col]], how='left')
 
     
     # Rename columns for better readability
@@ -122,10 +122,7 @@ def pre_process_BRC_merge(raw_data):
         cols.cwsn_in_School : cols.stdnts_in_school,
         cols.cwsn_cp : cols.stdnts_in_cp,
         cols.nid : cols.nid_count,
-        cols.udid : cols.udid_count,
-        cols.yes_col : cols.with_acct,
-        cols.no_col : cols.witht_acct
-        }, inplace = True)
+        cols.udid : cols.udid_count}, inplace = True)
 
     return df_data_schl_lvl
 

@@ -54,6 +54,7 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         pre_proc_func = getattr(report_module_name, 'pre_process_BRC_merge')
         df_data = pre_proc_func(df_data)
 
+
     # Merge the data with BRC-CRC mapping
     brc_merge_config = report_config['brc_merge_config']
     if brc_merge_config is None:
@@ -72,7 +73,7 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         # Call the custom post-processing function for the report
         report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
         post_proc_func = getattr(report_module_name, 'post_process_BRC_merge')
-        df_data = post_proc_func(df_data)   
+        df_data = post_proc_func(df_data) 
 
     return df_data
 
@@ -121,7 +122,8 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
             sys.exit('Elementary report configuration not provided for report: ', report_config['report_name'])
 
         # Call the helper function to generate the elementary report
-        report = _generate_elem_report(df_data, elem_report_config, report_name, report_level, metric_code, metric_category)
+        report = _generate_elem_report(df_data, elem_report_config, report_name, report_level, metric_code,
+                                       metric_category)
 
         return report
     
@@ -141,7 +143,7 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
 
         return report
 
-def generate_all(generate_fresh:bool = True):
+def generate_all(generate_fresh: bool = True):
     """
     Function to generate all configured and active reports for CEO review in one shot.
 
@@ -169,7 +171,7 @@ def generate_all(generate_fresh:bool = True):
         sec_file_exists = file_utilities.file_exists(sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
 
         # Check if report report for current configuration needs to be generated
-        if (elem_file_exists and sec_file_exists and not generate_fresh):
+        if elem_file_exists and sec_file_exists and not generate_fresh:
             print('Report already generated for', config['report_name'])
             continue
 
@@ -182,6 +184,7 @@ def generate_all(generate_fresh:bool = True):
 
         # Get the raw data merged with the BRC-CRC mapping
         df_data = get_ceo_report_raw_data(config, True)
+        
 
         # Get the arguments for Elementary report
         elem_report_config = config['elementary_report']
@@ -197,8 +200,6 @@ def generate_all(generate_fresh:bool = True):
             if elem_report_config['generate_report']:
                 # Call the helper function to generate the elementary report
                 elem_report = _generate_elem_report(df_data, elem_report_config, report_name, ceo_report_levels.RANKED, metric_code, metric_category)
-
-                #elem_report = get_ceo_report(config, 'Elementary', ceo_report_levels.RANKED)
 
                 # Check if formatting needs to be done
                 format_config = elem_report_config['format_config']
@@ -263,6 +264,7 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name
     --------
     The generated secondary report as a Pandas DataFrame object.
     """
+
     # Filter the data to Elementary school type
     ceo_rpt_raw_data = ceo_rpt_raw_data[ceo_rpt_raw_data[cols.school_level].isin([cols.elem_schl_lvl])]
 
@@ -291,14 +293,12 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name
         report = ceo_rpt_raw_data.groupby(grouping_cols, as_index=False).agg(agg_dict)
 
     # Check if ranking is required in report
-    print('report level given: ', report_level)
     if report_level == ceo_report_levels.RANKED.value or report_level == ceo_report_levels.RANKED:
         # Generate ranking and update report
         ranking_dict = elem_report_config['ranking_args']
         # Update the values in ranking argument
         ranking_dict = _update_ranking_args_dict(ranking_dict)
         # Get the elementary ranked report
-        print('Ranking called on report.....')
         report = report_utilities.get_elem_ranked_report(report, ranking_dict, metric_code, metric_category)
 
     return report
@@ -402,6 +402,11 @@ def _update_ranking_args_dict(ranking_args:dict):
         ranking_args['num_col'] = num_col_val
         den_col_val = cols.get_value(ranking_args['den_col'])
         ranking_args['den_col'] = den_col_val
+
+    if ranking_type == ranking_types.AVERAGE_RANKING.value:
+        # Update the list of columns to average on
+        updated_list = cols.get_values(ranking_args['avg_cols'])
+        ranking_args['avg_cols'] = updated_list
 
     return ranking_args
 
