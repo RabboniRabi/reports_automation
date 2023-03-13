@@ -170,10 +170,6 @@
                 "format_dicts" : [
                     {
                         "columns" : ["cols.perc_students_with_acct"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    {
-                        "columns" : ["cols.perc_students_with_acct"],
                         "format" : {"num_format": "0.00%"}
                     }
                 ]
@@ -216,10 +212,6 @@
                     "text_append_dict" : {"cols.deo_name_sec": "Summary"}
                 },
                 "format_dicts" : [
-                    {
-                        "columns" : ["cols.perc_students_with_acct"],
-                        "format": {"type": "3_color_scale"}
-                    },
                     {
                         "columns" : ["cols.perc_students_with_acct"],
                         "format" : {"num_format": "0.00%"}

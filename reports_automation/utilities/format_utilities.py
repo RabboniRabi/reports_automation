@@ -6,6 +6,7 @@ import sys
 sys.path.append('../')
 
 import utilities.file_utilities as file_utilities
+import utilities.column_names_utilities as cols
 
 import xlsxwriter
 
@@ -150,7 +151,7 @@ def format_col_to_percent_and_save(df, column_name, sheet_name, file_name, dir_p
     writer.save()
 
 
-def apply_formatting(format_dicts_list, worksheet, workbook):
+def apply_formatting(format_dicts_list, df, worksheet, workbook):
     """
     Function to apply formatting for each list of columns in a given 
     list of formatting dictionaries.
@@ -161,21 +162,38 @@ def apply_formatting(format_dicts_list, worksheet, workbook):
         List of formatting dictionaries where each item contains a list of columns
         to apply the formatting on and the format to apply.
         Eg: [
-                    {
-                        "columns" : ["cols.perc_students_with_acct"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    {
-                        "columns" : ["cols.perc_students_with_acct"],
-                        "format" : {"num_format": "0.00%"}
-                    }
-                ]
+                {
+                    "columns" : ["cols.perc_students_with_acct"],
+                    "format": {"type": "3_color_scale"}
+                },
+                {
+                    "columns" : ["cols.perc_students_with_acct"],
+                    "format" : {"num_format": "0.00%"}
+                }
+            ]
+    df: DataFrame
+        Data as an instance of Pandas DataFrame object
+    worksheet: Worksheet
+        An XlsxWriter worksheet object
+    workbook: Workbook
+        An XlsxWriter workbook object
     """
 
     for format_dict in format_dicts_list:
+        
+        # Get the column name variables
         columns = format_dict['columns']
-        # Update the column names - TO DO
+        # Get the resolved column name values
+        columns = cols.get_values(columns)
 
         format = format_dict['format']
 
-        # for column, get the index and call apply_frmt_col
+        # For each column, get the index and call apply_frmt_col 
+        # to apply formatting for that column
+        for column in columns:
+            
+            col_index = df.columns.get_loc(column)
+
+            apply_frmt_col(worksheet, workbook, col_index, format)
+
+

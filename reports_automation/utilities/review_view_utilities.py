@@ -122,8 +122,6 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
         updated_df, df_subtotal_rows, level_subtotal_cols_dict, agg_cols_func_dict)
 
 
-
-
     # Get the XlsxWriter object
     writer = file_utilities.get_xlsxwriter_obj({sheet_name: updated_df}, file_name, file_path=dir_path)
 
@@ -131,11 +129,15 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     workbook = writer.book
     worksheet = workbook.get_worksheet_by_name(sheet_name)
     
-    """for r in dataframe_to_rows(updated_df, index=True, header=True):
-        ws.append(r)"""
 
     # Apply the outlines function to the work sheet for the given levels and ranges
     outlines_utilities.apply_outlines(worksheet, level_outline_ranges_dict)
+
+    # Apply formatting for columns as specified in the JSON configuration
+    format_dicts_list = report_config_dict['format_dicts']
+    # If formatting dictionary has been provided
+    if (format_dicts_list is not None):
+        format_utilities.apply_formatting(format_dicts_list, updated_df, worksheet, workbook)
 
     # Apply formatting to the subtotal rows
     subtotal_row_indices = subtotals_result_dict['subtotal_row_indices']
@@ -143,6 +145,8 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
 
     # Format the grand total row
     _format_grand_total_row(worksheet, workbook, updated_df)
+
+    
    
 
     #write_path = os.path.join(dir_path, file_name)
