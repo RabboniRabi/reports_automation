@@ -75,7 +75,7 @@ def apply_frmt_col(worksheet, workbook, col_index, format_dict, width=None):
 
     worksheet.set_column(col_excel_alphabet_range, width, format_obj)
 
-def apply_frmt_cols (worksheet, workbook, start_col_index, end_col_index, format_dict, width=None):
+def apply_frmt_cols (worksheet, workbook, start_col_index, end_col_index, format_dict, width=None, no_of_rows=None):
     """
     Apply a given formatting to a continguous range of columns in the given sheet in the given xlsxwriter object
     
@@ -97,7 +97,9 @@ def apply_frmt_cols (worksheet, workbook, start_col_index, end_col_index, format
              'value': 5, 'format': red_format
             }
     width: float
-        The width of the column(s)
+        The width of the column(s). Default is None
+    no_of_rows: int
+        The number of rows to apply the columns formatting. Default is None - Will apply for all columns.
     """
 
     # Get the format dictionary as an xlsxwriter Format object
@@ -107,7 +109,13 @@ def apply_frmt_cols (worksheet, workbook, start_col_index, end_col_index, format
     start_col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(start_col_index)
     end_col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(end_col_index)
     # Create the column range
-    col_excel_alphabet_range = start_col_excel_alphabet + ':' + end_col_excel_alphabet
+    if (no_of_rows is not None):
+        # Create a range from the row 1 to no_of_rows+1 (Header starts at row 0, hence
+        # row indexing gets shifted one place down.
+        col_excel_alphabet_range = start_col_excel_alphabet + str(1) + ':' + end_col_excel_alphabet + str(no_of_rows + 1)
+        print('col_excel_alphabet_range: ', col_excel_alphabet_range)
+    else:
+        col_excel_alphabet_range = start_col_excel_alphabet + ':' + end_col_excel_alphabet
 
     worksheet.set_column(col_excel_alphabet_range, width, format_obj)
 
@@ -215,5 +223,43 @@ def apply_border(df, worksheet, workbook):
     columns_list = df.columns.to_list()
     start_col_index = 0
     end_col_index = len(columns_list) - 1
+    no_of_rows = df.shape[0]
 
-    apply_frmt_cols(worksheet, workbook, start_col_index, end_col_index, cell_format)
+    #apply_frmt_cols(worksheet, workbook, start_col_index, end_col_index, cell_format, no_of_rows=df.shape[0])
+
+    #testing
+
+    # Get the excel alphabets for the columns range
+    start_col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(start_col_index)
+    end_col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(end_col_index)
+
+    # Create a range from the row 1 to no_of_rows+1 (Header starts at row 0, hence
+    # row indexing gets shifted one place down.
+    cells_range = start_col_excel_alphabet + str(1) + ':' + end_col_excel_alphabet + str(no_of_rows + 1)
+
+    # test table
+    worksheet.add_table(cells_range, {'format':cell_format})
+
+
+def clear_formatting_cols(df, worksheet, workbook):
+    """
+    Workaround function to clear formatting
+
+    Parameters:
+    ----------
+    df: DataFrame
+        Data as an instance of Pandas DataFrame object
+    worksheet: Worksheet
+        An XlsxWriter worksheet object
+    workbook: Workbook
+        An XlsxWriter workbook object
+    """
+    # Get the excel alphabet of the column after the last column with data
+    start_col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(len(df.columns.to_list()))
+    # A temporary assumed last column in sheet
+    end_col_excel_alphabet = 'AM'
+
+    # Create the column range
+    col_excel_alphabet_range = start_col_excel_alphabet + ':' + end_col_excel_alphabet
+
+    worksheet.set_column(col_excel_alphabet_range, None, None)

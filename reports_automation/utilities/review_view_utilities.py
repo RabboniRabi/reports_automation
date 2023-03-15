@@ -117,6 +117,9 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     # Apply the outlines function to the work sheet for the given levels and ranges
     outlines_utilities.apply_outlines(worksheet, level_outline_ranges_dict)
 
+    # Apply border to the entire data
+    format_utilities.apply_border(updated_df, worksheet, workbook)
+
     # Apply formatting to the subtotal rows
     subtotal_row_indices = subtotals_result_dict['subtotal_row_indices']
     subtotal_utilities.format_subtotal_rows(worksheet, workbook, updated_df, subtotal_row_indices)
@@ -130,8 +133,10 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     if (format_dicts_list is not None):
         format_utilities.apply_formatting(format_dicts_list, updated_df, worksheet, workbook)
 
-    # Apply border to the entire data
-    format_utilities.apply_border(updated_df, worksheet, workbook)
+    
+
+    # autofit the columns
+    #worksheet.autofit()
 
     # Save the formatted data
     writer.save()
