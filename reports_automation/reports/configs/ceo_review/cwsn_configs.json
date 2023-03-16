@@ -157,6 +157,7 @@
                 "ascending": "False"
             },
             "format_config" : {
+                "heading" : "Elementary CWSN students having accounts report as on ",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
@@ -201,6 +202,7 @@
                 "ascending": "False"
             },
             "format_config" : {
+                "heading" : "Secondary CWSN students having accounts report as on ",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {

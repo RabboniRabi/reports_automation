@@ -110,33 +110,38 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     # Get the XlsxWriter object
     writer = file_utilities.get_xlsxwriter_obj({sheet_name: updated_df}, file_name, file_path=dir_path)
 
-    # Get a XlsxWriter worksheet object
+    # Get a XlsxWriter workbook and worksheet object
     workbook = writer.book
     worksheet = workbook.get_worksheet_by_name(sheet_name)
     
     # Apply the outlines function to the work sheet for the given levels and ranges
     outlines_utilities.apply_outlines(worksheet, level_outline_ranges_dict)
 
+    # Insert heading - messing up things
+    #format_utilities.insert_heading(updated_df, worksheet, workbook)
+
     # Apply border to the entire data
     format_utilities.apply_border(updated_df, worksheet, workbook)
+
+    # Apply formatting for columns as specified in the JSON configuration
+    format_dicts_list = report_config_dict['format_dicts']
+    format_utilities.apply_formatting(format_dicts_list, updated_df, worksheet, workbook)
 
     # Apply formatting to the subtotal rows
     subtotal_row_indices = subtotals_result_dict['subtotal_row_indices']
     subtotal_utilities.format_subtotal_rows(worksheet, workbook, updated_df, subtotal_row_indices)
 
+    # correct the formatting loss from applying subtotal row formatting
+    subtotal_utilities.correct_col_formatting_loss(worksheet, workbook, updated_df, subtotal_row_indices, format_dicts_list)
+
     # Format the grand total row
     _format_grand_total_row(worksheet, workbook, updated_df)
 
-    # Apply formatting for columns as specified in the JSON configuration
-    format_dicts_list = report_config_dict['format_dicts']
-    # If formatting dictionary has been provided
-    if (format_dicts_list is not None):
-        format_utilities.apply_formatting(format_dicts_list, updated_df, worksheet, workbook)
+    # correct the formatting loss in grand total row from applying grand total row formatting
+    _correct_grand_total_col_frmt_loss(worksheet, workbook, updated_df, format_dicts_list)
 
-    
-
-    # autofit the columns
-    #worksheet.autofit()
+    # Format the header
+    format_utilities.format_col_header(updated_df, worksheet, workbook)
 
     # Save the formatted data
     writer.save()
@@ -238,7 +243,7 @@ def _format_grand_total_row(worksheet, workbook, df):
 
     Parameters:
     -----------
-        worksheet: Worksheet
+    worksheet: Worksheet
         An XlsxWriter worksheet object
     workbook: Workbook
         An XlsxWriter workbook object
@@ -255,5 +260,61 @@ def _format_grand_total_row(worksheet, workbook, df):
     cell_format.set_bold() 
     # Set the subtotal row background to grey
     cell_format.set_bg_color('#808080')
+    # Set the border for the subtotal row
+    cell_format.set_border(1)
+    # Set the alignment of the text
+    cell_format.set_align('center')
 
-    worksheet.set_row(row_index, None, cell_format)
+    worksheet.write_row(row_index, 0, df.iloc[row_index - 1], cell_format)
+
+
+def _correct_grand_total_col_frmt_loss(worksheet, workbook, df, format_dicts_list):
+    """
+    Helper function to re-apply the column formatting previously applied
+    and lost when the subtatol row is formatted.
+
+    Parameters:
+    ----------
+    worksheet: Worksheet
+        An XlsxWriter worksheet object
+    workbook: Workbook
+        An XlsxWriter workbook object
+    df: DataFrame
+        The data containing the grand total row at the end
+    format_dicts_list: list
+        List of dictionaries where each dictionary item contains list of columns to apply a formatting on
+    """
+
+    # Get the index of the last row
+    row_index = df.shape[0]
+
+    for format_dict in format_dicts_list:
+    
+        # Get the column name variables
+        columns = format_dict['columns']
+        # Get the resolved column name values
+        columns = cols.get_values(columns)
+
+        format = format_dict['format']
+
+        # update format with the cell format
+        #format.update(cell_format)
+        cell_format = workbook.add_format(format)
+
+        # Add the cell formats that were applied in subtotaling
+        
+        # Set the subtotal rows to bold
+        cell_format.set_bold() 
+        # Set the subtotal row background to grey
+        cell_format.set_bg_color('#808080')
+        # Set the border for the subtotal row
+        cell_format.set_border(1)
+        # Set the alignment of the text
+        cell_format.set_align('center')
+
+        # For each column
+        for column in columns:
+            
+            col_index = df.columns.get_loc(column)
+
+            worksheet.write(row_index, col_index, df.iloc[row_index-1, col_index], cell_format)

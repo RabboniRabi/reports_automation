@@ -46,7 +46,7 @@ def apply_cond_frmt(writer: xlsxwriter, sheet_name, col_index, cond_frmt_dict, n
     # Apply the conditional formatting on the entire column
     worksheet.conditional_format(cells_range, cond_frmt_dict)
 
-def apply_frmt_col(worksheet, workbook, col_index, format_dict, width=None):
+def apply_frmt_col(worksheet, workbook, col_index, df, format_dict, width=None):
     """
     Apply a given formatting to a column in xlsxwriter Worksheet object
     
@@ -58,6 +58,8 @@ def apply_frmt_col(worksheet, workbook, col_index, format_dict, width=None):
         An XlsxWriter Workbook object  
     col_index: int
         The index of the column on which to apply the formatting
+    df: DataFrame
+        Data as an instance of Pandas DataFrame object
     format_dict: dict
        A dictionary of format properties to be applied
         eg: {'bold': True, 'font_color': 'red'}
@@ -68,12 +70,8 @@ def apply_frmt_col(worksheet, workbook, col_index, format_dict, width=None):
     # Get the format dictionary as an xlsxwriter Format object
     format_obj = workbook.add_format(format_dict)
 
-    # Get the excel alphabet for the column. 
-    col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(col_index)
-    # Create the column range
-    col_excel_alphabet_range = col_excel_alphabet + ':' + col_excel_alphabet
-
-    worksheet.set_column(col_excel_alphabet_range, width, format_obj)
+    # Re-write the data in the given column along with the given formatting
+    worksheet.write_column(1, col_index, df.iloc[:,col_index], format_obj)
 
 def apply_frmt_cols (worksheet, workbook, start_col_index, end_col_index, format_dict, width=None, no_of_rows=None):
     """
@@ -183,6 +181,8 @@ def apply_formatting(format_dicts_list, df, worksheet, workbook):
     workbook: Workbook
         An XlsxWriter workbook object
     """
+    # Define the base formatting that needs to be presisted for all cells
+    common_format = {'align' : 'center', 'border' : 3}
 
     for format_dict in format_dicts_list:
         
@@ -193,15 +193,41 @@ def apply_formatting(format_dicts_list, df, worksheet, workbook):
 
         format = format_dict['format']
 
+        # Update the given format with the common format, 
+        #so that the common formatting is not lost.
+        format.update(common_format)
+
         # For each column, get the index and call apply_frmt_col 
         # to apply formatting for that column
         for column in columns:
             
             col_index = df.columns.get_loc(column)
 
-            apply_frmt_col(worksheet, workbook, col_index, format)
+            apply_frmt_col(worksheet, workbook, col_index, df, format)
 
 
+def insert_heading(df, worksheet, workbook):
+    """
+    Funtion to create a header at the top of the data
+
+    Parameters:
+    -----------
+    df: DataFrame
+        Data as an instance of Pandas DataFrame object
+    worksheet: Worksheet
+        An XlsxWriter worksheet object
+    workbook: Workbook
+        An XlsxWriter workbook object
+    """
+
+    # Get the number of columns in the data - to merge
+    no_of_columns = len(df.columns.to_list())
+
+    # Define the merge format
+    merge_format = workbook.add_format({'align': 'center', 'bold': True})
+
+    # Merge the cells to form the heading
+    #worksheet.merge_range(0, 0, 0, no_of_columns - 1, 'merged row', merge_format)
 
 
 def apply_border(df, worksheet, workbook):
@@ -217,49 +243,23 @@ def apply_border(df, worksheet, workbook):
     workbook: Workbook
         An XlsxWriter workbook object
     """
+    # Define the format to apply for all cells
+    cell_format =  workbook.add_format({'align': 'center', 'border': 3})
 
-    cell_format =  {'align': 'center', 'border': 1}
-
-    columns_list = df.columns.to_list()
-    start_col_index = 0
-    end_col_index = len(columns_list) - 1
+    # Get the number of rows in the data
     no_of_rows = df.shape[0]
 
-    #apply_frmt_cols(worksheet, workbook, start_col_index, end_col_index, cell_format, no_of_rows=df.shape[0])
-
-    #testing
-
-    # Get the excel alphabets for the columns range
-    start_col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(start_col_index)
-    end_col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(end_col_index)
-
-    # Create a range from the row 1 to no_of_rows+1 (Header starts at row 0, hence
-    # row indexing gets shifted one place down.
-    cells_range = start_col_excel_alphabet + str(1) + ':' + end_col_excel_alphabet + str(no_of_rows + 1)
-
-    # test table
-    worksheet.add_table(cells_range, {'format':cell_format})
+    # Write the format to each row in the data
+    for i in range(1, no_of_rows):
+        worksheet.write_row(i, 0, df.iloc[i-1], cell_format)
 
 
-def clear_formatting_cols(df, worksheet, workbook):
+def format_col_header(df, worksheet, workbook):
     """
-    Workaround function to clear formatting
-
-    Parameters:
-    ----------
-    df: DataFrame
-        Data as an instance of Pandas DataFrame object
-    worksheet: Worksheet
-        An XlsxWriter worksheet object
-    workbook: Workbook
-        An XlsxWriter workbook object
+    Function to apply formatting for column header
     """
-    # Get the excel alphabet of the column after the last column with data
-    start_col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(len(df.columns.to_list()))
-    # A temporary assumed last column in sheet
-    end_col_excel_alphabet = 'AM'
+    # Define the format to apply for all cells
+    cell_format =  workbook.add_format({'align': 'center', 'border': 1, 'bold': True, 'bg_color':'#808080'})
 
-    # Create the column range
-    col_excel_alphabet_range = start_col_excel_alphabet + ':' + end_col_excel_alphabet
-
-    worksheet.set_column(col_excel_alphabet_range, None, None)
+    # Format the header
+    worksheet.write_row(0, 0, df.columns.to_list(), cell_format)

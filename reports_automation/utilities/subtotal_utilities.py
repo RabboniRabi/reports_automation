@@ -240,11 +240,71 @@ def format_subtotal_rows(worksheet, workbook, df, subtotal_row_indices):
     # Set the subtotal row background to grey
     cell_format.set_bg_color('#949191')
     # Set the border for the subtotal row
-    cell_format.set_border(3)
+    cell_format.set_border(1)
     # Set the alignment of the text
     cell_format.set_align('center')
 
     for row_index in subtotal_row_indices:
         #print('Applying subtotal formatting for row: ', row_index)
-        worksheet.set_row(row_index + 1, None, cell_format)
+        #worksheet.set_row(row_index + 1, None, cell_format)
+        worksheet.write_row(row_index + 1, 0, df.iloc[row_index], cell_format)
     
+
+
+def correct_col_formatting_loss(worksheet, workbook, df, subtotal_row_indices, format_dicts_list):
+    """
+    Helper function to re-apply the column formatting previously applied
+    and lost when the subtatol row is formatted
+
+    Parameters:
+    ----------
+    worksheet: Worksheet
+        An XlsxWriter worksheet object
+    workbook: Workbook
+        An XlsxWriter workbook object
+    df: DataFrame
+        The data containing the grand total row at the end
+    subtotal_row_indices: list
+        List of indices of subtotal rows in the dataframe
+    format_dicts_list: list
+        List of dictionaries where each dictionary item contains list of columns to apply a formatting on
+    """
+
+
+    for format_dict in format_dicts_list:
+    
+        # Get the column name variables
+        columns = format_dict['columns']
+        # Get the resolved column name values
+        columns = cols.get_values(columns)
+
+        format = format_dict['format']
+
+        # update format with the cell format
+        #format.update(cell_format)
+        cell_format = workbook.add_format(format)
+
+        # Add the cell formats that were applied in subtotaling
+        
+        # Set the subtotal rows to bold
+        cell_format.set_bold() 
+        # Set the subtotal row background to grey
+        cell_format.set_bg_color('#949191')
+        # Set the border for the subtotal row
+        cell_format.set_border(1)
+        # Set the alignment of the text
+        cell_format.set_align('center')
+
+        # For each column
+        for column in columns:
+            
+            col_index = df.columns.get_loc(column)
+
+            # For each subtotal row:
+            for row_index in subtotal_row_indices:
+                worksheet.write(row_index + 1, col_index, df.iloc[row_index, col_index], cell_format)
+
+
+
+
+        
