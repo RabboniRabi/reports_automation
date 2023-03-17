@@ -40,6 +40,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
+                    "heading" : "Elementary level sports battery test schools report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -49,19 +50,14 @@
                             "cols.tot_schools" : "sum",
                             "cols.deo_elem_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_test_comp"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
+                    "format_dicts" : [
+                        {
                             "columns" : ["cols.perc_test_comp"],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             },
             "secondary_report" : {
@@ -86,6 +82,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
+                    "heading" : "Secondary level sports battery test schools report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -95,19 +92,14 @@
                             "cols.tot_schools" : "sum",
                             "cols.deo_sec_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_test_comp"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
+                    "format_dicts" : [
+                        {
                             "columns" : ["cols.perc_test_comp"],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             }
         },
@@ -164,6 +156,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
+                    "heading" : "Elementary level sports battery test students report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -175,19 +168,21 @@
                             "cols.perc_long_jump_comp": "mean",
                             "cols.deo_elem_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_avg_overall_comp"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
-                            "columns" : ["cols.perc_avg_overall_comp"],
+                    "format_dicts" : [
+                        {
+                            "columns" : [
+                                "cols.perc_50m_comp",
+                                "cols.perc_600m_800m_comp",
+                                "cols.perc_6_10m_shutt_comp",
+                                "cols.perc_4kg_shot_comp",
+                                "cols.perc_long_jump_comp",
+                                "cols.perc_avg_overall_comp"
+                            ],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             },
             "secondary_report" : {
@@ -225,6 +220,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
+                    "heading" : "Secondary level sports battery test students report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -236,19 +232,21 @@
                             "cols.perc_long_jump_comp": "mean",
                             "cols.deo_sec_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_avg_overall_comp"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
-                            "columns" : ["cols.perc_avg_overall_comp"],
+                    "format_dicts" : [
+                        {
+                            "columns" : [
+                                "cols.perc_50m_comp",
+                                "cols.perc_600m_800m_comp",
+                                "cols.perc_6_10m_shutt_comp",
+                                "cols.perc_4kg_shot_comp",
+                                "cols.perc_long_jump_comp",
+                                "cols.perc_avg_overall_comp"
+                            ],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             }
         }

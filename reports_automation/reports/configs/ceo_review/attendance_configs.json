@@ -41,6 +41,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
+                    "heading" : "Elementary Teachers leave balance updated report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -48,19 +49,14 @@
                             "cols.tot_tchrs" : "sum",
                             "cols.deo_elem_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_tchrs_updated"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
+                    "format_dicts" : [
+                        {
                             "columns" : ["cols.perc_tchrs_updated"],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             },
             "secondary_report" : {
@@ -86,6 +82,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
+                    "heading" : "Secondary Teachers leave balance updated report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -93,19 +90,119 @@
                             "cols.tot_tchrs" : "sum",
                             "cols.deo_sec_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_tchrs_updated"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
+                    "format_dicts" : [
+                        {
                             "columns" : ["cols.perc_tchrs_updated"],
                             "format" : {"num_format": "0.00%"}
-            
                         }
+                    ]
+                }
+            }
+        },
+
+        {
+            "report_name": "teacher_marked_attendance",
+            "report_code" : "TCH_ATT_MARK",
+            "report_category": "Attendance",
+            "report_desc": "Teacher marked attendance report",
+            "generate_report": false,
+            "source_config" : {
+                "query_file_name" : "teacher_attendance_last30days_v2.sql"
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.tot_marked": "sum",
+                        "cols.tot_unmarked" : "sum",
+                        "cols.school_name": "count"
                     }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tot_marked": "sum",
+                        "cols.tot_unmarked" : "sum",
+                        "cols.school_name": "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_tchrs_updated",
+                    "num_col": "cols.tot_marked",
+                    "den_col": "cols.school_name",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary Teachers marked attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                            "agg_cols_func_dict" : {
+                                "cols.tot_marked": "sum",
+                                "cols.tot_unmarked" : "sum",
+                                "cols.school_name": "sum",
+                                "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_tchrs_updated"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.tot_marked": "sum",
+                        "cols.tot_unmarked" : "sum",
+                        "cols.school_name": "count"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tot_marked": "sum",
+                        "cols.tot_unmarked" : "sum",
+                        "cols.school_name": "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_tchrs_updated",
+                    "num_col": "cols.tot_marked",
+                    "den_col": "cols.school_name",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary Teachers marked attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.tot_marked": "sum",
+                            "cols.tot_unmarked" : "sum",
+                            "cols.school_name": "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_tchrs_updated"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
                 }
             }
         },
@@ -197,119 +294,8 @@
             }
         }
         
-    },
-    {
-        "report_name": "teacher_marked_attendance",
-        "report_code" : "TCH_ATT_MARK",
-        "report_category": "Attendance",
-        "report_desc": "Teacher marked attendance report",
-        "generate_report": false,
-        "source_config" : {
-            "query_file_name" : "teacher_attendance_last30days_v2.sql"
-        },
-        "pre_process_brc_merge": false,
-        "brc_merge_config" : {
-            "join_on" : ["cols.block_name", "cols.udise_col"],
-            "merge_type" : "left"
-        },
-        "post_process_brc_merge" : false,
-        "elementary_report" : {
-            "generate_report": true,
-            "un_ranked_report_args" : {
-                "custom_unranked_report": false,
-                "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
-                "grouping_agg_dict" : {
-                    "cols.tot_marked": "sum",
-                    "cols.tot_unmarked" : "sum",
-                    "cols.school_name": "count"
-                }
-            },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.tot_marked": "sum",
-                    "cols.tot_unmarked" : "sum",
-                    "cols.school_name": "sum"
-                },
-                "ranking_val_desc": "cols.perc_tchrs_updated",
-                "num_col": "cols.tot_marked",
-                "den_col": "cols.school_name",
-                "sort": "True",
-                "ascending": "False"
-            },
-            "format_config" : {
-                "subtotal_outlines_dict" : {
-                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-                        "agg_cols_func_dict" : {
-                            "cols.tot_marked": "sum",
-                            "cols.tot_unmarked" : "sum",
-                            "cols.school_name": "sum",
-                            "cols.deo_elem_rank": "mean"
-                    },
-                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
-                },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_tchrs_updated"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
-                        "columns" : ["cols.perc_tchrs_updated"],
-                        "format" : {"num_format": "0.00%"}
-
-                    }
-                }
-            }
-        },
-        "secondary_report" : {
-            "generate_report": true,
-            "un_ranked_report_args" : {
-                "custom_unranked_report": false,
-                "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
-                "grouping_agg_dict" : {
-                    "cols.tot_marked": "sum",
-                    "cols.tot_unmarked" : "sum",
-                    "cols.school_name": "count"
-                }
-            },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.tot_marked": "sum",
-                    "cols.tot_unmarked" : "sum",
-                    "cols.school_name": "sum"
-                },
-                "ranking_val_desc": "cols.perc_tchrs_updated",
-                "num_col": "cols.tot_marked",
-                "den_col": "cols.school_name",
-                "sort": "True",
-                "ascending": "False"
-            },
-            "format_config" : {
-                "subtotal_outlines_dict" : {
-                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
-                    "agg_cols_func_dict" : {
-                        "cols.tot_marked": "sum",
-                        "cols.tot_unmarked" : "sum",
-                        "cols.school_name": "sum",
-                        "cols.deo_sec_rank": "mean"
-                    },
-                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
-                },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_tchrs_updated"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
-                        "columns" : ["cols.perc_tchrs_updated"],
-                        "format" : {"num_format": "0.00%"}
-
-                    }
-                }
-            }
-        }
     }
+    
 
     ]
 }

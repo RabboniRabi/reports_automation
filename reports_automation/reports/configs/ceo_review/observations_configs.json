@@ -45,19 +45,14 @@
                         "cols.tot_students": "sum",
                         "cols.deo_elem_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_obs_comp"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
-                        "columns" : ["cols.perc_obs_comp"],
+                "format_dicts" : [
+                    {
+                        "columns" : ["cols.perc_DEO_obs"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         },
         "secondary_report" : {
@@ -87,19 +82,14 @@
                         "cols.tot_students": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_sec": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.per_participants"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.per_participants"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         }
     }

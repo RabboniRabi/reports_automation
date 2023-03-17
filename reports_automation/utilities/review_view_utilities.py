@@ -130,7 +130,7 @@ def prepare_report_for_review(df, format_config, ranking_args_dict, sheet_name, 
     # Get the heading to be inserted
     heading = format_config['heading']
     date = datetime.now().strftime('%d %h %y')
-    full_heading = heading + ' ' + date
+    full_heading = heading + ' - ' + date
     format_utilities.insert_heading(updated_df, full_heading, worksheet, workbook)
 
     # Apply border to the entire data

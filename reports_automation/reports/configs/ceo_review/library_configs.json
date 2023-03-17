@@ -42,6 +42,7 @@
                 "ascending": "False"
             },
             "format_config" : {
+                "heading" : "Elementary schools Library shelves created report",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
@@ -50,19 +51,14 @@
                         "cols.shelves_not_created": "sum",
                         "cols.deo_elem_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_shelves_created"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.perc_shelves_created"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         },
         "secondary_report" : {
@@ -90,6 +86,7 @@
                 "ascending": "False"
             },
             "format_config" : {
+                "heading" : "Secondary schools Library shelves created report",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
@@ -98,19 +95,14 @@
                         "cols.shelves_not_created": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_sec": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_shelves_created"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.perc_shelves_created"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         }
     },
@@ -119,7 +111,7 @@
         "report_name": "library_book_assigning_by_tchrs",
         "report_code" : "LIBBAT",
         "report_category": "Library",
-        "report_desc": "Library book assigning teachers report",
+        "report_desc": "Library books assigning teachers report",
         "generate_report": true,
         "source_config" : {
             "source_file_name" : "Library-Books-Assigning-Rpt.xlsx",
@@ -157,6 +149,7 @@
                 "ascending": "False"
             },
             "format_config" : {
+                "heading" : "Elementary schools Library books assigning teachers report",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
@@ -165,19 +158,14 @@
                         "cols.tchrs_assigning_books": "sum",
                         "cols.deo_elem_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_tchrs_assigning_books"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.perc_tchrs_assigning_books"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         },
         "secondary_report" : {
@@ -205,6 +193,7 @@
                 "ascending": "False"
             },
             "format_config" : {
+                "heading" : "Secondary schools Library books assigning teachers report",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
@@ -213,19 +202,14 @@
                         "cols.tchrs_assigning_books": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_sec": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_tchrs_assigning_books"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.perc_tchrs_assigning_books"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         }
     }
