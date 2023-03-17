@@ -21,7 +21,9 @@ import utilities.column_names_utilities as cols
 
 import xlsxwriter
 
-def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_name, file_name, dir_path):
+from datetime import datetime
+
+def prepare_report_for_review(df, format_config, ranking_args_dict, sheet_name, file_name, dir_path):
     """
     Function to prepare the final report for viewing by:
         - computing subtotals
@@ -77,13 +79,13 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     """
 
     # Get the subtotal and outlines specific configurations
-    subtotal_outlines_dict = _update_subtotal_outlines_dict(report_config_dict['subtotal_outlines_dict'])
+    subtotal_outlines_dict = _update_subtotal_outlines_dict(format_config['subtotal_outlines_dict'])
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
     agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
     text_append_dict = subtotal_outlines_dict['text_append_dict']
 
     # Compute sub-totals and insert into provided dataframe
-    subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, report_config_dict, ranking_args_dict)
+    subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, format_config, ranking_args_dict)
 
     # Get the updated DataFrame object - with the subtotals inserted
     updated_df = subtotals_result_dict['updated_df']
@@ -107,6 +109,13 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     level_outline_ranges_dict = outlines_utilities.build_level_outline_ranges_dict(
         updated_df, df_subtotal_rows, level_subtotal_cols_dict, agg_cols_func_dict)
 
+    
+    # Shift the data by 1 row down - To create space for report heading
+    df = df.shift(periods=1, fill_value=0)
+
+    # Correspondingly update the outline ranges as data has been shifted down
+    level_outline_ranges_dict = outlines_utilities.push_outline_ranges_for_formatting(level_outline_ranges_dict, 1)
+
     # Get the XlsxWriter object
     writer = file_utilities.get_xlsxwriter_obj({sheet_name: updated_df}, file_name, file_path=dir_path)
 
@@ -117,14 +126,18 @@ def prepare_report_for_review(df, report_config_dict, ranking_args_dict, sheet_n
     # Apply the outlines function to the work sheet for the given levels and ranges
     outlines_utilities.apply_outlines(worksheet, level_outline_ranges_dict)
 
-    # Insert heading - messing up things
-    #format_utilities.insert_heading(updated_df, worksheet, workbook)
+    # Insert heading
+    # Get the heading to be inserted
+    heading = format_config['heading']
+    date = datetime.now().strftime('%d %h %y')
+    full_heading = heading + ' ' + date
+    format_utilities.insert_heading(updated_df, full_heading, worksheet, workbook)
 
     # Apply border to the entire data
     format_utilities.apply_border(updated_df, worksheet, workbook)
 
     # Apply formatting for columns as specified in the JSON configuration
-    format_dicts_list = report_config_dict['format_dicts']
+    format_dicts_list = format_config['format_dicts']
     format_utilities.apply_formatting(format_dicts_list, updated_df, worksheet, workbook)
 
     # Apply formatting to the subtotal rows
@@ -259,13 +272,15 @@ def _format_grand_total_row(worksheet, workbook, df):
     # Set the subtotal rows to bold
     cell_format.set_bold() 
     # Set the subtotal row background to grey
-    cell_format.set_bg_color('#808080')
+    cell_format.set_bg_color('#a9a8a8')
     # Set the border for the subtotal row
     cell_format.set_border(1)
     # Set the alignment of the text
     cell_format.set_align('center')
 
-    worksheet.write_row(row_index, 0, df.iloc[row_index - 1], cell_format)
+    # Rewrite the grand total, but with formatting
+    # Add 1 to row index location as report heading will have been inserted at the top
+    worksheet.write_row(row_index+1, 0, df.iloc[row_index - 1], cell_format)
 
 
 def _correct_grand_total_col_frmt_loss(worksheet, workbook, df, format_dicts_list):
@@ -306,7 +321,7 @@ def _correct_grand_total_col_frmt_loss(worksheet, workbook, df, format_dicts_lis
         # Set the subtotal rows to bold
         cell_format.set_bold() 
         # Set the subtotal row background to grey
-        cell_format.set_bg_color('#808080')
+        cell_format.set_bg_color('#a9a8a8')
         # Set the border for the subtotal row
         cell_format.set_border(1)
         # Set the alignment of the text
@@ -316,5 +331,6 @@ def _correct_grand_total_col_frmt_loss(worksheet, workbook, df, format_dicts_lis
         for column in columns:
             
             col_index = df.columns.get_loc(column)
-
-            worksheet.write(row_index, col_index, df.iloc[row_index-1, col_index], cell_format)
+            # Rewrite the grand total row columns with lost formatting
+            # Add 1 to row index location as report heading will have been inserted at the top
+            worksheet.write(row_index+1, col_index, df.iloc[row_index-1, col_index], cell_format)

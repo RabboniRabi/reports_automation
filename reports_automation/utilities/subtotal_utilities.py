@@ -238,16 +238,16 @@ def format_subtotal_rows(worksheet, workbook, df, subtotal_row_indices):
     # Set the subtotal rows to bold
     cell_format.set_bold() 
     # Set the subtotal row background to grey
-    cell_format.set_bg_color('#949191')
+    cell_format.set_bg_color('#dedcdc')
     # Set the border for the subtotal row
     cell_format.set_border(1)
     # Set the alignment of the text
     cell_format.set_align('center')
 
     for row_index in subtotal_row_indices:
-        #print('Applying subtotal formatting for row: ', row_index)
-        #worksheet.set_row(row_index + 1, None, cell_format)
-        worksheet.write_row(row_index + 1, 0, df.iloc[row_index], cell_format)
+        # Add 2 to row index location as report heading will have been inserted at the top
+        # and column headers will be at row 1
+        worksheet.write_row(row_index + 2, 0, df.iloc[row_index], cell_format)
     
 
 
@@ -289,7 +289,7 @@ def correct_col_formatting_loss(worksheet, workbook, df, subtotal_row_indices, f
         # Set the subtotal rows to bold
         cell_format.set_bold() 
         # Set the subtotal row background to grey
-        cell_format.set_bg_color('#949191')
+        cell_format.set_bg_color('#dedcdc')
         # Set the border for the subtotal row
         cell_format.set_border(1)
         # Set the alignment of the text
@@ -302,7 +302,9 @@ def correct_col_formatting_loss(worksheet, workbook, df, subtotal_row_indices, f
 
             # For each subtotal row:
             for row_index in subtotal_row_indices:
-                worksheet.write(row_index + 1, col_index, df.iloc[row_index, col_index], cell_format)
+                # Add 2 to row index location as report heading will have been inserted at row 0
+                # and column headers will be at row 1
+                worksheet.write(row_index + 2, col_index, df.iloc[row_index, col_index], cell_format)
 
 
 

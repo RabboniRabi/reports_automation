@@ -166,7 +166,7 @@
                         "cols.witht_acct" : "sum",
                         "cols.deo_elem_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
                 },
                 "format_dicts" : [
                     {
@@ -211,7 +211,7 @@
                         "cols.witht_acct" : "sum",
                         "cols.deo_sec_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_sec": ""}
                 },
                 "format_dicts" : [
                     {
