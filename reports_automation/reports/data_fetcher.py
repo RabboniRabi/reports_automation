@@ -56,7 +56,10 @@ def get_data_from_config(source_config_dict, save_source=False):
 
         try:
             # Read the database connection credentials
-            credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
+            if (source_config_dict['db'] == 'attendance_db'):
+                credentials_dict = dbutilities.read_conn_credentials('db_credentials_attendance.json')
+            elif (source_config_dict['db'] == 'tn_schools_db'):
+                credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
             # Fetch the data from the query
             df_data = dbutilities.fetch_data_as_df(credentials_dict, query_file_name)
             # If save source flag has been enabled, save to the source data folder
