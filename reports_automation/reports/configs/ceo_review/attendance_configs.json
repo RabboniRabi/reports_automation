@@ -110,7 +110,10 @@
             "generate_report": false,
             "source_config" : {
                 "query_file_name" : "teacher_attendance_last30days_v2.sql",
-                "db" : "attendance_db"
+                "db" : "attendance_db",
+                "source_file_name" : "teacher_attendance_last30days_v2_24-02-23.xlsx",
+                "source_sheet_name" : "Report",
+                "skip_rows" : 0
             },
             "pre_process_brc_merge": false,
             "brc_merge_config" : {
