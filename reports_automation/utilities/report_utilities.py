@@ -9,8 +9,8 @@ import utilities.file_utilities as file_utilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.column_names_utilities as cols
 
-brc_file_name = 'BRC_CRC_Master_V4.xlsx'
-brc_master_sheet_name = 'BRC-CRC V4 wo hyphen'
+brc_file_name = 'BRC_CRC_Master_V3.xlsx'
+brc_master_sheet_name = 'BRC-CRC V3 wo hyphen'
 
 # Columns to be dropped from the BRC mapping sheet
 brc_master_drop_cols = ['CRC Udise' ,'CRC School Name', 'BRTE']

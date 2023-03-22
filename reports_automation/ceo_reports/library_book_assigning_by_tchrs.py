@@ -30,15 +30,15 @@ def pre_process_BRC_merge(raw_data):
 
     print('Pre Processing before BRC merge called in Library book assigning by teachers report')
 
-    df_pivot = pd.pivot_table(raw_data, values=cols.class_teacher_id,\
+    df_pivot = pd.pivot_table(raw_data, values=cols.section,\
                         index = initial_group_levels, columns=[cols.book_assigning_status], aggfunc='count',fill_value=0).reset_index()
 
-    # Rename the class_teacher_id column for appropriate readability
+    # Rename the books assigned columns for appropriate readability
     df_pivot.rename(columns={
-        cols.books_assigned : cols.tchrs_assigning_books,
-        cols.books_not_assigned: cols.tchrs_not_assigning_books}, inplace=True)
+        cols.books_assigned : cols.sctns_assigning_books,
+        cols.books_not_assigned: cols.sctns_not_assigning_books}, inplace=True)
 
-    df_pivot[cols.total_tchrs] = df_pivot[cols.tchrs_assigning_books] + df_pivot[cols.tchrs_not_assigning_books]
+    df_pivot[cols.tot_sections] = df_pivot[cols.sctns_assigning_books] + df_pivot[cols.sctns_not_assigning_books]
 
 
     return df_pivot

@@ -28,8 +28,9 @@
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.ageing": "sum", 
-                        "cols.total_cp_students": "sum"
+                        "cols.total_cp_students": "sum",
+                        "cols.ageing": "sum"
+                        
                     },
                     "ranking_val_desc": "cols.perc_ageing",
                     "num_col": "cols.ageing",
@@ -42,8 +43,8 @@
                     "subtotal_outlines_dict" : {                        
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
-                            "cols.ageing": "sum",
                             "cols.total_cp_students": "sum",
+                            "cols.ageing": "sum",
                             "cols.deo_elem_rank": "mean"
                         },
                         "text_append_dict" : {"cols.deo_name_elm": ""}
@@ -66,8 +67,8 @@
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.ageing": "sum", 
-                        "cols.total_cp_students": "sum"
+                        "cols.total_cp_students": "sum",
+                        "cols.ageing": "sum"
                     },
                     "ranking_val_desc": "cols.perc_ageing",
                     "num_col": "cols.ageing",
@@ -80,8 +81,8 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
-                            "cols.ageing": "sum",
                             "cols.total_cp_students": "sum",
+                            "cols.ageing": "sum",
                             "cols.deo_sec_rank": "mean"
                         },
                         "text_append_dict" : {"cols.deo_name_sec": ""}

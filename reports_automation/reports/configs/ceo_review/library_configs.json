@@ -130,21 +130,21 @@
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                 "grouping_agg_dict" : {
-                    "cols.total_tchrs": "sum", 
-                    "cols.tchrs_not_assigning_books": "sum", 
-                    "cols.tchrs_assigning_books": "sum"
+                    "cols.tot_sections": "sum", 
+                    "cols.sctns_not_assigning_books": "sum", 
+                    "cols.sctns_assigning_books": "sum"
                 }
             },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.total_tchrs": "sum", 
-                    "cols.tchrs_not_assigning_books": "sum", 
-                    "cols.tchrs_assigning_books": "sum"
+                    "cols.tot_sections": "sum", 
+                    "cols.sctns_not_assigning_books": "sum", 
+                    "cols.sctns_assigning_books": "sum"
                 },
-                "ranking_val_desc": "cols.perc_tchrs_assigning_books",
-                "num_col": "cols.tchrs_assigning_books",
-                "den_col": "cols.total_tchrs",
+                "ranking_val_desc": "cols.perc_sctns_assigning_books",
+                "num_col": "cols.sctns_assigning_books",
+                "den_col": "cols.tot_sections",
                 "sort": "True",
                 "ascending": "False"
             },
@@ -153,16 +153,16 @@
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
-                        "cols.total_tchrs": "sum", 
-                        "cols.tchrs_not_assigning_books": "sum", 
-                        "cols.tchrs_assigning_books": "sum",
+                        "cols.tot_sections": "sum", 
+                        "cols.sctns_not_assigning_books": "sum", 
+                        "cols.sctns_assigning_books": "sum",
                         "cols.deo_elem_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_elm": ""}
                 },
                 "format_dicts" : [
                     {
-                        "columns" : ["cols.perc_tchrs_assigning_books"],
+                        "columns" : ["cols.perc_sctns_assigning_books"],
                         "format" : {"num_format": "0.00%"}
                     }
                 ]
@@ -174,21 +174,21 @@
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                 "grouping_agg_dict" : {
-                    "cols.total_tchrs": "sum", 
-                    "cols.tchrs_not_assigning_books": "sum", 
-                    "cols.tchrs_assigning_books": "sum"
+                    "cols.tot_sections": "sum", 
+                    "cols.sctns_not_assigning_books": "sum", 
+                    "cols.sctns_assigning_books": "sum"
                 }
             },
             "ranking_args": {
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
-                    "cols.total_tchrs": "sum", 
-                    "cols.tchrs_not_assigning_books": "sum", 
-                    "cols.tchrs_assigning_books": "sum"
+                    "cols.tot_sections": "sum", 
+                    "cols.sctns_not_assigning_books": "sum", 
+                    "cols.sctns_assigning_books": "sum"
                 },
-                "ranking_val_desc": "cols.perc_tchrs_assigning_books",
-                "num_col": "cols.tchrs_assigning_books",
-                "den_col": "cols.total_tchrs",
+                "ranking_val_desc": "cols.perc_sctns_assigning_books",
+                "num_col": "cols.sctns_assigning_books",
+                "den_col": "cols.tot_sections",
                 "sort": "True",
                 "ascending": "False"
             },
@@ -197,16 +197,16 @@
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
-                        "cols.total_tchrs": "sum", 
-                        "cols.tchrs_not_assigning_books": "sum", 
-                        "cols.tchrs_assigning_books": "sum",
+                        "cols.tot_sections": "sum", 
+                        "cols.sctns_not_assigning_books": "sum", 
+                        "cols.sctns_assigning_books": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
                     "text_append_dict" : {"cols.deo_name_sec": ""}
                 },
                 "format_dicts" : [
                     {
-                        "columns" : ["cols.perc_tchrs_assigning_books"],
+                        "columns" : ["cols.perc_sctns_assigning_books"],
                         "format" : {"num_format": "0.00%"}
                     }
                 ]
