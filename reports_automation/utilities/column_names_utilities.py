@@ -239,7 +239,8 @@ scheme_nt_strt = 'not started'
 scheme_not_started = 'Not Started'
 perc_schools_issued_books = '% schools completed book issue'
 
-
+#Student teacher ratio specific column
+student_teacher_ratio = "student_teacher_ratio"
 
 
 
