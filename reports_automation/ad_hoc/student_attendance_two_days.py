@@ -3,7 +3,7 @@ Module to create report for teacher attendance over two days
 """
 import sys
 sys.path.append('../')
-import functools as ft
+
 import pandas as pd
 import utilities.dbutilities as dbutilities
 import utilities.format_utilities as format_utilities
@@ -20,60 +20,72 @@ grouping_agg_dict = {
     cols.tot_marked: 'sum',
     cols.tot_unmarked: 'sum'
     }
-
+# Index to merge the working sections
 merge_index = [cols.udise_col, cols.school_name, cols.district_name,
                cols.block_name, cols.school_type, cols.cate_type, 'date']
 
+# Index to merge the partially working schools
 merge_index_2 = [cols.udise_col, cols.school_name, cols.district_name,
-               cols.block_name, cols.school_type, cols.cate_type, 'date', 'partial_yn', 'section']
+                 cols.block_name, cols.school_type, cols.cate_type, 'date', 'partial_yn', 'section']
 
-
-
+# Function to process all the raw data to get the final comprehensive list
 def _process_data(df_section_master, df_unmarked_sections, df_working_schools, df_prtly_working_scls):
 
     """
-    A for-loop that will create a new raw data file that will create a list of sections for each date for all the
+    A for-loop that will create a new raw data file that will contain a list of sections for each date for all the
     dates mentioned in the unmarked schools data frame
     """
+    # An empty raw data list to append all the data
     raw_data = []
 
-    #for label, df_unmarked_sections in df_unmarked_sections.groupby(["edate"]):
-
-        #data_frames_merge = [df_section_master, df_unmarked_sections]
-
-        #data_final = ft.reduce(lambda left, right: pd.merge(left, right, how='left', on=merge_index), data_frames_merge)
-
-
+    # list of all the unique dates in the query fetch
     dates_list = df_unmarked_sections.edate.unique().tolist()
 
+    # For loop to perform a set of functions for each date
     for date in dates_list:
+        # Pulling out data for each date in the unmarked sections table
         df_date_filtered = df_unmarked_sections[df_unmarked_sections['edate'].isin([date])]
 
+        # Merging the data for each date with the section master
         data_final = pd.merge(df_section_master, df_date_filtered, how='outer')
 
+        # The dates that are not present in the section master will be renamed as "Marked Sections"
         data_final['edate'].fillna('Marked Sections', inplace=True)
 
+        # Renaming all other values as "Unmarked Sections"
         data_final["edate"] = np.where(data_final["edate"] == 'Marked Sections', "Marked Sections", "Unmarked Sections")
 
+        # Writing the dates in the date column against all entries
         data_final['date'] = date
 
+        # Merging the data with the working schools
         data_final = pd.merge(data_final, df_working_schools, how='left', on=merge_index)
 
+        # Merging the data with the partially working schools
         data_final = pd.merge(data_final, df_prtly_working_scls, how='left', on=merge_index_2)
-        print('column type', data_final.dtypes)
 
-        data_final['Working sections'] = 'False'
-        for col in range(1, 15):
-            data_final['Working sections'] = (data_final['class_id'] == col) & (data_final[f'{col}'] == 1) & \
-                                             (data_final['partial_yn'] == 3)
-            print(data_final['Working sections'])
-            data_final['Working sections'] = np.where(data_final['Working sections'] == 'True',
-                                                      'section working', 'section not working')
+        # Declare a column to indicate if a section is working or not
+        data_final['Working sections'] = False
 
+        for col in range(1, 16):
+
+            # For the class, update the working section column as True or False
+            data_final['Working sections'] = (data_final['Working sections']) \
+                                             | ((data_final['class_id'] == int(col)) &
+                                              (data_final[f'c{str(col)}'] == float(1)) &
+                                              (data_final['partial_yn'] == float(3)))\
+                                              | (data_final['partial_yn'] == float(1))\
+                                              | (np.isnan(data_final['partial_yn']))
+        # Add all the data to the raw data list
         raw_data.append(data_final)
 
+    # Concatenating all the data to a final data summary df
     df_summary = pd.concat(raw_data)
 
+    # Renaming the True and False to appropriate labels
+    df_summary['Working sections'].replace({True: 'Section working', False: 'Section not working'}, inplace=True)
+
+    # Renaming the column to Marked Status
     df_summary.rename(columns={'edate': 'Marked Status'}, inplace=True)
 
     return df_summary
@@ -200,8 +212,7 @@ def run():
     df_report = _process_data(df_section_master, df_unmarked_sections, df_working_schools, df_prtly_working_scls)
     file_utilities.save_to_excel({'sample': df_report.head(400000)}, 'stud_att_test.xlsx')
 
-    # Format the report and save
-    #_format_report(df_report, df_data)
+    # Format the report and save _format_report(df_report, df_data)
 
 
 if __name__ == "__main__":
