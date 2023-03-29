@@ -20,6 +20,10 @@ grouping_agg_dict = {
     cols.tot_marked: 'sum',
     cols.tot_unmarked: 'sum'
     }
+# Grouping Index for the Attendance Master Sheet.
+grouping_index = [cols.district_name, cols.block_name, cols.school_type, cols.cate_type,
+                  cols.udise_col, cols.school_name, 'class_id', 'section']
+
 # Index to merge the working sections
 merge_index = [cols.udise_col, cols.school_name, cols.district_name,
                cols.block_name, cols.school_type, cols.cate_type, 'date']
@@ -27,6 +31,7 @@ merge_index = [cols.udise_col, cols.school_name, cols.district_name,
 # Index to merge the partially working schools
 merge_index_2 = [cols.udise_col, cols.school_name, cols.district_name,
                  cols.block_name, cols.school_type, cols.cate_type, 'date', 'partial_yn', 'section']
+
 
 # Function to process all the raw data to get the final comprehensive list
 def _process_data(df_section_master, df_unmarked_sections, df_working_schools, df_prtly_working_scls):
@@ -50,10 +55,10 @@ def _process_data(df_section_master, df_unmarked_sections, df_working_schools, d
         data_final = pd.merge(df_section_master, df_date_filtered, how='outer')
 
         # The dates that are not present in the section master will be renamed as "Marked Sections"
-        data_final['edate'].fillna('Marked Sections', inplace=True)
+        data_final['edate'].fillna('Marked Section', inplace=True)
 
         # Renaming all other values as "Unmarked Sections"
-        data_final["edate"] = np.where(data_final["edate"] == 'Marked Sections', "Marked Sections", "Unmarked Sections")
+        data_final["edate"] = np.where(data_final["edate"] == 'Marked Section', "Marked Section", "Unmarked Section")
 
         # Writing the dates in the date column against all entries
         data_final['date'] = date
@@ -69,13 +74,14 @@ def _process_data(df_section_master, df_unmarked_sections, df_working_schools, d
 
         for col in range(1, 16):
 
-            # For the class, update the working section column as True or False
+            # For the class, update the working section column as True or False.
+            # Eg: If class_id is 1, 'cl' is 1 and partial_yn is 1, then true. Or if partial_yn is 1 or 0 also is true.
             data_final['Working sections'] = (data_final['Working sections']) \
                                              | ((data_final['class_id'] == int(col)) &
-                                              (data_final[f'c{str(col)}'] == float(1)) &
-                                              (data_final['partial_yn'] == float(3)))\
-                                              | (data_final['partial_yn'] == float(1))\
-                                              | (np.isnan(data_final['partial_yn']))
+                                                (data_final[f'c{str(col)}'] == float(1)) &
+                                                (data_final['partial_yn'] == float(3)))\
+                                             | (data_final['partial_yn'] == float(1))\
+                                             | (np.isnan(data_final['partial_yn']))
         # Add all the data to the raw data list
         raw_data.append(data_final)
 
@@ -89,6 +95,46 @@ def _process_data(df_section_master, df_unmarked_sections, df_working_schools, d
     df_summary.rename(columns={'edate': 'Marked Status'}, inplace=True)
 
     return df_summary
+
+
+def attendance_master(base_data):
+    """
+    This function will create an attendance master with 3 excel sheets:
+      1. Marked and working sections per day.
+      2. Unmarked and working sections per day.
+      3. Total count of working sections per day.
+
+      The sheet would have to be made separately for each month; working similar to the reports generated folder
+    """
+
+    # 1. MARKED AND WORKING SCHOOLS PER DAY
+
+    marked_working_sections = base_data.loc[((base_data['Marked Status'] == "Marked Section") &
+                                            (base_data['Working sections'] == "Section working"))]
+
+    marked_working_sections_day_wise = pd.pivot_table(marked_working_sections, index=grouping_index,
+                                                      columns=['date'], aggfunc='count').reset_index()
+
+    # 2. UNMARKED AND WORKING SCHOOLS PER DAY
+
+    unmarked_working_sections = base_data.loc[((base_data['Marked Status'] == "Unmarked Section") &
+                                              (base_data['Working sections'] == "Section working"))]
+
+    unmarked_working_sections_day_wise = pd.pivot_table(unmarked_working_sections, index=grouping_index,
+                                                        columns=['date'], aggfunc='count').reset_index()
+
+    # 3. WORKING SECTIONS PER DAY
+
+    #working_sections = base_data.loc[(base_data['Working sections'] == "Section working")]
+
+
+
+    #working_sections_day_wise = pd.pivot_table(working_sections, index=grouping_index,
+                                               #columns=['date'], aggfunc='count').reset_index()
+
+    return file_utilities.save_to_excel({'marked_working_sections': marked_working_sections_day_wise,
+                                         'unmarked_working_sections': unmarked_working_sections_day_wise
+                                         }, 'att_master_test.xlsx',index=True)
 
 
 def _format_report(df_report, df_data):
@@ -208,9 +254,10 @@ def run():
     # Get the list of partially working schools from the SQL query file
     df_prtly_working_scls = dbutilities.fetch_data_as_df(credentials_dict, 'partially_working_master.sql')
 
-    # Process the data and get the report
-    df_report = _process_data(df_section_master, df_unmarked_sections, df_working_schools, df_prtly_working_scls)
-    file_utilities.save_to_excel({'sample': df_report.head(400000)}, 'stud_att_test.xlsx')
+    # Process the data and get the attendance master
+    base_data = _process_data(df_section_master, df_unmarked_sections, df_working_schools, df_prtly_working_scls)
+
+    attendance_master(base_data)
 
     # Format the report and save _format_report(df_report, df_data)
 
