@@ -85,6 +85,10 @@ def main():
     grouping_levels = [cols.district_name, cols.block_name, cols.udise_col, cols.school_name, cols.category_type]
     df = reason_type_breakdown(df_report, grouping_levels)
 
+    # Saving in the current month generated folder
+    report_save_path = file_utilities.get_curr_day_month_gen_reports_dir_path() + '/oosc_report.xlsx'
+    file_utilities.save_to_excel({'Report': df}, report_save_path)
+
 
 if __name__ == "__main__":
     main()
