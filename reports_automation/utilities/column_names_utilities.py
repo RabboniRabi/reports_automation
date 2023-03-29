@@ -145,6 +145,12 @@ non_target = 'Non-Target'
 stdnt_admttd = 'Student Admitted'
 stdnts_admttd = 'Students Admitted'
 oosc_tot_surveyed = 'Total Surveyed'
+non_target_not_admitted = 'Not Admitted from Non Target'
+non_target_admitted = 'Admitted from Non Target'
+verified_not_admitted = 'Not Admitted from To be Verified'
+verified_admitted = 'Admitted from To be Verified'
+admitted_not_admitted = 'Not Admitted from To be Admitted'
+admitted = 'Admitted from To be Admitted'
 
 # Hi-tech lab report specific column names
 up_time_hrs = 'up_time_hrs'
