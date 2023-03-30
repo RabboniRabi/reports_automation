@@ -20,7 +20,7 @@ sys.path.append('../')
 import utilities.file_utilities as file_utilities
 import utilities.utilities as utilities
 import utilities.column_names_utilities as cols
-
+import data_cleaning.column_cleaner as column_cleaner
 import pandas as pd
 
 
@@ -135,13 +135,14 @@ def main():
     # Ask the user to select the CWSN report excel file.
     cwsn_report = file_utilities.user_sel_excel_filename()
     df_report = pd.read_excel(cwsn_report, sheet_name='Report', skiprows=4)
+    column_cleaner.column_cleaning(df_report)
 
     # List of student statuses to count
     student_statuses = ['In_School', 'Common Pool']
     # List of columns with student IDs
     id_columns = ['NID', 'UDID']
     # Levels to apply grouping by
-    group_levels = ['District']
+    group_levels = ['district_name']
     # List of places student is supported in
     supported_in_vals = ['SRP Center', 'Home Based']
 
