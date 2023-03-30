@@ -408,6 +408,10 @@ def _update_ranking_args_dict(ranking_args:dict):
         updated_list = cols.get_values(ranking_args['avg_cols'])
         ranking_args['avg_cols'] = updated_list
 
+    if ranking_type == ranking_types.NUMBER_RANKING.value:
+        ranking_col = cols.get_value(ranking_args['ranking_col'])
+        ranking_args['ranking_col'] = ranking_col
+
     return ranking_args
 
 
