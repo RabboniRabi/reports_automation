@@ -3,9 +3,9 @@
 
         {
             "report_name": "students_receiving_books",
-            "report_code" : "STU_BOOKS",
+            "report_code" : "STU_LIB_BOOKS",
             "report_category": "Schemes",
-            "report_desc": "Students receiving books report",
+            "report_desc": "Students receiving library books report",
             "generate_report": true,
             "source_config" : {
                 "source_file_name" : "students_receiving_books.xlsx",

@@ -3,7 +3,7 @@
 
         {
             "report_name": "hitech_labs_uptime",
-            "report_code" : "HITECH_UPTIME",
+            "report_code" : "HI_TECH_UPTIME",
             "report_category": "Operations",
             "report_desc": "Hi Tech labs uptime report",
             "generate_report": false,
@@ -108,7 +108,7 @@
 
         {    
         "report_name": "PET_school_mapping",
-        "report_code" : "PET",
+        "report_code" : "PET_SCH_MAP",
         "report_category": "Operations",
         "report_desc": "PET to school mapping report",
         "generate_report": false,

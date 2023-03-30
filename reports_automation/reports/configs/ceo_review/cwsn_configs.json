@@ -1,8 +1,8 @@
 {
     "report_configs": [
     {
-        "report_name": "cwsn",
-        "report_code" : "CWSN",
+        "report_name": "cwsn_having_udid",
+        "report_code" : "CWSN_UDID",
         "report_category": "Enrolment",
         "report_desc": "CWSN having UDID report",
         "generate_report": true,

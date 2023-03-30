@@ -3,7 +3,7 @@
 
         {
             "report_name": "sports_battery_test_schools",
-            "report_code" : "SBTSCH",
+            "report_code" : "SCH_SPTS_BAT",
             "report_category": "Sports",
             "report_desc": "Sports battery test schools report",
             "generate_report": true,
@@ -106,7 +106,7 @@
 
         {
             "report_name": "sports_battery_test_students",
-            "report_code" : "SBT_STU",
+            "report_code" : "STU_SPTS_BAT",
             "report_category": "Sports",
             "report_desc": "Sports battery test students report",
             "generate_report": true,

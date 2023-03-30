@@ -3,7 +3,7 @@
 
         {
             "report_name": "students_ageing_in_common_pool",
-            "report_code" : "CP",
+            "report_code" : "STU_AGE_CP",
             "report_category": "Enrolment",
             "report_desc": "Students in Common Pool for over 30 days - CEO Report",
             "generate_report": true,
@@ -99,7 +99,7 @@
 
         {
             "report_name": "oosc_admitted",
-            "report_code" : "OOSC",
+            "report_code" : "OOSC_ADMT",
             "report_category": "Enrolment",
             "report_desc": "OoSc - admitted Report",
             "generate_report": true,
