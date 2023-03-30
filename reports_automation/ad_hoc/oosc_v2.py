@@ -29,6 +29,9 @@ def reason_type_breakdown(df,grouping_levels):
     # Clean the reason type values
     df[reason_type_col].replace(to_replace=['To be admitted', 'To be Admitted '], value=cols.to_be_admitted,
                                 inplace=True)
+    # Get reason type wise summary of OSC data
+    df_pivot = pd.pivot_table(df, values=cols.student_name, index=grouping_levels,
+                              columns=[reason_type_col], aggfunc='count', fill_value=0).reset_index()
     # Filter the data to reason type matching 'to be admitted' status
     df_to_be_admitted = df[df[cols.reason_type] == cols.to_be_admitted]
 
@@ -61,10 +64,12 @@ def reason_type_breakdown(df,grouping_levels):
     df_status_to_be_verified.rename(columns={cols.not_admttd: cols.verified_not_admitted,
                                              cols.stdnt_admttd: cols.verified_admitted}, inplace=True)
 
-    # Merging the to be admitted and non target data into a single dataframe
-    df_pivot = df_status_to_be_admitted.merge(df_status_non_target, on=grouping_levels, how='left')
+    # Merging the reason type summary and to be admitted in a single dataframe
+    df_admitted_merge = df_pivot.merge(df_status_to_be_admitted, on=grouping_levels, how='left')
+    # Merging the above merge and non target data into a single dataframe
+    df_non_target_merge = df_admitted_merge.merge(df_status_non_target, on=grouping_levels, how='left')
     # Merging the above merge and to be verified in the main dataframe
-    df_final = df_pivot.merge(df_status_to_be_verified, on=grouping_levels, how='left')
+    df_final = df_non_target_merge.merge(df_status_to_be_verified, on=grouping_levels, how='left')
 
     # Replacing the null values with zeo
     df_final.fillna(0, inplace=True)
