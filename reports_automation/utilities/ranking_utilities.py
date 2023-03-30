@@ -23,7 +23,7 @@ ceo_rpts_dir_path = file_utilities.get_ceo_rpts_dir_path()
 
 
 # Define the columns to save to the ranking master
-cols_to_save = [cols.district, cols.name, cols.desig, cols.rank_col, cols.ranking_value, cols.ranking_value_desc,\
+cols_to_save = [cols.name, cols.desig, cols.rank_col, cols.ranking_value, cols.ranking_value_desc,\
     cols.metric_code, cols.metric_category, cols.school_level, cols.month_col, cols.year_col]
 
 
@@ -99,7 +99,7 @@ def update_ranking_master(df_ranking, metric_code, metric_category, school_level
         df_master_ranking = pd.read_excel(ranking_file_path, ranking_master_sheet_name)
 
         # Define the subset of columns to check for common rows
-        cols_to_check = [cols.district, cols.name, cols.desig, cols.metric_code, cols.school_level, cols.month_col, cols.year_col]
+        cols_to_check = [cols.name, cols.desig, cols.metric_code, cols.school_level, cols.month_col, cols.year_col]
 
         # Check if ranking data already exists
         if (utilities.is_any_row_common(df_master_ranking[cols_to_check], df_ranking[cols_to_check])):

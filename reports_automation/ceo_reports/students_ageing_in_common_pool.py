@@ -12,12 +12,12 @@ import utilities.column_names_utilities as cols
 
 
 # Define elementary indexes for pivoting
-elem_pivot_index = [cols.district_name, cols.deo_name_elm, cols.school_category]
+elem_pivot_index = [cols.deo_name_elm, cols.block_name]
 # Define secondary indexes for pivoting
-sec_pivot_index = [cols.district_name, cols.deo_name_sec, cols.school_category]
+sec_pivot_index = [cols.deo_name_sec, cols.block_name]
 
 # Define elementary report classes
-elem_classes = [1,2,3,4,5,6,7,8,9]
+elem_classes = [1,2,3,4,5,6,7,8]
 
 # Define secondary report classes
 sec_classes = [1,2,3,4,5,6,7,8,9,10,11]
@@ -44,11 +44,9 @@ def _get_classwise_common_pool_data(df_data, pivot_index, classes):
     -------
     Pandas DataFrame object of classwise common pool data
     """
-    # Get chool category wise ageing count in each class
+    # Get school category wise ageing count in each class
     data_pivot_ageing = pd.pivot_table(df_data, values=cols.students_ageing30_count, \
                         index=pivot_index ,columns=[cols.class_number], aggfunc='sum',fill_value=0).reset_index()
-
-    print('Data post first pivot:', data_pivot_ageing)
 
     # Update with the total ageing data
     data_pivot_ageing[cols.ageing] = data_pivot_ageing[classes].sum(axis=1)

@@ -72,7 +72,8 @@ def run():
     # sort the data by % to be admitted
     df_oosc.sort_values(cols.perc_to_be_admitted, ascending=False, inplace=True)
 
-    file_utilities.save_to_excel({'Report':df_oosc}, 'OoSC_Report.xlsx')
+    file_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
+    file_utilities.save_to_excel({'Report':df_oosc}, 'OoSC_Report.xlsx', file_path=file_path)
 
 if __name__ == "__main__":
     run()

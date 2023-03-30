@@ -9,16 +9,16 @@ import utilities.file_utilities as file_utilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.column_names_utilities as cols
 
-brc_file_name = 'BRC_CRC_Master_sheet.xlsx'
-brc_master_sheet_name = 'BRC-CRC Updated sheet'
+brc_file_name = 'BRC_CRC_Master_V3.xlsx'
+brc_master_sheet_name = 'BRC-CRC V3 wo hyphen'
 
 # Columns to be dropped from the BRC mapping sheet
-brc_master_drop_cols = ['Cluster ID', 'CRC Udise','CRC School Name','BRTE']
+brc_master_drop_cols = ['CRC Udise' ,'CRC School Name', 'BRTE']
 
 # Define the list of columns to group by for rankings
-beo_ranking_group_cols = [cols.district_name, cols.beo_user, cols.beo_name]
-deo_elem_ranking_group_cols = [cols.district_name, cols.deo_name_elm]
-deo_secnd_ranking_group_cols = [cols.district_name, cols.deo_name_sec]
+beo_ranking_group_cols = [cols.beo_user, cols.beo_name]
+deo_elem_ranking_group_cols = [cols.deo_name_elm]
+deo_secnd_ranking_group_cols = [cols.deo_name_sec]
 
 
 def map_data_with_brc(raw_data, merge_dict):
@@ -55,6 +55,7 @@ def map_data_with_brc(raw_data, merge_dict):
     list_of_cols = pd.unique(pd.Series(list_of_cols)).tolist()
 
     report_summary = report_summary.reindex(columns=list_of_cols)
+
     return report_summary
 
 def get_brc_master(sheet_name=brc_master_sheet_name):
@@ -72,6 +73,7 @@ def get_brc_master(sheet_name=brc_master_sheet_name):
     # read from excel, get sub columns
     brc_mapping_file_path = os.path.join(mapping_data_dir, brc_file_name)
     brc_master = pd.read_excel(brc_mapping_file_path,sheet_name=sheet_name)
+
     return brc_master
 
 
@@ -126,7 +128,9 @@ def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_ca
     # Update the master ranking with the BEO ranking
     #ranking_utilities.update_ranking_master(beo_ranking_for_master, metric_code, metric_category, 'Elementary')
 
+
     deo_elm_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols, ranking_args_dict)
+
 
 
     # Make a copy of the ranking to update master sheet
@@ -136,7 +140,7 @@ def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_ca
     deo_elm_ranking_for_master[cols.desig] = 'DEO'
 
     # Rename the DEO name column
-    deo_elm_ranking_for_master.rename(columns={cols.deo_name_elm: cols.name, cols.district_name: cols.district}, inplace = True)
+    deo_elm_ranking_for_master.rename(columns={cols.deo_name_elm: cols.name}, inplace = True)
 
     # Update the master ranking with the BEO ranking
     ranking_utilities.update_ranking_master(deo_elm_ranking_for_master, metric_code, metric_category, 'Elementary')
@@ -156,7 +160,11 @@ def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_ca
     # Since the ranking values will be grouped to beo level, the ranking values of each individual row
     # of data before being grouped and ranked is missed. That data will be more useful for review.
     # That data is inserted here. Not a clean way of doing things. Yes.
-    data_level_ranking = ranking_utilities.calc_ranking(df_summary, None, ranking_args_dict)
+    data_level_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols + [cols.block_name], ranking_args_dict)
+
+    # Drop the ranking value and ranking description column
+    data_level_ranking.drop(columns={cols.rank_col, cols.ranking_value_desc}, inplace=True)
+
 
     # Add the data level ranking value
     #elementary_report = pd.merge(df_summary, data_level_ranking[[cols.deo_name_elm, \
@@ -164,12 +172,12 @@ def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_ca
     #elementary_report = pd.merge(elementary_report, beo_ranking, on=[cols.beo_user, cols.beo_name])
     #elementary_report = pd.merge(elementary_report, deo_elm_ranking, on=[cols.deo_name_elm])
     
-    
 
     # Replace the two lines below with the three lines above when beo ranking is enabled
     # Add the data level ranking value
-    elementary_report = pd.merge(df_summary, data_level_ranking[[cols.deo_name_elm, \
-            cols.school_category, cols.ranking_value]], on=[cols.school_category, cols.deo_name_elm])
+    elementary_report = pd.merge(df_summary, data_level_ranking[[cols.block_name, cols.deo_name_elm, \
+            cols.ranking_value]], on=[cols.deo_name_elm, cols.block_name])
+
     elementary_report = pd.merge(elementary_report, deo_elm_ranking, on=[cols.deo_name_elm])
     
 
@@ -245,11 +253,12 @@ def get_sec_ranked_report(df_summary, ranking_args_dict, metric_code, metric_cat
     # Since the ranking values will be grouped to DEO level, the ranking values of each individual row
     # of data before being grouped and ranked is missed. That data will be more useful for review.
     # That data is inserted here. Not a clean way of doing things. Yes.
-    data_level_ranking = ranking_utilities.calc_ranking(df_summary, None, ranking_args_dict)
+    data_level_ranking = ranking_utilities.calc_ranking(df_summary, deo_secnd_ranking_group_cols + [cols.block_name], ranking_args_dict)
 
 
     # Add the data level ranking value
-    secondary_report = pd.merge(df_summary, data_level_ranking[[cols.deo_name_sec, cols.school_category, cols.ranking_value]], on=[cols.school_category, cols.deo_name_sec])
+    secondary_report = pd.merge(df_summary, data_level_ranking[[cols.block_name, cols.deo_name_sec, cols.ranking_value]],\
+                                 on=[cols.deo_name_sec, cols.block_name])
 
     # Rename the name of the column: ranking value to description of the ranking value
     secondary_report.rename(columns = {cols.ranking_value: ranking_args_dict['ranking_val_desc']}, inplace=True)

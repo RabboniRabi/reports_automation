@@ -16,14 +16,14 @@
         "summary_args": {
             "grouping_levels" : ["cols.district_name"],
             "agg_dict": {
-                "cols.not_updt_tchrs": "sum", 
-                "cols.up_tot_tchrs" : "sum"
+                "cols.up_tot_tchrs" : "sum",
+                "cols.not_updt_tchrs": "sum" 
                 },
             "metric_col_name": "cols.perc_not_updt",
             "num_col": "cols.not_updt_tchrs",
             "den_col": "cols.up_tot_tchrs",
             "sort": "True",
-            "ascending": "True"
+            "ascending": "False"
             }
         }
 
