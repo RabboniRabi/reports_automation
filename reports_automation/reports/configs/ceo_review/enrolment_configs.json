@@ -3,7 +3,7 @@
 
         {
             "report_name": "students_ageing_in_common_pool",
-            "report_code" : "CP",
+            "report_code" : "STU_AGE_CP",
             "report_category": "Enrolment",
             "report_desc": "Students in Common Pool for over 30 days - CEO Report",
             "generate_report": true,
@@ -28,8 +28,9 @@
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.ageing": "sum", 
-                        "cols.total_cp_students": "sum"
+                        "cols.total_cp_students": "sum",
+                        "cols.ageing": "sum"
+                        
                     },
                     "ranking_val_desc": "cols.perc_ageing",
                     "num_col": "cols.ageing",
@@ -38,26 +39,22 @@
                     "ascending": "True"
                 },
                 "format_config" : {
-                    "subtotal_outlines_dict" : {
+                    "heading" : "Elementary students ageing in common pool report",
+                    "subtotal_outlines_dict" : {                        
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
-                            "cols.ageing": "sum",
                             "cols.total_cp_students": "sum",
+                            "cols.ageing": "sum",
                             "cols.deo_elem_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_ageing"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
+                    "format_dicts" : [
+                        {
                             "columns" : ["cols.perc_ageing"],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             },
             "secondary_report" : {
@@ -70,8 +67,8 @@
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.ageing": "sum", 
-                        "cols.total_cp_students": "sum"
+                        "cols.total_cp_students": "sum",
+                        "cols.ageing": "sum"
                     },
                     "ranking_val_desc": "cols.perc_ageing",
                     "num_col": "cols.ageing",
@@ -80,33 +77,29 @@
                     "ascending": "True"
                 },
                 "format_config" : {
+                    "heading" : "Secondary students ageing in common pool report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
-                            "cols.ageing": "sum",
                             "cols.total_cp_students": "sum",
+                            "cols.ageing": "sum",
                             "cols.deo_sec_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_sec": "Summary"}
-                    },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_ageing"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    }, 
+                    "format_dicts" : [
+                        {
                             "columns" : ["cols.perc_ageing"],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             }
         },
 
         {
             "report_name": "oosc_admitted",
-            "report_code" : "OOSC",
+            "report_code" : "OOSC_ADMT",
             "report_category": "Enrolment",
             "report_desc": "OoSc - admitted Report",
             "generate_report": true,
@@ -146,6 +139,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
+                    "heading" : "Elementary OoSC students admitted status report as on ",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -154,19 +148,14 @@
                             "cols.stdnts_admttd" : "sum",
                             "cols.deo_elem_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_admitted_oosc"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
+                    "format_dicts" : [
+                        {
                             "columns" : ["cols.perc_admitted_oosc"],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             },
             "secondary_report" : {
@@ -194,6 +183,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
+                    "heading" : "Secondary OoSC students admitted status report as on ",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -202,19 +192,14 @@
                             "cols.stdnts_admttd" : "sum",
                             "cols.deo_sec_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_admitted_oosc"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
+                    "format_dicts" : [
+                        {
                             "columns" : ["cols.perc_admitted_oosc"],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             }
         }

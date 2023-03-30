@@ -43,12 +43,14 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
 
     Returns:
     -------
-    A dictionary with two values: 
+    A dictionary with three values: 
     1) updated dataframe with inserted subtotals    
     2) dataframe with only subtotals rows
+    3) indices of inserted subtotal rows
     Structure: {
         'updated_df': df,
         'subtotals': df_subtotal_rows
+        'subtotal_row_indices': subtotals_row_indices_list
     }
     """
 
@@ -57,13 +59,15 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
     agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
     text_append_dict = subtotal_outlines_dict['text_append_dict']
-    #ranking_args_dict = report_config_dict['ranking_args']
 
     # Get all the column names in the master data frame
     master_columns = df.columns.values
 
-    # Initialize a data frame to hold the inserted subtotal rows
+    # Initialize a data frame to hold the inserted subtotal rows - Useful for outlines and formatting
     df_subtotal_rows = pd.DataFrame(columns=df.columns) 
+
+    # Initialize a list to hold the index locations of the inserted subtotal rows - Useful for formatting
+    subtotals_row_indices_list = []
 
     # Get sorted levels
     levels = sorted(level_subtotal_cols_dict.keys())
@@ -74,6 +78,7 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
         subtotal_col = level_subtotal_cols_dict[level]
         first_agg_col = True # Flag for merging grouped-aggregated values
 
+        print('df columns: ', df.columns.to_list())
         # Group by grouping levels and aggregate by given columns and aggregate function
         df_group_agg = df.groupby([subtotal_col], as_index=False,sort=False).agg(agg_cols_func_dict)
 
@@ -114,8 +119,11 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
                 #print('Going to insert: ', row_to_insert, ' at index: ' , last_matching_index+1)
                 df = utilities.insert_row(df, last_matching_index + 1, row_to_insert )
 
+                # Update the list containing subtotal row indices - to be used in formatting
+                subtotals_row_indices_list.append(last_matching_index + 1)
+
     # Return the updated DataFrame and subtotals DataFrame
-    return {'updated_df': df, 'subtotals': df_subtotal_rows}
+    return {'updated_df': df, 'subtotals': df_subtotal_rows, 'subtotal_row_indices': subtotals_row_indices_list}
 
 
 def update_subtotaled_row_with_ranking_val(df_subtotaled, ranking_args_dict):
@@ -209,8 +217,97 @@ def subtotal_outline_and_save(df, level_subtotal_cols_dict, agg_cols_func_dict, 
     wb.save(write_path)
 
 
-        
 
+def format_subtotal_rows(worksheet, workbook, df, subtotal_row_indices):
+    """
+    Function to format the subtotal rows by styling it with border, background colour etc.
 
+    Parameters:
+    ----------
+    worksheet: Worksheet
+        An XlsxWriter worksheet object
+    workbook: Workbook
+        An XlsxWriter workbook object
+    df: DataFrame
+        The data containing subtotal rows
+    subtotal_row_indices: list
+        List of indices of subtotal rows in the dataframe
+    """
 
+    # Define the formatting to apply for all subtotal rows
+    cell_format = workbook.add_format()
+    # Set the subtotal rows to bold
+    cell_format.set_bold() 
+    # Set the subtotal row background to grey
+    cell_format.set_bg_color('#dedcdc')
+    # Set the border for the subtotal row
+    cell_format.set_border(1)
+    # Set the alignment of the text
+    cell_format.set_align('center')
+
+    for row_index in subtotal_row_indices:
+        # Add 2 to row index location as report heading will have been inserted at the top
+        # and column headers will be at row 1
+        worksheet.write_row(row_index + 2, 0, df.iloc[row_index], cell_format)
     
+
+
+def correct_col_formatting_loss(worksheet, workbook, df, subtotal_row_indices, format_dicts_list):
+    """
+    Helper function to re-apply the column formatting previously applied
+    and lost when the subtatol row is formatted
+
+    Parameters:
+    ----------
+    worksheet: Worksheet
+        An XlsxWriter worksheet object
+    workbook: Workbook
+        An XlsxWriter workbook object
+    df: DataFrame
+        The data containing the grand total row at the end
+    subtotal_row_indices: list
+        List of indices of subtotal rows in the dataframe
+    format_dicts_list: list
+        List of dictionaries where each dictionary item contains list of columns to apply a formatting on
+    """
+
+
+    for format_dict in format_dicts_list:
+    
+        # Get the column name variables
+        columns = format_dict['columns']
+        # Get the resolved column name values
+        columns = cols.get_values(columns)
+
+        format = format_dict['format']
+
+        # update format with the cell format
+        #format.update(cell_format)
+        cell_format = workbook.add_format(format)
+
+        # Add the cell formats that were applied in subtotaling
+        
+        # Set the subtotal rows to bold
+        cell_format.set_bold() 
+        # Set the subtotal row background to grey
+        cell_format.set_bg_color('#dedcdc')
+        # Set the border for the subtotal row
+        cell_format.set_border(1)
+        # Set the alignment of the text
+        cell_format.set_align('center')
+
+        # For each column
+        for column in columns:
+            
+            col_index = df.columns.get_loc(column)
+
+            # For each subtotal row:
+            for row_index in subtotal_row_indices:
+                # Add 2 to row index location as report heading will have been inserted at row 0
+                # and column headers will be at row 1
+                worksheet.write(row_index + 2, col_index, df.iloc[row_index, col_index], cell_format)
+
+
+
+
+        

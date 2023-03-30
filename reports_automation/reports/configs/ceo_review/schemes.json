@@ -3,9 +3,9 @@
 
         {
             "report_name": "students_receiving_books",
-            "report_code" : "STU_BOOKS",
+            "report_code" : "STU_LIB_BOOKS",
             "report_category": "Schemes",
-            "report_desc": "Students receiving books report",
+            "report_desc": "Students receiving library books report",
             "generate_report": true,
             "source_config" : {
                 "source_file_name" : "students_receiving_books.xlsx",
@@ -40,6 +40,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
+                    "heading" : "Elementary schools students receiving books report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -49,19 +50,14 @@
                             "cols.tot_schools" : "sum",
                             "cols.deo_elem_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_schools_issued_books"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
+                    "format_dicts" : [
+                        {
                             "columns" : ["cols.perc_schools_issued_books"],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             },
             "secondary_report" : {
@@ -86,6 +82,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
+                    "heading" : "Secondary schools students receiving books report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -95,19 +92,14 @@
                             "cols.tot_schools" : "sum",
                             "cols.deo_sec_rank": "mean"
                         },
-                        "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
                     },
-                    "format_dict" : {
-                        "conditional_format" : {
-                            "columns" : ["cols.perc_schools_issued_books"],
-                            "format": {"type": "3_color_scale"}
-                        },
-                        "format_cells" : {
+                    "format_dicts" : [
+                        {
                             "columns" : ["cols.perc_schools_issued_books"],
                             "format" : {"num_format": "0.00%"}
-            
                         }
-                    }
+                    ]
                 }
             }
         }

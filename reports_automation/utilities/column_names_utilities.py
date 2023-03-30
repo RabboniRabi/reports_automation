@@ -30,6 +30,8 @@ school_type = 'school_type'
 un_aided = 'Un-aided'
 central_govt = 'Central Govt'
 cate_type = 'cate_type'
+section = 'section'
+tot_sections = 'Total Sections'
 
 section = 'section'
 
@@ -152,8 +154,11 @@ mediam_up_time_hrs = 'Median Uptime Hours'
 tot_secs = 'Total_Sections'
 total_tchrs = 'Total Teachers'
 tchrs_assigning_books = 'Teachers assigning books'
+sctns_assigning_books = 'Sections assigning books'
 tchrs_not_assigning_books = 'Teachers not assigning books'
+sctns_not_assigning_books = 'Sections not assigning books'
 perc_tchrs_assigning_books = '% Teachers assigning books'
+perc_sctns_assigning_books = '% Sections assigning books'
 shelves_created = 'No_of_Section_created_shelves'
 shelves_not_created = 'No_of_Section_Not_created_shelves'
 perc_shelves_created = '% Shelves created'
@@ -234,7 +239,8 @@ scheme_nt_strt = 'not started'
 scheme_not_started = 'Not Started'
 perc_schools_issued_books = '% schools completed book issue'
 
-
+#Student teacher ratio specific column
+student_teacher_ratio = "student_teacher_ratio"
 
 
 

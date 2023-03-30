@@ -2,7 +2,7 @@
     "report_configs": [
     {
         "report_name": "pending_G2C_applications",
-        "report_code" : "G2C",
+        "report_code" : "G2C_PEND",
         "report_category": "Operations",
         "report_desc": "% of Pending G2C applications greater than 30 days",
         "generate_report": true,
@@ -48,6 +48,7 @@
                 "ascending": "True"
             },
             "format_config" : {
+                "heading" : "Elementary level % of Pending G2C applications greater than 30 days",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
@@ -59,19 +60,14 @@
                         "cols.tot_pnd_lessr_15_days" : "sum",
                         "cols.deo_elem_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_apps_grtr_15_days"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.perc_apps_grtr_15_days"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         },
         "secondary_report" : {
@@ -105,6 +101,7 @@
                 "ascending": "True"
             },
             "format_config" : {
+                "heading" : "Secondary level % of Pending G2C applications greater than 30 days",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
@@ -116,19 +113,14 @@
                         "cols.tot_pnd_lessr_15_days" : "sum",
                         "cols.deo_sec_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_sec": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_apps_grtr_15_days"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.perc_apps_grtr_15_days"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         }
     }

@@ -53,7 +53,7 @@ def  build_level_outline_ranges_dict(df, df_subtotal_rows, level_subtotal_cols_d
                 matching_indices.sort()
 
                 # Collect the ranges to apply the excel outline for
-                outline_range = tuple((matching_indices[0], matching_indices[len(matching_indices) - 1]))
+                outline_range = [matching_indices[0], matching_indices[len(matching_indices) - 1]]
 
                 # Add the range to the level_outline_ranges_dict dictionary
                 if outline_level not in level_outline_ranges_dict.keys():
@@ -66,13 +66,16 @@ def  build_level_outline_ranges_dict(df, df_subtotal_rows, level_subtotal_cols_d
 
 
 
-def apply_outlines(ws, level_ranges_dict):
+def apply_outlines(worksheet, level_ranges_dict):
     """
-    Function to apply Excel outlines to a given openpyxl workbook object
+    Function to apply Excel outlines to a given XlsxWriter workbook object.
+
     Parameters:
     ----------
-    ws: An openpyxl worksheet object
-    level_ranges_dict: A dictionary of level ranges key values
+    worksheet: XlsxWriter worksheet
+        A XlsxWriter worksheet object
+    level_ranges_dict: dict
+        A dictionary of level ranges key values
         where ranges is a list of tuples for each level
         and each tuple contains the start index and end index of the range
         Eg: {
@@ -85,14 +88,48 @@ def apply_outlines(ws, level_ranges_dict):
             }
     """
 
-    ws.sheet_properties.outlinePr.summaryBelow = False
+    # For each outline level
+    for level in sorted(level_ranges_dict.keys()):
+        # For each range tuple at each outline level
+        for outline_range in level_ranges_dict[level]:
+            # Apply the outline, row by row
+            for i in range(outline_range[0], outline_range[1] + 1):
+                worksheet.set_row(int(i) + 1 , None, None, {'level' : int(level), 'hidden' : True})
 
+    return worksheet            
+
+
+
+def push_outline_ranges_for_formatting(level_ranges_dict, push_down_by):
+    """
+    Function to incerement the outline ranges by given value.
+
+    Parameters:
+    -----------
+        level_ranges_dict: dict
+        A dictionary of level ranges key values
+        where ranges is a list of tuples for each level
+        and each tuple contains the start index and end index of the range
+        Eg: {
+            '1': [
+                (2,10),(11,20),(21,30)
+                ],
+            '2': [
+                (2,4),(2,9),(11,16),(17,20),(21,24),(25,30)
+                ]    
+            }
+    push_down_by: int
+        Value to increment the outlines ranges by
+    """
 
     # For each outline level
     for level in sorted(level_ranges_dict.keys()):
         # For each range tuple at each outline level
         for outline_range in level_ranges_dict[level]:
-            # Apply the outline
-            ws.row_dimensions.group(outline_range[0]+3, outline_range[1]+3, outline_level=level,hidden=False)
+            # Increment the outline ranges
+            outline_range[0] = outline_range[0] + push_down_by
+            outline_range[1] = outline_range[1] + push_down_by 
 
-    return ws            
+
+    # Return the updated level ranges dict
+    return level_ranges_dict

@@ -206,10 +206,10 @@ def generate_all(generate_fresh: bool = True):
                 if format_config is not None:
                     # Call review view utilities to format and save the report
                     review_view_utilities.prepare_report_for_review(elem_report\
-                            , format_config, elem_report_config['ranking_args'], 'Report', elem_report_name, curr_month_elem_ceo_rpts_dir_path)
+                            , format_config, elem_report_config['ranking_args'], metric_code, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
                 else:
                     # Save the report without any formatting
-                    file_utilities.save_to_excel({'Report': elem_report}, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
+                    file_utilities.save_to_excel({metric_code: elem_report}, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
         
         # Get the ranking arguments for secondary report
         sec_report_config = config['secondary_report']
@@ -234,10 +234,10 @@ def generate_all(generate_fresh: bool = True):
                 if format_config is not None:
                     # Call review view utilities to format and save the report
                     review_view_utilities.prepare_report_for_review(sec_report\
-                            , format_config, sec_report_config['ranking_args'], 'Report', sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
+                            , format_config, sec_report_config['ranking_args'], metric_code, sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
                 else:
                     # Save the report without any formatting
-                    file_utilities.save_to_excel({'Report': sec_report}, sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
+                    file_utilities.save_to_excel({metric_code: sec_report}, sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
 
 
 def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name:str, report_level:str, metric_code, metric_category):
@@ -407,6 +407,10 @@ def _update_ranking_args_dict(ranking_args:dict):
         # Update the list of columns to average on
         updated_list = cols.get_values(ranking_args['avg_cols'])
         ranking_args['avg_cols'] = updated_list
+
+    if ranking_type == ranking_types.NUMBER_RANKING.value:
+        ranking_col = cols.get_value(ranking_args['ranking_col'])
+        ranking_args['ranking_col'] = ranking_col
 
     return ranking_args
 
