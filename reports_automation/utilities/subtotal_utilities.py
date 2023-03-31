@@ -78,7 +78,6 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
         subtotal_col = level_subtotal_cols_dict[level]
         first_agg_col = True # Flag for merging grouped-aggregated values
 
-        print('df columns: ', df.columns.to_list())
         # Group by grouping levels and aggregate by given columns and aggregate function
         df_group_agg = df.groupby([subtotal_col], as_index=False,sort=False).agg(agg_cols_func_dict)
 
