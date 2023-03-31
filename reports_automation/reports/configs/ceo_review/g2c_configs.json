@@ -2,7 +2,7 @@
     "report_configs": [
     {
         "report_name": "pending_G2C_applications",
-        "report_code" : "G2C",
+        "report_code" : "G2C_PEND",
         "report_category": "Operations",
         "report_desc": "% of Pending G2C applications greater than 30 days",
         "generate_report": true,

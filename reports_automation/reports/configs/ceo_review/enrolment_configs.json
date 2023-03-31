@@ -3,7 +3,7 @@
 
         {
             "report_name": "students_ageing_in_common_pool",
-            "report_code" : "CP",
+            "report_code" : "STU_AGE_CP",
             "report_category": "Enrolment",
             "report_desc": "Students in Common Pool for over 30 days - CEO Report",
             "generate_report": true,
@@ -43,6 +43,14 @@
                     "subtotal_outlines_dict" : {                        
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
+                            "cols.class_1" : "sum",
+                            "cols.class_2" : "sum",
+                            "cols.class_3" : "sum",
+                            "cols.class_4" : "sum",
+                            "cols.class_5" : "sum",
+                            "cols.class_6" : "sum",
+                            "cols.class_7" : "sum",
+                            "cols.class_8" : "sum",
                             "cols.total_cp_students": "sum",
                             "cols.ageing": "sum",
                             "cols.deo_elem_rank": "mean"
@@ -81,6 +89,17 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
+                            "cols.class_1" : "sum",
+                            "cols.class_2" : "sum",
+                            "cols.class_3" : "sum",
+                            "cols.class_4" : "sum",
+                            "cols.class_5" : "sum",
+                            "cols.class_6" : "sum",
+                            "cols.class_7" : "sum",
+                            "cols.class_8" : "sum",
+                            "cols.class_9" : "sum",
+                            "cols.class_10" : "sum",
+                            "cols.class_11" : "sum",
                             "cols.total_cp_students": "sum",
                             "cols.ageing": "sum",
                             "cols.deo_sec_rank": "mean"
@@ -99,7 +118,7 @@
 
         {
             "report_name": "oosc_admitted",
-            "report_code" : "OOSC",
+            "report_code" : "OOSC_ADMT",
             "report_category": "Enrolment",
             "report_desc": "OoSc - admitted Report",
             "generate_report": true,

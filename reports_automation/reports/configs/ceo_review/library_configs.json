@@ -2,7 +2,7 @@
     "report_configs": [
     {
         "report_name": "library_shelves",
-        "report_code" : "LIBSHELV",
+        "report_code" : "LIB_SHELV",
         "report_category": "Library",
         "report_desc": "Library shelves created report",
         "generate_report": true,
@@ -109,7 +109,7 @@
 
     {
         "report_name": "library_book_assigning_by_tchrs",
-        "report_code" : "LIBBAT",
+        "report_code" : "LIB_ASS",
         "report_category": "Library",
         "report_desc": "Library books assigning teachers report",
         "generate_report": true,

@@ -5,7 +5,7 @@
       "report_code": "STU_TCH_RATIO",
       "report_category": "class",
       "report_desc": "Student teacher ratio report",
-      "generate_report": false,
+      "generate_report": true,
       "source_config": {
         "query_file_name" : "student_teacher_ratio.sql",
         "db" : "tn_schools_db"
@@ -51,7 +51,13 @@
             "text_append_dict": {
               "cols.deo_name_elm": ""
             }
-          }
+          },
+          "format_dicts" : [
+            {
+                "columns" : ["cols.student_teacher_ratio"],
+                "format" : {"num_format": "0.00"}
+            }
+          ]
         }
       },
       "secondary_report": {
@@ -85,7 +91,12 @@
             },
             "text_append_dict" : {"cols.deo_name_sec": ""}
           },
-          "format_dicts" : []
+          "format_dicts" : [
+            {
+                "columns" : ["cols.student_teacher_ratio"],
+                "format" : {"num_format": "0.00"}
+            }
+          ]
         }
       }
     }
