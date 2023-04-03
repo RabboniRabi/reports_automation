@@ -16,6 +16,7 @@ import importlib
 from school_levels import SchoolLevels as school_levels
 from ceo_report_levels import CEOReportLevels as ceo_report_levels
 from ceo_report_ranking_types import CEOReportRankingTypes as ranking_types
+import data_cleaning.column_cleaner as column_cleaner
 
 
 def get_ceo_report_raw_data(report_config: dict, save_source=False):
@@ -45,6 +46,9 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
 
     source_config = report_config['source_config']
     df_data = data_fetcher.get_data_from_config(source_config, save_source)
+
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_data)
 
     # Check if pre-processing before merging with BRC-CRC mapping is required
     if (report_config['pre_process_brc_merge']):
@@ -104,6 +108,8 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
 
     # Get the raw data merged with the BRC-CRC mapping
     df_data = get_ceo_report_raw_data(report_config, save_source)
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_data)
 
     # Get the report metric code and category
     metric_code = report_config['report_code']
@@ -184,6 +190,9 @@ def generate_all(generate_fresh: bool = True):
 
         # Get the raw data merged with the BRC-CRC mapping
         df_data = get_ceo_report_raw_data(config, True)
+
+        # Rename the column names to standard format
+        column_cleaner.standardise_column_names(df_data)
         
 
         # Get the arguments for Elementary report

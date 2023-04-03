@@ -145,7 +145,8 @@ def main():
     #df_report = pd.read_excel(r'/home/rabboni/Downloads/health.xlsx', sheet_name='Report')
     file_name = file_utilities.user_sel_excel_filename()
     df_report = pd.read_excel(file_name, sheet_name='Report', skiprows=4)
-    column_cleaner.column_cleaning(df_report)
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_report)
 
     # Get the students' health screening details at district level
     df_students_screening_status = get_students_screening_status(df_report, cols.district_name)

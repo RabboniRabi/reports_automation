@@ -135,7 +135,8 @@ def main():
     # Ask the user to select the CWSN report excel file.
     cwsn_report = file_utilities.user_sel_excel_filename()
     df_report = pd.read_excel(cwsn_report, sheet_name='Report', skiprows=4)
-    column_cleaner.column_cleaning(df_report)
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_report)
 
     # List of student statuses to count
     student_statuses = ['In_School', 'Common Pool']
@@ -144,7 +145,7 @@ def main():
     # Levels to apply grouping by
     group_levels = ['district_name']
     # List of places student is supported in
-    supported_in_vals = ['SRP Center', 'Home Based']
+    supported_in_vals = ['School + IE', 'Home Based', 'Home Based + IE']
 
     id_columns_regex_dict = {
         'NID' : '^[0-9]{5}$', # Accept only 5 digit numbers
@@ -186,17 +187,19 @@ def main():
 
     # Rename columns for better readability
     df_overview.rename(columns = {
-        'In_School' : 'Students in School',
-        'Common Pool' : 'Students in Common Pool',
-        'NID':'NID count',
-        'UDID':'Issued UDIDs count',
-        'School':'Students at Schools',
+        'In_School': 'Students in School',
+        'Common Pool': 'Students in Common Pool',
+        'NID': 'NID count',
+        'UDID': 'Issued UDIDs count',
+        'School': 'Students at Schools',
+        'School + IE': 'Students at School + IE',
         'SRP Center':'Students at SRP Centers',
         'Home Based': 'Home Based Students',
-        'Website' : 'Pending website applications',
-        'Mobile' : 'Pending mobile applications',
-        'Yes' : 'Number of students with account',
-        'No' : 'Number of students without account'
+        'Home Based + IE': 'Home Based + IE Students',
+        'Website': 'Pending website applications',
+        'Mobile': 'Pending mobile applications',
+        'Yes': 'Number of students with account',
+        'No': 'Number of students without account'
         }, inplace = True)
 
     # Sort the values
