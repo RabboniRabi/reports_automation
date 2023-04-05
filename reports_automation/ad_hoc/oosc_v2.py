@@ -7,6 +7,8 @@ sys.path.append("../")
 import pandas as pd
 import utilities.column_names_utilities as cols
 import utilities.file_utilities as file_utilities
+import functools as ft
+
 
 # Get the reason type column
 reason_type_col = cols.reason_type
@@ -64,14 +66,15 @@ def reason_type_breakdown(df,grouping_levels):
     df_status_to_be_verified.rename(columns={cols.not_admttd: cols.verified_not_admitted,
                                              cols.stdnt_admttd: cols.verified_admitted}, inplace=True)
 
-    # Merging the reason type summary and to be admitted in a single dataframe
-    df_admitted_merge = df_pivot.merge(df_status_to_be_admitted, on=grouping_levels, how='left')
-    # Merging the above merge and non target data into a single dataframe
-    df_non_target_merge = df_admitted_merge.merge(df_status_non_target, on=grouping_levels, how='left')
-    # Merging the above merge and to be verified in the main dataframe
-    df_final = df_non_target_merge.merge(df_status_to_be_verified, on=grouping_levels, how='left')
+    # Define the dataframes to merge
+    df_merge = [df_pivot, df_status_non_target, df_status_to_be_admitted,  df_status_to_be_verified]
+    # Merging the above dataframes using functool module in a single dataframe.
+    df_final = ft.reduce(lambda left, right: pd.merge(left, right, how='left', on=grouping_levels), df_merge)
 
-    # Replacing the null values with zeo
+    # Reordering the columns for better readability
+    df_final = df_final.iloc[:, [0, 1, 2, 3, 4, 5, 9, 8, 6, 11, 10, 7, 13, 12]]
+
+    # Replacing the null values with zero
     df_final.fillna(0, inplace=True)
 
     return df_final
@@ -86,6 +89,9 @@ def main():
     # Ask the user to select the excel file to clean the columns.
     report = file_utilities.user_sel_excel_filename()
     df_report = pd.read_excel(report, sheet_name='Report', skiprows=4)
+
+
+
     # Define the levels to group the data by
     grouping_levels = [cols.district_name, cols.block_name, cols.udise_col, cols.school_name, cols.category_type]
     df = reason_type_breakdown(df_report, grouping_levels)
