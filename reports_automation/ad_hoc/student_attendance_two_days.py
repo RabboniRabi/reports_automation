@@ -3,6 +3,7 @@ Module to create report for teacher attendance over two days
 """
 import sys
 sys.path.append('../')
+import functools as ft
 import pandas as pd
 import utilities.dbutilities as dbutilities
 import utilities.format_utilities as format_utilities
@@ -20,42 +21,62 @@ grouping_agg_dict = {
     cols.tot_unmarked: 'sum'
     }
 
+merge_index = [cols.udise_col, cols.school_name, cols.district_name,
+               cols.block_name, cols.school_type, cols.cate_type, 'date']
 
-def _process_data(df_data, df_schools):
+merge_index_2 = [cols.udise_col, cols.school_name, cols.district_name,
+               cols.block_name, cols.school_type, cols.cate_type, 'date', 'partial_yn', 'section']
+
+
+
+def _process_data(df_section_master, df_unmarked_sections, df_working_schools, df_prtly_working_scls):
+
     """
-    Internal function to process the data to generate the report
-
-    Parameters:
-    -----------
-    df_data: Pandas DataFrame
-        The data as a Pandas DataFrame object
-
-    Returns:
-    -------
-    The data processed as a report.
+    A for-loop that will create a new raw data file that will create a list of sections for each date for all the
+    dates mentioned in the unmarked schools data frame
     """
-    # Group by district - keep this variable to add block if necessary - and sum marked and unmarked and % calc
-    df_grouped = pd.pivot_table(df_data, columns='marked_date', index=[cols.district_name], values='school_name',
-                                aggfunc='count', margins=True, margins_name='Grand Total')
-    df_grouped['Grand Total'] = df_grouped['Grand Total'].div(5).apply(np.ceil).astype(int)
+    raw_data = []
 
-    # Merging the data with the total schools count from the SQL query above (from df_report)
-    df_grouped = pd.merge(df_schools, df_grouped, on=[cols.district_name])
+    #for label, df_unmarked_sections in df_unmarked_sections.groupby(["edate"]):
 
-    # Rename columns total marked and total marked to total marked and unmarked schools as data is now grouped
-    df_grouped.rename(columns={cols.district_name: cols.district, cols.distinct_udise_count: cols.tot_schools},
-                      inplace=True)
+        #data_frames_merge = [df_section_master, df_unmarked_sections]
 
-    # Change Total schools format to integer
-    df_grouped['Total Schools'].astype(int)
+        #data_final = ft.reduce(lambda left, right: pd.merge(left, right, how='left', on=merge_index), data_frames_merge)
 
-    # Adding the % Marked Column
-    df_grouped[cols.perc_marked_schls] = df_grouped['Grand Total']/df_grouped['Total Schools']
 
-    # Sort the data by % highest marked schools
-    df_grouped.sort_values([cols.perc_marked_schls], ascending=True, inplace=True)
+    dates_list = df_unmarked_sections.edate.unique().tolist()
 
-    return df_grouped
+    for date in dates_list:
+        df_date_filtered = df_unmarked_sections[df_unmarked_sections['edate'].isin([date])]
+
+        data_final = pd.merge(df_section_master, df_date_filtered, how='outer')
+
+        data_final['edate'].fillna('Marked Sections', inplace=True)
+
+        data_final["edate"] = np.where(data_final["edate"] == 'Marked Sections', "Marked Sections", "Unmarked Sections")
+
+        data_final['date'] = date
+
+        data_final = pd.merge(data_final, df_working_schools, how='left', on=merge_index)
+
+        data_final = pd.merge(data_final, df_prtly_working_scls, how='left', on=merge_index_2)
+        print('column type', data_final.dtypes)
+
+        data_final['Working sections'] = 'False'
+        for col in range(1, 15):
+            data_final['Working sections'] = (data_final['class_id'] == col) & (data_final[f'{col}'] == 1) & \
+                                             (data_final['partial_yn'] == 3)
+            print(data_final['Working sections'])
+            data_final['Working sections'] = np.where(data_final['Working sections'] == 'True',
+                                                      'section working', 'section not working')
+
+        raw_data.append(data_final)
+
+    df_summary = pd.concat(raw_data)
+
+    df_summary.rename(columns={'edate': 'Marked Status'}, inplace=True)
+
+    return df_summary
 
 
 def _format_report(df_report, df_data):
@@ -163,17 +184,24 @@ def run():
     # Read the database connection credentials
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
-    # Get the latest students and teachers count
-    df_data = dbutilities.fetch_data_as_df(credentials_dict, 'teacher_attendance_last2days_v2.sql')
+    # Get the master list of sections currently active in the database
+    df_section_master = dbutilities.fetch_data_as_df(credentials_dict, 'section_master_for_govt_aided_attendance.sql')
 
-    # Get the total schools abstract from the SQL query file
-    df_schools = dbutilities.fetch_data_as_df(credentials_dict, 'total_schools.sql')
+    # Get the total unmarked sections abstract from the SQL query file
+    df_unmarked_sections = dbutilities.fetch_data_as_df(credentials_dict, 'unmarked _sections.sql')
+
+    # Get the list of working schools from the SQL query file
+    df_working_schools = dbutilities.fetch_data_as_df(credentials_dict, 'school_working_status.sql')
+
+    # Get the list of partially working schools from the SQL query file
+    df_prtly_working_scls = dbutilities.fetch_data_as_df(credentials_dict, 'partially_working_master.sql')
 
     # Process the data and get the report
-    df_report = _process_data(df_data, df_schools)
+    df_report = _process_data(df_section_master, df_unmarked_sections, df_working_schools, df_prtly_working_scls)
+    file_utilities.save_to_excel({'sample': df_report.head(400000)}, 'stud_att_test.xlsx')
 
     # Format the report and save
-    _format_report(df_report, df_data)
+    #_format_report(df_report, df_data)
 
 
 if __name__ == "__main__":

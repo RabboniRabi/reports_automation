@@ -1,0 +1,93 @@
+{
+  "report_configs" : [
+    {
+      "report_name": "student_teacher_ratio",
+      "report_code": "STU_TCH_RATIO",
+      "report_category": "class",
+      "report_desc": "Student teacher ratio report",
+      "generate_report": false,
+      "source_config": {
+        "query_file_name" : "student_teacher_ratio.sql",
+        "db" : "tn_schools_db"
+      },
+      "pre_process_brc_merge": false,
+      "brc_merge_config" : {
+        "join_on" : ["cols.block_name", "cols.udise_col"],
+        "merge_type" : "left"
+      },
+      "post_process_brc_merge" : false,
+      "elementary_report" : {
+        "generate_report": true,
+        "un_ranked_report_args": {
+          "custom_unranked_report": false,
+          "grouping_cols": [
+            "cols.deo_name_elm",
+            "cols.block_name"
+          ],
+          "grouping_agg_dict": {
+            "cols.student_teacher_ratio": "mean"
+          }
+        },
+        "ranking_args": {
+          "ranking_type": "number_ranking",
+          "agg_dict": {
+            "cols.student_teacher_ratio": "mean"
+          },
+          "ranking_val_desc": "cols.student_teacher_ratio",
+          "ranking_col": "cols.student_teacher_ratio",
+          "sort": "True",
+          "ascending": "True"
+        },
+        "format_config": {
+          "heading": "Elementary level student teacher ratio ranking report",
+          "subtotal_outlines_dict": {
+            "level_subtotal_cols_dict": {
+              "1": "cols.deo_name_elm"
+            },
+            "agg_cols_func_dict": {
+              "cols.student_teacher_ratio": "mean",
+              "cols.deo_elem_rank": "mean"
+            },
+            "text_append_dict": {
+              "cols.deo_name_elm": ""
+            }
+          }
+        }
+      },
+      "secondary_report": {
+        "generate_report": true,
+        "un_ranked_report_args" : {
+          "custom_unranked_report": false,
+          "grouping_cols": [
+            "cols.deo_name_sec", "cols.block_name"
+          ],
+          "grouping_agg_dict": {
+            "cols.student_teacher_ratio": "mean"
+          }
+        },
+        "ranking_args": {
+          "ranking_type" : "number_ranking",
+          "agg_dict": {
+            "cols.student_teacher_ratio": "mean"
+          },
+          "ranking_val_desc": "cols.student_teacher_ratio",
+          "ranking_col": "cols.student_teacher_ratio",
+          "sort": "True",
+          "ascending": "True"
+        },
+        "format_config" : {
+          "heading": "Secondary level student teacher ratio ranking report",
+          "subtotal_outlines_dict" : {
+            "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+            "agg_cols_func_dict" : {
+              "cols.student_teacher_ratio": "mean",
+              "cols.deo_sec_rank": "mean"
+            },
+            "text_append_dict" : {"cols.deo_name_sec": ""}
+          },
+          "format_dicts" : []
+        }
+      }
+    }
+  ]
+}

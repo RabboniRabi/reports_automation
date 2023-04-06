@@ -42,6 +42,7 @@
                 "ascending": "False"
             },
             "format_config" : {
+                "heading" : "Elementary CWSN students having UDIDs report as on ",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
@@ -50,19 +51,14 @@
                         "cols.udid_count": "sum",
                         "cols.deo_elem_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_fully_mapped"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
-                        "columns" : ["cols.perc_fully_mapped"],
+                "format_dicts" : [
+                    {
+                        "columns" : ["cols.perc_students_with_UDID"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         },
         "secondary_report" : {
@@ -90,6 +86,7 @@
                 "ascending": "False"
             },
             "format_config" : {
+                "heading" : "Secondary CWSN students having UDIDs report",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
@@ -98,19 +95,14 @@
                         "cols.udid_count": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_sec": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_fully_mapped"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
-                        "columns" : ["cols.perc_fully_mapped"],
+                "format_dicts" : [
+                    {
+                        "columns" : ["cols.perc_students_with_UDID"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         }
     },
@@ -157,6 +149,7 @@
                 "ascending": "False"
             },
             "format_config" : {
+                "heading" : "Elementary CWSN students having accounts report",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
@@ -165,20 +158,16 @@
                         "cols.witht_acct" : "sum",
                         "cols.deo_elem_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_elm": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_students_with_acct"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.perc_students_with_acct"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
+            
         },
         "secondary_report" : {
             "generate_report": true,
@@ -205,6 +194,7 @@
                 "ascending": "False"
             },
             "format_config" : {
+                "heading" : "Secondary CWSN students having accounts report",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
@@ -213,19 +203,14 @@
                         "cols.witht_acct" : "sum",
                         "cols.deo_sec_rank": "mean"
                     },
-                    "text_append_dict" : {"cols.deo_name_sec": "Summary"}
+                    "text_append_dict" : {"cols.deo_name_sec": ""}
                 },
-                "format_dict" : {
-                    "conditional_format" : {
-                        "columns" : ["cols.perc_students_with_acct"],
-                        "format": {"type": "3_color_scale"}
-                    },
-                    "format_cells" : {
+                "format_dicts" : [
+                    {
                         "columns" : ["cols.perc_students_with_acct"],
                         "format" : {"num_format": "0.00%"}
-        
                     }
-                }
+                ]
             }
         }
     }

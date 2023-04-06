@@ -5,13 +5,14 @@ Module with function for custom pre-processing of OoSC admitted report
 
 import sys
 sys.path.append('../')
+import utilities.file_utilities as file_utilities
 
 import utilities.column_names_utilities as cols
 
 import pandas as pd
 
 # Define the initial grouping level
-initial_group_levels = [cols.district_name, cols.block_name, cols.udise_col, cols.school_name, cols.school_category]
+initial_group_levels = [cols.block_name, cols.udise_col, cols.school_name]
 
 def pre_process_BRC_merge(raw_data):
     """
@@ -31,12 +32,13 @@ def pre_process_BRC_merge(raw_data):
 
     # Get the total students surveyed at the initial grouping level
     df_tot_surveyed = raw_data.groupby(initial_group_levels)[cols.emis_number].count().reset_index()
-    
+
+
     # Rename the emis number to a more appropriate name
     df_tot_surveyed.rename(columns = {cols.emis_number: cols.oosc_tot_surveyed}, inplace = True)
 
     # Clean the reason type values
-    raw_data[cols.reason_type].replace(to_replace=['To be admitted', 'To be Admitted '] , value=cols.to_be_admitted, inplace=True)
+    raw_data[cols.reason_type].replace(to_replace=['To be admitted', 'To be Admitted '], value=cols.to_be_admitted, inplace=True)
 
 
     # Get reason type wise summary of OSC data
@@ -54,7 +56,10 @@ def pre_process_BRC_merge(raw_data):
 
     # Merge the total students surveyed, reason wise summary and student admitted summary
     df_pre_processed = df_tot_surveyed.merge(df_pivot, on=initial_group_levels, how='left')
+
     df_pre_processed = df_pre_processed.merge(df_status_pivot, on=initial_group_levels, how='left')
+    df_pre_processed.fillna(0, inplace=True)
+
 
     # Drop columns that will not be used for the report
     df_pre_processed.drop(columns=[cols.not_admttd, cols.to_be_verified, cols.non_target], inplace=True)
@@ -63,7 +68,3 @@ def pre_process_BRC_merge(raw_data):
     df_pre_processed.rename(columns={cols.stdnt_admttd: cols.stdnts_admttd}, inplace=True)
 
     return df_pre_processed
-
-
-
-    
