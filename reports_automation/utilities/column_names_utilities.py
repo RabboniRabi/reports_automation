@@ -56,6 +56,24 @@ students_ageing30_count = 'last_30days'
 total_cp_students ='total'
 ageing = 'ageing'
 perc_ageing = '% ageing in CP'
+class_1 = '1'
+class_2 = '2'
+class_3 = '3'
+class_4 = '4'
+class_5 = '5'
+class_6 = '6'
+class_7 = '7'
+class_8 = '8'
+class_9 = '9'
+class_10 = '10'
+class_11 = '11'
+
+
+
+
+
+
+
 
 # Health report specific column names
 total = 'Total'
@@ -247,7 +265,7 @@ perc_schools_issued_books = '% schools completed book issue'
 
 #Student teacher ratio specific column
 student_teacher_ratio = "student_teacher_ratio"
-
+avg_stu_tch_ratio = 'Average Student Teacher Ratio'
 
 
 

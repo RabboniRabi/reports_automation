@@ -3,7 +3,7 @@
 
         {    
         "report_name": "palli_parvai_observations",
-        "report_code" : "PPO",
+        "report_code" : "PP_OBS",
         "report_category": "observations",
         "report_desc": "Palli Parvai observations report",
         "generate_report": false,

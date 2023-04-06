@@ -6,7 +6,7 @@ import utilities.file_utilities as file_utilities
 import utilities.format_utilities as format_utilities
 import utilities.dbutilities as dbutilities
 import utilities.column_names_utilities as cols
-
+import data_cleaning.column_cleaner as column_cleaner
 import pandas as pd
 
 
@@ -145,7 +145,8 @@ def main():
     #df_report = pd.read_excel(r'/home/rabboni/Downloads/health.xlsx', sheet_name='Report')
     file_name = file_utilities.user_sel_excel_filename()
     df_report = pd.read_excel(file_name, sheet_name='Report', skiprows=4)
-
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_report)
 
     # Get the students' health screening details at district level
     df_students_screening_status = get_students_screening_status(df_report, cols.district_name)
@@ -165,30 +166,34 @@ def main():
     # Format and stylize the data
     
     workbook  = writer.book
+    stu_scr_sheet_name = 'Students screening status'
+    sch_scr_sheet_name = 'Schools screening status'
+    stu_scr_worksheet = writer.sheets[stu_scr_sheet_name]
+    sch_scr_worksheet = writer.sheets[sch_scr_sheet_name]
     
     # Apply colour gradient
     gradient_color_frmt = {'type': '3_color_scale'}
     col_index = df_students_screening_status.columns.get_loc('% Screened')
     no_of_rows = df_students_screening_status.shape[0]
-    format_utilities.apply_cond_frmt(writer, 'Students screening status', col_index, gradient_color_frmt, no_of_rows)
+    format_utilities.apply_cond_frmt(writer, stu_scr_sheet_name, col_index, gradient_color_frmt, no_of_rows)
 
     col_index = df_schools_screening_status.columns.get_loc('% Fully completed')
     no_of_rows = df_schools_screening_status.shape[0]
-    format_utilities.apply_cond_frmt(writer, 'Schools screening status', col_index, gradient_color_frmt, no_of_rows)
+    format_utilities.apply_cond_frmt(writer, sch_scr_sheet_name, col_index, gradient_color_frmt, no_of_rows)
 
     # Format values to percent
     prcnt_frmt = {'num_format': '0.00%'}
     screened_col_index = df_students_screening_status.columns.get_loc('% Screened')
-    format_utilities.apply_frmt_cols(writer, 'Students screening status', screened_col_index, screened_col_index, prcnt_frmt)
+    format_utilities.apply_frmt_cols(stu_scr_worksheet, workbook, screened_col_index, screened_col_index, prcnt_frmt)
 
     mht_col_index = df_students_screening_status.columns.get_loc('% Referred to MHT')
-    format_utilities.apply_frmt_cols(writer, 'Students screening status', mht_col_index, mht_col_index, prcnt_frmt)
+    format_utilities.apply_frmt_cols(stu_scr_worksheet, workbook, mht_col_index, mht_col_index, prcnt_frmt)
 
     pmoa_col_index = df_students_screening_status.columns.get_loc('% Referred to PMOA')
-    format_utilities.apply_frmt_cols(writer, 'Students screening status', pmoa_col_index, pmoa_col_index, prcnt_frmt)
+    format_utilities.apply_frmt_cols(stu_scr_worksheet, workbook, pmoa_col_index, pmoa_col_index, prcnt_frmt)
 
     comp_schools_col_index = df_schools_screening_status.columns.get_loc('% Fully completed')
-    format_utilities.apply_frmt_cols(writer, 'Schools screening status', comp_schools_col_index, comp_schools_col_index, prcnt_frmt)
+    format_utilities.apply_frmt_cols(sch_scr_worksheet, workbook, comp_schools_col_index, comp_schools_col_index, prcnt_frmt)
 
     writer.save()
       

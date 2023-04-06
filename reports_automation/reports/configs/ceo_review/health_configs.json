@@ -2,7 +2,7 @@
     "report_configs": [
     {
         "report_name": "health_screening_students",
-        "report_code" : "H_STU",
+        "report_code" : "STU_HLTH_SCR",
         "report_category": "Enrolment",
         "report_desc": "Students' health screening report",
         "generate_report": true,
@@ -102,7 +102,7 @@
     },
     {    
         "report_name": "health_screening_schools",
-        "report_code" : "H_SCH",
+        "report_code" : "SCH_HLTH_SCR",
         "report_category": "Enrolment",
         "report_desc": "Schools' health screening report",
         "generate_report": true,

@@ -6,7 +6,7 @@ sys.path.append('../')
 
 import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
-
+import data_cleaning.column_cleaner as column_cleaner
 import utilities.column_names_utilities as cols
 import pandas as pd
 import numpy as np
@@ -45,6 +45,8 @@ def run():
 
     file_path = file_utilities.get_curr_month_source_data_dir_path() + '/OSC-Survey-Full-Rpt.xlsx'
     df_report = pd.read_excel(file_path, sheet_name='Report',skiprows=4)
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_report)
 
     # Define the levels to group the data by
     grouping_levels = [cols.district_name]
@@ -72,7 +74,8 @@ def run():
     # sort the data by % to be admitted
     df_oosc.sort_values(cols.perc_to_be_admitted, ascending=False, inplace=True)
 
-    file_utilities.save_to_excel({'Report':df_oosc}, 'OoSC_Report.xlsx')
+    file_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
+    file_utilities.save_to_excel({'Report':df_oosc}, 'OoSC_Report.xlsx', file_path=file_path)
 
 if __name__ == "__main__":
     run()
