@@ -108,8 +108,7 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
 
     # Get the raw data merged with the BRC-CRC mapping
     df_data = get_ceo_report_raw_data(report_config, save_source)
-    # Rename the column names to standard format
-    column_cleaner.standardise_column_names(df_data)
+
 
     # Get the report metric code and category
     metric_code = report_config['report_code']
