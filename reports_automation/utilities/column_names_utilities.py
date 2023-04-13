@@ -18,6 +18,8 @@ month_col = 'Month'
 year_col = 'Year'
 yes_col = 'Yes'
 no_col = 'No'
+web = 'Website'
+mobile = 'Mobile'
 management_type = "management_type"
 category_type ="category_type"
 distinct_udise_count = 'count(DISTINCT udise_code)'
@@ -56,6 +58,24 @@ students_ageing30_count = 'last_30days'
 total_cp_students ='total'
 ageing = 'ageing'
 perc_ageing = '% ageing in CP'
+class_1 = '1'
+class_2 = '2'
+class_3 = '3'
+class_4 = '4'
+class_5 = '5'
+class_6 = '6'
+class_7 = '7'
+class_8 = '8'
+class_9 = '9'
+class_10 = '10'
+class_11 = '11'
+
+
+
+
+
+
+
 
 # Health report specific column names
 total = 'Total'
@@ -80,12 +100,20 @@ cwsn_status = 'Student_Status'
 nid = 'NID'
 nid_count = 'NID Count'
 udid = 'UDID'
-udid_count = 'UDID Count'
-with_acct = 'Students with account'
-witht_acct = 'Students without account'
+udid_count = 'Issued UDID Count'
+with_acct = 'Number of students with account'
+witht_acct = 'Number of students without account'
 perc_students_with_UDID = '% Students with UDID'
 perc_students_with_acct = '% Students with account'
 stu_emis_no = 'Student_EMIS_NO'
+cwsn_school_ie = 'School + IE'
+cwsn_stu_school_ie = 'Students at School + IE'
+cwsn_home_ie = 'Home Based + IE'
+cwsn_home_based = 'Home Based'
+cwsn_home_based_stu = 'Home Based Students'
+cwsn_stu_home_ie = 'Home Based + IE Students'
+pending_web_applications = 'Pending website applications'
+pending_mob_applications = 'Pending mobile applications'
 
 
 # TPD report specific column names
@@ -145,6 +173,12 @@ non_target = 'Non-Target'
 stdnt_admttd = 'Student Admitted'
 stdnts_admttd = 'Students Admitted'
 oosc_tot_surveyed = 'Total Surveyed'
+non_target_not_admitted = 'Not Admitted from Non Target'
+non_target_admitted = 'Admitted from Non Target'
+verified_not_admitted = 'Not Admitted from To be Verified'
+verified_admitted = 'Admitted from To be Verified'
+admitted_not_admitted = 'Not Admitted from To be Admitted'
+admitted = 'Admitted from To be Admitted'
 
 # Hi-tech lab report specific column names
 up_time_hrs = 'up_time_hrs'
@@ -241,7 +275,7 @@ perc_schools_issued_books = '% schools completed book issue'
 
 #Student teacher ratio specific column
 student_teacher_ratio = "student_teacher_ratio"
-
+avg_stu_tch_ratio = 'Average Student Teacher Ratio'
 
 
 

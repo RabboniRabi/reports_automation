@@ -188,7 +188,10 @@ def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_ca
     #elementary_report.sort_values(by=[cols.deo_elem_rank, cols.deo_name_elm, cols.beo_rank], ascending=True, inplace=True)
     # Replace the line above with the line below when beo ranking is done
     elementary_report.sort_values(by=[cols.deo_elem_rank, cols.deo_name_elm], ascending=True, inplace=True)
-    
+
+
+    # Drop duplicate columns
+    elementary_report = elementary_report.T.drop_duplicates().T
 
     return elementary_report
 
@@ -268,5 +271,8 @@ def get_sec_ranked_report(df_summary, ranking_args_dict, metric_code, metric_cat
 
     # Sort the data by district and rank
     secondary_report.sort_values(by=[cols.deo_sec_rank, cols.deo_name_sec], ascending=True, inplace=True)
+
+    # Drop duplicate columns
+    secondary_report = secondary_report.T.drop_duplicates().T
 
     return secondary_report

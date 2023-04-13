@@ -10,6 +10,7 @@ import utilities.dbutilities as dbutilities
 import utilities.report_utilities as report_utilities
 import pandas as pd
 import os
+import data_cleaning.column_cleaner as column_cleaner
 
 # Declare column names to be used in the module
 admitted_status = 'Admitted'
@@ -84,6 +85,9 @@ def run():
     print('file_utilities.get_source_data_dir_path(): ', file_utilities.get_source_data_dir_path())
     file_path = os.path.join(file_utilities.get_source_data_dir_path(), 'rte_admission_status_2022.xlsx')
     df_report = pd.read_excel(file_path, sheet_name='Report', skiprows=4)
+
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_report)
 
     print('df_report columns: ', df_report.columns.to_list())
 

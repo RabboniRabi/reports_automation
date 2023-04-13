@@ -6,7 +6,7 @@ import sys
 sys.path.append('../')
 
 import utilities.file_utilities as file_utilities
-
+import data_cleaning.column_cleaner as column_cleaner
 import utilities.column_names_utilities as cols
 import pandas as pd
 
@@ -47,6 +47,8 @@ def run():
     file_path = file_utilities.get_curr_month_source_data_dir_path() + '/hi-tech_labs_uptime.xlsx'
 
     df_report = pd.read_excel(file_path, sheet_name='uptime_report',skiprows=0)
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_report)
 
     df_mean_uptime = _get_group_levels_wise_mean_uptime(df_report, cols.district_name)
 
