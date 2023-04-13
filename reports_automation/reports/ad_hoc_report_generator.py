@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import utilities.column_names_utilities as cols
 import importlib
-
+import data_cleaning.column_cleaner as column_cleaner
 import data_fetcher
 
 
@@ -34,6 +34,9 @@ def get_report(report_config: dict, save_source:bool=False):
 
     source_config = report_config['source_config']
     df_data = data_fetcher.get_data_from_config(source_config, save_source)
+
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_data)
 
 
     # Check if there is a custom logic to be executed before generating this report

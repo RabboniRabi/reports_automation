@@ -282,7 +282,7 @@ def filter_group_count_valid_values(df, group_levels, filter_columns_regex_dict)
         else:
             # columns to merge will be grouping columns plus the current iterated column
             merge_cols = group_levels + [column]    
-            df_filtered_grouped = df_filtered_grouped.merge(df_grouped[merge_cols]).reset_index()
+            df_filtered_grouped = df_filtered_grouped.merge(df_grouped[merge_cols], on=group_levels, how='outer').reset_index()
 
     return df_filtered_grouped      
 

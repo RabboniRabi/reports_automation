@@ -8,7 +8,7 @@ sys.path.append('../')
 import utilities.file_utilities as file_utilities
 
 import utilities.column_names_utilities as cols
-
+import data_cleaning.column_cleaner as column_cleaner
 import pandas as pd
 
 # Define the initial grouping level
@@ -29,6 +29,9 @@ def pre_process_BRC_merge(raw_data):
     """
 
     print('Pre Processing before BRC merge called in Oosc admitted report')
+
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(raw_data)
 
     # Get the total students surveyed at the initial grouping level
     df_tot_surveyed = raw_data.groupby(initial_group_levels)[cols.emis_number].count().reset_index()

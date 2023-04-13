@@ -178,8 +178,11 @@ def number_ranking(df, group_levels, ranking_args_dict):
     else:
         df_rank = df.copy()
 
+    # Rename source data column to be ranked as ranking value - needed by rest of ranking code
+    df_rank.rename(columns={ranking_col: cols.ranking_value}, inplace=True)
+
     # Sort and rank the values
-    df_rank[cols.rank_col] = df_rank[ranking_col].rank(ascending=ascending, method="min")
+    df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method="min")
 
     # Add the ranking value description to the ranked data
     df_rank[cols.ranking_value_desc] = ranking_val_desc

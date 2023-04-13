@@ -8,6 +8,7 @@ sys.path.append('../')
 import pandas as pd
 import functools as ft
 import utilities.column_names_utilities as cols
+import utilities.file_utilities as file_utilities
 
 
 
@@ -44,6 +45,13 @@ def _get_classwise_common_pool_data(df_data, pivot_index, classes):
     -------
     Pandas DataFrame object of classwise common pool data
     """
+
+    # If data contains elementary level schools, filter out classes 9-11
+    # Ideally, there should be no entry for classes 9-11 for elementary level.
+    # However, due to data quality issues, this filtering is done.
+    if classes == elem_classes:
+        df_data = df_data[~df_data[cols.class_number].isin([9, 10, 11])]
+
     # Get school category wise ageing count in each class
     data_pivot_ageing = pd.pivot_table(df_data, values=cols.students_ageing30_count, \
                         index=pivot_index ,columns=[cols.class_number], aggfunc='sum',fill_value=0).reset_index()

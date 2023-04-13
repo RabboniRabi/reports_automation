@@ -14,6 +14,7 @@ import utilities.file_utilities as file_utilities
 import utilities.dbutilities as dbutilities
 import utilities.report_utilities as report_utilities
 import utilities.column_names_utilities as cols
+import data_cleaning.column_cleaner as column_cleaner
 
 merge_dict = {
     'on_values' : [cols.district_name, cols.block_name, cols.school_name, cols.school_category, cols.udise_col],
@@ -37,6 +38,9 @@ def _get_data_with_brc_mapping():
     # Use the fetched data for testing, instead of reading from db
     file_path = os.path.join(file_utilities.get_source_data_dir_path(), 'Training_Attendance_December.xlsx')
     df_data = pd.read_excel(file_path, sheet_name='Report')
+
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_data)
 
     # Update the data with the BRC-CRC mapping
     data_with_brc_mapping = report_utilities.map_data_with_brc(df_data, merge_dict)

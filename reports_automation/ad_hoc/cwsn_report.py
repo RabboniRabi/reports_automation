@@ -20,7 +20,7 @@ sys.path.append('../')
 import utilities.file_utilities as file_utilities
 import utilities.utilities as utilities
 import utilities.column_names_utilities as cols
-
+import data_cleaning.column_cleaner as column_cleaner
 import pandas as pd
 
 
@@ -135,24 +135,26 @@ def main():
     # Ask the user to select the CWSN report excel file.
     cwsn_report = file_utilities.user_sel_excel_filename()
     df_report = pd.read_excel(cwsn_report, sheet_name='Report', skiprows=4)
+    # Rename the column names to standard format
+    column_cleaner.standardise_column_names(df_report)
 
     # List of student statuses to count
-    student_statuses = ['In_School', 'Common Pool']
+    student_statuses = [cols.cwsn_in_School, cols.cwsn_cp]
     # List of columns with student IDs
-    id_columns = ['NID', 'UDID']
+    id_columns = [cols.nid, cols.udid]
     # Levels to apply grouping by
-    group_levels = ['District']
+    group_levels = [cols.district_name]
     # List of places student is supported in
-    supported_in_vals = ['SRP Center', 'Home Based']
+    supported_in_vals = [cols.cwsn_school_ie, cols.cwsn_home_based, cols.cwsn_home_ie]
 
     id_columns_regex_dict = {
-        'NID' : '^[0-9]{5}$', # Accept only 5 digit numbers
-        'UDID': 'TN.'  # Accept only values starting with TN
+        cols.nid: '^[0-9]{5,6}$', # Accept only 5 digit numbers
+        cols.udid: '(?i)^TN.*$'  # Accept only values starting with TN
     }
 
     appl_cat_regex_dict = {
-        'Website' : '^33([0-9]{18})$', # Website application numbers will have 20 digits and start with 33
-        'Mobile' : '([0-9]{6})' # Mobile application number will contain 6 digits
+        cols.web: '^33([0-9]{18})$', # Website application numbers will have 20 digits and start with 33
+        cols.mobile: '([0-9]{6})' # Mobile application number will contain 6 digits
     }
 
     # Get block level wise total students count
@@ -185,18 +187,18 @@ def main():
 
     # Rename columns for better readability
     df_overview.rename(columns = {
-        'In_School' : 'Students in School',
-        'Common Pool' : 'Students in Common Pool',
-        'NID':'NID count',
-        'UDID':'Issued UDIDs count',
-        'School':'Students at Schools',
-        'SRP Center':'Students at SRP Centers',
-        'Home Based': 'Home Based Students',
-        'Website' : 'Pending website applications',
-        'Mobile' : 'Pending mobile applications',
-        'Yes' : 'Number of students with account',
-        'No' : 'Number of students without account'
-        }, inplace = True)
+        cols.cwsn_in_School: cols.stdnts_in_school,
+        cols.cwsn_cp: cols.stdnts_in_cp,
+        cols.nid: cols.nid_count,
+        cols.udid: cols.udid_count,
+        cols.cwsn_school_ie: cols.cwsn_stu_school_ie,
+        cols.cwsn_home_based: cols.cwsn_home_based_stu,
+        cols.cwsn_home_ie: cols.cwsn_stu_home_ie,
+        cols.web: cols.pending_web_applications,
+        cols.mobile: cols.pending_mob_applications,
+        cols.yes_col: cols.with_acct,
+        cols.no_col: cols.witht_acct
+        }, inplace=True)
 
     # Sort the values
     df_overview.sort_values(group_levels, inplace = True)    
