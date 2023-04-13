@@ -112,7 +112,7 @@ def attendance_master(base_data):
     marked_working_sections = base_data.loc[((base_data['Marked Status'] == "Marked Section") &
                                             (base_data['Working sections'] == "Section working"))]
 
-    marked_working_sections_day_wise = pd.pivot_table(marked_working_sections, index=grouping_index,
+    '''marked_working_sections_day_wise = pd.pivot_table(marked_working_sections, index=grouping_index,
                                                       columns=['date'], aggfunc='count').reset_index()
 
     # 2. UNMARKED AND WORKING SCHOOLS PER DAY
@@ -131,10 +131,10 @@ def attendance_master(base_data):
 
     #working_sections_day_wise = pd.pivot_table(working_sections, index=grouping_index,
                                                #columns=['date'], aggfunc='count').reset_index()
-
-    return file_utilities.save_to_excel({'marked_working_sections': marked_working_sections_day_wise,
-                                         'unmarked_working_sections': unmarked_working_sections_day_wise
-                                         }, 'att_master_test.xlsx',index=True)
+    '''
+    return file_utilities.save_to_excel({'marked_working_sections': marked_working_sections.head(100000),
+                                         #'unmarked_working_sections': unmarked_working_sections_day_wise
+                                         }, 'att_master_test.xlsx')
 
 
 def _format_report(df_report, df_data):
