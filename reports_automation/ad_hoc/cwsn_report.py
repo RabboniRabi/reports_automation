@@ -148,8 +148,8 @@ def main():
     supported_in_vals = [cols.cwsn_school_ie, cols.cwsn_home_based, cols.cwsn_home_ie]
 
     id_columns_regex_dict = {
-        cols.nid: '^[0-9]{5}$', # Accept only 5 digit numbers
-        cols.udid: 'TN.'  # Accept only values starting with TN
+        cols.nid: '^[0-9]{5,6}$', # Accept only 5 digit numbers
+        cols.udid: '(?i)^TN.*$'  # Accept only values starting with TN
     }
 
     appl_cat_regex_dict = {
