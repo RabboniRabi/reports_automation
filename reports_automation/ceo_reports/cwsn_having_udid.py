@@ -20,8 +20,8 @@ student_statuses = [cols.cwsn_in_School, cols.cwsn_cp]
 
 # Define regex of ID values to accept
 id_columns_regex_dict = {
-        'NID' : '^[0-9]{5}$', # Accept only 5 digit numbers
-        'UDID': 'TN.'  # Accept only values starting with TN
+        cols.nid : '^[0-9]{5,6}$', # Accept only 5 digit numbers
+        cols.udid: '(?i)^TN.*$'  # Accept only values starting with TN
     }
 
 def _get_grouping_level_wise_IDs_issued_count(df, group_levels, columns_regex_dict):
@@ -46,11 +46,15 @@ def _get_grouping_level_wise_IDs_issued_count(df, group_levels, columns_regex_di
     --------
     DataFrame object with group level wise count of students with disability ids
     """
-
     # Drop missing values in IDs
     df = df.dropna(subset=columns_regex_dict.keys())
 
     df_filtered_grouped = utilities.filter_group_count_valid_values(df, group_levels, columns_regex_dict)
+
+    # The union of regexes would mean that some cells in a row have no regex matches count
+    # while other cells in the same row do. This would mean some cells are NAs.
+    # Replace those NA cells with 0s.
+    df_filtered_grouped.fillna(0, inplace=True)
 
     return df_filtered_grouped
 
@@ -99,8 +103,8 @@ def pre_process_BRC_merge(raw_data):
     school_wise_total_students_count = _get_grouping_level_wise_student_count (raw_data, initial_group_levels, cols.cwsn_name)
 
     # Get the school level wise count of students in school and in common pool
-    school_wise_status_count = utilities.get_grouping_level_wise_col_values_count(
-        raw_data, initial_group_levels, cols.cwsn_status, student_statuses)
+    #school_wise_status_count = utilities.get_grouping_level_wise_col_values_count(
+        #raw_data, initial_group_levels, cols.cwsn_status, student_statuses)
 
     # Get block level wise count of valid student IDs
     school_wise_IDs_issued_count = _get_grouping_level_wise_IDs_issued_count(raw_data, initial_group_levels,\
@@ -112,8 +116,8 @@ def pre_process_BRC_merge(raw_data):
 
 
     # Merge the results into one school level summary
-    df_data_schl_lvl = school_wise_total_students_count.merge(school_wise_status_count, on=initial_group_levels, how='left')
-    df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_IDs_issued_count, on=initial_group_levels, how='left')
+    df_data_schl_lvl = school_wise_total_students_count.merge(school_wise_IDs_issued_count, on=initial_group_levels, how='left')
+    #df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_IDs_issued_count, on=initial_group_levels, how='left')
     #df_data_schl_lvl = df_data_schl_lvl.merge(school_wise_has_account_count[initial_group_levels + [cols.yes_col, cols.no_col]], how='left')
 
     
