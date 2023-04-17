@@ -109,9 +109,11 @@ stu_emis_no = 'Student_EMIS_NO'
 cwsn_school_ie = 'School + IE'
 cwsn_stu_school_ie = 'Students at School + IE'
 cwsn_home_ie = 'Home Based + IE'
+cwsn_school = "School"
 cwsn_home_based = 'Home Based'
 cwsn_home_based_stu = 'Home Based Students'
 cwsn_stu_home_ie = 'Home Based + IE Students'
+cwsn_school_stu = "Students at School"
 pending_web_applications = 'Pending website applications'
 pending_mob_applications = 'Pending mobile applications'
 

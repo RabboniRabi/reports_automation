@@ -145,7 +145,7 @@ def main():
     # Levels to apply grouping by
     group_levels = [cols.district_name]
     # List of places student is supported in
-    supported_in_vals = [cols.cwsn_school_ie, cols.cwsn_home_based, cols.cwsn_home_ie]
+    supported_in_vals = [cols.cwsn_school_ie, cols.cwsn_school, cols.cwsn_home_based, cols.cwsn_home_ie]
 
     id_columns_regex_dict = {
         cols.nid: '^[0-9]{5}$', # Accept only 5 digit numbers
@@ -192,6 +192,7 @@ def main():
         cols.nid: cols.nid_count,
         cols.udid: cols.udid_count,
         cols.cwsn_school_ie: cols.cwsn_stu_school_ie,
+        cols.cwsn_school: cols.cwsn_school_stu,
         cols.cwsn_home_based: cols.cwsn_home_based_stu,
         cols.cwsn_home_ie: cols.cwsn_stu_home_ie,
         cols.web: cols.pending_web_applications,
