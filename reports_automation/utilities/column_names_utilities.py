@@ -276,9 +276,18 @@ scheme_not_started = 'Not Started'
 perc_schools_issued_books = '% schools completed book issue'
 
 #Student teacher ratio specific column
-student_teacher_ratio = "student_teacher_ratio"
+student_teacher_ratio = 'student_teacher_ratio'
 avg_stu_tch_ratio = 'Average Student Teacher Ratio'
 
+# Teacher data specific columns
+class_taught = 'Class_Taught'
+upper_primary_only = 'Upper primary only'
+upper_primary_and_secondary = 'Upper primary and Secondary'
+
+# subjects data sepecific columns
+english = 'English'
+maths = 'Mathematics'
+tamil = 'Tamil'
 
 
 def get_value(var_name: str):
