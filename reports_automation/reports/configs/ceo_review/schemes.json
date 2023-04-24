@@ -2,13 +2,13 @@
     "report_configs": [
 
         {
-            "report_name": "students_receiving_books",
-            "report_code" : "STU_LIB_BOOKS",
+            "report_name": "students_receiving_textbooks",
+            "report_code" : "STU_TXT_BOOKS",
             "report_category": "Schemes",
-            "report_desc": "Students receiving library books report",
+            "report_desc": "Students receiving text books report",
             "generate_report": true,
             "source_config" : {
-                "source_file_name" : "students_receiving_books.xlsx",
+                "source_file_name" : "textbook_schemes_rpt.xlsx",
                 "source_sheet_name" : "Report",
                 "skip_rows" : 0
             },
