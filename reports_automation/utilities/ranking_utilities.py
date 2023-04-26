@@ -86,6 +86,16 @@ def update_ranking_master(df_ranking, metric_code, metric_category, school_level
     df_ranking[cols.school_level] = school_level
     df_ranking[cols.month_col] =  datetime.now().strftime('%h')
     df_ranking[cols.year_col] =  int(datetime.now().strftime('%Y'))
+
+    # Convert all column types to string
+    df_ranking = df_ranking.astype({
+        cols.name: 'string',
+        cols.desig: 'string',
+        cols.metric_code : 'string',
+        cols.metric_category: 'string',
+        cols.school_level: 'string',
+        cols.month_col: 'string',
+        cols.year_col: 'int'})
     
     # Get the master ranking file. In the future, this needs to be saved and fetched from a database
     ranking_file_path = os.path.join(ceo_rpts_dir_path, ranking_master_file_name)
