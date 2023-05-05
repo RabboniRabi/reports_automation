@@ -156,6 +156,10 @@ deo_name_elm = 'deo_name (elementary)'
 deo_name_sec = 'deo_name (secondary)'
 school_level = 'school_level'
 
+#For Output view
+deo_name_elementary = 'DEO Name (Elementary)'
+deo_name_secondary = 'DEO Name (Secondary)'
+block_name_output = 'Block Name'
 
 # Report specific column names
 elem_schl_lvl = 'Elementary School'

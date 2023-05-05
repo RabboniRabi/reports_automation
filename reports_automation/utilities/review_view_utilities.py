@@ -113,6 +113,22 @@ def prepare_report_for_review(df, format_config, ranking_args_dict, sheet_name, 
     # Shift the data by 1 row down - To create space for report heading
     df = df.shift(periods=1, fill_value=0)
 
+    # Extracting the column names for renaming
+    col_names = updated_df.columns.to_list()
+    # Checking if the report is elementary or secondary
+    if col_names[0] == cols.deo_name_elm:
+        updated_df.rename(columns={
+            cols.deo_name_elm: cols.deo_name_elementary,
+            cols.block_name: cols.block_name_output
+        }, inplace=True
+        )
+    elif col_names[0] == cols.deo_name_sec:
+        updated_df.rename(columns={
+            cols.deo_name_sec: cols.deo_name_secondary,
+            cols.block_name: cols.block_name_output
+        }, inplace=True
+        )
+
     # Correspondingly update the outline ranges as data has been shifted down
     level_outline_ranges_dict = outlines_utilities.push_outline_ranges_for_formatting(level_outline_ranges_dict, 1)
 
