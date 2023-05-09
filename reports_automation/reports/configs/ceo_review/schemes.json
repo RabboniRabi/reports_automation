@@ -10,7 +10,7 @@
             "source_config" : {
                 "source_file_name" : "textbook_schemes_rpt.xlsx",
                 "source_sheet_name" : "Report",
-                "skip_rows" : 0
+                "skip_rows" : 4
             },
             "pre_process_brc_merge": false,
             "brc_merge_config" : {
