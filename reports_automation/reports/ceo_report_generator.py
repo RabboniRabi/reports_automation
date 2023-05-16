@@ -46,9 +46,9 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
 
     source_config = report_config['source_config']
     df_data = data_fetcher.get_data_from_config(source_config, save_source)
-
     # Rename the column names to standard format
     column_cleaner.standardise_column_names(df_data)
+
 
     # Check if pre-processing before merging with BRC-CRC mapping is required
     if (report_config['pre_process_brc_merge']):
@@ -165,45 +165,59 @@ def generate_all(generate_fresh: bool = True):
 
     for config in active_configs:
 
-        # Define elementary report name and get existence flag
+        report_name = config['report_name']
+
+        # Define elementary report name and get existence flag and get elementary report configs
         elem_report_name = config['report_desc'] + '-Elementary.xlsx'
         curr_month_elem_ceo_rpts_dir_path = file_utilities.get_curr_month_elem_ceo_rpts_dir_path()
         elem_file_exists = file_utilities.file_exists(elem_report_name, curr_month_elem_ceo_rpts_dir_path)
+
+        # Get the arguments for Elementary report
+        elem_report_config = config['elementary_report']
+        # Check that the configuration for elementary report exists
+        if elem_report_config is None:
+            # No elementary report configuration was found
+            sys.exit('Elementary report configuration not provided for report: ', report_name)
+        generate_elem = elem_report_config['generate_report']
         
-        # Define secondary report name and get existence flag
+        # Define secondary report name and get existence flag and get secondary report configs
         sec_report_name = config['report_desc'] + '-Secondary.xlsx'
         curr_month_secnd_ceo_rpts_dir_path = file_utilities.get_curr_month_secnd_ceo_rpts_dir_path()
         sec_file_exists = file_utilities.file_exists(sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
+        # Get the ranking arguments for Secondary report
+        sec_report_config = config['secondary_report']
+        # Check that the configuration for secondary report exists
+        if sec_report_config is None:
+            # No Secondary report configuration was found
+            sys.exit('Secondary report configuration not provided for report: ', report_name)
+        generate_sec = sec_report_config['generate_report']
 
-        # Check if report report for current configuration needs to be generated
+        # Check if elementary and secondary reports for current configuration needs to be generated
         if elem_file_exists and sec_file_exists and not generate_fresh:
             print('Report already generated for', config['report_name'])
             continue
+        elif (elem_file_exists and not generate_fresh) and not generate_sec:
+            print('Report already generated for', config['report_name'])
+            continue
+        elif (sec_file_exists and not generate_fresh) and not generate_elem:
+            print('Report already generated for', config['report_name'])
+            continue
+
 
         print('Generating report for: ', config['report_name'], '...')
 
         # Get the report metric code and category
         metric_code = config['report_code']
         metric_category = config['report_category']
-        report_name = config['report_name']
 
         # Get the raw data merged with the BRC-CRC mapping
         df_data = get_ceo_report_raw_data(config, True)
 
-        # Rename the column names to standard format
-        column_cleaner.standardise_column_names(df_data)
-        
 
-        # Get the arguments for Elementary report
-        elem_report_config = config['elementary_report']
 
-        # Check that the configuration for elementary report exists
-        if elem_report_config is None:
-            # No elementary report configuration was found
-            sys.exit('Elementary report configuration not provided for report: ', report_config['report_name'])
-
+        # Elementary Report
         # Check if elementary report needs to be generated
-        if (generate_fresh or not elem_file_exists):
+        if (generate_fresh or not elem_file_exists) :
 
             if elem_report_config['generate_report']:
                 # Call the helper function to generate the elementary report
@@ -219,14 +233,7 @@ def generate_all(generate_fresh: bool = True):
                     # Save the report without any formatting
                     file_utilities.save_to_excel({metric_code: elem_report}, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
         
-        # Get the ranking arguments for secondary report
-        sec_report_config = config['secondary_report']
-
-        # Check that the configuration for secondary report exists
-        if sec_report_config is None:
-            # No Secondary report configuration was found
-            sys.exit('Secondary report configuration not provided for report: ', report_config['report_name'])
-
+        # Secondary Report
         # Check if secondary report needs to be generated
         if (generate_fresh or not sec_file_exists):
 
