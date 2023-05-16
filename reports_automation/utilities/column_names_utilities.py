@@ -258,6 +258,7 @@ perc_6_10m_shutt_comp = '% 6*10M shuttle completed'
 perc_4kg_shot_comp = '% 4kg shotput completed'
 perc_long_jump_comp = '% long jump completed'
 perc_avg_overall_comp = 'Average % of tests completed'
+delivery_status = 'Delivery_Status'
 
 # G2C pending applications
 tot_app_rcvd = 'Total_applications_received'
@@ -278,6 +279,8 @@ scheme_completed = 'Completed'
 scheme_nt_strt = 'not started'
 scheme_not_started = 'Not Started'
 perc_schools_issued_books = '% schools completed book issue'
+schemes_total_students = 'Total_Students'
+schemes_issued_students = 'issued_students'
 
 #Student teacher ratio specific column
 student_teacher_ratio = 'student_teacher_ratio'

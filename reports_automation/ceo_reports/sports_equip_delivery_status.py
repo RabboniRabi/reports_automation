@@ -1,26 +1,23 @@
 """
-Module with custom functions to create students receiving textbooks report.
+Module with custom functions to create sports equipment delivery status report.
 """
 
 import sys
 sys.path.append('../')
 
 import pandas as pd
-import numpy as np
 
 import utilities.column_names_utilities as cols
 
-# Intial level to group the data to at pre-processing stage
-initial_group_levels = [cols.district_name, cols.block_name, cols.udise_col, cols.school_name, cols.cate_type]
 
-def _get_book_issue_status_summary(df_data, grouping_cols):
+def _get_delivery_status_summary(df_data, grouping_cols):
     """
-    Internal function to get summary of schools' book issue statuses at grouping level
+    Internal function to get summary of delivery statuses at grouping level
 
     Parameters:
     ----------
     df_data: Pandas DataFrame
-        The book issued status data to work on
+        The sports delivery status data to work on
     grouping_cols: list
         The list of columns to group by
 
@@ -31,7 +28,7 @@ def _get_book_issue_status_summary(df_data, grouping_cols):
 
     # Get issue status wise count of schools at grouping level
     data_pivot = pd.pivot_table(df_data, values=cols.udise_col, \
-                        index=grouping_cols,columns=[cols.scheme_status], aggfunc='count',fill_value=0).reset_index()
+                        index=grouping_cols,columns=[cols.delivery_status], aggfunc='count',fill_value=0).reset_index()
 
 
     # Get the total number of schools
@@ -40,50 +37,15 @@ def _get_book_issue_status_summary(df_data, grouping_cols):
     # Merge the total to the summary data
     df_summary = df_total.merge(data_pivot, on=grouping_cols, how='left')
 
-    # Rename the columns to make them more readable
+    """# Rename the columns to make them more readable
     df_summary.rename(columns={
         cols.scheme_inprogress :  cols.scheme_in_progress,
         cols.scheme_comp: cols.scheme_completed,
         cols.scheme_nt_strt : cols.scheme_not_started,
-        cols.udise_col : cols.tot_schools}, inplace=True)
+        cols.udise_col : cols.tot_schools}, inplace=True)"""
 
     return df_summary
 
-
-def pre_process_BRC_merge(raw_data:pd.DataFrame):
-    """
-    Function to process the students receiving textbooks raw data before merging with BRC-CRC mapping data
-
-    Parameters:
-    ----------
-    raw_data: Pandas DataFrame
-        The raw common pool data
-
-    Returns:
-    -------
-    DataFrame object of common pool data processed and ready for mapping with BRC-CRC data
-    """
-
-    print('Pre Processing before BRC merge called in students receiving textbooks')
-
-    # Replace the null values in issued students column with zero
-    raw_data[cols.schemes_issued_students] = raw_data[cols.schemes_issued_students].replace('Null', 0)
-
-    # Group the data to school level
-    df_grouped = raw_data.groupby(initial_group_levels, sort=False).agg(
-        {cols.schemes_total_students : 'sum', cols.schemes_issued_students : 'sum'}).reset_index()
-
-    # Set the status column based on total students vs issued students
-    status_conditions = [
-        (df_grouped[cols.schemes_total_students] == df_grouped[cols.schemes_issued_students]),
-        ((df_grouped[cols.schemes_total_students] > df_grouped[cols.schemes_issued_students]) & (df_grouped[cols.schemes_issued_students] != 0)),
-        (df_grouped[cols.schemes_issued_students] == 0)
-
-    ]
-    status_values = [cols.scheme_comp, cols.scheme_inprogress, cols.scheme_nt_strt]
-    df_grouped['status'] = np.select(status_conditions, status_values)
-
-    return df_grouped
 
 def get_unranked_elem_report(df_data:pd.DataFrame, grouping_cols:list, agg_dict:dict):
     """

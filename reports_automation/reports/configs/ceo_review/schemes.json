@@ -12,7 +12,7 @@
                 "source_sheet_name" : "Report",
                 "skip_rows" : 4
             },
-            "pre_process_brc_merge": false,
+            "pre_process_brc_merge": true,
             "brc_merge_config" : {
                 "join_on" : ["cols.block_name", "cols.udise_col"],
                 "merge_type" : "left"
