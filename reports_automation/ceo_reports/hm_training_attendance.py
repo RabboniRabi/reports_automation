@@ -47,7 +47,7 @@ def pre_process_BRC_merge(raw_data):
     # Getting Attendance Summary
     df_pivot = pd.pivot_table(raw_data, values=cols.school_name, index=grouping_levels,
                               columns=cols.attendance, aggfunc='count', fill_value=0).reset_index()
-    # Finding out total invited from present, absent, absent and replaced
+    # Finding out total invited from present, absent, absent&replaced and not filled
     df_pivot[cols.total_invited] = df_pivot[cols.present] + df_pivot[cols.absent] + df_pivot[cols.absent_replaced] + df_pivot[cols.not_filled]
     df_pivot.fillna(0)
 
