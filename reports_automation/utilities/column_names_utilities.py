@@ -301,6 +301,14 @@ english = 'English'
 maths = 'Mathematics'
 tamil = 'Tamil'
 
+# Attendance specific columns
+attendance = "Attendance"
+total_invited = "Total Invited"
+present = "Present"
+absent = "Absent"
+absent_replaced = "Absent & Replaced"
+not_filled = 'Not Filled'
+perc_present = "% HM's Present"
 
 def get_value(var_name: str):
     """
