@@ -47,7 +47,7 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
     source_config = report_config['source_config']
     df_data = data_fetcher.get_data_from_config(source_config, save_source)
     # Rename the column names to standard format
-    column_cleaner.standardise_column_names(df_data)
+    df_data = column_cleaner.standardise_column_names(df_data)
 
 
     # Check if pre-processing before merging with BRC-CRC mapping is required
