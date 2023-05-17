@@ -37,12 +37,23 @@ def _get_delivery_status_summary(df_data, grouping_cols):
     # Merge the total to the summary data
     df_summary = df_total.merge(data_pivot, on=grouping_cols, how='left')
 
-    """# Rename the columns to make them more readable
+    # Rename the columns to make them more readable
     df_summary.rename(columns={
-        cols.scheme_inprogress :  cols.scheme_in_progress,
-        cols.scheme_comp: cols.scheme_completed,
-        cols.scheme_nt_strt : cols.scheme_not_started,
-        cols.udise_col : cols.tot_schools}, inplace=True)"""
+        cols.not_deliverd :  cols.not_delivered,
+        cols.udise_col : cols.tot_schools
+        }, inplace=True)
+
+    # Swap the order of not delivered and partially delivered columns
+    not_delivered_col_index = df_summary.columns.get_loc(cols.not_delivered)
+    part_delivered_col_index = df_summary.columns.get_loc(cols.part_delivered)
+    df_summary_columns = df_summary.columns.to_list()
+    df_summary_columns[part_delivered_col_index], df_summary_columns[not_delivered_col_index] = \
+        df_summary_columns[not_delivered_col_index], df_summary_columns[part_delivered_col_index] 
+
+    df_summary = df_summary.reindex(columns=df_summary_columns)
+
+    """# Rearranging the columns for better reading order
+    list_of_cols = """
 
     return df_summary
 
@@ -68,7 +79,7 @@ def get_unranked_elem_report(df_data:pd.DataFrame, grouping_cols:list, agg_dict:
     df_data = df_data[df_data[cols.school_level].isin([cols.elem_schl_lvl])]
 
     # Get book issue status wise summary at grouping level
-    df_data = _get_book_issue_status_summary(df_data, grouping_cols)
+    df_data = _get_delivery_status_summary(df_data, grouping_cols)
 
     return df_data
 
@@ -94,6 +105,6 @@ def get_unranked_sec_report(df_data:pd.DataFrame, grouping_cols:list, agg_dict:d
     df_data = df_data[df_data[cols.school_level].isin([cols.scnd_schl_lvl])]
 
     # Get book issue status wise summary at grouping level
-    df_data = _get_book_issue_status_summary(df_data, grouping_cols)
+    df_data = _get_delivery_status_summary(df_data, grouping_cols)
 
     return df_data

@@ -259,6 +259,11 @@ perc_4kg_shot_comp = '% 4kg shotput completed'
 perc_long_jump_comp = '% long jump completed'
 perc_avg_overall_comp = 'Average % of tests completed'
 delivery_status = 'Delivery_Status'
+fully_delivered = 'Fully Delivered'
+part_delivered = 'Partially Delivered'
+not_deliverd = 'Not Deliverd'
+not_delivered = 'Not Delivered'
+perc_equip_delivered = '% (Fully + Partially Delivered)'
 
 # G2C pending applications
 tot_app_rcvd = 'Total_applications_received'
