@@ -204,6 +204,210 @@
                     ]
                 }
             }
+        },
+        {
+            "report_name": "students_receiving_notebooks",
+            "report_code" : "STU_RCV_NTBK",
+            "report_category": "Schemes",
+            "report_desc": "Students receiving notebooks report",
+            "generate_report": true,
+            "source_config" : {
+                "source_file_name" : "Notebook-Scheme-Rpt.xlsx",
+                "source_sheet_name" : "Report",
+                "skip_rows" : 4
+            },
+            "pre_process_brc_merge": true,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_schools_issued_notebooks",
+                    "num_col": "cols.scheme_completed",
+                    "den_col": "cols.tot_schools",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary schools students receiving notebooks report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_schools_issued_notebooks"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_schools_issued_notebooks",
+                    "num_col": "cols.scheme_completed",
+                    "den_col": "cols.tot_schools",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary schools students receiving notebooks report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_schools_issued_notebooks"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "report_name": "students_receiving_geometry_boxes",
+            "report_code" : "STU_RCV_GEOBX",
+            "report_category": "Schemes",
+            "report_desc": "Students receiving geometry boxes report",
+            "generate_report": true,
+            "source_config" : {
+                "source_file_name" : "Geomentry-Box-Scheme-Rpt.xlsx",
+                "source_sheet_name" : "Report",
+                "skip_rows" : 4
+            },
+            "pre_process_brc_merge": true,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_schools_issued_geo_boxes",
+                    "num_col": "cols.scheme_completed",
+                    "den_col": "cols.tot_schools",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary schools students receiving geometry_boxes report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_schools_issued_geo_boxes"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_schools_issued_geo_boxes",
+                    "num_col": "cols.scheme_completed",
+                    "den_col": "cols.tot_schools",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary schools students receiving geometry boxes report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_schools_issued_geo_boxes"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
         }
     ]
 }
