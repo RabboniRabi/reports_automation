@@ -418,6 +418,13 @@ def _update_ranking_args_dict(ranking_args:dict):
         den_col_val = cols.get_value(ranking_args['den_col'])
         ranking_args['den_col'] = den_col_val
 
+    if ranking_type == ranking_types.MULT_COLS_PERCENT_RANKING.value:
+        # Update the numerator and denominator columns
+        num_col_val = cols.get_values(ranking_args['num_col'])
+        ranking_args['num_col'] = num_col_val
+        den_col_val = cols.get_values(ranking_args['den_col'])
+        ranking_args['den_col'] = den_col_val
+    
     if ranking_type == ranking_types.AVERAGE_RANKING.value:
         # Update the list of columns to average on
         updated_list = cols.get_values(ranking_args['avg_cols'])
