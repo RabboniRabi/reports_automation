@@ -87,7 +87,7 @@ def run():
     df_report = pd.read_excel(file_path, sheet_name='Report', skiprows=4)
 
     # Rename the column names to standard format
-    column_cleaner.standardise_column_names(df_report)
+    df_report = column_cleaner.standardise_column_names(df_report)
 
     print('df_report columns: ', df_report.columns.to_list())
 

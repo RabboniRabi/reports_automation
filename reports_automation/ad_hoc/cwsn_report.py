@@ -136,7 +136,7 @@ def main():
     cwsn_report = file_utilities.user_sel_excel_filename()
     df_report = pd.read_excel(cwsn_report, sheet_name='Report', skiprows=4)
     # Rename the column names to standard format
-    column_cleaner.standardise_column_names(df_report)
+    df_report = column_cleaner.standardise_column_names(df_report)
 
     # List of student statuses to count
     student_statuses = [cols.cwsn_in_School, cols.cwsn_cp]

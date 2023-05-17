@@ -22,7 +22,7 @@ def get_mapping_data():
     mapping_file_path = os.path.join(mapping_data_dir, block_data_file_name)
     source_data = pd.read_excel(mapping_file_path, sheet_name=block_data_sheet_name)
     # Rename the column names to standard format
-    column_cleaner.standardise_column_names(source_data)
+    source_data = column_cleaner.standardise_column_names(source_data)
 
     return source_data
 
