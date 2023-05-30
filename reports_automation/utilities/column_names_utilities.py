@@ -156,6 +156,10 @@ deo_name_elm = 'deo_name (elementary)'
 deo_name_sec = 'deo_name (secondary)'
 school_level = 'school_level'
 
+#For Output view
+deo_name_elementary = 'DEO Name (Elementary)'
+deo_name_secondary = 'DEO Name (Secondary)'
+block_name_output = 'Block Name'
 
 # Report specific column names
 elem_schl_lvl = 'Elementary School'
@@ -241,7 +245,7 @@ test_comp_status = 'Completion Status'
 test_in_progress = 'In Progress'
 test_completed = 'Completed'
 test_not_started = 'Not Yet Started'
-sports_tot_stu = 'Total_Students'
+sports_tot_stu = 'total_students'
 m50_comp_stu = '50m Completed_Students'
 m600_800_comp_stu = '600/800m Completed_Students'
 shuttle_comp_stu = '6*10m shuttle Completed_Students'
@@ -254,6 +258,12 @@ perc_6_10m_shutt_comp = '% 6*10M shuttle completed'
 perc_4kg_shot_comp = '% 4kg shotput completed'
 perc_long_jump_comp = '% long jump completed'
 perc_avg_overall_comp = 'Average % of tests completed'
+delivery_status = 'Delivery_Status'
+fully_delivered = 'Fully Delivered'
+part_delivered = 'Partially Delivered'
+not_deliverd = 'Not Deliverd'
+not_delivered = 'Not Delivered'
+perc_equip_delivered = '% (Fully + Partially Delivered)'
 
 # G2C pending applications
 tot_app_rcvd = 'Total_applications_received'
@@ -268,18 +278,46 @@ perc_apps_grtr_15_days = '% Pending_more_than_15days'
 # Welfare schemes specific columns
 scheme_status = 'status'
 scheme_inprogress = 'inprogress'
-scheme_in_progress = 'In Progress'
+scheme_inprogress_upper_case = 'Inprogress'
+scheme_in_progress = 'In progress'
 scheme_comp = 'completed'
 scheme_completed = 'Completed'
 scheme_nt_strt = 'not started'
-scheme_not_started = 'Not Started'
+scheme_not_started = 'Not started'
 perc_schools_issued_books = '% schools completed book issue'
+perc_schools_issued_uniforms = '% schools completed uniforms issue'
+perc_schools_issued_notebooks = '% schools completed notebooks issue'
+perc_schools_issued_geo_boxes = '% schools completed geometry boxes issue'
+perc_schools_issued_crayons = '% schools completed crayons issue'
+perc_schools_issued_colour_pencil = '% schools completed colour pencil issue'
+perc_schools_issued_bag = '% schools completed bag issue'
+perc_schools_issued_atlas = '% schools completed atlas issue'
+schemes_total_students_small_case = 'total_students'
+schemes_total_students = 'Total_Students'
+schemes_issued_students = 'issued_students'
 
 #Student teacher ratio specific column
-student_teacher_ratio = "student_teacher_ratio"
+student_teacher_ratio = 'student_teacher_ratio'
 avg_stu_tch_ratio = 'Average Student Teacher Ratio'
 
+# Teacher data specific columns
+class_taught = 'Class_Taught'
+upper_primary_only = 'Upper primary only'
+upper_primary_and_secondary = 'Upper primary and Secondary'
 
+# subjects data sepecific columns
+english = 'English'
+maths = 'Mathematics'
+tamil = 'Tamil'
+
+# Attendance specific columns
+attendance = "Attendance"
+total_invited = "Total Invited"
+present = "Present"
+absent = "Absent"
+absent_replaced = "Absent & Replaced"
+not_filled = 'Not Filled'
+perc_present = "% HM's Present"
 
 def get_value(var_name: str):
     """

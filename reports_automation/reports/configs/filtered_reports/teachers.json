@@ -1,0 +1,40 @@
+{
+    "report_configs": [
+
+        {
+            "report_name" : "English_Teachers_6th_to_9th",
+            "source_config" : {
+                "source_file_name" : "TEACH-DETAILS.xlsx",
+                "source_sheet_name" : "TEACH-DETAILS.csv",
+                "skip_rows" : 0
+            },
+            "filter_configs" : {
+                "and_filters" : [
+                    {
+                        "cols.class_taught" : ["cols.upper_primary_only", "cols.upper_primary_and_secondary"]
+                    }
+                ],
+                "or_filters" : [
+                    {
+                        "Subject1" : ["cols.english"]
+                    },
+                    {
+                        "Subject2" : ["cols.english"]
+                    },
+                    {
+                        "Subject3" : ["cols.english"]
+                    },
+                    {
+                        "Subject4" : ["cols.english"]
+                    },
+                    {
+                        "Subject5" : ["cols.english"]
+                    },
+                    {
+                        "Subject6" : ["cols.english"]
+                    }
+                ]
+            }
+        }
+    ]
+}

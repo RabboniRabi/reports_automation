@@ -97,6 +97,9 @@ def pre_process_BRC_merge(raw_data):
 
     print('Pre Processing before BRC merge called in CWSN')
 
+    # Filtering the raw data only for In school students
+    raw_data = raw_data[raw_data[cols.cwsn_status] == cols.cwsn_in_School]
+
     # As the raw data is at student level, group the data to school level and count values needed for report
 
     # Get school level wise total students count

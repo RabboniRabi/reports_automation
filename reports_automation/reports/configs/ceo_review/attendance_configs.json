@@ -9,7 +9,7 @@
             "generate_report": true,
             "source_config" : {
                 "source_file_name" : "teacher_leave_balance_updt_report.xlsx",
-                "source_sheet_name" : "Detailed",
+                "source_sheet_name" : "Summary",
                 "skip_rows" : 0
             },
             "pre_process_brc_merge": false,

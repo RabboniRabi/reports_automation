@@ -52,13 +52,14 @@ def standardise_column_names(df_report):
             df_report.rename(columns={col_name: cols.block_name}, inplace=True)
         else:
             continue
+    return df_report
 
 def main():
     # Ask the user to select the excel file to clean the columns.
     report = file_utilities.user_sel_excel_filename()
     df_report = pd.read_excel(report, sheet_name='Report', skiprows=4)
     # For testing
-    column_cleaning(df_report)
+    df_report = standardise_column_names(df_report)
 
 if __name__ == "__main__":
     main()
