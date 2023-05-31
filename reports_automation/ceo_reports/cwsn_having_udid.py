@@ -20,7 +20,7 @@ student_statuses = [cols.cwsn_in_School, cols.cwsn_cp]
 
 # Define regex of ID values to accept
 id_columns_regex_dict = {
-    # Accept only 5 digit numbers or vales starting with TN and ends with range of 3 to 6 digits.
+    # Accept only 5 to 6 digits or values starting with TN and ends with range of 3 to 6 digits.
         cols.nid : '(?i)(^[0-9]{5,6}$)|(^TN[\s\S][a-z]{2,5}[\s\S][a-z]{2,5}[\s\S][0-9]{3,6}$)|(^TN[\s\S][a-z]{2,5}[\s\S][a-z]{2,5}[\s\S][0-9]{3,6}[\s\S][0-9]{2,4}$)',
         cols.udid: '(?i)^TN.*$'  # Accept only values starting with TN
     }
