@@ -6,31 +6,56 @@ import utilities.file_utilities as file_utilities
 
 
 
-df_list = pd.read_html("https://secc.gov.in/getSCCategoryIncomeSlabStateReport.htm/33")
+"""df_list = pd.read_html("https://secc.gov.in/getSCCategoryIncomeSlabStateReport.htm/33")
 df = df_list[0]
 print(df)
 print('type of first list object: ', type(df))
 file_utilities.save_to_excel({'test_data_extraction':df}, 'test_data_extraction.xlsx', index=True)
-#raw_data = pd.DataFrame(df, columns=['District Name	Total Households', 'Landless households deriving major part of their income from manual casual labour', '%', 'Households with non-agricultural enterprises registered with government',	'%', 'Households paying income tax / professional tax','%', 'Households with Destitutes/living on alms	%	Households with salaried job in government	%	Households with salaried job in Public	%	Households with salaried job in Private'])
 
 print(df)
 
-
-
 """
+
+
 
 def data_extraction():
+    """
+    Function to traverse through different District's link and extract the tehsil data.
 
-########### Try something like this
-    for i in range (1,35):
-        link = "https://secc.gov.in/getSCHhdSummaryDistrictReport.htm/33/{}".format(i)
-        df = pd.read_html(link) # try catch for 404. If 404, go to next i
-        l.append(df)
-    return l
+    Returns:
+    -------
+    DataFrame object of each District's Tehsil data
 
-df = data_extraction()
-raw_data = pd.concat([pd.DataFrame([container for i in df for container in i])], join='inner')
+    """
+    # Creating an empty dataframe for storing every district's tehsil information
+    data = pd.DataFrame()
+    # Loop to extract tehsil level information
+    for i in range(1, 34):
+        try:
+            #Till i=9 the html link starts from 0
+            if i < 10:
+                link = "https://secc.gov.in/getSCHhdSummaryDistrictReport.htm/33/0{}".format(i)
+                df_list = pd.read_html(link) # try catch for 404. If 404, go to next i
+                df = df_list[0]
+                data = pd.concat([data, df])
+            else:
+                link = "https://secc.gov.in/getSCHhdSummaryDistrictReport.htm/33/{}".format(i)
+                df_list = pd.read_html(link)  # try catch for 404. If 404, go to next i
+                df = df_list[0]
+                data = pd.concat([data, df])
+        except ValueError:
+            # If there is a value error, the loop goes to the next iteration.
+            continue
+    return data
+"""def get_district_name_from_index(index):
+
+    return district_name
+
 """
+extracted_data = data_extraction()
+# Saving the extracted data in the excel file.
+file_utilities.save_to_excel({'test_data_extraction': extracted_data}, 'test_data_extraction3.xlsx', index=True)
+
 
 
 
