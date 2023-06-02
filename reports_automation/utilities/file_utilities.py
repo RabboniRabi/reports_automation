@@ -127,6 +127,20 @@ def get_gen_reports_dir_path():
         create_dir(dir_path)
     return dir_path
 
+def get_adw_data_dir_path():
+    """
+    Function to get the path to the folder where source data is saved.
+
+    Returns:
+    -------
+    The path to the source data folder
+    """
+
+    dir_path = os.path.join(get_gen_reports_dir_path(), 'adw_data_extraction')
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+    return dir_path
 
 def get_mapping_data_dir_path():
     """
