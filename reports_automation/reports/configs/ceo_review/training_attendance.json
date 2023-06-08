@@ -1,0 +1,122 @@
+{
+  "report_configs": [
+    {
+      "report_name": "hm_training_attendance",
+      "report_code": "HM_TRN_ATT",
+      "report_category": "Attendance",
+      "report_desc": "hm_training_attendance_report",
+      "generate_report": true,
+      "source_config": {
+      "source_file_name" : "HS HM training attendance.xlsx",
+                "source_sheet_name" : "training_attendance",
+                "skip_rows" : 0
+      },
+    "pre_process_brc_merge": true,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+    "post_process_brc_merge": false,
+    "elementary_report" : {
+      "generate_report": false,
+      "un_ranked_report_args": {
+        "custom_unranked_report": false,
+        "grouping_cols": [
+          "cols.deo_name_elm",
+          "cols.block_name"
+        ],
+        "grouping_agg_dict": {
+          "cols.total_invited": "sum",
+          "cols.present": "sum",
+          "cols.absent": "sum",
+          "cols.absent_replaced": "sum"
+        }
+     },
+     "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                      "cols.total_invited": "sum",
+                      "cols.present": "sum",
+                      "cols.absent": "sum",
+                      "cols.absent_replaced": "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_present",
+                    "num_col": "cols.present",
+                    "den_col": "cols.total_invited",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+      "format_config" : {
+                    "heading" : "Elementary HM Training Attendance report as on ",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.total_invited": "sum",
+                            "cols.present": "sum",
+                            "cols.absent": "sum",
+                            "cols.absent_replaced": "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_present"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+    "secondary_report": {
+      "generate_report": true,
+      "un_ranked_report_args": {
+        "custom_unranked_report": false,
+        "grouping_cols": [
+          "cols.deo_name_sec",
+          "cols.block_name"
+       ],
+       "grouping_agg_dict": {
+         "cols.total_invited": "sum",
+         "cols.present": "sum",
+         "cols.absent": "sum",
+         "cols.absent_replaced": "sum"
+       }
+     },
+     "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                      "cols.total_invited": "sum",
+                      "cols.present": "sum",
+                      "cols.absent": "sum",
+                      "cols.absent_replaced": "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_present",
+                    "num_col": "cols.present",
+                    "den_col": "cols.total_invited",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+      "format_config" : {
+                    "heading" : "Secondary HM Training Attendance report as on ",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.total_invited": "sum",
+                            "cols.present": "sum",
+                            "cols.absent": "sum",
+                            "cols.absent_replaced": "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_present"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+    }
+    }
+  ]
+}

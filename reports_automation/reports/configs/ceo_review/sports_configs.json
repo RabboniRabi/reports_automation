@@ -249,6 +249,109 @@
                     ]
                 }
             }
+        },
+
+        {
+            "report_name": "sports_equip_delivery_status",
+            "report_code" : "SCH_EQUIP_STAT",
+            "report_category": "Sports",
+            "report_desc": "Sports equipment delivery status report",
+            "generate_report": true,
+            "source_config" : {
+                "source_file_name" : "Sports-Delivery-Update-Status-Rpt.xlsx",
+                "source_sheet_name" : "Report",
+                "skip_rows" : 4
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "multiple_columns_percent_ranking",
+                    "agg_dict": {
+                        "cols.fully_delivered": "sum", 
+                        "cols.part_delivered" : "sum",
+                        "cols.not_delivered" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_equip_delivered",
+                    "num_col": ["cols.fully_delivered", "cols.part_delivered"],
+                    "den_col": ["cols.tot_schools"],
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary level sports equipment delivery status report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.fully_delivered": "sum", 
+                            "cols.part_delivered" : "sum",
+                            "cols.not_delivered" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_equip_delivered"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "multiple_columns_percent_ranking",
+                    "agg_dict": {
+                        "cols.fully_delivered": "sum", 
+                        "cols.part_delivered" : "sum",
+                        "cols.not_delivered" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_equip_delivered",
+                    "num_col": ["cols.fully_delivered", "cols.part_delivered"],
+                    "den_col": ["cols.tot_schools"],
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary level sports equipment delivery status report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.fully_delivered": "sum", 
+                            "cols.part_delivered" : "sum",
+                            "cols.not_delivered" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_equip_delivered"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
         }
 
         

@@ -5,7 +5,7 @@
         "report_code" : "STU_HLTH_SCR",
         "report_category": "Enrolment",
         "report_desc": "Students' health screening report",
-        "generate_report": true,
+        "generate_report": false,
         "source_config" : {
             "source_file_name" : "Student-health-checkup-rpt.xlsx",
             "source_sheet_name" : "Report",
@@ -105,7 +105,7 @@
         "report_code" : "SCH_HLTH_SCR",
         "report_category": "Enrolment",
         "report_desc": "Schools' health screening report",
-        "generate_report": true,
+        "generate_report": false,
         "source_config" : {
             "source_file_name" : "Student-health-checkup-rpt.xlsx",
             "source_sheet_name" : "Report",

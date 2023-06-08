@@ -6,7 +6,7 @@
             "report_code" : "STU_AGE_CP",
             "report_category": "Enrolment",
             "report_desc": "Students in Common Pool for over 30 days - CEO Report",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "source_file_name" : "commonpool_classwise_report.xlsx",
                 "source_sheet_name" : "Abstract",
@@ -121,7 +121,7 @@
             "report_code" : "OOSC_ADMT",
             "report_category": "Enrolment",
             "report_desc": "OoSc - admitted Report",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "source_file_name" : "OSC-Survey-Full-Rpt.xlsx",
                 "source_sheet_name" : "Report",

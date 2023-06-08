@@ -5,7 +5,7 @@
         "report_code" : "G2C_PEND",
         "report_category": "Operations",
         "report_desc": "% of Pending G2C applications greater than 30 days",
-        "generate_report": false,
+        "generate_report": true,
         "source_config" : {
             "source_file_name" : "g2c_online_pstm_report.xlsx",
             "source_sheet_name" : "Report",

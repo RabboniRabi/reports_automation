@@ -20,7 +20,8 @@ student_statuses = [cols.cwsn_in_School, cols.cwsn_cp]
 
 # Define regex of ID values to accept
 id_columns_regex_dict = {
-        cols.nid : '^[0-9]{5,6}$', # Accept only 5 digit numbers
+    # Accept only 5 digit numbers or vales starting with TN and ends with range of 3 to 6 digits.
+        cols.nid : '(?i)(^[0-9]{5,6}$)|(^TN[\s\S][a-z]{2,5}[\s\S][a-z]{2,5}[\s\S][0-9]{3,6}$)|(^TN[\s\S][a-z]{2,5}[\s\S][a-z]{2,5}[\s\S][0-9]{3,6}[\s\S][0-9]{2,4}$)',
         cols.udid: '(?i)^TN.*$'  # Accept only values starting with TN
     }
 
@@ -96,6 +97,9 @@ def pre_process_BRC_merge(raw_data):
     """
 
     print('Pre Processing before BRC merge called in CWSN')
+
+    # Filtering the raw data only for In school students
+    raw_data = raw_data[raw_data[cols.cwsn_status] == cols.cwsn_in_School]
 
     # As the raw data is at student level, group the data to school level and count values needed for report
 

@@ -46,7 +46,7 @@ def run():
     file_path = file_utilities.get_curr_month_source_data_dir_path() + '/OSC-Survey-Full-Rpt.xlsx'
     df_report = pd.read_excel(file_path, sheet_name='Report',skiprows=4)
     # Rename the column names to standard format
-    column_cleaner.standardise_column_names(df_report)
+    df_report = column_cleaner.standardise_column_names(df_report)
 
     # Define the levels to group the data by
     grouping_levels = [cols.district_name]
