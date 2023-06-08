@@ -4,7 +4,7 @@
         "report_name": "pending_G2C_applications",
         "report_code" : "G2C_PEND",
         "report_category": "Operations",
-        "report_desc": "% of Pending G2C applications greater than 30 days",
+        "report_desc": "% of Pending G2C applications greater than 15 days",
         "generate_report": true,
         "source_config" : {
             "source_file_name" : "g2c_online_pstm_report.xlsx",
@@ -48,7 +48,7 @@
                 "ascending": "True"
             },
             "format_config" : {
-                "heading" : "Elementary level % of Pending G2C applications greater than 30 days",
+                "heading" : "Elementary level % of Pending G2C applications greater than 15 days",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
@@ -101,7 +101,7 @@
                 "ascending": "True"
             },
             "format_config" : {
-                "heading" : "Secondary level % of Pending G2C applications greater than 30 days",
+                "heading" : "Secondary level % of Pending G2C applications greater than 15 days",
                 "subtotal_outlines_dict" : {
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {

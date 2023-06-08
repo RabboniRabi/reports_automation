@@ -44,6 +44,8 @@ def total_marks_summary_schoolwise():
     raw_data = dbutilities.fetch_data_as_df(credentials_dict, 'sslc_student_marks.sql')
     # Rename the column names to standard format
     raw_data = column_cleaner.standardise_column_names(raw_data)
+    raw_data['total_marks'].replace(to_replace="AAA", value="11111", inplace=True)
+    raw_data['total_marks'].replace(to_replace=" ", value="22222", inplace=True)
     # Convert all column types to string
     raw_data = raw_data.astype({
         "total_marks": "int",
@@ -51,21 +53,15 @@ def total_marks_summary_schoolwise():
         "subj2_centum": "int",
         "subj3_centum": "int",
         "subj4_centum": "int",
-        "subj5_centum": "int",
-        "subj1_pass": "int",
-        "subj2_pass": "int",
-        "subj3_pass": "int",
-        "subj4_pass": "int",
-        "subj5_pass": "int"
+        "subj5_centum": "int"
         })
     print(raw_data.columns)
-    raw_data['pass'] = (raw_data['subj1_pass'] + raw_data['subj2_pass'] + raw_data['subj3_pass'] + raw_data['subj4_pass'] + raw_data['subj5_pass'] == 5)
     raw_data['average_marks'] = raw_data['total_marks']/500
     pass_and_less_than_60_condition = [
-        (raw_data['average_marks'] < .6) & (raw_data['pass'])
+        (raw_data['average_marks'] < .6) & (raw_data['Pass'])
     ]
     between_60_and_80_condition = [
-        ((raw_data['average_marks'] >= .6) & (raw_data['average_marks'] < .8 )   & (raw_data['pass']))
+        ((raw_data['average_marks'] >= .6) & (raw_data['average_marks'] < .8 ) & (raw_data['pass']))
     ]
     above_80_condition = [
         ((raw_data['average_marks'] >= .8) & (raw_data['pass']))
@@ -120,4 +116,4 @@ def sc_students_marks_summary():
 
 
 
-sc_students_marks_summary()
+total_marks_summary_schoolwise()
