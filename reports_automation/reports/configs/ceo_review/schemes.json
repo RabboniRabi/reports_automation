@@ -70,9 +70,9 @@
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
                         "cols.scheme_not_started" : "sum",
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_completed": "sum",
                         "cols.tot_schools" : "sum"
                     },
                     "ranking_val_desc": "cols.perc_schools_issued_books",
@@ -86,7 +86,7 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
-                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_completed": "sum",
                             "cols.scheme_in_progress" : "sum",
                             "cols.scheme_not_started" : "sum",
                             "cols.tot_schools" : "sum",
@@ -146,9 +146,9 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
-                            "cols.scheme_completed": "sum", 
-                            "cols.scheme_in_progress" : "sum",
                             "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum",
                             "cols.tot_schools" : "sum",
                             "cols.deo_elem_rank": "mean"
                         },
