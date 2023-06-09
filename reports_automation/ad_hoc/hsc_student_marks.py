@@ -43,7 +43,7 @@ def total_marks_summary_schoolwise():
     raw_data = dbutilities.fetch_data_as_df(credentials_dict, 'hsc_student_marks.sql')
     # Rename the column names to standard format
     raw_data = column_cleaner.standardise_column_names(raw_data)
-    raw_data['total_marks'].replace(to_replace="AAAA", value="11111", inplace=True)
+    raw_data['total_marks'].replace(to_replace="AAAA", value=0, inplace=True)
     # Convert all column types to integer
     raw_data = raw_data.astype({
         "total_marks": "int",
@@ -53,15 +53,15 @@ def total_marks_summary_schoolwise():
         "subj4_centum": "int",
         "subj5_centum": "int"
     })
-    raw_data['average_marks'] = raw_data['total_marks'] / 600
+    raw_data['average_marks'] = raw_data['total_marks'] / 6
     pass_and_less_than_60_condition = [
-        (raw_data['average_marks'] < .6) & (raw_data['pass'])
+        (raw_data['average_marks'] < 60) & (raw_data['pass'])
     ]
     between_60_and_80_condition = [
-        ((raw_data['average_marks'] >= .6) & (raw_data['average_marks'] < .8) & (raw_data['pass']))
+        ((raw_data['average_marks'] >= 60) & (raw_data['average_marks'] < 80) & (raw_data['pass']))
     ]
     above_80_condition = [
-        ((raw_data['average_marks'] >= .8) & (raw_data['pass']))
+        ((raw_data['average_marks'] >= 80) & (raw_data['pass']))
     ]
     choices = [1]
     raw_data['Between 35% to 60%'] = np.select(pass_and_less_than_60_condition, choices, default=0)
