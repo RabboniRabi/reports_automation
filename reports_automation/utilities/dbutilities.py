@@ -149,7 +149,7 @@ def fetch_data_as_df (credentials_dict, script_file_name, params=None):
     return df_data
 
 
-def fetch_data_in_batches_as_df (credentials_dict, script_file_name, batch_size=1000, params=None):
+def fetch_data_in_batches_as_df (credentials_dict, script_file_name, batch_size=100000, params=None):
     """
     Function to fetch data in batches from the database using a query and return the data as a pandas dataframe object
     
@@ -184,13 +184,13 @@ def fetch_data_in_batches_as_df (credentials_dict, script_file_name, batch_size=
 
             # Update the query to include the size of result to fetch and the offset index
             batch_query = query % (batch_size, offset)
-            dfs.append(psql.read_frame(batch_query, connection))
+            dfs.append(pd.read_sql_query(batch_query, connection))
 
             # Change the offset for the next batch
             offset += batch_size
             # If number of rows fetched in last batch query is less than batch size,
             # no more rows to fetch
-            if len(dfs[-1]) < chunk_size:
+            if len(dfs[-1]) < batch_size:
                 break
         full_df = pd.concat(dfs)
         print('Query Execution Successful')
