@@ -67,7 +67,7 @@ def get_ceo_report(report_code, school_level, report_level):
     return ceo_rpt
 
 
-def get_ad_hoc_report(report_code):
+def get_ad_hoc_report(report_code, save_source=False, save_report=False):
     """
     Function to generate & fetch the ad hoc report for a given report code/name. 
 
@@ -75,6 +75,11 @@ def get_ad_hoc_report(report_code):
     ----------
     report_code: str
         The name/code of the report/metric to fetch the CEO report for
+    save_source: bool
+        Flag indicating if a copy of data fetched from database needs to be saved.
+        To be used within the application. Default is False.
+    save_report: bool
+        Flag indicating if report needs to be saved. Default is False
 
     Returns:
     -------
@@ -84,8 +89,14 @@ def get_ad_hoc_report(report_code):
     # Get the overall configuration for the report code
     report_config = config_reader.get_adhoc_config(report_code)
 
+    # Get the data set
+    df_data_set = data_fetcher.get_data_set(report_code, save_source)
+
     # Get the ad hoc report
-    ad_hoc_rpt = ad_hoc_report_generator.get_report(report_config)
+    ad_hoc_rpt = ad_hoc_report_generator.get_report(report_config, df_data_set)
+
+    if save_report:
+        ad_hoc_report_generator.save_report(report_config, ad_hoc_rpt)
 
     return ad_hoc_rpt
 

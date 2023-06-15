@@ -1,0 +1,44 @@
+{
+    "report_configs": [
+
+        {
+        "report_name": "cg_12th_passout_support",
+        "report_code" : "CG_12_SUPP",
+        "report_category": "CG",
+        "report_desc": "CG 12th pass out support required report",
+        "generate_report": true,
+        "source_configs" : [
+            {
+                "source_name" : "hm_survey_report",
+                "source_file_name" : "IFHRMS-Emp-Id-not-updated-Abstract-rpt.xlsx",
+                "source_sheet_name" : "Student Wise",
+                "skip_rows" : 4
+            },
+            {
+                "source_name" : "volunteer_survey_report",
+                "source_file_name" : "IFHRMS-Emp-Id-not-updated-Abstract-rpt.xlsx",
+                "source_sheet_name" : "Report",
+                "skip_rows" : 4
+            }
+        ],
+        "custom_logic" : true,
+        "summary_args": {
+            "grouping_levels" : ["cols.district_name"],
+            "agg_dict": {
+                "cols.cg_couns_supp_need" : "sum",
+                "cols.cg_admin_supp_need": "sum", 
+                "cols.cg_ecnom_supp_need": "sum"
+                }
+            },
+        "ranking_args" : {
+            "metric_col_name": "cols.perc_not_updt",
+            "num_col": "cols.not_updt_tchrs",
+            "den_col": "cols.up_tot_tchrs",
+            "sort": "True",
+            "ascending": "False"
+        }
+        
+        }
+
+    ]
+}
