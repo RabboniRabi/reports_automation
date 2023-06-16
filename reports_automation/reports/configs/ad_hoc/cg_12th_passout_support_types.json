@@ -10,26 +10,36 @@
         "source_configs" : [
             {
                 "source_name" : "hm_survey_report",
-                "source_file_name" : "IFHRMS-Emp-Id-not-updated-Abstract-rpt.xlsx",
+                "source_file_name" : "Naan-Mudhalvan-CG-HM-Survey-Rpt.xlsx",
                 "source_sheet_name" : "Student Wise",
                 "skip_rows" : 4
             },
             {
                 "source_name" : "volunteer_survey_report",
-                "source_file_name" : "IFHRMS-Emp-Id-not-updated-Abstract-rpt.xlsx",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+                "source_file_name" : "Naan-Mudh-CG-Volunt-Sur-rpt.xlsx",
+                "source_sheet_name" : "Student Wise",
+                "skip_rows" : 0
             }
         ],
-        "custom_logic" : true,
-        "summary_args": {
+        "custom_base_report" : true,
+        "merge_sources_configs" : [
+            {
+                "join_on" : ["cols.cg_stu_emis_no"],
+                "merge_type" : "left"
+            }
+        ],
+        "include_base_report" : true,
+        "summary_args": [{
+            "summary_sheet_name" : "District level support required count",
+            "custom_summary" : true,
             "grouping_levels" : ["cols.district_name"],
             "agg_dict": {
                 "cols.cg_couns_supp_need" : "sum",
                 "cols.cg_admin_supp_need": "sum", 
                 "cols.cg_ecnom_supp_need": "sum"
                 }
-            },
+            }
+        ],
         "ranking_args" : {
             "metric_col_name": "cols.perc_not_updt",
             "num_col": "cols.not_updt_tchrs",

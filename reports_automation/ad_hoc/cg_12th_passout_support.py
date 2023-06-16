@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 
 
-def custom_logic(df_data_set):
+def custom_logic(df_data_set, merge_sources_configs):
     """
     Custom function to implement the logic to create the ad hoc report
 
@@ -19,8 +19,11 @@ def custom_logic(df_data_set):
     ----------
     df_data_set: DataFrame
         dataset as Pandas DataFrame Objects dictionary
+    merge_sources_configs: List
+        List of configurations to merge the different source datasets together
     """
 
+    # Get the HM survey data frame object
     df_hm_survey_data = df_data_set[hm_survey_report]
 
     """
@@ -65,10 +68,20 @@ def custom_logic(df_data_set):
     df_hm_survey_data[cols.cg_stu_not_appld] = np.select(stu_not_appld_cond, choices, default=False)
 
     # Add a column to the data indicating if student status has not been updated
-    df_hm_survey_data[cols.cg_stu_not_updtd]= np.select(stu_stat_not_updtd_cond, choices, default=False)
+    df_hm_survey_data[cols.cg_stu_not_updtd] = np.select(stu_stat_not_updtd_cond, choices, default=False)
 
     # Add a column to the data indicating if student is a traget for volunteer survey
     df_hm_survey_data[cols.cg_stu_tgt]= np.select(stu_target_cond, choices, default=False)
 
-    # Merge the data with the reasons and supprt required values in the volunteer survey report
+    # Get the volunteer survey data object
+    df_vol_survey_data = df_data_set[volunteer_survey_report]
+
+    # Get a subset of data
+    df_vol_survey_data = df_vol_survey_data[[cols.cg_stu_emis_no, cols.cg_stu_not_appld_reason, cols.cg_stu_supp_req]]
+
+    # Merge the HM survey data with the reasons and support required values in the volunteer survey report
+    df_merged = df_hm_survey_data.merge(df_vol_survey_data, how='left', on=cols.cg_stu_emis_no)
+
+    return df_merged
+
     
