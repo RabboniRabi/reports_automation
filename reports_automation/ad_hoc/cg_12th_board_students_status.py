@@ -25,10 +25,10 @@ group_levels = ['District',	'Block', 'UDISE', 'SchoolName', 'School_Category', '
 
 # Getting the file path for the source data:
 hm_file_path = os.path.join(file_utilities.get_curr_month_source_data_dir_path(),
-                         'Naan-Mudhalvan-CG-HM-Survey-12.6.2023-12.30pm.xlsx')
+                         'Naan-Mudhalvan-CG-HM-Survey-Rpt-16.6.2023-3.30pm.xlsx')
 
 volunteer_file_path = os.path.join(file_utilities.get_curr_month_source_data_dir_path(),
-                         'Naan-Mudh-CG-Volunt-Sur-rpt-12.6.2023-12.30pm.xlsx')
+                         'Naan-Mudh-CG-Volunt-Sur-rpt-16.6.2023-3.30pm.xlsx')
 
 
 # Reading the excel
@@ -80,12 +80,11 @@ df_hm_data['Total_Not_Updated'] = np.select(Total_Not_Updated, choices, default=
 df_school_level = df_hm_data.groupby(group_levels, as_index=False)['Total_Students', 'Total_Pass', 'Total_Fail',
     'Total_Applied', 'Total_Applied_with_clgnm', 'Total_Applied_without_clgnm',
         'Total_Applied_without_clgnm_doubtful', 'Total_Applied_without_clgnm_other_reasons',
-                                    'Total_Not_Applied', 'Total_Not_Applied'].sum()
+                                    'Total_Not_Applied', 'Total_Not_Updated'].sum()
 
 df_school_level['Target_Students_from_HM_Report'] = df_school_level['Total_Applied_without_clgnm_doubtful'] + \
                                                     df_school_level['Total_Not_Applied'] + \
-                                                    df_school_level['Total_Not_Applied']
-
+                                                    df_school_level['Total_Not_Updated']
 
 
 df_school_level['Target_Students_from_Volunteer_Report'] = df_school_level['UDISE'].apply(utilities.xlookup,
