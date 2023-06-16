@@ -329,6 +329,9 @@ cg_stu_appld_wo_clg_name_dbt = 'Applied without College Name - doubtful reason'
 cg_stu_not_appld = 'Not Applied to College'
 cg_stu_not_updtd = 'Not Updated'
 cg_stu_tgt = 'Target Student'
+cg_stu_emis_no = 'EMIS_No'
+cg_stu_not_appld_reason = 'reason_notapply'
+cg_stu_supp_req = 'support'
 
 def get_value(var_name: str):
     """

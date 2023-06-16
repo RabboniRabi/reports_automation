@@ -39,15 +39,17 @@ def get_report(report_config: dict, df_data_set):
 
 
     # Check if there is a custom logic to be executed before generating this report
-    if (report_config['custom_logic']):
+    if (report_config['custom_base_report']):
         # Get the name of the module
         report_module_name = importlib.import_module('ad_hoc.' + report_config['report_name'])
 
     # Call the function with the custom logic for the report
     cust_logic_func = getattr(report_module_name, 'custom_logic')
-    df_data_set = cust_logic_func(df_data_set)
+    df_base_report = cust_logic_func(df_data_set)
 
     print('df_data_set: ', df_data_set)
+
+
 
     # Get the report summary arguments and update them as JSON to dict mapping is not clean with variables
     summary_args = report_config['summary_args']
