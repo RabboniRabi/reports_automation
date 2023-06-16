@@ -22,14 +22,14 @@
             }
         ],
         "custom_base_report" : true,
-        "merge_sources_configs" : [
-            {
+        "merge_sources_configs" : {
+            "volunteer_survey_report" : {
                 "join_on" : ["cols.cg_stu_emis_no"],
                 "merge_type" : "left"
             }
-        ],
+        },
         "include_base_report" : true,
-        "summary_args": [{
+        "summary_sheets_args": [{
             "summary_sheet_name" : "District level support required count",
             "custom_summary" : true,
             "grouping_levels" : ["cols.district_name"],
