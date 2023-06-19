@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 
 
-def custom_logic(df_data_set, merge_sources_configs):
+def custom_base_report(df_data_set, merge_sources_configs):
     """
     Custom function to implement the logic to create the ad hoc report
 
@@ -21,6 +21,10 @@ def custom_logic(df_data_set, merge_sources_configs):
         dataset as Pandas DataFrame Objects dictionary
     merge_sources_configs: List
         List of configurations to merge the different source datasets together
+
+    Returns:
+    -------
+    Base report created from source datasets and custom logic
     """
 
     # Get the HM survey data frame object
@@ -79,8 +83,11 @@ def custom_logic(df_data_set, merge_sources_configs):
     # Get a subset of data
     df_vol_survey_data = df_vol_survey_data[[cols.cg_stu_emis_no, cols.cg_stu_not_appld_reason, cols.cg_stu_supp_req]]
 
+    # Get the volunteer dataset merge configuration
+    vol_merge_config = merge_sources_configs[0]
+
     # Merge the HM survey data with the reasons and support required values in the volunteer survey report
-    df_merged = df_hm_survey_data.merge(df_vol_survey_data, how='left', on=cols.cg_stu_emis_no)
+    df_merged = df_hm_survey_data.merge(df_vol_survey_data, how=vol_merge_config['merge_type'], on=vol_merge_config['join_on'])
 
     return df_merged
 
