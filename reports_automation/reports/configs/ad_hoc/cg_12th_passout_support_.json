@@ -29,15 +29,17 @@
             }
         },
         "include_base_report" : true,
-        "summary_sheets_args": [{
-            "summary_sheet_name" : "District level support required count",
-            "custom_summary" : true,
-            "grouping_levels" : ["cols.district_name"],
-            "agg_dict": {
-                "cols.cg_couns_supp_need" : "sum",
-                "cols.cg_admin_supp_need": "sum", 
-                "cols.cg_ecnom_supp_need": "sum"
-                }
+        "summary_sheets_args": [
+            {
+                "summary_sheet_name" : "District level support required count",
+                "summary_sheet_code" : "dist_lvl_supp_req_count",
+                "custom_summary" : true,
+                "grouping_levels" : ["cols.district_name"],
+                "agg_dict": {
+                    "cols.cg_couns_supp_need" : "sum",
+                    "cols.cg_admin_supp_need": "sum", 
+                    "cols.cg_ecnom_supp_need": "sum"
+                    }
             }
         ],
         "ranking_args" : {

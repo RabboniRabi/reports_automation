@@ -73,6 +73,27 @@ def get_report(report_config: dict, df_data_set):
 
     print('df_base_report: ', df_base_report)
 
+    # Create report summary sheets from base data for given summary sheets configurations
+    summary_sheets_args = report_config['report_config']
+    df_reports = {}
+    df_reports['base_report'] = df_base_report
+    # For summary sheet configuration
+    for summary_sheet_args in summary_sheets_args:
+        if summary_sheet_args["custom_summary"]:
+            # Call the custom method in the custom module for the script to create the summary report
+            # Get the name of the module
+            report_module_name = importlib.import_module('ad_hoc.' + report_config['report_name'])
+            # Call the function with the custom logic for the report
+            cust_summary_func = getattr(report_module_name, summary_sheet_args["summary_sheet_code"])
+            df_base_report = cust_summary_func(df_base_report, summary_sheet_args)
+        else:
+            # Group the base report to the given grouping levels and aggregate given columns
+            df_summary = df_base_report.groupby(summary_sheet_args["grouping_levels"]).agg(summary_sheet_args["agg_dict"])
+
+        df_reports[summary_sheet_args["summary_sheet_name"]] = df_summary
+        
+
+
 
 
     # Get the report summary arguments and update them as JSON to dict mapping is not clean with variables
