@@ -13,6 +13,7 @@ config_files = ['report_configs.json',
                 
 
 ceo_review_config_files = ['ceo_review/attendance_configs.json',
+                'ceo_review/board_results_configs.json',
                 'ceo_review/class_configs.json',
                 'ceo_review/cwsn_configs.json',
                 'ceo_review/health_configs.json',

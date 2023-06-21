@@ -319,6 +319,21 @@ absent_replaced = "Absent & Replaced"
 not_filled = 'Not Filled'
 perc_present = "% HM's Present"
 
+# board exams report specific columns
+brd_tot_stu_appr = 'No. of students who appeared for all subjects'
+brd_tot_stu_pass = 'No. of students passed'
+brd_pass_perc = 'Pass %'
+brd_avg_marks = 'Average marks'
+brd_marks_30_to_60_count = 'Students who secured marks between 35% to 60%'
+brd_marks_60_to_80_count = 'Students who secured marks between 60% to 80%'
+brd_marks_grtr_80_count = 'Students who secured marks > 80%'
+brd_cents = 'No. of Centums'
+brd_maj_grp_cents = 'Major group Students who secured centum in one or more subjects'
+brd_voc_grp_cents = 'Vocational group Students who secured centum in one or more subjects'
+brd_tot_stu_w_cents = 'No. of students with centums'
+brd_perc_stu_pass = '% students who have passed'
+
+
 def get_value(var_name: str):
     """
     Function to get the value mapped to the variable defined here.
