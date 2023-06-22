@@ -24,7 +24,6 @@
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                 "grouping_agg_dict" : {
                     "cols.cwsn_tot": "sum", 
-                    "cols.nid_count" : "sum",
                     "cols.udid_count" : "sum"
                 }
             },
@@ -32,7 +31,6 @@
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
                     "cols.cwsn_tot": "sum", 
-                    "cols.nid_count" : "sum",
                     "cols.udid_count" : "sum"
                 },
                 "ranking_val_desc": "cols.perc_students_with_UDID",
@@ -47,7 +45,6 @@
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                     "agg_cols_func_dict" : {
                         "cols.cwsn_tot": "sum",
-                        "cols.nid_count": "sum",
                         "cols.udid_count": "sum",
                         "cols.deo_elem_rank": "mean"
                     },
@@ -68,7 +65,6 @@
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                 "grouping_agg_dict" : {
                     "cols.cwsn_tot": "sum", 
-                    "cols.nid_count" : "sum",
                     "cols.udid_count" : "sum"
                 }
             },
@@ -76,7 +72,6 @@
                 "ranking_type" : "percent_ranking",
                 "agg_dict": {
                     "cols.cwsn_tot": "sum", 
-                    "cols.nid_count" : "sum",
                     "cols.udid_count" : "sum"
                 },
                 "ranking_val_desc": "cols.perc_students_with_UDID",
@@ -91,7 +86,6 @@
                     "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                     "agg_cols_func_dict" : {
                         "cols.cwsn_tot": "sum",
-                        "cols.nid_count": "sum",
                         "cols.udid_count": "sum",
                         "cols.deo_sec_rank": "mean"
                     },
@@ -100,6 +94,107 @@
                 "format_dicts" : [
                     {
                         "columns" : ["cols.perc_students_with_UDID"],
+                        "format" : {"num_format": "0.00%"}
+                    }
+                ]
+            }
+        }
+    },
+
+    {
+        "report_name": "cwsn_having_nid",
+        "report_code" : "CWSN_NID",
+        "report_category": "Enrolment",
+        "report_desc": "CWSN having NID report",
+        "generate_report": true,
+        "source_config" : {
+            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_sheet_name" : "Report",
+            "skip_rows" : 4
+        },
+        "pre_process_brc_merge": true,
+        "brc_merge_config" : {
+            "join_on" : [ "cols.block_name", "cols.udise_col"],
+            "merge_type" : "left"
+        },
+        "post_process_brc_merge" : false,
+        "elementary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": false,
+                "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                "grouping_agg_dict" : {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.nid_count" : "sum"
+                }
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.nid_count" : "sum"
+                },
+                "ranking_val_desc": "cols.perc_students_with_NID",
+                "num_col": "cols.nid_count",
+                "den_col": "cols.cwsn_tot",
+                "sort": "True",
+                "ascending": "False"
+            },
+            "format_config" : {
+                "heading" : "Elementary CWSN students having NIDs report as on ",
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                    "agg_cols_func_dict" : {
+                        "cols.cwsn_tot": "sum",
+                        "cols.nid_count": "sum",
+                        "cols.deo_elem_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
+                },
+                "format_dicts" : [
+                    {
+                        "columns" : ["cols.perc_students_with_NID"],
+                        "format" : {"num_format": "0.00%"}
+                    }
+                ]
+            }
+        },
+        "secondary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args" : {
+                "custom_unranked_report": false,
+                "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                "grouping_agg_dict" : {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.nid_count" : "sum"
+                }
+            },
+            "ranking_args": {
+                "ranking_type" : "percent_ranking",
+                "agg_dict": {
+                    "cols.cwsn_tot": "sum", 
+                    "cols.nid_count" : "sum"
+                },
+                "ranking_val_desc": "cols.perc_students_with_NID",
+                "num_col": "cols.nid_count",
+                "den_col": "cols.cwsn_tot",
+                "sort": "True",
+                "ascending": "False"
+            },
+            "format_config" : {
+                "heading" : "Secondary CWSN students having NIDs report",
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                    "agg_cols_func_dict" : {
+                        "cols.cwsn_tot": "sum",
+                        "cols.nid_count": "sum",
+                        "cols.deo_sec_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_sec": ""}
+                },
+                "format_dicts" : [
+                    {
+                        "columns" : ["cols.perc_students_with_NID"],
                         "format" : {"num_format": "0.00%"}
                     }
                 ]
