@@ -822,7 +822,7 @@
             "report_code" : "STU_RCV_CYCLE",
             "report_category": "Schemes",
             "report_desc": "Students receiving cycle report",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "source_file_name" : "",
                 "source_sheet_name" : "Report",
@@ -924,7 +924,7 @@
             "report_code" : "STU_RCV_LAPTOP",
             "report_category": "Schemes",
             "report_desc": "Students receiving laptop report",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "source_file_name" : "",
                 "source_sheet_name" : "Report",
