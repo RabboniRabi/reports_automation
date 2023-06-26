@@ -26,7 +26,8 @@
                     "grouping_agg_dict" : {
                         "cols.oosc_tot_surveyed" : "sum",
                         "cols.to_be_admitted" : "sum",
-                        "cols.stdnts_admttd" : "sum"
+                        "cols.stdnts_admttd" : "sum",
+                        "cols.oosc_stu_admt_othr_reasons" : "sum"
                     }
                 },
                 "ranking_args": {
@@ -34,7 +35,8 @@
                     "agg_dict": {
                         "cols.oosc_tot_surveyed" : "sum",
                         "cols.to_be_admitted" : "sum",
-                        "cols.stdnts_admttd" : "sum"
+                        "cols.stdnts_admttd" : "sum",
+                        "cols.oosc_stu_admt_othr_reasons" : "sum"
                     },
                     "ranking_val_desc": "cols.perc_admitted_oosc",
                     "num_col": "cols.stdnts_admttd",
@@ -50,6 +52,7 @@
                             "cols.oosc_tot_surveyed" : "sum",
                             "cols.to_be_admitted" : "sum",
                             "cols.stdnts_admttd" : "sum",
+                            "cols.oosc_stu_admt_othr_reasons" : "sum",
                             "cols.deo_elem_rank": "mean"
                         },
                         "text_append_dict" : {"cols.deo_name_elm": ""}
@@ -70,7 +73,8 @@
                     "grouping_agg_dict" : {
                         "cols.oosc_tot_surveyed" : "sum",
                         "cols.to_be_admitted" : "sum",
-                        "cols.stdnts_admttd" : "sum"
+                        "cols.stdnts_admttd" : "sum",
+                        "cols.oosc_stu_admt_othr_reasons" : "sum"
                     }
                 },
                 "ranking_args": {
@@ -78,7 +82,8 @@
                     "agg_dict": {
                         "cols.oosc_tot_surveyed" : "sum",
                         "cols.to_be_admitted" : "sum",
-                        "cols.stdnts_admttd" : "sum"
+                        "cols.stdnts_admttd" : "sum",
+                        "cols.oosc_stu_admt_othr_reasons" : "sum"
                     },
                     "ranking_val_desc": "cols.perc_admitted_oosc",
                     "num_col": "cols.stdnts_admttd",
@@ -94,6 +99,7 @@
                             "cols.oosc_tot_surveyed" : "sum",
                             "cols.to_be_admitted" : "sum",
                             "cols.stdnts_admttd" : "sum",
+                            "cols.oosc_stu_admt_othr_reasons" : "sum",
                             "cols.deo_sec_rank": "mean"
                         },
                         "text_append_dict" : {"cols.deo_name_sec": ""}
@@ -104,6 +110,94 @@
                             "format" : {"num_format": "0.00%"}
                         }
                     ]
+                }
+            }
+        },
+
+        {
+            "report_name": "oosc_students_absent_greater_than_6_days",
+            "report_code" : "OOSC_STU_ABS_6PLUS",
+            "report_category": "Enrolment",
+            "report_desc": "OoSc - Students absent for greater than 6 days",
+            "generate_report": true,
+            "source_config" : {
+                "source_file_name" : "Students_absent_greater_than_6_days.xlsx",
+                "source_sheet_name" : "raw_data",
+                "skip_rows" : 0
+            },
+            "pre_process_brc_merge": true,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.oosc_no_stu_absent_greater_6" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.oosc_no_stu_absent_greater_6" : "sum"
+                    },
+                    "ranking_val_desc": "cols.oosc_no_stu_absent_greater_6",
+                    "ranking_col": "cols.oosc_no_stu_absent_greater_6",
+                    "sort": "True",
+                    "ascending": "True"
+                },
+                "format_config" : {
+                    "heading" : "Elementary students absent greater than 6 days report as on ",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.oosc_no_stu_absent_greater_6" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.oosc_no_stu_absent_greater_6"],
+                            "format" : {"num_format": "#####"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.oosc_no_stu_absent_greater_6" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.oosc_no_stu_absent_greater_6" : "sum"
+                    },
+                    "ranking_val_desc": "cols.oosc_no_stu_absent_greater_6",
+                    "ranking_col": "cols.oosc_no_stu_absent_greater_6",
+                    "sort": "True",
+                    "ascending": "True"
+                },
+                "format_config" : {
+                    "heading" : "Secondary OoSC students absent greater than 6 days report as on ",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.oosc_no_stu_absent_greater_6" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : []
                 }
             }
         }
