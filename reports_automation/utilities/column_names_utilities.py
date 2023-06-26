@@ -86,17 +86,17 @@ cwsn_students_transitioned_cls11_2023_24 = 'cwsn_students_transitioned_cls11_202
 cwsn_students_transitioned_cls10_11_perc = '% CWSN students transitioned from Class 10 to 11'
 
 #Student Transition specific column names
-tc_cls8_total_2022_23 = 'Total as on'
-tc_cls8_issued_2023_24 = 'TC Issued'
+tc_cls8_total_2022_23 = 'tc_cls8_total_2022_23'
+tc_cls8_issued_2023_24 = 'tc_cls8_issued_2023_24'
 tc_cls8_issued_2023_24_perc = '% students issued TC in Class 8'
 
-tc_cls5_total_2022_23 = 'Total as on'
-tc_cls5_issued_2023_24 = 'TC Issued'
+tc_cls5_total_2022_23 = 'tc_cls5_total_2022_23'
+tc_cls5_issued_2023_24 = 'tc_cls5_issued_2023_24'
 tc_cls5_issued_2023_24_perc = '% students issued TC in Class 5'
 
 
-tc_cls10_total_2022_23 = 'Total as on'
-tc_cls10_issued_2023_24 = 'TC Issued'
+tc_cls10_total_2022_23 = 'tc_cls10_total_2022_23'
+tc_cls10_issued_2023_24 = 'tc_cls10_issued_2023_24'
 tc_cls10_issued_2023_24_perc = '% students issued TC in Class 10'
 
 
@@ -115,6 +115,17 @@ students_count_cls10_2022_23 = 'students_count_cls10_2022_23'
 students_transitioned_cls11_2023_24 = 'students_transitioned_cls11_2023_24'
 students_transitioned_cls10_11_perc = '% students transitioned from Class 10 to 11'
 
+#Enrollment Specific Reports
+
+students_enrolled_cls1_2022_23 = 'students_enrolled_cls1_2022_23'
+students_enrolled_cls1_2023_24 = 'students_enrolled_cls1_2023_24'
+students_enrolled_cls1_change_perc = '% students_enrolled_cls1_change_perc'
+
+#Promotion Report
+Total_Students = 'Total_Students'
+Students_Promoted_Count = 'Students_Promoted_Count'
+Students_Not_Promoted_Count = 'Students_Not_Promoted_Count'
+Students_Pendingtobe_Promoted_perc = '% SStudents Pending to be Promoted'
 
 
 # Health report specific column names

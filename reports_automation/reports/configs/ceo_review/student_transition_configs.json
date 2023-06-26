@@ -297,6 +297,136 @@
                     ]
                 }
             }
+        },
+        {
+            "report_name": "Students_Promotion_Pending",
+            "report_code": "STDNT_PROMOTION_",
+            "report_category": "Transition",
+            "report_desc": "Student Promotion Pending",
+            "generate_report": true,
+            "source_config": {
+                "query_file_name": "student_promotion_pending.sql",
+                "db": "tn_schools_db"
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config": {
+                "join_on": [
+                    "cols.block_name",
+                    "cols.udise_col"
+                ],
+                "merge_type": "left"
+            },
+            "post_process_brc_merge": false,
+            "elementary_report": {
+                "generate_report": true,
+                "un_ranked_report_args": {
+                    "custom_unranked_report": false,
+                    "grouping_cols": [
+                        "cols.deo_name_elm",
+                        "cols.block_name"
+                    ],
+                    "grouping_agg_dict": {
+                        "cols.Total_Students": "sum",
+                        "cols.Students_Promoted_Count": "sum",
+                        "cols.Students_Not_Promoted_Count": "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type": "percent_ranking",
+                    "agg_dict": {
+                        "cols.Total_Students": "sum",
+                        "cols.Students_Promoted_Count": "sum",
+                        "cols.Students_Not_Promoted_Count": "sum"
+                    },
+                    "ranking_val_desc": "cols.Students_Pendingtobe_Promoted_perc",
+                    "num_col": "cols.Students_Not_Promoted_Count",
+                    "den_col": "cols.Total_Students",
+                    "sort": "True",
+                    "ascending": "True"
+                },
+                "format_config": {
+                    "heading": "Elementary students pending to be promoted",
+                    "subtotal_outlines_dict": {
+                        "level_subtotal_cols_dict": {
+                            "1": "cols.deo_name_elm"
+                        },
+                        "agg_cols_func_dict": {
+                            "cols.Total_Students": "sum",
+                            "cols.Students_Promoted_Count": "sum",
+                            "cols.Students_Not_Promoted_Count": "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict": {
+                            "cols.deo_name_elm": ""
+                        }
+                    },
+                    "format_dicts": [
+                        {
+                            "columns": [
+                                "cols.Students_Pendingtobe_Promoted_perc"
+                            ],
+                            "format": {
+                                "num_format": "0.00%"
+                            }
+                        }
+                    ]
+                }
+            },
+            "secondary_report": {
+                "generate_report": true,
+                "un_ranked_report_args": {
+                    "custom_unranked_report": false,
+                    "grouping_cols": [
+                        "cols.deo_name_sec",
+                        "cols.block_name"
+                    ],
+                    "grouping_agg_dict": {
+                        "cols.Total_Students": "sum",
+                        "cols.Students_Promoted_Count": "sum",
+                        "cols.Students_Not_Promoted_Count": "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type": "percent_ranking",
+                    "agg_dict": {
+                        "cols.Total_Students": "sum",
+                        "cols.Students_Promoted_Count": "sum",
+                        "cols.Students_Not_Promoted_Count": "sum"
+                    },
+                    "ranking_val_desc": "cols.Students_Pendingtobe_Promoted_perc",
+                    "num_col": "cols.Students_Not_Promoted_Count",
+                    "den_col": "cols.Total_Students",
+                    "sort": "True",
+                    "ascending": "True"
+                },
+                "format_config": {
+                    "heading": "Secondary students pending to be promoted",
+                    "subtotal_outlines_dict": {
+                        "level_subtotal_cols_dict": {
+                            "1": "cols.deo_name_sec"
+                        },
+                        "agg_cols_func_dict": {
+                            "cols.Total_Students": "sum",
+                            "cols.Students_Promoted_Count": "sum",
+                            "cols.Students_Not_Promoted_Count": "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict": {
+                            "cols.deo_name_sec": ""
+                        }
+                    },
+                    "format_dicts": [
+                        {
+                            "columns": [
+                                "cols.Students_Pendingtobe_Promoted_perc"
+                            ],
+                            "format": {
+                                "num_format": "0.00%"
+                            }
+                        }
+                    ]
+                }
+            }
         }
     ]
 }
