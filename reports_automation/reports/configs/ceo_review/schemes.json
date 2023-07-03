@@ -70,9 +70,9 @@
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
                         "cols.scheme_not_started" : "sum",
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_completed": "sum",
                         "cols.tot_schools" : "sum"
                     },
                     "ranking_val_desc": "cols.perc_schools_issued_books",
@@ -86,7 +86,7 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
-                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_completed": "sum",
                             "cols.scheme_in_progress" : "sum",
                             "cols.scheme_not_started" : "sum",
                             "cols.tot_schools" : "sum",
@@ -146,9 +146,9 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
-                            "cols.scheme_completed": "sum", 
-                            "cols.scheme_in_progress" : "sum",
                             "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum",
                             "cols.tot_schools" : "sum",
                             "cols.deo_elem_rank": "mean"
                         },
@@ -816,6 +816,211 @@
                     ]
                 }
             }
+        },
+         {
+            "report_name": "students_receiving_cycle",
+            "report_code" : "STU_RCV_CYCLE",
+            "report_category": "Schemes",
+            "report_desc": "Students receiving cycle report",
+            "generate_report": false,
+            "source_config" : {
+                "source_file_name" : "",
+                "source_sheet_name" : "Report",
+                "skip_rows" : 4
+            },
+            "pre_process_brc_merge": true,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum",
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_schools_issued_cycle",
+                    "num_col": "cols.scheme_completed",
+                    "den_col": "cols.tot_schools",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary schools students receiving cycle report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.scheme_completed": "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_schools_issued_cycle"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum",
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_schools_issued_cycle",
+                    "num_col": "cols.scheme_completed",
+                    "den_col": "cols.tot_schools",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary schools students receiving cycle report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.scheme_completed": "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_schools_issued_cycle"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "report_name": "students_receiving_laptop",
+            "report_code" : "STU_RCV_LAPTOP",
+            "report_category": "Schemes",
+            "report_desc": "Students receiving laptop report",
+            "generate_report": false,
+            "source_config" : {
+                "source_file_name" : "",
+                "source_sheet_name" : "Report",
+                "skip_rows" : 4
+            },
+            "pre_process_brc_merge": true,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum",
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_schools_issued_laptop",
+                    "num_col": "cols.scheme_completed",
+                    "den_col": "cols.tot_schools",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary schools students receiving laptop report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.scheme_completed": "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_schools_issued_laptop"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": true,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {}
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum",
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_schools_issued_laptop",
+                    "num_col": "cols.scheme_completed",
+                    "den_col": "cols.tot_schools",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary schools students receiving laptop report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.scheme_completed": "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.perc_schools_issued_laptop"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
         }
+
     ]
 }

@@ -71,10 +71,61 @@ class_10 = '10'
 class_11 = '11'
 
 
+#CWSN Transition specific column names
+cwsn_students_count_cls8_2022_23 = 'cwsn_students_count_cls8_2022_23'
+cwsn_students_transitioned_cls9_2023_24 = 'cwsn_students_transitioned_cls9_2023_24'
+cwsn_students_transitioned_cls8_9_perc = '% CWSN students transitioned from Class 8 to 9'
+
+cwsn_students_count_cls5_2022_23 = 'cwsn_students_count_cls5_2022_23'
+cwsn_students_transitioned_cls6_2023_24 = 'cwsn_students_transitioned_cls6_2023_24'
+cwsn_students_transitioned_cls5_6_perc = '% CWSN students transitioned from Class 5 to 6'
 
 
+cwsn_students_count_cls10_2022_23 = 'cwsn_students_count_cls10_2022_23'
+cwsn_students_transitioned_cls11_2023_24 = 'cwsn_students_transitioned_cls11_2023_24'
+cwsn_students_transitioned_cls10_11_perc = '% CWSN students transitioned from Class 10 to 11'
+
+#Student Transition specific column names
+tc_cls8_total_2022_23 = 'tc_cls8_total_2022_23'
+tc_cls8_issued_2023_24 = 'tc_cls8_issued_2023_24'
+tc_cls8_issued_2023_24_perc = '% students issued TC in Class 8'
+
+tc_cls5_total_2022_23 = 'tc_cls5_total_2022_23'
+tc_cls5_issued_2023_24 = 'tc_cls5_issued_2023_24'
+tc_cls5_issued_2023_24_perc = '% students issued TC in Class 5'
 
 
+tc_cls10_total_2022_23 = 'tc_cls10_total_2022_23'
+tc_cls10_issued_2023_24 = 'tc_cls10_issued_2023_24'
+tc_cls10_issued_2023_24_perc = '% students issued TC in Class 10'
+
+
+#TC Issued Specific Reports
+students_count_cls8_2022_23 = 'students_count_cls8_2022_23'
+students_transitioned_cls9_2023_24 = 'students_transitioned_cls9_2023_24'
+students_transitioned_cls8_9_perc = '% students transitioned from Class 8 to 9'
+
+
+students_count_cls5_2022_23 = 'students_count_cls5_2022_23'
+students_transitioned_cls6_2023_24 = 'students_transitioned_cls6_2023_24'
+students_transitioned_cls5_6_perc = '% students transitioned from Class 5 to 6'
+
+
+students_count_cls10_2022_23 = 'students_count_cls10_2022_23'
+students_transitioned_cls11_2023_24 = 'students_transitioned_cls11_2023_24'
+students_transitioned_cls10_11_perc = '% students transitioned from Class 10 to 11'
+
+#Enrollment Specific Reports
+
+students_enrolled_cls1_2022_23 = 'students_enrolled_cls1_2022_23'
+students_enrolled_cls1_2023_24 = 'students_enrolled_cls1_2023_24'
+students_enrolled_cls1_change_perc = '% students_enrolled_cls1_change_perc'
+
+#Promotion Report
+Total_Students = 'Total_Students'
+Students_Promoted_Count = 'Students_Promoted_Count'
+Students_Not_Promoted_Count = 'Students_Not_Promoted_Count'
+Students_Pendingtobe_Promoted_perc = '% SStudents Pending to be Promoted'
 
 
 # Health report specific column names
@@ -104,6 +155,7 @@ udid_count = 'Issued UDID Count'
 with_acct = 'Number of students with account'
 witht_acct = 'Number of students without account'
 perc_students_with_UDID = '% Students with UDID'
+perc_students_with_NID = '% Students with NID'
 perc_students_with_acct = '% Students with account'
 stu_emis_no = 'Student_EMIS_NO'
 cwsn_school_ie = 'School + IE'
@@ -178,6 +230,8 @@ to_be_verified = 'To be verified'
 non_target = 'Non-Target'
 stdnt_admttd = 'Student Admitted'
 stdnts_admttd = 'Students Admitted'
+oosc_stu_admt_othr_reasons = 'Students admitted - Other reasons'
+oosc_stu_nt_admt_othr_reasons = 'Students Not admitted - Other reasons'
 oosc_tot_surveyed = 'Total Surveyed'
 non_target_not_admitted = 'Not Admitted from Non Target'
 non_target_admitted = 'Admitted from Non Target'
@@ -185,6 +239,8 @@ verified_not_admitted = 'Not Admitted from To be Verified'
 verified_admitted = 'Admitted from To be Verified'
 admitted_not_admitted = 'Not Admitted from To be Admitted'
 admitted = 'Admitted from To be Admitted'
+oosc_stu_id = 'student_id'
+oosc_no_stu_absent_greater_6 = 'Number of students absent for greater than 6 days'
 
 # Hi-tech lab report specific column names
 up_time_hrs = 'up_time_hrs'
@@ -292,6 +348,8 @@ perc_schools_issued_crayons = '% schools completed crayons issue'
 perc_schools_issued_colour_pencil = '% schools completed colour pencil issue'
 perc_schools_issued_bag = '% schools completed bag issue'
 perc_schools_issued_atlas = '% schools completed atlas issue'
+perc_schools_issued_cycle = '% schools completed cycle issue'
+perc_schools_issued_laptop = '% schools completed laptop issue'
 schemes_total_students_small_case = 'total_students'
 schemes_total_students = 'Total_Students'
 schemes_issued_students = 'issued_students'
@@ -332,6 +390,21 @@ cg_stu_tgt = 'Target Student'
 cg_stu_emis_no = 'EMIS_No'
 cg_stu_not_appld_reason = 'reason_notapply'
 cg_stu_supp_req = 'support'
+
+# board exams report specific columns
+brd_tot_stu_appr = 'No. of students who appeared for all subjects'
+brd_tot_stu_pass = 'No. of students passed'
+brd_pass_perc = 'Pass %'
+brd_avg_marks = 'Average marks'
+brd_marks_30_to_60_count = 'Students who secured marks between 35% to 60%'
+brd_marks_60_to_80_count = 'Students who secured marks between 60% to 80%'
+brd_marks_grtr_80_count = 'Students who secured marks > 80%'
+brd_cents = 'No. of Centums'
+brd_maj_grp_cents = 'Major group Students who secured centum in one or more subjects'
+brd_voc_grp_cents = 'Vocational group Students who secured centum in one or more subjects'
+brd_tot_stu_w_cents = 'No. of students with centums'
+brd_perc_stu_pass = '% students who have passed'
+
 
 def get_value(var_name: str):
     """
