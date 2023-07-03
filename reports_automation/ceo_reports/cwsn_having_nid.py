@@ -19,9 +19,13 @@ initial_group_levels = [cols.district_name, cols.block_name, cols.udise_col, col
 # Define list of student statuses to count in report
 student_statuses = [cols.cwsn_in_School, cols.cwsn_cp]
 
-# Define regex of UDID values to accept
+# Keeping a back-up of the previous more accepting regex
+# cols.nid : '(?i)(^[0-9]{5,6}$)|(^TN[\s\S][a-z]{2,5}[\s\S][a-z]{2,5}[\s\S][0-9]{3,6}$)|(^TN[a-z]{2,5}[a-z]{2,5}[0-9]{3,6}[\s\S][0-9]{2,4}$)'
+
+# Define regex of ID values to accept
 id_columns_regex_dict = {
-        cols.udid: '(?i)^TN.*$'  # Accept only values starting with TN
+        # Accept only NIDs following the given patten below
+        cols.nid : '(?i)(^TN\/[a-z]{3}\/[a-z]{1,6}\/[0-9]{1,6}$)'
     }
 
 def _get_grouping_level_wise_IDs_issued_count(df, group_levels, columns_regex_dict):
@@ -128,7 +132,7 @@ def pre_process_BRC_merge(raw_data):
     df_data_schl_lvl.rename(columns = {
         cols.cwsn_in_School : cols.stdnts_in_school,
         cols.cwsn_cp : cols.stdnts_in_cp,
-        cols.udid : cols.udid_count}, inplace = True)
+        cols.nid : cols.nid_count}, inplace = True)
 
     return df_data_schl_lvl
 
