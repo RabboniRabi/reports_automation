@@ -1,0 +1,56 @@
+{
+    "report_configs": [
+
+        {
+        "report_name": "cg_12th_passout_support",
+        "report_code" : "CG_12_SUPP",
+        "report_category": "CG",
+        "report_desc": "CG 12th pass out support required report",
+        "generate_report": true,
+        "source_configs" : [
+            {
+                "source_name" : "hm_survey_report",
+                "source_file_name" : "Naan-Mudhalvan-CG-HM-Survey-Rpt.xlsx",
+                "source_sheet_name" : "Student Wise",
+                "skip_rows" : 4
+            },
+            {
+                "source_name" : "volunteer_survey_report",
+                "source_file_name" : "Naan-Mudh-CG-Volunt-Sur-rpt.xlsx",
+                "source_sheet_name" : "Student Wise",
+                "skip_rows" : 0
+            }
+        ],
+        "custom_base_report" : true,
+        "merge_sources_configs" : {
+            "volunteer_survey_report" : {
+                "join_on" : ["cols.cg_stu_emis_no"],
+                "merge_type" : "left"
+            }
+        },
+        "include_base_report" : true,
+        "summary_sheets_args": [
+            {
+                "summary_sheet_name" : "District level support required count",
+                "summary_sheet_code" : "dist_lvl_supp_req_count",
+                "custom_summary" : true,
+                "grouping_levels" : ["cols.district_name"],
+                "agg_dict": {
+                    "cols.cg_couns_supp_need" : "sum",
+                    "cols.cg_admin_supp_need": "sum", 
+                    "cols.cg_ecnom_supp_need": "sum"
+                    }
+            }
+        ],
+        "ranking_args" : {
+            "metric_col_name": "cols.perc_not_updt",
+            "num_col": "cols.not_updt_tchrs",
+            "den_col": "cols.up_tot_tchrs",
+            "sort": "True",
+            "ascending": "False"
+        }
+        
+        }
+
+    ]
+}

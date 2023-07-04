@@ -1,0 +1,302 @@
+{
+    "report_configs": [
+
+        {
+            "report_name": "tc_issued_Class_8",
+            "report_code" : "TC_ISSUED_8_9",
+            "report_category": "Transition",
+            "report_desc": "TC issued Rate - Class 8",
+            "generate_report": true,
+            "source_config" : {
+                "query_file_name" : "tc_issued_class_8.sql",
+                "db" : "tn_schools_db"
+           },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.tc_cls8_total_2022_23": "sum",
+                        "cols.tc_cls8_issued_2023_24" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tc_cls8_total_2022_23": "sum",
+                        "cols.tc_cls8_issued_2023_24" : "sum"
+                    },
+                    "ranking_val_desc": "cols.tc_cls8_issued_2023_24_perc",
+                    "num_col": "cols.tc_cls8_issued_2023_24",
+                    "den_col": "cols.tc_cls8_total_2022_23",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary TC Issued - Class 8 as on",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.tc_cls8_issued_2023_24": "sum",
+                            "cols.tc_cls8_total_2022_23" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.tc_cls8_issued_2023_24_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": false,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.tc_cls8_total_2022_23": "sum",
+                        "cols.tc_cls8_issued_2023_24" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tc_cls8_total_2022_23": "sum",
+                        "cols.tc_cls8_issued_2023_24" : "sum"
+                    },
+                    "ranking_val_desc": "cols.tc_cls8_issued_2023_24_perc",
+                    "num_col": "cols.tc_cls8_issued_2023_24",
+                    "den_col": "cols.tc_cls8_total_2022_23",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary TC Issued - Class 8 as on",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.tc_cls8_issued_2023_24": "sum",
+                            "cols.tc_cls8_total_2022_23" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.tc_cls8_issued_2023_24_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+      {
+            "report_name": "tc_issued_Class_5",
+            "report_code" : "TC_issued_5_6",
+            "report_category": "Transition",
+            "report_desc": "TC issued Rate - Class 5",
+            "generate_report": true,
+            "source_config" : {
+                "query_file_name" : "tc_issued_class_5.sql",
+                "db" : "tn_schools_db"
+           },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.tc_cls5_total_2022_23": "sum",
+                        "cols.tc_cls5_issued_2023_24" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tc_cls5_total_2022_23": "sum",
+                        "cols.tc_cls5_issued_2023_24" : "sum"
+                    },
+                    "ranking_val_desc": "cols.tc_cls5_issued_2023_24_perc",
+                    "num_col": "cols.tc_cls5_issued_2023_24",
+                    "den_col": "cols.tc_cls5_total_2022_23",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary TC issued - Class 5 as on",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.tc_cls5_issued_2023_24": "sum",
+                            "cols.tc_cls5_total_2022_23" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.tc_cls5_issued_2023_24_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": false,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.tc_cls5_total_2022_23": "sum",
+                        "cols.tc_cls5_issued_2023_24" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tc_cls5_total_2022_23": "sum",
+                        "cols.tc_cls5_issued_2023_24" : "sum"
+                    },
+                    "ranking_val_desc": "cols.tc_cls5_issued_2023_24_perc",
+                    "num_col": "cols.tc_cls5_issued_2023_24",
+                    "den_col": "cols.tc_cls5_total_2022_23",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary TC issued - Class 5  as on",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.tc_cls5_issued_2023_24": "sum",
+                            "cols.tc_cls5_total_2022_23" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.tc_cls5_issued_2023_24_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+         {
+            "report_name": "tc_issued_Class_10",
+            "report_code" : "TC_ISSUED_10_11",
+            "report_category": "Transition",
+            "report_desc": "TC issued Rate - Class 10 ",
+            "generate_report": true,
+            "source_config" : {
+                "query_file_name" : "tc_issued_class_10.sql",
+                "db" : "tn_schools_db"
+           },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": false,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.tc_cls10_total_2022_23": "sum",
+                        "cols.tc_cls10_issued_2023_24" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tc_cls10_total_2022_23": "sum",
+                        "cols.tc_cls10_issued_2023_24" : "sum"
+                    },
+                    "ranking_val_desc": "cols.tc_cls10_issued_2023_24_perc",
+                    "num_col": "cols.tc_cls10_issued_2023_24",
+                    "den_col": "cols.tc_cls10_total_2022_23",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary TC issued - Class 10 as on",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.tc_cls10_issued_2023_24": "sum",
+                            "cols.tc_cls10_total_2022_23" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.tc_cls10_issued_2023_24_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.tc_cls10_total_2022_23": "sum",
+                        "cols.tc_cls10_issued_2023_24" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tc_cls10_total_2022_23": "sum",
+                        "cols.tc_cls10_issued_2023_24" : "sum"
+                    },
+                    "ranking_val_desc": "cols.tc_cls10_issued_2023_24_perc",
+                    "num_col": "cols.tc_cls10_issued_2023_24",
+                    "den_col": "cols.tc_cls10_total_2022_23",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary TC issued - Class 10 as on",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.tc_cls10_issued_2023_24": "sum",
+                            "cols.tc_cls10_total_2022_23" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.tc_cls10_issued_2023_24_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

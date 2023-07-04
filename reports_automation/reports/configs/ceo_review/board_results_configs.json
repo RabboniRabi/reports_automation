@@ -1,0 +1,177 @@
+{
+    "report_configs": [
+
+        {
+            "report_name": "12th_results",
+            "report_code" : "12TH_RES",
+            "report_category": "Exams",
+            "report_desc": "12th board exam results report",
+            "generate_report": true,
+            "source_config" : {
+                "source_file_name" : "sslc_hsc_student_marks_summary.xlsx",
+                "source_sheet_name" : "hsc_school_summary",
+                "skip_rows" : 0
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": false
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.brd_tot_stu_appr" : "sum",
+                        "cols.brd_tot_stu_pass" : "sum",
+                        "cols.brd_pass_perc" : "mean",
+                        "cols.brd_avg_marks" : "mean",
+                        "cols.brd_marks_30_to_60_count" : "sum",
+                        "cols.brd_marks_60_to_80_count" : "sum",
+                        "cols.brd_marks_grtr_80_count" : "sum",
+                        "cols.brd_maj_grp_cents" : "sum",
+                        "cols.brd_voc_grp_cents" : "sum",
+                        "cols.brd_tot_stu_w_cents" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "brd_tot_stu_appr" : "sum",
+                        "brd_tot_stu_pass" : "sum",
+                        "brd_pass_perc" : "mean",
+                        "brd_avg_marks" : "mean",
+                        "brd_marks_30_to_60_count" : "sum",
+                        "brd_marks_60_to_80_count" : "sum",
+                        "brd_marks_grtr_80_count" : "sum",
+                        "cols.brd_maj_grp_cents" : "sum",
+                        "cols.brd_voc_grp_cents" : "sum",
+                        "brd_tot_stu_w_cents" : "sum"
+                    },
+                    "ranking_val_desc": "cols.brd_pass_perc",
+                    "ranking_col": "cols.brd_pass_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary schools students 12th board exams result report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.brd_tot_stu_appr" : "sum",
+                            "cols.brd_tot_stu_pass" : "sum",
+                            "cols.brd_pass_perc" : "mean",
+                            "cols.brd_avg_marks" : "mean",
+                            "cols.brd_marks_30_to_60_count" : "sum",
+                            "cols.brd_marks_60_to_80_count" : "sum",
+                            "cols.brd_marks_grtr_80_count" : "sum",
+                            "cols.brd_maj_grp_cents" : "sum",
+                            "cols.brd_voc_grp_cents" : "sum",
+                            "cols.brd_tot_stu_w_cents" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.brd_pass_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        },
+                        {
+                            "columns" : ["cols.brd_avg_marks"],
+                            "format" : {"num_format": "##0.00"}
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "report_name": "10th_results",
+            "report_code" : "10TH_RES",
+            "report_category": "Exams",
+            "report_desc": "10th board exam results report",
+            "generate_report": true,
+            "source_config" : {
+                "source_file_name" : "sslc_hsc_student_marks_summary.xlsx",
+                "source_sheet_name" : "sslc_school_summary",
+                "skip_rows" : 0
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": false
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.brd_tot_stu_appr" : "sum",
+                        "cols.brd_tot_stu_pass" : "sum",
+                        "cols.brd_pass_perc" : "mean",
+                        "cols.brd_avg_marks" : "mean",
+                        "cols.brd_marks_30_to_60_count" : "sum",
+                        "cols.brd_marks_60_to_80_count" : "sum",
+                        "cols.brd_marks_grtr_80_count" : "sum",
+                        "cols.brd_cents" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "brd_tot_stu_appr" : "sum",
+                        "brd_tot_stu_pass" : "sum",
+                        "brd_pass_perc" : "mean",
+                        "brd_avg_marks" : "mean",
+                        "brd_marks_30_to_60_count" : "sum",
+                        "brd_marks_60_to_80_count" : "sum",
+                        "brd_marks_grtr_80_count" : "sum",
+                        "brd_cents" : "sum"
+                    },
+                    "ranking_val_desc": "cols.brd_pass_perc",
+                    "ranking_col": "cols.brd_pass_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary schools students 10th board exams result report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.brd_tot_stu_appr" : "sum",
+                            "cols.brd_tot_stu_pass" : "sum",
+                            "cols.brd_pass_perc" : "mean",
+                            "cols.brd_avg_marks" : "mean",
+                            "cols.brd_marks_30_to_60_count" : "sum",
+                            "cols.brd_marks_60_to_80_count" : "sum",
+                            "cols.brd_marks_grtr_80_count" : "sum",
+                            "cols.brd_cents" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.brd_pass_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        },
+                        {
+                            "columns" : ["cols.brd_avg_marks"],
+                            "format" : {"num_format": "##0.00"}
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

@@ -34,7 +34,7 @@ def _get_grouping_level_wise_student_count(df, group_levels, student_count_col):
     DataFrame object with group level wise count of total CWSN students
     """
 
-    df_grouped = df.groupby(group_levels,sort=False)[student_count_col].count().reset_index()
+    df_grouped = df.groupby(group_levels, sort=False)[student_count_col].count().reset_index()
 
     df_grouped.rename(columns={student_count_col: cols.cwsn_tot}, inplace=True)
 
