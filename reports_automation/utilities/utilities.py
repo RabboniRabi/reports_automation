@@ -82,6 +82,25 @@ def filter_column_le(df, column_name, threshold_value):
     df_filtered = df[df[column_name].le(threshold_value)]       
     return df_filtered
 
+
+def filter_column_ge(df, column_name, threshold_value):
+    """
+    Function to filter a dataframe object by values greater than or equal to given threshold value
+    Parameters:
+    ----------
+    df: Pandas DataFrame object
+        The data set to filter
+    column_name: str
+        The name of the column to filter in
+    threshold_value: 
+        The threshold value
+    Returns:
+    -------
+    The filtered Pandas DataFrame object   
+    """
+    df_filtered = df[df[column_name].ge(threshold_value)]       
+    return df_filtered
+
 def columns_subset(df, columns):
     """
     Function to return a given dataframe object with only a subset of given columns

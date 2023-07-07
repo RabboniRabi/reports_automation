@@ -6,6 +6,7 @@ This module can be paired with a constructor in the future to create APIs to the
 
 import config_reader
 import ceo_report_generator
+import data_fetcher
 import ad_hoc_report_generator
 
 import sys
@@ -67,7 +68,7 @@ def get_ceo_report(report_code, school_level, report_level):
     return ceo_rpt
 
 
-def get_ad_hoc_report(report_code, save_source=False, save_report=False):
+def generate_ad_hoc_report(report_code, save_source=False, save_report=False):
     """
     Function to generate & fetch the ad hoc report for a given report code/name. 
 
@@ -90,13 +91,14 @@ def get_ad_hoc_report(report_code, save_source=False, save_report=False):
     report_config = config_reader.get_adhoc_config(report_code)
 
     # Get the data set
-    df_data_set = data_fetcher.get_data_set(report_code, save_source)
+    df_data_set = data_fetcher.get_data_set(report_code, 'ad_hoc_config', save_source)
 
     # Get the ad hoc report
     ad_hoc_rpt = ad_hoc_report_generator.get_report(report_config, df_data_set)
 
     if save_report:
-        ad_hoc_report_generator.save_report(report_config, ad_hoc_rpt)
+        report_name = report_config['report_name']
+        ad_hoc_report_generator.save_report(report_name, ad_hoc_rpt)
 
     return ad_hoc_rpt
 
