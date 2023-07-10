@@ -7,6 +7,8 @@ sys.path.append('../')
 
 import utilities.column_names_utilities as cols
 import utilities.file_utilities as file_utilities
+import utilities.ranking_utilities as ranking_utilities
+import utilities.update_variable_names_utilities as update_variable_names_utilities
 import importlib
 import data_cleaning.column_cleaner as column_cleaner
 import data_fetcher
@@ -34,10 +36,10 @@ def get_report(report_config: dict, df_data_set):
         sys.exit('No report configuration found. Cannot generate the report!')
 
     # Update the config dictionary to resolve the variable names
-    report_config = _update_config_dict(report_config)
+    report_config = update_variable_names_utilities.update_ad_hoc_config_dict(report_config)
 
     # Rename the column names to standard format
-    for df_data in df_data_set.values()
+    for df_data in df_data_set.values():
         column_cleaner.standardise_column_names(df_data)
 
     # Get the merge sources configs
@@ -73,10 +75,12 @@ def get_report(report_config: dict, df_data_set):
 
     print('df_base_report: ', df_base_report)
 
+    file_utilities.save_to_excel({'base_report': df_base_report}, 'df_base_report.xlsx')
+
     # Create report summary sheets from base data for given summary sheets configurations
-    summary_sheets_args = report_config['report_config']
+    summary_sheets_args = report_config['summary_sheets_args']
     df_reports = {}
-    df_reports['base_report'] = df_base_report
+    
     # For summary sheet configuration
     for summary_sheet_args in summary_sheets_args:
         if summary_sheet_args["custom_summary"]:
@@ -90,51 +94,34 @@ def get_report(report_config: dict, df_data_set):
             # Group the base report to the given grouping levels and aggregate given columns
             df_summary = df_base_report.groupby(summary_sheet_args["grouping_levels"]).agg(summary_sheet_args["agg_dict"])
 
+        
+        # Calculate ranking if configuration is given
+        ranking_args = summary_sheet_args['ranking_args']
+        if ranking_args is not None and bool(ranking_args):
+            df_summary = ranking_utilities.calc_ranking(df_summary, None, ranking_args)
+
         df_reports[summary_sheet_args["summary_sheet_name"]] = df_summary
+    
+    # Add the base report to the final report if needed
+    if report_config['include_base_report']:
+        df_reports['base_report'] = df_base_report
+
+    return df_reports
         
 
-
-
-
-    # Get the report summary arguments and update them as JSON to dict mapping is not clean with variables
-    summary_args = report_config['summary_args']
-    grouping_levels = cols.get_values(summary_args['grouping_levels'])
-    agg_dict = cols.update_dictionary_var_strs(summary_args['agg_dict'])
-    metric_col_name = cols.get_value(summary_args['metric_col_name'])
-    num_col = cols.get_value(summary_args['num_col'])
-    den_col = cols.get_value(summary_args['den_col'])
-
-    # Update the boolean values for sorting and ascending flags
-    summary_args['sort'] = summary_args['sort'] == 'True'
-    summary_args['ascending'] = summary_args['ascending'] == 'True'
-
-    # Group the data to grouping_level
-    df_data_grouped = df_data.groupby(grouping_levels, as_index=False).agg(agg_dict)
-
-    ranking_args = report_config['summary_args']
-    if ranking_args is not None:
-        # Get relative performance data by diving a config indicated numerator column against denominator column
-        df_data_grouped[metric_col_name] = df_data_grouped[num_col] / df_data_grouped[den_col]
-
-    if summary_args['sort']:
-        df_data_grouped.sort_values(by=[metric_col_name], inplace=True, ascending=summary_args['ascending'])
-
-    return df_data_grouped
-
-
-def save_report(report_config: dict, df_report):
+def save_report(report_name: str, df_reports_dict):
     """
     Function to save the generated ad hoc report in the current day - month folder
 
     Parameters:
     ----------
-    report_config: dict
-        Dictionary with the report configuration information
-    df_report: DataFrame
-        Pandas DataFrame object of the final data to be saved as a report.
+    report_config: str
+        The name to save as a report
+    df_report: DataFrame dictionary
+        Dictionary of report name key - Pandas DataFrame object value  pairs of the final data to be saved as a report.
     """
     dir_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
-    file_utilities.save_to_excel({'Report': adhoc_report}, 'teacher_leave_absence_update.xlsx', dir_path)
+    file_utilities.save_to_excel(df_reports_dict, report_name+'.xlsx', dir_path)
 
 
 def _update_config_dict(report_config: dict):
@@ -153,16 +140,26 @@ def _update_config_dict(report_config: dict):
     """
 
     # Update the variable name strings in the merge sources configs
-    for merge_source_config_name in report_config['merge_sources_configs'].keys():
+    merge_sources_configs = report_config['merge_sources_configs']
+    for merge_source_config_name in merge_sources_configs.keys():
         # Update the list of columns to join on
-        updated_list = cols.get_values(merge_source_config_name['join_on'])
-        merge_source_config_name['join_on'] = updated_list
+        print('merge_sources_configs[merge_source_config_name][join_on] before: ', merge_sources_configs[merge_source_config_name]['join_on'])
+        updated_list = cols.get_values(merge_sources_configs[merge_source_config_name]['join_on'])
+        merge_sources_configs[merge_source_config_name]['join_on'] = updated_list
+        print('merge_sources_configs[merge_source_config_name][join_on] after: ', merge_sources_configs[merge_source_config_name]['join_on'])
 
     # Update the variable name strings in the summary sheets arguments
     for summary_sheet_arg in report_config['summary_sheets_args']:
         # Update the list of columns to group the data on
         updated_list = cols.get_values(summary_sheet_arg['grouping_levels'])
         summary_sheet_arg['grouping_levels'] = updated_list
+
+        # Update the keys in the summary sheet aggregation dict to resolve string variable names
+        updated_summary_args_dict = cols.update_dictionary_var_strs(summary_sheet_arg['agg_dict'])
+        summary_sheet_arg['agg_dict'] = updated_summary_args_dict
+
+        # Update the ranking arguments
+        ranking_args = update_variable_names_utilities.update_ranking_args_dict(ranking_args)
 
     return report_config
         

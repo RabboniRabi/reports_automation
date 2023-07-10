@@ -13,9 +13,9 @@ import config_reader
 import utilities.column_names_utilities as cols
 import importlib
 
-from school_levels import SchoolLevels as school_levels
 from ceo_report_levels import CEOReportLevels as ceo_report_levels
-from ceo_report_ranking_types import CEOReportRankingTypes as ranking_types
+from enums.school_levels import SchoolLevels as school_levels
+from enums.ranking_types import RankingTypes as ranking_types
 import data_cleaning.column_cleaner as column_cleaner
 
 
