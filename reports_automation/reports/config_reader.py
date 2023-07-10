@@ -5,12 +5,6 @@ Module with functions to read the configurations given for each report in JSON f
 import json
 from collections import OrderedDict
 
-config_files = ['report_configs.json',
-                'ceo_report_attendance_configs.json',
-                'ceo_report_enrolment_configs.json',
-                'ceo_report_observations_configs.json',
-                'ceo_report_operations_configs.json']
-                
 
 ceo_review_config_files = ['ceo_review/attendance_configs.json',
                 'ceo_review/board_results_configs.json',
@@ -30,10 +24,13 @@ ceo_review_config_files = ['ceo_review/attendance_configs.json',
                 'ceo_review/g2c_configs.json']
 
 ad_hoc_config_files = ['ad_hoc/attendance_configs.json',
+                        'ad_hoc/cg_configs.json',
                         'ad_hoc/updation_status_configs.json']
 
 
 filtered_report_config_files = ['filtered_reports/teachers.json']
+
+config_files = ceo_review_config_files + ad_hoc_config_files + filtered_report_config_files
 
 def get_all_active_configs(config_files:list=config_files):
     """

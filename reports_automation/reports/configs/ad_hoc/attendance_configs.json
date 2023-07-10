@@ -51,6 +51,61 @@
                 "sort": "True",
                 "ascending": "True"
                 }
+            },
+            {
+                "report_name": "stu_6_plus_days_absent",
+                "report_code" : "ATT_6PLUS_DAYS_ABS",
+                "report_category": "Attendance",
+                "report_desc": "Students absent for 6 or more days report",
+                "generate_report": true,
+                "source_configs" : [
+                    {
+                        "source_name" : "students_absent",
+                        "query_file_name" : "students_absent_past_15_days_detail.sql",
+                        "db" : "attendance_db"
+                    },
+                    {
+                        "source_name" : "students_classwise_total",
+                        "query_file_name" : "students_in_classes_count.sql",
+                        "db" : "attendance_db"
+                    }
+                ],
+                "custom_base_report" : true,
+                "merge_sources_configs" : {
+                    "students_classwise_total" : {
+                        "join_on" : ["cols.district_name", "cols.block_name", "cols.udise_col", 
+                         "cols.school_name", "cols.att_class_id"],
+                        "merge_type" : "left"
+                    }
+                },
+                "include_base_report" : true,
+                "summary_sheets_args": [
+                    {
+                        "summary_sheet_name" : "District level students absent greater than 6 days count",
+                        "summary_sheet_code" : "dist_lvl_stu_abs_6plus_count",
+                        "custom_summary" : false,
+                        "grouping_levels" : ["cols.district_name"],
+                        "agg_dict": {
+                            "cols.no_of_days_abs": "sum",
+                            "cols.att_total_students" : "sum"
+                            },
+                        "ranking_args" : {
+                            "ranking_type" : "percent_ranking",
+                            "agg_dict": {
+                                "cols.no_of_days_abs": "sum",
+                                "cols.att_total_students" : "sum"
+                            },
+                            "ranking_val_desc": "cols.att_perc_students_abs_6_days",
+                            "num_col": "cols.no_of_days_abs",
+                            "den_col": "cols.att_total_students",
+                            "sort": "True",
+                            "ascending": "False"
+                        }
+                    }
+                ]
+                
+            
             }
+
     ]
 }

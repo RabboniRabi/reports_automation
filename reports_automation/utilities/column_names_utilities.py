@@ -278,6 +278,10 @@ perc_marked_schls = '% Marked'
 tot_marked = 'totalmarked'
 tot_unmarked = 'totalunmarked'
 perc_7_days_unmarked_schls = '% Unmarked Schools for 7 days'
+no_of_days_abs = 'no_of_days_absent'
+att_class_id = 'class_id'
+att_total_students = 'total_students'
+att_perc_students_abs_6_days = '% Students absent for greater than 6 days'
 
 
 # Updation specific column names
@@ -390,6 +394,11 @@ cg_stu_tgt = 'Target Student'
 cg_stu_emis_no = 'EMIS_No'
 cg_stu_not_appld_reason = 'reason_notapply'
 cg_stu_supp_req = 'support'
+cg_couns_supp_need = 'Counselling Support Needed'
+cg_admin_supp_need = 'Administrative Support Needed'
+cg_ecnom_supp_need = 'Economic Support Needed'
+
+
 
 # board exams report specific columns
 brd_tot_stu_appr = 'No. of students who appeared for all subjects'
