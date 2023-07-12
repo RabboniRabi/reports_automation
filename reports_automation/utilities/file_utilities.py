@@ -215,6 +215,7 @@ def get_curr_day_month_gen_reports_dir_path():
 
     return dir_path
 
+
 def get_ceo_rpts_dir_path():
     """
     Function to get the directory path to CEO reports folder.

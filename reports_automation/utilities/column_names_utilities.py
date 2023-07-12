@@ -413,6 +413,14 @@ brd_maj_grp_cents = 'Major group Students who secured centum in one or more subj
 brd_voc_grp_cents = 'Vocational group Students who secured centum in one or more subjects'
 brd_tot_stu_w_cents = 'No. of students with centums'
 brd_perc_stu_pass = '% students who have passed'
+average_marks = "average_marks"
+rank_state = 'Rank in State'
+school_performance = "Overall School Performance"
+lang_average_marks = "lang_average_marks"
+eng_average_marks = "eng_average_marks"
+math_average_marks = "math_average_marks"
+science_average_marks = "science_average_marks"
+social_average_marks = "social_average_marks"
 
 
 def get_value(var_name: str):
