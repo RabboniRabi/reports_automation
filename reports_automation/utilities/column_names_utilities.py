@@ -380,6 +380,8 @@ absent = "Absent"
 absent_replaced = "Absent & Replaced"
 not_filled = 'Not Filled'
 perc_present = "% HM's Present"
+att_sch_markd_perc = 'percentage_marked'
+att_avg_sch_markd_perc = 'Average of schools marking attendance %'
 
 # Career Guidance specific columns
 cg_ex_res_stat = 'Exam_Result_Status'
@@ -485,5 +487,49 @@ def update_dictionary_var_strs(var_names_keys_dict: dict):
 
         # Set the updated key-value pair
         updated_dict[updated_key] = dict_key_value
+
+    return updated_dict
+
+
+def update_dictionary(var_names_dict: dict):
+    """
+    Function to update the keys & values in a given dictionary.
+    If the keys and values are strings of variable names, they will be updated
+    by mapping to the value assigned to the variable names.
+
+    Parameters:
+    -----------
+    var_names_dict: dict
+        Dictionary whose keys and values (which are strings of variables) might need to be updated with
+        the values of the variable names
+    
+    Returns:
+    -------
+    The updated dictionary
+    """
+
+    updated_dict = {}
+
+    col_utility_prefix = 'cols.'
+    
+    for key in var_names_dict.keys():
+        if col_utility_prefix in key:
+            dict_key_value = var_names_dict[key]
+            updated_key = get_value(key)
+
+            if col_utility_prefix in dict_key_value:
+                updated_value = get_value(dict_key_value)
+                updated_dict[updated_key] = updated_value
+            # Set the updated key-value pair
+            else:
+                updated_dict[updated_key] = dict_key_value
+        elif col_utility_prefix in var_names_dict[key]:
+            updated_value = get_value(dict_key_value)
+            updated_dict[key] = updated_value
+        else:
+            # Nothing to update
+            updated_dict[key] = dict_key_value
+
+
 
     return updated_dict

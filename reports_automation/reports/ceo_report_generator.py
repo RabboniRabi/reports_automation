@@ -54,7 +54,7 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
     # Check and get data from single source configuration or multiple configurations
     if 'sources' in source_config:
         # Get the multiple source data as a dictionary of dataframe objects
-        df_data_set = data_fetcher.get_data_set(report_config['report_code'], 'ceo_review_config', save_source)
+        df_data_set = data_fetcher.get_data_set_from_config(source_config, save_source)
         
         # Rename the column names to standard format
         for df_data in df_data_set.values():
@@ -69,7 +69,7 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
             sys.exit('Multiple data sources given, but no corresponding combine_data_configs found!')
     elif 'source_file_name' or 'query_file_name' in source_config:
         # Get the single source data as a dataframe object
-        df_data = data_fetcher.get_data_from_config(report_config['report_code'], save_source)
+        df_data = data_fetcher.get_data_from_config(source_config, save_source)
         
         # Rename the column names to standard format
         df_data = column_cleaner.standardise_column_names(df_data)
@@ -236,8 +236,6 @@ def generate_all(generate_fresh: bool = True):
 
         # Get the raw data merged with the BRC-CRC mapping
         df_data = get_ceo_report_raw_data(config, True)
-
-
 
         # Elementary Report
         # Check if elementary report needs to be generated

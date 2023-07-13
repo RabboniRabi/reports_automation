@@ -51,7 +51,7 @@
                         "brd_marks_grtr_80_count" : "sum",
                         "cols.brd_maj_grp_cents" : "sum",
                         "cols.brd_voc_grp_cents" : "sum",
-                        "brd_tot_stu_w_cents" : "sum"
+                        "cols.brd_tot_stu_w_cents" : "sum"
                     },
                     "ranking_val_desc": "cols.brd_pass_perc",
                     "ranking_col": "cols.brd_pass_perc",

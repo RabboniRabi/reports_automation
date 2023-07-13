@@ -300,7 +300,7 @@ def combine_multiple_datasets(df_data_set:dict, combine_type:str, combine_data_c
         # Merge the data
 
         # Initially set the merged data to the primary data
-        df_merged = df_data_set['primary_data']
+        df_combined = df_data_set['primary_data']
 
         for key in combine_data_configs.keys():
             # Get the merge config
@@ -308,21 +308,20 @@ def combine_multiple_datasets(df_data_set:dict, combine_type:str, combine_data_c
             # Get the data for the key in merge config and merge it
             print('key is: ', key)
             print('going to merge data on config: ', merge_config)
-            df_merged = df_merged.merge(df_data_set[key], how=merge_config['merge_type'], on=merge_config['join_on'])
+            df_combined = df_combined.merge(df_data_set[key], how=merge_config['merge_type'], on=merge_config['join_on'])
 
     elif combine_type == combine_data_types.CONCAT.value:
         # Concatenate the data
 
         # Initially set the merged data to empty dataframe object
-        df_merged = pd.DataFrame()
+        df_combined = pd.DataFrame()
         for key in combine_data_configs.keys():
             # Get the concatenation config
             concat_config = combine_data_configs[key]
             # Get the data for the key in concat config and concatenate it
-            df_merged = pd.concat([df_merged, df_data_set[key]], join=concat_config['join']) 
-
-    print('merged data: ', df_merged)
+            df_combined = pd.concat([df_combined, df_data_set[key]], join=concat_config['join']) 
 
 
-    return df_merged
+
+    return df_combined
 
