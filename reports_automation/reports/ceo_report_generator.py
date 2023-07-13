@@ -8,6 +8,7 @@ sys.path.append('../')
 import utilities.report_utilities as report_utilities
 import utilities.file_utilities as file_utilities
 import utilities.review_view_utilities as review_view_utilities
+import utilities.update_variable_names_utilities as update_variable_names_utilities
 import data_fetcher
 import config_reader
 import utilities.column_names_utilities as cols
@@ -44,10 +45,37 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         # No report configuration was found.
         sys.exit('No report configuration found. Cannot generate the report!')
 
+    # Update the variable names in the report config JSON
+    update_variable_names_utilities.update_ceo_review_config_dict(report_config)
+
+    # Get the source configuration
     source_config = report_config['source_config']
-    df_data = data_fetcher.get_data_from_config(source_config, save_source)
-    # Rename the column names to standard format
-    df_data = column_cleaner.standardise_column_names(df_data)
+
+    # Check and get data from single source configuration or multiple configurations
+    if 'sources' in source_config:
+        # Get the multiple source data as a dictionary of dataframe objects
+        df_data_set = data_fetcher.get_data_set(report_config['report_code'], 'ceo_review_config', save_source)
+        
+        # Rename the column names to standard format
+        for df_data in df_data_set.values():
+            column_cleaner.standardise_column_names(df_data)
+
+        # Combine the data set into a single dataframe object
+        if ('combine_data_configs' in source_config):
+            df_data = report_utilities.combine_multiple_datasets(df_data_set, source_config['combine_data_type'], \
+                             source_config['combine_data_configs'])
+        else:
+            # No configuration for merge multiple sources was found.
+            sys.exit('Multiple data sources given, but no corresponding combine_data_configs found!')
+    elif 'source_file_name' or 'query_file_name' in source_config:
+        # Get the single source data as a dataframe object
+        df_data = data_fetcher.get_data_from_config(report_config['report_code'], save_source)
+        
+        # Rename the column names to standard format
+        df_data = column_cleaner.standardise_column_names(df_data)
+    else: 
+        # No source configuration was found.
+        sys.exit('No source configuration(s) found!')
 
 
     # Check if pre-processing before merging with BRC-CRC mapping is required
@@ -65,11 +93,6 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         # No BRC merge configuration was found
         sys.exit('BRC Merge configuration not provided for report: ', report_config['report_name'])
 
-    # Update the config by replacing variable string names with corresponding values
-    # This is done as the variable name in defined as a string in the JSON config
-    join_on_vars = brc_merge_config['join_on']
-    brc_merge_config['join_on'] = cols.get_values(join_on_vars)
-    
     df_data = report_utilities.map_data_with_brc(df_data, brc_merge_config)
 
      # Check if post-processing after merging with BRC-CRC mapping is required
@@ -78,6 +101,7 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         report_module_name = importlib.import_module('ceo_reports.' + report_config['report_name'])
         post_proc_func = getattr(report_module_name, 'post_process_BRC_merge')
         df_data = post_proc_func(df_data) 
+
 
     return df_data
 
@@ -288,14 +312,9 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name
 
     # Get the columns to group by
     grouping_cols = un_ranked_report_config['grouping_cols']
-    # Update the values of column names to group by (To resolve string variable names).
-    grouping_cols = cols.get_values(grouping_cols)
 
     # Get the aggregate functions to apply on the grouped columns
     agg_dict = un_ranked_report_config['grouping_agg_dict']
-    # Update the keys in the aggregate dictionary as the string variable
-    # names will not be resolved after being read from JSON
-    agg_dict = cols.update_dictionary_var_strs(agg_dict)
 
     # If a custom unranked report is configured to be called
     if (un_ranked_report_config['custom_unranked_report']):
@@ -311,8 +330,6 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name
     if report_level == ceo_report_levels.RANKED.value or report_level == ceo_report_levels.RANKED:
         # Generate ranking and update report
         ranking_dict = elem_report_config['ranking_args']
-        # Update the values in ranking argument
-        ranking_dict = _update_ranking_args_dict(ranking_dict)
         # Get the elementary ranked report
         report = report_utilities.get_elem_ranked_report(report, ranking_dict, metric_code, metric_category)
 
@@ -351,14 +368,9 @@ def _generate_sec_report(ceo_rpt_raw_data, sec_report_config:dict, report_name, 
 
     # Get the columns to group by
     grouping_cols = un_ranked_report_config['grouping_cols']
-    # Update the values of column names to group by (To resolve string variable names).
-    grouping_cols = cols.get_values(grouping_cols)
 
     # Get the aggregate functions to apply on the grouped columns
     agg_dict = un_ranked_report_config['grouping_agg_dict']
-    # Update the keys in the aggregate dictionary as the string variable
-    # names will not be resolved after being read from JSON
-    agg_dict = cols.update_dictionary_var_strs(agg_dict)
 
     # If a custom unranked report is configured to be called
     if (un_ranked_report_config['custom_unranked_report']):
@@ -374,67 +386,10 @@ def _generate_sec_report(ceo_rpt_raw_data, sec_report_config:dict, report_name, 
     if report_level == ceo_report_levels.RANKED.value or report_level == ceo_report_levels.RANKED:
         # Generate ranking and update report
         ranking_dict = sec_report_config['ranking_args']
-        # Update the values in ranking argument
-        ranking_dict = _update_ranking_args_dict(ranking_dict)
         # Get the secondary ranked report
         report = report_utilities.get_sec_ranked_report(report, ranking_dict, metric_code, metric_category)
 
     return report
-
-
-
-def _update_ranking_args_dict(ranking_args:dict):
-    """
-    Helper function to update the ranking arguments read from the JSON configuration.
-    As variable names are stored as strings in JSON, the values mapped to these
-    names dont resolve automatically and need to be updated.
-
-    Parameters:
-    ----------
-    ranking_args: dict
-        The ranking arguments fetched from the JSON configuration
-    Returns:
-    --------
-    Updated ranking arguments dictionary
-    """
-    # Update the keys in the raking aggregation dict to resolve string variable names
-    updated_ranking_args_dict = cols.update_dictionary_var_strs(ranking_args['agg_dict'])
-    ranking_args['agg_dict'] = updated_ranking_args_dict
-
-    # Update ranking value description
-    ranking_val_desc = cols.get_value(ranking_args['ranking_val_desc'])
-    ranking_args['ranking_val_desc'] = ranking_val_desc
-
-    # Update the boolean values for sorting and ascending flags
-    ranking_args['sort'] = ranking_args['sort'] == 'True'
-    ranking_args['ascending'] = ranking_args['ascending'] == 'True'
-
-    ranking_type = ranking_args['ranking_type']
-
-    if ranking_type == ranking_types.PERCENT_RANKING.value:
-        # Update the numerator and denominator columns
-        num_col_val = cols.get_value(ranking_args['num_col'])
-        ranking_args['num_col'] = num_col_val
-        den_col_val = cols.get_value(ranking_args['den_col'])
-        ranking_args['den_col'] = den_col_val
-
-    if ranking_type == ranking_types.MULT_COLS_PERCENT_RANKING.value:
-        # Update the numerator and denominator columns
-        num_col_val = cols.get_values(ranking_args['num_col'])
-        ranking_args['num_col'] = num_col_val
-        den_col_val = cols.get_values(ranking_args['den_col'])
-        ranking_args['den_col'] = den_col_val
-    
-    if ranking_type == ranking_types.AVERAGE_RANKING.value:
-        # Update the list of columns to average on
-        updated_list = cols.get_values(ranking_args['avg_cols'])
-        ranking_args['avg_cols'] = updated_list
-
-    if ranking_type == ranking_types.NUMBER_RANKING.value:
-        ranking_col = cols.get_value(ranking_args['ranking_col'])
-        ranking_args['ranking_col'] = ranking_col
-
-    return ranking_args
 
 
 # For testing

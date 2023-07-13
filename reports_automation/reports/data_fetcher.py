@@ -164,7 +164,7 @@ def get_data_set(report_code, config_type:str, save_source=False):
 
 
     # Get the source data configuration for the report
-    source_configs = config.get('source_configs')
+    source_configs = config['source_config']['sources']
 
     df_data_set = {}
     # Iterate over each source config, get the data and build a source_name - data dictionary
@@ -185,4 +185,3 @@ if __name__ == "__main__":
         }"""
     #df_raw_data = get_data_from_config(source_config)
     df_raw_data = get_data('PET',save_source=True)
-    print('columns of df_raw_data fetched: ', df_raw_data.columns.to_list())

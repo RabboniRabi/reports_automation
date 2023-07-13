@@ -57,7 +57,6 @@ def get_report(report_config: dict, df_data_set):
         # Merge with the first dataset the remaining source datasets to form the base report
         source_configs = report_config['source_configs']
         merge_sources_configs = report_config['merge_sources_configs']
-        first_dataset = source_configs[0]
         df_base_report = pd.DataFrame()
         for source_config_index in range(0, len(source_configs)):
             # If data is first dataset, it becomes the base report
@@ -122,48 +121,6 @@ def save_report(report_name: str, df_reports_dict):
     """
     dir_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
     file_utilities.save_to_excel(df_reports_dict, report_name+'.xlsx', dir_path)
-
-
-def _update_config_dict(report_config: dict):
-    """
-    Helper function to update the report configuration read from the JSON configuration.
-    As variable names are stored as strings in JSON, the values mapped to these
-    names dont resolve automatically and need to be updated.
-
-    Parameters:
-    ----------
-    report_config: dict
-        The ranking arguments fetched from the JSON configuration
-    Returns:
-    --------
-    Updated report configuration dictionary
-    """
-
-    # Update the variable name strings in the merge sources configs
-    merge_sources_configs = report_config['merge_sources_configs']
-    for merge_source_config_name in merge_sources_configs.keys():
-        # Update the list of columns to join on
-        print('merge_sources_configs[merge_source_config_name][join_on] before: ', merge_sources_configs[merge_source_config_name]['join_on'])
-        updated_list = cols.get_values(merge_sources_configs[merge_source_config_name]['join_on'])
-        merge_sources_configs[merge_source_config_name]['join_on'] = updated_list
-        print('merge_sources_configs[merge_source_config_name][join_on] after: ', merge_sources_configs[merge_source_config_name]['join_on'])
-
-    # Update the variable name strings in the summary sheets arguments
-    for summary_sheet_arg in report_config['summary_sheets_args']:
-        # Update the list of columns to group the data on
-        updated_list = cols.get_values(summary_sheet_arg['grouping_levels'])
-        summary_sheet_arg['grouping_levels'] = updated_list
-
-        # Update the keys in the summary sheet aggregation dict to resolve string variable names
-        updated_summary_args_dict = cols.update_dictionary_var_strs(summary_sheet_arg['agg_dict'])
-        summary_sheet_arg['agg_dict'] = updated_summary_args_dict
-
-        # Update the ranking arguments
-        ranking_args = update_variable_names_utilities.update_ranking_args_dict(ranking_args)
-
-    return report_config
-        
-
 
 
 

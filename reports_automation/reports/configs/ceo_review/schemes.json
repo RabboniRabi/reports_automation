@@ -2,16 +2,54 @@
     "report_configs": [
 
         {
-            "report_name": "students_receiving_textbooks",
-            "report_code" : "STU_TXT_BOOKS",
+            "report_name": "schools_issuing_textbooks",
+            "report_code" : "SCH_ISS_TXT_BOOKS",
             "report_category": "Schemes",
-            "report_desc": "Students receiving text books report",
+            "report_desc": "Schools issuing text books report",
             "generate_report": true,
             "source_config" : {
-                "source_file_name" : "textbook_schemes_rpt.xlsx",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
-            },
+                "sources" : [
+                    {
+                        "source_name" : "text_books_high_higher_sec_govt",
+                        "source_file_name" : "TB-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "text_books_high_higher_sec_aided",
+                        "source_file_name" : "TB-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "text_books_pri_mid_govt",
+                        "source_file_name" : "TB-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "text_books_pri_mid_aided",
+                        "source_file_name" : "TB-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "text_books_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "text_books_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "text_books_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "text_books_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
+            },            
             "pre_process_brc_merge": true,
             "brc_merge_config" : {
                 "join_on" : ["cols.block_name", "cols.udise_col"],
@@ -40,7 +78,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Elementary schools students receiving books report",
+                    "heading" : "Elementary schools issuing text books report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -82,7 +120,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools students receiving books report",
+                    "heading" : "Secondary schools issuing text books report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -104,15 +142,53 @@
             }
         },
         {
-            "report_name": "students_receiving_uniforms",
-            "report_code" : "STU_RCV_UNFRM",
+            "report_name": "schools_issuing_uniforms",
+            "report_code" : "SCH_ISS_UNFRM",
             "report_category": "Schemes",
-            "report_desc": "Students receiving uniforms report",
+            "report_desc": "Schools issuing uniforms report",
             "generate_report": true,
             "source_config" : {
-                "source_file_name" : "Uniform-Schemes-Rpt.xlsx",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+                "sources" : [
+                    {
+                        "source_name" : "uniforms_high_higher_sec_govt",
+                        "source_file_name" : "Uniform-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "uniforms_high_higher_sec_aided",
+                        "source_file_name" : "Uniform-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "uniforms_books_pri_mid_govt",
+                        "source_file_name" : "Uniform-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "uniforms_books_pri_mid_aided",
+                        "source_file_name" : "Uniform-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "uniforms_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "uniforms_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "uniforms_books_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "uniforms_books_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+            }
             },
             "pre_process_brc_merge": true,
             "brc_merge_config" : {
@@ -142,7 +218,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Elementary schools students receiving uniforms report",
+                    "heading" : "Elementary schools issuing uniforms report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -184,7 +260,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools students receiving uniforms report",
+                    "heading" : "Secondary schools issuing uniforms report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {

@@ -10,6 +10,7 @@ import numpy as np
 
 import utilities.column_names_utilities as cols
 
+
 # Intial level to group the data to at pre-processing stage
 initial_group_levels = [cols.district_name, cols.block_name, cols.udise_col, cols.school_name, cols.cate_type]
 
@@ -32,7 +33,6 @@ def _get_book_issue_status_summary(df_data, grouping_cols):
     # Get issue status wise count of schools at grouping level
     data_pivot = pd.pivot_table(df_data, values=cols.udise_col, \
                         index=grouping_cols,columns=[cols.scheme_status], aggfunc='count',fill_value=0).reset_index()
-
 
     # Get the total number of schools
     df_total = df_data.groupby(grouping_cols)[cols.udise_col].count().reset_index()
@@ -75,7 +75,7 @@ def pre_process_BRC_merge(raw_data:pd.DataFrame):
 
     # Set the status column based on total students vs issued students
     status_conditions = [
-        (df_grouped[cols.schemes_total_students_small_case] == df_grouped[cols.schemes_issued_students]),
+        (df_grouped[cols.schemes_issued_students] >= df_grouped[cols.schemes_total_students_small_case]),
         ((df_grouped[cols.schemes_total_students_small_case] > df_grouped[cols.schemes_issued_students]) & (df_grouped[cols.schemes_issued_students] != 0)),
         (df_grouped[cols.schemes_issued_students] == 0)
 

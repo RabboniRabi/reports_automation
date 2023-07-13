@@ -6,7 +6,7 @@
             "report_code" : "12TH_RES",
             "report_category": "Exams",
             "report_desc": "12th board exam results report",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "source_file_name" : "sslc_hsc_student_marks_summary.xlsx",
                 "source_sheet_name" : "hsc_school_summary",
@@ -95,7 +95,7 @@
             "report_code" : "10TH_RES",
             "report_category": "Exams",
             "report_desc": "10th board exam results report",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "source_file_name" : "sslc_hsc_student_marks_summary.xlsx",
                 "source_sheet_name" : "sslc_school_summary",

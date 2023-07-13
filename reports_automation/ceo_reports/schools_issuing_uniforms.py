@@ -73,7 +73,7 @@ def pre_process_BRC_merge(raw_data:pd.DataFrame):
 
     # Set the status column based on total students vs issued students
     status_conditions = [
-        (df_grouped[cols.schemes_total_students_small_case] == df_grouped[cols.schemes_issued_students]),
+        (df_grouped[cols.schemes_issued_students] >= df_grouped[cols.schemes_total_students_small_case]),
         ((df_grouped[cols.schemes_total_students_small_case] > df_grouped[cols.schemes_issued_students]) & (df_grouped[cols.schemes_issued_students] != 0)),
         (df_grouped[cols.schemes_issued_students] == 0)
 
