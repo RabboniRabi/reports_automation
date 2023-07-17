@@ -132,12 +132,14 @@ def prepare_report_for_review(df, format_config, ranking_args_dict, sheet_name, 
     # Update any other column names given to be renamed
     if 'columns_rename_dict' in format_config and bool(format_config['columns_rename_dict']):
         
-        print('going to update columns with: ', format_config['columns_rename_dict'])
         columns_rename_dict = cols.update_dictionary(format_config['columns_rename_dict'])
-        print('going to update columns with post variable resolution: ', columns_rename_dict)
         updated_df.rename(columns=columns_rename_dict, inplace=True)
 
-    print('columns post renaming: ', updated_df.columns.to_list())
+    # Drop any columns configured to be dropped
+    if 'columns_to_drop' in format_config and bool(format_config['columns_to_drop']):
+        cols_to_drop = cols.get_values(format_config['columns_to_drop'])
+        updated_df.drop(columns=cols_to_drop, inplace=True)
+
 
     # Correspondingly update the outline ranges as data has been shifted down
     level_outline_ranges_dict = outlines_utilities.push_outline_ranges_for_formatting(level_outline_ranges_dict, 1)

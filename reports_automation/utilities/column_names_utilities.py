@@ -386,6 +386,9 @@ att_stu_avg_present_perc = 'average_present_perc'
 att_stu_avg_absent_perc = 'average_absent_perc'
 att_stu_avg_present_frmt = 'Average students present %'
 att_stu_avg_absent_frmt = 'Average students absent %'
+att_sec_working_tot = 'total_sections_working_between_dates'
+att_sec_marked_tot = 'total_sections_marked_between_dates'
+att_sec_mark_perc = '% sections marking attendance'
 
 # Career Guidance specific columns
 cg_ex_res_stat = 'Exam_Result_Status'
