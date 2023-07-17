@@ -381,7 +381,9 @@ absent_replaced = "Absent & Replaced"
 not_filled = 'Not Filled'
 perc_present = "% HM's Present"
 att_sch_markd_perc = 'percentage_marked'
-att_avg_sch_markd_perc = 'Average of schools marking attendance %'
+att_sch_markd_tch_perc = 'percentage_marked'
+att_avg_sch_markd_perc = 'Average % of schools marking attendance'
+att_avg_sch_tch_markd_perc = 'Average % of schools marking teachers attendance'
 att_stu_avg_present_perc = 'average_present_perc'
 att_stu_avg_absent_perc = 'average_absent_perc'
 att_stu_avg_present_frmt = 'Average students present %'
@@ -389,6 +391,10 @@ att_stu_avg_absent_frmt = 'Average students absent %'
 att_sec_working_tot = 'total_sections_working_between_dates'
 att_sec_marked_tot = 'total_sections_marked_between_dates'
 att_sec_mark_perc = '% sections marking attendance'
+att_tch_avg_present_perc = 'average_present_perc'
+att_tch_avg_absent_perc = 'average_absent_perc'
+att_tch_avg_present_frmt = 'Average teachers present %'
+att_tch_avg_absent_frmt = 'Average teachers absent %'
 
 # Career Guidance specific columns
 cg_ex_res_stat = 'Exam_Result_Status'

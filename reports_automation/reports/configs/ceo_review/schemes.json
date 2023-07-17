@@ -562,15 +562,53 @@
             }
         },
         {
-            "report_name": "students_receiving_colour_pencil",
-            "report_code" : "STU_RCV_CPENCL",
+            "report_name": "schools_issuing_colour_pencil",
+            "report_code" : "SCH_ISS_CPENCL",
             "report_category": "Schemes",
-            "report_desc": "Students receiving colour pencil report",
+            "report_desc": "Schools issuing colour pencil report",
             "generate_report": true,
             "source_config" : {
-                "source_file_name" : "Color-Pencil-Scheme-Rpt.xlsx",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+                "sources" : [
+                    {
+                        "source_name" : "colour_penc_high_higher_sec_govt",
+                        "source_file_name" : "Color-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "colour_penc_high_higher_sec_aided",
+                        "source_file_name" : "Color-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "colour_penc_pri_mid_govt",
+                        "source_file_name" : "Color-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "colour_penc_pri_mid_aided",
+                        "source_file_name" : "Color-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "colour_penc_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "colour_penc_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "colour_penc_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "colour_penc_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
             },
             "pre_process_brc_merge": true,
             "brc_merge_config" : {
@@ -600,7 +638,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Elementary schools students receiving colour pencil report",
+                    "heading" : "Elementary schools issuing colour pencil report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -642,7 +680,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools students receiving colour pencil report",
+                    "heading" : "Secondary schools issuing colour pencil report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
