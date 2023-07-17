@@ -306,8 +306,6 @@ def combine_multiple_datasets(df_data_set:dict, combine_type:str, combine_data_c
             # Get the merge config
             merge_config = combine_data_configs[key]
             # Get the data for the key in merge config and merge it
-            print('key is: ', key)
-            print('going to merge data on config: ', merge_config)
             df_combined = df_combined.merge(df_data_set[key], how=merge_config['merge_type'], on=merge_config['join_on'])
 
     elif combine_type == combine_data_types.CONCAT.value:
@@ -320,8 +318,6 @@ def combine_multiple_datasets(df_data_set:dict, combine_type:str, combine_data_c
             concat_config = combine_data_configs[key]
             # Get the data for the key in concat config and concatenate it
             df_combined = pd.concat([df_combined, df_data_set[key]], join=concat_config['join']) 
-
-
 
     return df_combined
 

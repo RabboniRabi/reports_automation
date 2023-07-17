@@ -309,6 +309,112 @@
                 }
             }
         },
+        {
+            "report_name": "students_attendance",
+            "report_code" : "STU_ATT",
+            "report_category": "Attendance",
+            "report_desc": "Students attendance report",
+            "generate_report": true,
+            "source_config" : {
+                "query_file_name" : "students_attendance.sql",
+                "db" : "attendance_db"
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_stu_avg_present_perc": "mean",
+                        "cols.att_stu_avg_absent_perc": "mean"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.att_stu_avg_present_perc": "mean",
+                        "cols.att_stu_avg_absent_perc": "mean"
+                    },
+                    "ranking_val_desc": "cols.att_stu_avg_present_perc",
+                    "ranking_col": "cols.att_stu_avg_present_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary students attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_stu_avg_present_perc": "mean", 
+                            "cols.att_stu_avg_absent_perc": "mean", 
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "columns_rename_dict" : {
+                        "cols.att_stu_avg_present_perc" : "cols.att_stu_avg_present_frmt",
+                        "cols.att_stu_avg_absent_perc" : "cols.att_stu_avg_absent_frmt"
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_stu_avg_present_frmt", "cols.att_stu_avg_absent_frmt"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+                
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_stu_avg_present_perc": "mean",
+                        "cols.att_stu_avg_absent_perc": "mean"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.att_stu_avg_present_perc": "mean",
+                        "cols.att_stu_avg_absent_perc": "mean"
+                    },
+                    "ranking_val_desc": "cols.att_stu_avg_present_perc",
+                    "ranking_col": "cols.att_stu_avg_present_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary students attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_stu_avg_present_perc": "mean",
+                            "cols.att_stu_avg_absent_perc": "mean",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "columns_rename_dict" : {
+                        "cols.att_stu_avg_present_perc" : "cols.att_stu_avg_present_frmt",
+                        "cols.att_stu_avg_absent_perc" : "cols.att_stu_avg_absent_frmt"
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_stu_avg_present_frmt", "cols.att_stu_avg_absent_frmt"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
 
         {    
             "report_name": "kalai_thiruvizha_participation",

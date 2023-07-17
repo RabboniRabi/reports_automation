@@ -162,13 +162,13 @@
                         "skip_rows" : 0
                     },
                     {
-                        "source_name" : "uniforms_books_pri_mid_govt",
+                        "source_name" : "uniforms_pri_mid_govt",
                         "source_file_name" : "Uniform-Scheme-Pri-Mid-Sch-Rpt.xlsx",
                         "source_sheet_name" : "Govt",
                         "skip_rows" : 4
                     },
                     {
-                        "source_name" : "uniforms_books_pri_mid_aided",
+                        "source_name" : "uniforms_pri_mid_aided",
                         "source_file_name" : "Uniform-Scheme-Pri-Mid-Sch-Rpt.xlsx",
                         "source_sheet_name" : "Aided",
                         "skip_rows" : 0
@@ -182,13 +182,13 @@
                     "uniforms_high_higher_sec_aided" : {
                         "join" : "outer"
                     },
-                    "uniforms_books_pri_mid_govt" : {
+                    "uniforms_pri_mid_govt" : {
                         "join" : "outer"
                     },
-                    "uniforms_books_pri_mid_aided" : {
+                    "uniforms_pri_mid_aided" : {
                         "join" : "outer"
                     }
-            }
+                }
             },
             "pre_process_brc_merge": true,
             "brc_merge_config" : {
@@ -282,15 +282,53 @@
             }
         },
         {
-            "report_name": "students_receiving_notebooks",
-            "report_code" : "STU_RCV_NTBK",
+            "report_name": "schools_issuing_notebooks",
+            "report_code" : "SCH_ISS_NTBK",
             "report_category": "Schemes",
-            "report_desc": "Students receiving notebooks report",
+            "report_desc": "Schools issuing notebooks report",
             "generate_report": true,
             "source_config" : {
-                "source_file_name" : "Notebook-Scheme-Rpt.xlsx",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+                "sources" : [
+                    {
+                        "source_name" : "nb_high_higher_sec_govt",
+                        "source_file_name" : "NB-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "nb_high_higher_sec_aided",
+                        "source_file_name" : "NB-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "nb_pri_mid_govt",
+                        "source_file_name" : "NB-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "nb_pri_mid_aided",
+                        "source_file_name" : "NB-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "nb_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "nb_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "nb_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "nb_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
             },
             "pre_process_brc_merge": true,
             "brc_merge_config" : {
@@ -320,7 +358,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Elementary schools students receiving notebooks report",
+                    "heading" : "Elementary schools issuing notebooks report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -362,7 +400,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools students receiving notebooks report",
+                    "heading" : "Secondary schools issuing notebooks report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -384,15 +422,53 @@
             }
         },
         {
-            "report_name": "students_receiving_geometry_boxes",
-            "report_code" : "STU_RCV_GEOBX",
+            "report_name": "schools_issuing_geometry_boxes",
+            "report_code" : "SCH_ISS_GEOBX",
             "report_category": "Schemes",
-            "report_desc": "Students receiving geometry boxes report",
+            "report_desc": "Schools issuing geometry boxes report",
             "generate_report": true,
             "source_config" : {
-                "source_file_name" : "Geomentry-Box-Scheme-Rpt.xlsx",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+                "sources" : [
+                    {
+                        "source_name" : "geo_box_high_higher_sec_govt",
+                        "source_file_name" : "Geo-Box-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "geo_box_high_higher_sec_aided",
+                        "source_file_name" : "Geo-Box-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "geo_box_pri_mid_govt",
+                        "source_file_name" : "Geo-Box-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "geo_box_pri_mid_aided",
+                        "source_file_name" : "Geo-Box-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "geo_box_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "geo_box_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "geo_box_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "geo_box_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
             },
             "pre_process_brc_merge": true,
             "brc_merge_config" : {
@@ -422,7 +498,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Elementary schools students receiving geometry boxes report",
+                    "heading" : "Elementary schools issuing geometry boxes report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -464,7 +540,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools students receiving geometry boxes report",
+                    "heading" : "Secondary schools issuing geometry boxes report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -894,15 +970,53 @@
             }
         },
          {
-            "report_name": "students_receiving_cycle",
-            "report_code" : "STU_RCV_CYCLE",
+            "report_name": "schools_issuing_cycles",
+            "report_code" : "SCH_ISS_CYCLE",
             "report_category": "Schemes",
-            "report_desc": "Students receiving cycle report",
+            "report_desc": "Schools issuing cycles report",
             "generate_report": false,
             "source_config" : {
-                "source_file_name" : "",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+                "sources" : [
+                    {
+                        "source_name" : "uniforms_high_higher_sec_govt",
+                        "source_file_name" : "Uniform-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "uniforms_high_higher_sec_aided",
+                        "source_file_name" : "Uniform-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "uniforms_pri_mid_govt",
+                        "source_file_name" : "Uniform-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "uniforms_pri_mid_aided",
+                        "source_file_name" : "Uniform-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "uniforms_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "uniforms_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "uniforms_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "uniforms_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
             },
             "pre_process_brc_merge": true,
             "brc_merge_config" : {

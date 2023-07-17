@@ -245,7 +245,7 @@ def number_ranking(df, group_levels, ranking_args_dict):
     ascending = ranking_args_dict['ascending']
     # Get the name of the column to rank on
     ranking_col = ranking_args_dict['ranking_col']
-    print('ranking_col is: ', ranking_col)
+
     # If grouping levels is given
     if (group_levels is not None):
         df_rank = df.groupby(group_levels, as_index=False, sort=sort).agg(agg_dict)
@@ -256,7 +256,6 @@ def number_ranking(df, group_levels, ranking_args_dict):
     df_rank.rename(columns={ranking_col: cols.ranking_value}, inplace=True)
 
     # Sort and rank the values
-    print('df_rank: ', df_rank)
     df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method="min")
 
     # Add the ranking value description to the ranked data

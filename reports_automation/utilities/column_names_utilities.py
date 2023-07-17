@@ -382,6 +382,10 @@ not_filled = 'Not Filled'
 perc_present = "% HM's Present"
 att_sch_markd_perc = 'percentage_marked'
 att_avg_sch_markd_perc = 'Average of schools marking attendance %'
+att_stu_avg_present_perc = 'average_present_perc'
+att_stu_avg_absent_perc = 'average_absent_perc'
+att_stu_avg_present_frmt = 'Average students present %'
+att_stu_avg_absent_frmt = 'Average students absent %'
 
 # Career Guidance specific columns
 cg_ex_res_stat = 'Exam_Result_Status'
