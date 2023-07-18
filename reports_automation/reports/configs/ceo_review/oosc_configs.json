@@ -119,7 +119,7 @@
             "report_code" : "OOSC_STU_ABS_6PLUS",
             "report_category": "Enrolment",
             "report_desc": "OoSc - Students absent for greater than 6 days",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "source_file_name" : "Students_absent_greater_than_6_days.xlsx",
                 "source_sheet_name" : "raw_data",

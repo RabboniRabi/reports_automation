@@ -708,9 +708,48 @@
             "report_desc": "Students receiving crayons report",
             "generate_report": true,
             "source_config" : {
-                "source_file_name" : "Crayons-Scheme-Rpt.xlsx",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+                "sources": [
+                    {
+                        "source_name": "crayons_high_higher_sec_govt",
+                        "source_file_name" : "Crayons-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name": "crayons_high_higher_sec_aided",
+                        "source_file_name" : "Crayons-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name": "crayons_pri_mid_govt",
+                        "source_file_name" : "Crayons-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name": "crayons_pri_mid_aided",
+                        "source_file_name": "Crayons-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name": "Aided",
+                        "skip_rows": 0
+                    }
+                ],
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "crayons_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "crayons_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "crayons_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "crayons_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                 }
+
             },
             "pre_process_brc_merge": true,
             "brc_merge_config" : {
@@ -810,9 +849,48 @@
             "report_desc": "Students receiving atlas report",
             "generate_report": true,
             "source_config" : {
-                "source_file_name" : "Atlas-Scheme-Rpt.xlsx",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+                "sources": [
+                    {
+                        "source_name" : "atlas_high_higher_sec_govt",
+                        "source_file_name" : "Atlas-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "atlas_high_higher_sec_aided",
+                        "source_file_name" : "Atlas-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "atlas_pri_mid_govt",
+                        "source_file_name" : "Atlas-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "atlas_pri_mid_aided",
+                        "source_file_name" : "Atlas-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "atlas_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "atlas_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "atlas_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "atlas_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
+
             },
             "pre_process_brc_merge": true,
             "brc_merge_config" : {
@@ -830,10 +908,10 @@
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
+                        "cols.tot_schools" : "sum",
                         "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_completed": "sum"
                     },
                     "ranking_val_desc": "cols.perc_schools_issued_atlas",
                     "num_col": "cols.scheme_completed",
@@ -846,10 +924,10 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
-                            "cols.scheme_completed": "sum", 
-                            "cols.scheme_in_progress" : "sum",
-                            "cols.scheme_not_started" : "sum",
                             "cols.tot_schools" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum",
                             "cols.deo_elem_rank": "mean"
                         },
                         "text_append_dict" : {"cols.deo_name_elm": ""}
@@ -872,10 +950,10 @@
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
+                        "cols.tot_schools" : "sum",
                         "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_completed": "sum"
                     },
                     "ranking_val_desc": "cols.perc_schools_issued_atlas",
                     "num_col": "cols.scheme_completed",
@@ -888,10 +966,10 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
-                            "cols.scheme_completed": "sum", 
-                            "cols.scheme_in_progress" : "sum",
-                            "cols.scheme_not_started" : "sum",
                             "cols.tot_schools" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum",
                             "cols.deo_sec_rank": "mean"
                         },
                         "text_append_dict" : {"cols.deo_name_sec": ""}
@@ -912,9 +990,48 @@
             "report_desc": "Students receiving bags report",
             "generate_report": true,
             "source_config" : {
-                "source_file_name" : "Bag-Scheme-Rpt.xlsx",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+                "sources": [
+                    {
+                        "source_name" : "bags_high_higher_sec_govt",
+                        "source_file_name" : "Bag-Scheme-HS-HSS-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "bags_high_higher_sec_aided",
+                        "source_file_name" : "Bag-Scheme-HS-HSS-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "bags_pri_mid_govt",
+                        "source_file_name" : "Bag-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "bags_pri_mid_aided",
+                        "source_file_name" : "Bag-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "bags_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "bags_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "bags_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "bags_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
+
             },
             "pre_process_brc_merge": true,
             "brc_merge_config" : {
@@ -932,10 +1049,10 @@
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
+                        "cols.tot_schools" : "sum",
                         "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_completed": "sum"
                     },
                     "ranking_val_desc": "cols.perc_schools_issued_bag",
                     "num_col": "cols.scheme_completed",
@@ -948,10 +1065,10 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
-                            "cols.scheme_completed": "sum", 
-                            "cols.scheme_in_progress" : "sum",
-                            "cols.scheme_not_started" : "sum",
                             "cols.tot_schools" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum",
                             "cols.deo_elem_rank": "mean"
                         },
                         "text_append_dict" : {"cols.deo_name_elm": ""}
@@ -974,10 +1091,10 @@
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
+                        "cols.tot_schools" : "sum",
                         "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_completed": "sum"
                     },
                     "ranking_val_desc": "cols.perc_schools_issued_bag",
                     "num_col": "cols.scheme_completed",
@@ -990,10 +1107,10 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
-                            "cols.scheme_completed": "sum", 
-                            "cols.scheme_in_progress" : "sum",
-                            "cols.scheme_not_started" : "sum",
                             "cols.tot_schools" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum",
                             "cols.deo_sec_rank": "mean"
                         },
                         "text_append_dict" : {"cols.deo_name_sec": ""}

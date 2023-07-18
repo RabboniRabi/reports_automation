@@ -35,7 +35,7 @@ cate_type = 'cate_type'
 section = 'section'
 tot_sections = 'Total Sections'
 
-section = 'section'
+class_section = 'Class_Section'
 
 class_id = 'class_id'
 tot_schools = 'Total Schools'
@@ -120,6 +120,7 @@ students_transitioned_cls10_11_perc = '% students transitioned from Class 10 to 
 students_enrolled_cls1_2022_23 = 'students_enrolled_cls1_2022_23'
 students_enrolled_cls1_2023_24 = 'students_enrolled_cls1_2023_24'
 students_enrolled_cls1_change_perc = '% students_enrolled_cls1_change_perc'
+sch_with_no_students = "Schools with no students"
 
 #Promotion Report
 Total_Students = 'Total_Students'
@@ -366,6 +367,9 @@ avg_stu_tch_ratio = 'Average Student Teacher Ratio'
 class_taught = 'Class_Taught'
 upper_primary_only = 'Upper primary only'
 upper_primary_and_secondary = 'Upper primary and Secondary'
+teacher_id = 'Teacher_ID'
+not_assigned = 'Not Assigned'
+sections_without_teacher = 'Total number of sections without class teacher'
 
 # subjects data sepecific columns
 english = 'English'

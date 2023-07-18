@@ -114,6 +114,78 @@
                     ]
                 }
             }
+        },
+        {
+            "report_name": "schools_without_enrollment",
+            "report_code": "SCH_WO_STU",
+            "report_category": "enrollment",
+            "report_desc": "Schools without students",
+            "generate_report": false,
+            "source_config": {
+                "source_file_name":"Sch-Enrollment-Abstract.xlsx",
+                "source_sheet_name" : "Report",
+                "skip_rows" : 4
+            },
+            "pre_process_brc_merge": true,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args": {
+            "custom_unranked_report": false,
+            "grouping_cols": [
+                "cols.deo_name_elm",
+                "cols.block_name"
+            ],
+            "grouping_agg_dict": {
+                "cols.tot_schools" : "sum",
+                "cols.sch_with_no_students": "sum"
+            }
+            },
+            "ranking_args": {},
+            "format_config" : {
+                "heading" : "Elementary schools without students enrollment report",
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                    "agg_cols_func_dict" : {
+                        "cols.tot_schools" : "sum",
+                        "cols.sch_with_no_students": "sum"
+                    },
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
+                },
+                "format_dicts" : []
+            }
+            },
+            "secondary_report" : {
+            "generate_report": true,
+            "un_ranked_report_args": {
+                "custom_unranked_report": false,
+                "grouping_cols": [
+                    "cols.deo_name_elm",
+                    "cols.block_name"
+                ],
+                "grouping_agg_dict": {
+                    "cols.tot_schools" : "sum",
+                    "cols.sch_with_no_students": "sum"
+                }
+            },
+            "ranking_args": {},
+            "format_config" : {
+                "heading" : "Secondary schools without students enrollment report",
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                    "agg_cols_func_dict" : {
+                        "cols.tot_schools" : "sum",
+                        "cols.sch_with_no_students": "sum"
+                    },
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
+                },
+                "format_dicts" : []
+            }
+      }
         }
 
     ]
