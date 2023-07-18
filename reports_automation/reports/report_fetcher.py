@@ -65,6 +65,7 @@ def get_ceo_report(report_code, school_level, report_level):
     # Get the CEO report
     ceo_rpt = ceo_report_generator.get_ceo_report(report_config, school_level, report_level)
 
+
     return ceo_rpt
 
 
@@ -130,6 +131,6 @@ if __name__ == "__main__":
     dir_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
     file_utilities.save_to_excel({'Report': adhoc_report}, 'teacher_leave_absence_update.xlsx', dir_path)
 
-    
+
 
     
