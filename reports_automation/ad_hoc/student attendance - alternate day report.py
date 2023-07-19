@@ -13,7 +13,7 @@ Total_Schools = "school_name"
 
 
 working_schools = 'partial_yn'
-working_status = ["1","2"]
+working_status = ["1", "2"]
 groupby_index = ['district_name']
 #grouping_cols = ['disctict_name', 'marked', 'partially_marked', ]
 groupby_criteria = {"marked":"sum","partially_marked":"sum","unmarked":"sum",Total_Schools:"count"}
