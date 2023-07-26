@@ -202,13 +202,13 @@
         },
 
         {
-            "report_name": "schools_marking_attendance",
+            "report_name": "schools_marking_students_attendance",
             "report_code" : "SCH_ATT",
             "report_category": "Attendance",
-            "report_desc": "Schools marking attendance report",
+            "report_desc": "Schools marking students attendance report",
             "generate_report": true,
             "source_config" : {
-                "query_file_name" : "schools_marking_attendance.sql",
+                "query_file_name" : "schools_marking_students_attendance.sql",
                 "db" : "attendance_db"
             },
             "pre_process_brc_merge": false,
@@ -237,7 +237,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Elementary schools marking attendance report",
+                    "heading" : "Elementary schools marking students attendance report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -278,7 +278,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools marking attendance report",
+                    "heading" : "Secondary schools marking students attendance report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {

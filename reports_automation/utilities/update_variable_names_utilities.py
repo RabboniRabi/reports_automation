@@ -129,7 +129,8 @@ def update_ceo_review_config_dict(report_config: dict):
             if 'join_on' in combine_config:
                 combine_config['join_on'] = cols.get_values(combine_config['join_on'])
 
-    if 'elementary_report' in report_config and bool(report_config['elementary_report']):
+    if 'elementary_report' in report_config and bool(report_config['elementary_report'])\
+                and report_config['elementary_report']['generate_report']:
         elem_report_config = report_config['elementary_report']
         # Get the arguments for generating elementary unranked report
         un_ranked_report_config  = elem_report_config['un_ranked_report_args']
@@ -149,7 +150,8 @@ def update_ceo_review_config_dict(report_config: dict):
         ranking_args = elem_report_config['ranking_args']
         elem_report_config['ranking_args'] = update_ranking_args_dict(ranking_args)
 
-    if 'secondary_report' in report_config and bool(report_config['secondary_report']):
+    if 'secondary_report' in report_config and bool(report_config['secondary_report'])\
+                and report_config['secondary_report']['generate_report']:
         sec_report_config = report_config['secondary_report']
         # Get the arguments for generating elementary unranked report
         un_ranked_report_config  = sec_report_config['un_ranked_report_args']

@@ -702,10 +702,10 @@
             }
         },
         {
-            "report_name": "students_receiving_crayons",
-            "report_code" : "STU_RCV_CRAY",
+            "report_name": "schools_issuing_crayons",
+            "report_code" : "SCH_ISS_CRAY",
             "report_category": "Schemes",
-            "report_desc": "Students receiving crayons report",
+            "report_desc": "Schools issuing crayons report",
             "generate_report": true,
             "source_config" : {
                 "sources": [
@@ -779,7 +779,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Elementary schools students receiving crayons report",
+                    "heading" : "Elementary schools issuing crayons report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -821,7 +821,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools students receiving crayons report",
+                    "heading" : "Secondary schools issuing crayons report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -843,10 +843,10 @@
             }
         },
         {
-            "report_name": "students_receiving_atlas",
-            "report_code" : "STU_RCV_ATLS",
+            "report_name": "schools_issuing_atlas",
+            "report_code" : "SCH_ISS_ATLS",
             "report_category": "Schemes",
-            "report_desc": "Students receiving atlas report",
+            "report_desc": "Schools issuing atlas report",
             "generate_report": true,
             "source_config" : {
                 "sources": [
@@ -920,7 +920,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Elementary schools students receiving atlas report",
+                    "heading" : "Elementary schools issuing atlas report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -962,7 +962,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools students receiving atlas report",
+                    "heading" : "Secondary schools issuing atlas report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -984,10 +984,10 @@
             }
         },
         {
-            "report_name": "students_receiving_bags",
-            "report_code" : "STU_RCV_BAGS",
+            "report_name": "schools_issuing_bags",
+            "report_code" : "SCH_ISS_BAGS",
             "report_category": "Schemes",
-            "report_desc": "Students receiving bags report",
+            "report_desc": "Schools issuing bags report",
             "generate_report": true,
             "source_config" : {
                 "sources": [
@@ -1061,7 +1061,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Elementary schools students receiving bags report",
+                    "heading" : "Elementary schools issuing bags report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
@@ -1103,7 +1103,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools students receiving bags report",
+                    "heading" : "Secondary schools issuing bags report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -1133,42 +1133,24 @@
             "source_config" : {
                 "sources" : [
                     {
-                        "source_name" : "uniforms_high_higher_sec_govt",
-                        "source_file_name" : "Uniform-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_name" : "cycles_high_higher_sec_govt",
+                        "source_file_name" : "Cycle-Scheme-Hs-Hss-Sch-Rpt.xlsx",
                         "source_sheet_name" : "Govt",
                         "skip_rows" : 4
                     },
                     {
-                        "source_name" : "uniforms_high_higher_sec_aided",
-                        "source_file_name" : "Uniform-Scheme-Hs-Hss-Sch-Rpt.xlsx",
-                        "source_sheet_name" : "Aided",
-                        "skip_rows" : 0
-                    },
-                    {
-                        "source_name" : "uniforms_pri_mid_govt",
-                        "source_file_name" : "Uniform-Scheme-Pri-Mid-Sch-Rpt.xlsx",
-                        "source_sheet_name" : "Govt",
-                        "skip_rows" : 4
-                    },
-                    {
-                        "source_name" : "uniforms_pri_mid_aided",
-                        "source_file_name" : "Uniform-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_name" : "cycles_high_higher_sec_aided",
+                        "source_file_name" : "Cycle-Scheme-Hs-Hss-Sch-Rpt.xlsx",
                         "source_sheet_name" : "Aided",
                         "skip_rows" : 0
                     }
                 ],
                 "combine_data_type" : "concat",
                 "combine_data_configs" : {
-                    "uniforms_high_higher_sec_govt" : {
+                    "cycles_high_higher_sec_govt" : {
                         "join" : "outer"
                     },
-                    "uniforms_high_higher_sec_aided" : {
-                        "join" : "outer"
-                    },
-                    "uniforms_pri_mid_govt" : {
-                        "join" : "outer"
-                    },
-                    "uniforms_pri_mid_aided" : {
+                    "cycles_high_higher_sec_aided" : {
                         "join" : "outer"
                     }
                 }
@@ -1180,46 +1162,7 @@
             },
             "post_process_brc_merge" : false,
             "elementary_report" : {
-                "generate_report": true,
-                "un_ranked_report_args" : {
-                    "custom_unranked_report": true,
-                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
-                    "grouping_agg_dict" : {}
-                },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum",
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
-                    },
-                    "ranking_val_desc": "cols.perc_schools_issued_cycle",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
-                },
-                "format_config" : {
-                    "heading" : "Elementary schools students receiving cycle report",
-                    "subtotal_outlines_dict" : {
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-                        "agg_cols_func_dict" : {
-                            "cols.scheme_completed": "sum",
-                            "cols.scheme_in_progress" : "sum",
-                            "cols.scheme_not_started" : "sum",
-                            "cols.tot_schools" : "sum",
-                            "cols.deo_elem_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_elm": ""}
-                    },
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.perc_schools_issued_cycle"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
-                }
+                "generate_report": false
             },
             "secondary_report" : {
                 "generate_report": true,
@@ -1243,7 +1186,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools students receiving cycle report",
+                    "heading" : "Secondary schools issuing cycles report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
@@ -1265,15 +1208,35 @@
             }
         },
         {
-            "report_name": "students_receiving_laptop",
-            "report_code" : "STU_RCV_LAPTOP",
+            "report_name": "schools_issuing_laptops",
+            "report_code" : "SCH_ISS_LAP",
             "report_category": "Schemes",
-            "report_desc": "Students receiving laptop report",
-            "generate_report": false,
+            "report_desc": "Schools issuing laptops report",
+            "generate_report": true,
             "source_config" : {
-                "source_file_name" : "",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+                "sources" : [
+                    {
+                        "source_name" : "laptops_high_higher_sec_govt",
+                        "source_file_name" : "Lap-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "laptops_high_higher_sec_aided",
+                        "source_file_name" : "Lap-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "laptops_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "laptops_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    }
+                }
             },
             "pre_process_brc_merge": true,
             "brc_merge_config" : {
@@ -1282,46 +1245,7 @@
             },
             "post_process_brc_merge" : false,
             "elementary_report" : {
-                "generate_report": true,
-                "un_ranked_report_args" : {
-                    "custom_unranked_report": true,
-                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
-                    "grouping_agg_dict" : {}
-                },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum",
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
-                    },
-                    "ranking_val_desc": "cols.perc_schools_issued_laptop",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
-                },
-                "format_config" : {
-                    "heading" : "Elementary schools students receiving laptop report",
-                    "subtotal_outlines_dict" : {
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-                        "agg_cols_func_dict" : {
-                            "cols.scheme_completed": "sum",
-                            "cols.scheme_in_progress" : "sum",
-                            "cols.scheme_not_started" : "sum",
-                            "cols.tot_schools" : "sum",
-                            "cols.deo_elem_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_elm": ""}
-                    },
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.perc_schools_issued_laptop"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
-                }
+                "generate_report": false
             },
             "secondary_report" : {
                 "generate_report": true,
@@ -1345,7 +1269,7 @@
                     "ascending": "False"
                 },
                 "format_config" : {
-                    "heading" : "Secondary schools students receiving laptop report",
+                    "heading" : "Secondary schools issuing laptops report",
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
