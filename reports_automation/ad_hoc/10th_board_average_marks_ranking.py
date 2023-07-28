@@ -83,8 +83,9 @@ def district_level_ranking(df):
         for sort_col in sort_columns:
             # Sorting the dataframe based on average marks, subject-wise average marks
             df.sort_values(by=sort_col, ascending=False, inplace=True)
+            index = df.columns.get_loc(sort_col) + 2
             # Ranking district-wise
-            df.insert(count, rank_dist_columns[count], range(1, 1 + len(df)))
+            df.insert(index, rank_dist_columns[count], range(1, 1 + len(df)))
             df[rank_dist_columns[count]] = df[rank_dist_columns[count]].apply(lambda rank_dist: str(rank_dist) + '/' + str(dist_total_schools))
             # Updating the ranked dataframe to the corresponding district in the dictionary
             data_dict.update({dist: df})
@@ -104,6 +105,8 @@ def state_level_ranking(df):
     Returns:
     State level ranked dataframe
     """
+    # Get the school performance based on average marks
+    df[cols.school_performance] = df[cols.average_marks].apply(_get_overall_school_performance)
 
     # Finding the total number of schools in the state since rank should look like 15/6250
     state_total_schools = df[cols.udise_col].nunique()
@@ -112,15 +115,15 @@ def state_level_ranking(df):
     for sort_col in sort_columns:
         # Sorting the dataframe based on average marks, subject-wise average marks
         df.sort_values(by=sort_col, ascending=False, inplace=True)
+        index = df.columns.get_loc(sort_col) + 1
         # Ranking state-wise
-        df.insert(count, rank_state_column_names[count], range(1, 1 + len(df)))
+        df.insert(index, rank_state_column_names[count], range(1, 1 + len(df)))
         df[rank_state_column_names[count]] = df[rank_state_column_names[count]].apply(lambda rank_state: str(rank_state) + '/' + str(state_total_schools))
         count = count+1
 
-    # Get the school performance based on average marks
-    df[cols.school_performance] = df[cols.average_marks].apply(_get_overall_school_performance)
+
     # Reordering the columns for better readability
-    df = df.iloc[:, [6, 7, 8, 9, 10, 11, 12, 13, 14, 20, 0, 15, 1, 16, 2, 17, 3, 18, 4, 19, 5]]
+    #df = df.iloc[:, [6, 7, 8, 9, 10, 11, 12, 13, 14, 20, 0, 15, 1, 16, 2, 17, 3, 18, 4, 19, 5]]
 
 
     return df
