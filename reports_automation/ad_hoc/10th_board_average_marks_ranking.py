@@ -1,5 +1,5 @@
 """
-Code to rank the districts based on average marks scored on 10th to provide a state overview and also district reports
+Code to rank the districts based on average marks scored on 10th to provide a state overview and also district overview
 """
 import sys
 sys.path.append('../')
@@ -11,12 +11,6 @@ import utilities.file_utilities as file_utilities
 import utilities.report_splitter_utilities as report_splitter
 import xlsxwriter
 
-sort_columns = [cols.average_marks, cols.lang_average_marks, cols.eng_average_marks, cols.math_average_marks,
-                cols.science_average_marks, cols.social_average_marks]
-rank_state_column_names = [cols.rank_state, cols.lang_rank_state, cols.eng_rank_state, cols.math_rank_state,
-                     cols.science_rank_state, cols.social_rank_state]
-rank_dist_columns = [cols.rank_dist, cols.lang_rank_dist, cols.eng_rank_dist, cols.math_rank_dist,
-                     cols.science_rank_dist, cols.social_rank_dist]
 
 def colour_coding(average_marks):
     """
@@ -62,7 +56,7 @@ def _get_overall_school_performance(average_marks):
     else:
         return "Good"
 
-def district_level_ranking(df):
+def district_level_ranking(df, rank_dist_columns):
     """
     Function to rank the data district-wise
     Args:
@@ -74,52 +68,59 @@ def district_level_ranking(df):
     data_dict = report_splitter.split_report(df, cols.district_name)
 
     # Loop to iterate through the dictionary to rank the data district-wise
-    for dist in data_dict.keys():
-        df = data_dict[dist]
+    for dist, df in data_dict.items():
         # Finding the total number of schools in the district since rank should look like 15/175
         dist_total_schools = df[cols.udise_col].nunique()
-        count = 0
         # Loop to iterate to sort the columns
-        for sort_col in sort_columns:
+        for rank_col in rank_dist_columns.keys():
             # Sorting the dataframe based on average marks, subject-wise average marks
-            df.sort_values(by=sort_col, ascending=False, inplace=True)
-            index = df.columns.get_loc(sort_col) + 2
+            df.sort_values(by=rank_col, ascending=False, inplace=True)
+            index = df.columns.get_loc(rank_col) + 2
             # Ranking district-wise
-            df.insert(index, rank_dist_columns[count], range(1, 1 + len(df)))
-            df[rank_dist_columns[count]] = df[rank_dist_columns[count]].apply(lambda rank_dist: str(rank_dist) + '/' + str(dist_total_schools))
-            # Updating the ranked dataframe to the corresponding district in the dictionary
-            data_dict.update({dist: df})
-            count = count + 1
+            df.insert(index, rank_dist_columns[rank_col], range(1, 1 + len(df)))
+            df[rank_dist_columns[rank_col]] = df[rank_dist_columns[rank_col]].apply(lambda rank_dist: str(rank_dist) + '/' + str(dist_total_schools))
+
+        # Deleting the district column
+        df.drop(columns=cols.district_name, inplace=True)
+
+        # Updating the ranked dataframe to the corresponding district in the dictionary
+        data_dict.update({dist: df})
+
         # Deleting the dataframe after updating.
         del df
     # Saving the district-wise ranked data
     report_splitter.save_split_report(data_dict, "10th_average_marks")
 
 
-def state_level_ranking(df):
+def state_level_ranking(df, rank_state_columns):
     """
     Function to rank the data State-wise
     Args:
         df: Dataframe to rank
+        sort_columns: list
+            columns to sort
+        rank_state_columns: list
+
 
     Returns:
     State level ranked dataframe
     """
     # Get the school performance based on average marks
-    df[cols.school_performance] = df[cols.average_marks].apply(_get_overall_school_performance)
+    index = df.columns.get_loc(cols.average_marks) + 1
+    df.insert(index, cols.school_performance, df[cols.average_marks].apply(_get_overall_school_performance))
 
     # Finding the total number of schools in the state since rank should look like 15/6250
     state_total_schools = df[cols.udise_col].nunique()
-    count = 0
+
     # Loop to iterate to sort the columns
-    for sort_col in sort_columns:
+    for rank_col_value, rank_col_name in rank_state_columns.items():
         # Sorting the dataframe based on average marks, subject-wise average marks
-        df.sort_values(by=sort_col, ascending=False, inplace=True)
-        index = df.columns.get_loc(sort_col) + 1
+        df.sort_values(by=rank_col_value, ascending=False, inplace=True)
+        index = df.columns.get_loc(rank_col_value) + 1
         # Ranking state-wise
-        df.insert(index, rank_state_column_names[count], range(1, 1 + len(df)))
-        df[rank_state_column_names[count]] = df[rank_state_column_names[count]].apply(lambda rank_state: str(rank_state) + '/' + str(state_total_schools))
-        count = count+1
+        df.insert(index, rank_col_name, range(1, 1 + len(df)))
+        df[rank_col_name] = df[rank_col_name].apply(lambda rank_state: str(rank_state) + '/' + str(state_total_schools))
+
 
 
     # Reordering the columns for better readability
@@ -142,9 +143,27 @@ def main():
     raw_data = dbutilities.fetch_data_as_df(credentials_dict, 'sslc_govt_school_avg_marks.sql')
     # Rename the column names to standard format
     raw_data = column_cleaner.standardise_column_names(raw_data)
+
+    # Declaring what column to sort and ranking column names
+    rank_state_columns = {
+        cols.average_marks: cols.rank_state,
+        cols.lang_average_marks: cols.lang_rank_state,
+        cols.eng_average_marks: cols.eng_rank_state,
+        cols.math_average_marks: cols.math_rank_state,
+        cols.science_average_marks: cols.science_rank_state,
+        cols.social_average_marks: cols.social_rank_state}
+    rank_dist_columns = {
+        cols.average_marks: cols.rank_dist,
+        cols.lang_average_marks: cols.lang_rank_dist,
+        cols.eng_average_marks: cols.eng_rank_dist,
+        cols.math_average_marks: cols.math_rank_dist,
+        cols.science_average_marks: cols.science_rank_dist,
+        cols.social_average_marks: cols.social_rank_dist}
+
     # Get the State level ranking
-    df = state_level_ranking(raw_data)
-    district_level_ranking(df)
+    df = state_level_ranking(raw_data, rank_state_columns)
+    # Get district level ranking
+    district_level_ranking(df, rank_dist_columns)
 
 if __name__ == "__main__":
     main()
