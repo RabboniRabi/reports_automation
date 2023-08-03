@@ -229,6 +229,26 @@ def get_curr_day_month_gen_reports_dir_path():
 
     return dir_path
 
+def get_curr_day_month_gen_report_name_dir_path(dir_name):
+    """
+     Function to get the directory path to the specified directory name in current day's generated reports.
+      The function also creates the directory if it does not already exist.
+    Args:
+        dir_name: The name of the folder want to store the excel files.
+
+    Returns:
+    -------
+    The path to the current month's specified directory name in generated reports directory
+    """
+    dir_path = os.path.join(get_curr_day_month_gen_reports_dir_path(), dir_name)
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
+
+
 def get_ceo_rpts_dir_path():
     """
     Function to get the directory path to CEO reports folder.

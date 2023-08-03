@@ -40,7 +40,7 @@ def total_marks_summary_schoolwise():
     # Read the database connection credentials
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
 
-    # Get the common pool to be surveyed details from the database as a Pandas DataFrame object
+    # Get the 10th board exam marks from the database as a Pandas DataFrame object
     raw_data = dbutilities.fetch_data_as_df(credentials_dict, 'sslc_student_marks.sql')
     # Rename the column names to standard format
     raw_data = column_cleaner.standardise_column_names(raw_data)
