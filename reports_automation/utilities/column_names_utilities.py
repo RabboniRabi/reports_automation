@@ -35,7 +35,7 @@ cate_type = 'cate_type'
 section = 'section'
 tot_sections = 'Total Sections'
 
-section = 'section'
+class_section = 'Class_Section'
 
 class_id = 'class_id'
 tot_schools = 'Total Schools'
@@ -120,6 +120,7 @@ students_transitioned_cls10_11_perc = '% students transitioned from Class 10 to 
 students_enrolled_cls1_2022_23 = 'students_enrolled_cls1_2022_23'
 students_enrolled_cls1_2023_24 = 'students_enrolled_cls1_2023_24'
 students_enrolled_cls1_change_perc = '% students_enrolled_cls1_change_perc'
+sch_with_no_students = "Schools with no students"
 
 #Promotion Report
 Total_Students = 'Total_Students'
@@ -366,6 +367,9 @@ avg_stu_tch_ratio = 'Average Student Teacher Ratio'
 class_taught = 'Class_Taught'
 upper_primary_only = 'Upper primary only'
 upper_primary_and_secondary = 'Upper primary and Secondary'
+teacher_id = 'Teacher_ID'
+not_assigned = 'Not Assigned'
+sections_without_teacher = 'Total number of sections without class teacher'
 
 # subjects data sepecific columns
 english = 'English'
@@ -380,6 +384,21 @@ absent = "Absent"
 absent_replaced = "Absent & Replaced"
 not_filled = 'Not Filled'
 perc_present = "% HM's Present"
+att_sch_markd_perc = 'percentage_marked'
+att_sch_markd_tch_perc = 'percentage_marked'
+att_avg_sch_markd_perc = 'Average % of schools marking attendance'
+att_avg_sch_tch_markd_perc = 'Average % of schools marking teachers attendance'
+att_stu_avg_present_perc = 'average_present_perc'
+att_stu_avg_absent_perc = 'average_absent_perc'
+att_stu_avg_present_frmt = 'Average students present %'
+att_stu_avg_absent_frmt = 'Average students absent %'
+att_sec_working_tot = 'total_sections_working_between_dates'
+att_sec_marked_tot = 'total_sections_marked_between_dates'
+att_sec_mark_perc = '% sections marking attendance'
+att_tch_avg_present_perc = 'average_present_perc'
+att_tch_avg_absent_perc = 'average_absent_perc'
+att_tch_avg_present_frmt = 'Average teachers present %'
+att_tch_avg_absent_frmt = 'Average teachers absent %'
 
 # Career Guidance specific columns
 cg_ex_res_stat = 'Exam_Result_Status'
@@ -504,5 +523,49 @@ def update_dictionary_var_strs(var_names_keys_dict: dict):
 
         # Set the updated key-value pair
         updated_dict[updated_key] = dict_key_value
+
+    return updated_dict
+
+
+def update_dictionary(var_names_dict: dict):
+    """
+    Function to update the keys & values in a given dictionary.
+    If the keys and values are strings of variable names, they will be updated
+    by mapping to the value assigned to the variable names.
+
+    Parameters:
+    -----------
+    var_names_dict: dict
+        Dictionary whose keys and values (which are strings of variables) might need to be updated with
+        the values of the variable names
+    
+    Returns:
+    -------
+    The updated dictionary
+    """
+
+    updated_dict = {}
+
+    col_utility_prefix = 'cols.'
+    
+    for key in var_names_dict.keys():
+        if col_utility_prefix in key:
+            dict_key_value = var_names_dict[key]
+            updated_key = get_value(key)
+
+            if col_utility_prefix in dict_key_value:
+                updated_value = get_value(dict_key_value)
+                updated_dict[updated_key] = updated_value
+            # Set the updated key-value pair
+            else:
+                updated_dict[updated_key] = dict_key_value
+        elif col_utility_prefix in var_names_dict[key]:
+            updated_value = get_value(dict_key_value)
+            updated_dict[key] = updated_value
+        else:
+            # Nothing to update
+            updated_dict[key] = dict_key_value
+
+
 
     return updated_dict

@@ -5,7 +5,7 @@
       "report_code": "HM_TRN_ATT",
       "report_category": "Attendance",
       "report_desc": "hm_training_attendance_report",
-      "generate_report": true,
+      "generate_report": false,
       "source_config": {
       "source_file_name" : "HS HM training attendance.xlsx",
                 "source_sheet_name" : "training_attendance",

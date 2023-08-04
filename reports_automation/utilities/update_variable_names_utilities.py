@@ -99,3 +99,77 @@ def update_ad_hoc_config_dict(report_config: dict):
 
     return report_config
         
+
+def update_ceo_review_config_dict(report_config: dict):
+    """
+    Utility function to update the CEO review report configuration read from the JSON configuration.
+    As variable names are stored as strings in JSON, the values mapped to these
+    names dont resolve automatically and need to be updated.
+
+    Parameters:
+    ----------
+    report_config: dict
+        The ranking arguments fetched from the JSON configuration
+    Returns:
+    --------
+    Updated report configuration dictionary
+    """
+
+    # Update the configs by replacing variable string names with corresponding values
+
+    brc_merge_config = report_config['brc_merge_config']
+        
+    join_on_vars = brc_merge_config['join_on']
+    brc_merge_config['join_on'] = cols.get_values(join_on_vars)
+
+    # Update the 'join_on' variable names if combine_sources_configs is given
+    if 'combine_data_configs' in report_config and bool(report_config['combine_data_configs']):
+        for key in report_config['combine_data_configs'].keys():
+            combine_config = report_config['combine_data_configs'][key]
+            if 'join_on' in combine_config:
+                combine_config['join_on'] = cols.get_values(combine_config['join_on'])
+
+    if 'elementary_report' in report_config and bool(report_config['elementary_report'])\
+                and report_config['elementary_report']['generate_report']:
+        elem_report_config = report_config['elementary_report']
+        # Get the arguments for generating elementary unranked report
+        un_ranked_report_config  = elem_report_config['un_ranked_report_args']
+
+        # Get the columns to group by
+        grouping_cols = un_ranked_report_config['grouping_cols']
+        # Update the values of column names to group by (To resolve string variable names).
+        un_ranked_report_config['grouping_cols'] = cols.get_values(grouping_cols)
+
+        # Get the aggregate functions to apply on the grouped columns
+        agg_dict = un_ranked_report_config['grouping_agg_dict']
+        # Update the keys in the aggregate dictionary as the string variable
+        # names will not be resolved after being read from JSON
+        un_ranked_report_config['grouping_agg_dict'] = cols.update_dictionary_var_strs(agg_dict)
+
+        # Update the ranking arguments
+        ranking_args = elem_report_config['ranking_args']
+        elem_report_config['ranking_args'] = update_ranking_args_dict(ranking_args)
+
+    if 'secondary_report' in report_config and bool(report_config['secondary_report'])\
+                and report_config['secondary_report']['generate_report']:
+        sec_report_config = report_config['secondary_report']
+        # Get the arguments for generating elementary unranked report
+        un_ranked_report_config  = sec_report_config['un_ranked_report_args']
+
+        # Get the columns to group by
+        grouping_cols = un_ranked_report_config['grouping_cols']
+        # Update the values of column names to group by (To resolve string variable names).
+        un_ranked_report_config['grouping_cols'] = cols.get_values(grouping_cols)
+
+        # Get the aggregate functions to apply on the grouped columns
+        agg_dict = un_ranked_report_config['grouping_agg_dict']
+        # Update the keys in the aggregate dictionary as the string variable
+        # names will not be resolved after being read from JSON
+        un_ranked_report_config['grouping_agg_dict'] = cols.update_dictionary_var_strs(agg_dict)
+
+        # Update the ranking arguments
+        ranking_args = sec_report_config['ranking_args']
+        sec_report_config['ranking_args'] = update_ranking_args_dict(ranking_args)
+
+    
+

@@ -107,7 +107,7 @@
             "report_desc": "Student Transition Rate from Class 5 to 6",
             "generate_report": true,
             "source_config" : {
-                "query_file_name" : "Student_transition_5_to_6.sql",
+                "query_file_name" : "student_transition_5_to_6.sql",
                 "db" : "tn_schools_db"
            },
             "pre_process_brc_merge": false,
@@ -206,7 +206,7 @@
             "report_desc": "Student Transition Rate from Class 10 to 11",
             "generate_report": true,
             "source_config" : {
-                "query_file_name" : "Student_transition_10_to_11.sql",
+                "query_file_name" : "student_transition_10_to_11.sql",
                 "db" : "tn_schools_db"
            },
             "pre_process_brc_merge": false,

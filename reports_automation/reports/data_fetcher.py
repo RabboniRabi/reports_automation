@@ -127,6 +127,42 @@ def get_data(report_code, save_source=False):
 
     return df_data
 
+
+def get_data_set_from_config(source_configs:dict, save_source=False):
+    """
+    This function fetches multiple source datasets by using the 
+    given source data configurations
+
+    Depending on each source data configuration, the function fetches the data from the
+    database or from a source excel file.
+
+    An option to save the source data fetch is provided. It is disabled by default.
+
+    Parameters
+    ----------
+    source_configs: dict
+        Dictionary of source configurations to fetch the data set
+    save_source: bool
+        Flag indicating if a copy of data fetched from database needs to be saved.
+        To be used within the application. Default is False.
+
+    Returns
+    -------
+    Dataset as Pandas DataFrame Objects dictionary
+    """
+
+    # Get the source data configuration for the report
+    sources = source_configs['sources']
+
+    df_data_set = {}
+    # Iterate over each source config, get the data and build a source_name - data dictionary
+    for source_config in sources:
+        # Get the data
+        df_data = get_data_from_config(source_config, save_source)
+        df_data_set[source_config['source_name']] = df_data
+
+    return df_data_set
+
 def get_data_set(report_code, config_type:str, save_source=False):
     """
     This function fetches multiple source datasets by getting and using the appropriate
@@ -163,15 +199,10 @@ def get_data_set(report_code, config_type:str, save_source=False):
         config = config_reader.get_config(report_code)
 
 
-    # Get the source data configuration for the report
-    source_configs = config.get('source_configs')
-
-    df_data_set = {}
-    # Iterate over each source config, get the data and build a source_name - data dictionary
-    for source_config in source_configs:
-        # Get the data
-        df_data = get_data_from_config(source_config, save_source)
-        df_data_set[source_config['source_name']] = df_data
+    # Get the source data configurations for the report
+    source_configs = config['source_config']
+    # Get a data set from the multiple data configurations
+    df_data_set = get_data_set_from_config(source_configs, save_source)
 
     return df_data_set
 
@@ -185,4 +216,3 @@ if __name__ == "__main__":
         }"""
     #df_raw_data = get_data_from_config(source_config)
     df_raw_data = get_data('PET',save_source=True)
-    print('columns of df_raw_data fetched: ', df_raw_data.columns.to_list())

@@ -1,5 +1,5 @@
 """
-Module with custom functions to create students receiving geometry boxes report.
+Module with custom functions to create students receiving notebooks report.
 """
 
 import sys
@@ -13,20 +13,20 @@ import utilities.column_names_utilities as cols
 # Intial level to group the data to at pre-processing stage
 initial_group_levels = [cols.district_name, cols.block_name, cols.udise_col, cols.school_name, cols.cate_type]
 
-def _get_geometry_boxes_issue_status_summary(df_data, grouping_cols):
+def _get_notebooks_issue_status_summary(df_data, grouping_cols):
     """
-    Internal function to get summary of schools' geometry boxes issue statuses at grouping level
+    Internal function to get summary of schools' notebooks issue statuses at grouping level
 
     Parameters:
     ----------
     df_data: Pandas DataFrame
-        The geometry boxes issued status data to work on
+        The notebooks issued status data to work on
     grouping_cols: list
         The list of columns to group by
 
     Returns:
     --------
-    The summary of schools' geometry boxes issue statuses at grouping level
+    The summary of schools' notebooks issue statuses at grouping level
     """
 
     # Get issue status wise count of schools at grouping level
@@ -51,7 +51,7 @@ def _get_geometry_boxes_issue_status_summary(df_data, grouping_cols):
 
 def pre_process_BRC_merge(raw_data:pd.DataFrame):
     """
-    Function to process the students receiving geometry boxes raw data before merging with BRC-CRC mapping data
+    Function to process the students receiving notebooks raw data before merging with BRC-CRC mapping data
 
     Parameters:
     ----------
@@ -63,7 +63,7 @@ def pre_process_BRC_merge(raw_data:pd.DataFrame):
     DataFrame object of common pool data processed and ready for mapping with BRC-CRC data
     """
 
-    print('Pre Processing before BRC merge called in students receiving geometry boxes')
+    print('Pre Processing before BRC merge called in students receiving notebooks')
 
     # Replace the null values in issued students column with zero
     raw_data[cols.schemes_issued_students] = raw_data[cols.schemes_issued_students].replace('Null', 0)
@@ -74,7 +74,7 @@ def pre_process_BRC_merge(raw_data:pd.DataFrame):
 
     # Set the status column based on total students vs issued students
     status_conditions = [
-        (df_grouped[cols.schemes_total_students_small_case] == df_grouped[cols.schemes_issued_students]),
+        (df_grouped[cols.schemes_issued_students] >= df_grouped[cols.schemes_total_students_small_case]),
         ((df_grouped[cols.schemes_total_students_small_case] > df_grouped[cols.schemes_issued_students]) & (df_grouped[cols.schemes_issued_students] != 0)),
         (df_grouped[cols.schemes_issued_students] == 0)
 
@@ -104,8 +104,8 @@ def get_unranked_elem_report(df_data:pd.DataFrame, grouping_cols:list, agg_dict:
     # Filter the data to elementary school type
     df_data = df_data[df_data[cols.school_level].isin([cols.elem_schl_lvl])]
 
-    # Get geometry boxes issue status wise summary at grouping level
-    df_data = _get_geometry_boxes_issue_status_summary(df_data, grouping_cols)
+    # Get notebooks issue status wise summary at grouping level
+    df_data = _get_notebooks_issue_status_summary(df_data, grouping_cols)
 
     return df_data
 
@@ -130,7 +130,7 @@ def get_unranked_sec_report(df_data:pd.DataFrame, grouping_cols:list, agg_dict:d
     # Filter the data to secondary school type
     df_data = df_data[df_data[cols.school_level].isin([cols.scnd_schl_lvl])]
 
-    # Get geometry boxes issue status wise summary at grouping level
-    df_data = _get_geometry_boxes_issue_status_summary(df_data, grouping_cols)
+    # Get notebooks issue status wise summary at grouping level
+    df_data = _get_notebooks_issue_status_summary(df_data, grouping_cols)
 
     return df_data

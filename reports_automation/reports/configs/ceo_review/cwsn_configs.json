@@ -9,7 +9,7 @@
         "source_config" : {
             "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
             "source_sheet_name" : "Report",
-            "skip_rows" : 4
+            "skip_rows" : 0
         },
         "pre_process_brc_merge": true,
         "brc_merge_config" : {
@@ -110,7 +110,7 @@
         "source_config" : {
             "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
             "source_sheet_name" : "Report",
-            "skip_rows" : 4
+            "skip_rows" : 0
         },
         "pre_process_brc_merge": true,
         "brc_merge_config" : {
@@ -211,7 +211,7 @@
         "source_config" : {
             "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
             "source_sheet_name" : "Report",
-            "skip_rows" : 4
+            "skip_rows" : 0
         },
         "pre_process_brc_merge": true,
         "brc_merge_config" : {

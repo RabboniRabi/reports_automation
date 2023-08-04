@@ -9,6 +9,8 @@ import utilities.file_utilities as file_utilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.column_names_utilities as cols
 
+from enums.combine_data_types import CombineDataTypes as combine_data_types
+
 brc_file_name = 'BRC_CRC_Master_V3.xlsx'
 brc_master_sheet_name = 'BRC-CRC V3 wo hyphen'
 
@@ -276,3 +278,46 @@ def get_sec_ranked_report(df_summary, ranking_args_dict, metric_code, metric_cat
     secondary_report = secondary_report.T.drop_duplicates().T
 
     return secondary_report
+
+
+
+def combine_multiple_datasets(df_data_set:dict, combine_type:str, combine_data_configs:dict):
+    """ 
+    Function to combine multiple datasets into a single data frame object.
+
+    Parameters:
+    -----------
+    df_data_set: dict
+        Dictionary of datasets with the keys being the name of the data and value being the data
+    combine_data_configs: dict
+        Dictionary of configurations to combine the data on 
+
+    Returns: Pandas DataFrame
+        The combined data as a single dataframe object
+    """
+
+    if combine_type == combine_data_types.MERGE.value:
+        # Merge the data
+
+        # Initially set the merged data to the primary data
+        df_combined = df_data_set['primary_data']
+
+        for key in combine_data_configs.keys():
+            # Get the merge config
+            merge_config = combine_data_configs[key]
+            # Get the data for the key in merge config and merge it
+            df_combined = df_combined.merge(df_data_set[key], how=merge_config['merge_type'], on=merge_config['join_on'])
+
+    elif combine_type == combine_data_types.CONCAT.value:
+        # Concatenate the data
+
+        # Initially set the merged data to empty dataframe object
+        df_combined = pd.DataFrame()
+        for key in combine_data_configs.keys():
+            # Get the concatenation config
+            concat_config = combine_data_configs[key]
+            # Get the data for the key in concat config and concatenate it
+            df_combined = pd.concat([df_combined, df_data_set[key]], join=concat_config['join']) 
+
+    return df_combined
+

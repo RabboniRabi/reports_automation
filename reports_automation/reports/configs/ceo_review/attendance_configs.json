@@ -6,7 +6,7 @@
             "report_code" : "TCH_LV_BL_UP",
             "report_category": "Attendance",
             "report_desc": "Teacher leave balance updation report",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "source_file_name" : "teacher_leave_balance_updt_report.xlsx",
                 "source_sheet_name" : "Summary",
@@ -103,15 +103,533 @@
         },
 
         {
-            "report_name": "teacher_marked_attendance",
-            "report_code" : "TCH_MARK_ATT",
+            "report_name": "schools_marking_teachers_attendance",
+            "report_code" : "ATT_SCH_MARK_TCH",
             "report_category": "Attendance",
-            "report_desc": "Teacher marked attendance report",
+            "report_desc": "Schools marking teachers attendance report",
+            "generate_report": true,
+            "source_config" : {
+                "query_file_name" : "schools_marking_teachers_attendance.sql",
+                "db" : "attendance_db"
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_sch_markd_tch_perc": "mean"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.att_sch_markd_tch_perc": "mean"
+                    },
+                    "ranking_val_desc": "cols.att_sch_markd_tch_perc",
+                    "ranking_col": "cols.att_sch_markd_tch_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary schools marking teachers attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_sch_markd_tch_perc": "mean", 
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "columns_rename_dict" : {
+                        "cols.att_sch_markd_tch_perc" : "cols.att_avg_sch_tch_markd_perc"
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_avg_sch_tch_markd_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+                
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_sch_markd_tch_perc": "mean"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.att_sch_markd_tch_perc": "mean"
+                    },
+                    "ranking_val_desc": "cols.att_sch_markd_tch_perc",
+                    "ranking_col": "cols.att_sch_markd_tch_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary schools marking teachers attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_sch_markd_tch_perc": "mean", 
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "columns_rename_dict" : {
+                        "cols.att_sch_markd_tch_perc" : "cols.att_avg_sch_tch_markd_perc"
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_avg_sch_tch_markd_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+
+        {
+            "report_name": "schools_marking_students_attendance",
+            "report_code" : "SCH_ATT",
+            "report_category": "Attendance",
+            "report_desc": "Schools marking students attendance report",
+            "generate_report": true,
+            "source_config" : {
+                "query_file_name" : "schools_marking_students_attendance.sql",
+                "db" : "attendance_db"
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_sch_markd_perc": "mean"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.att_sch_markd_perc": "mean"
+                    },
+                    "ranking_val_desc": "cols.att_sch_markd_perc",
+                    "ranking_col": "cols.att_sch_markd_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary schools marking students attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_sch_markd_perc": "mean", 
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "columns_rename_dict" : {
+                        "cols.att_sch_markd_perc" : "cols.att_avg_sch_markd_perc"
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_avg_sch_markd_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+                
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_sch_markd_perc": "mean"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.att_sch_markd_perc": "mean"
+                    },
+                    "ranking_val_desc": "cols.att_sch_markd_perc",
+                    "ranking_col": "cols.att_sch_markd_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary schools marking students attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_sch_markd_perc": "mean", 
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "columns_rename_dict" : {
+                        "cols.att_sch_markd_perc" : "cols.att_avg_sch_markd_perc"
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_avg_sch_markd_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+
+        {
+            "report_name": "sections_marking_attendance",
+            "report_code" : "SEC_ATT",
+            "report_category": "Attendance",
+            "report_desc": "Sections marking attendance report",
+            "generate_report": true,
+            "source_config" : {
+                "query_file_name" : "sections_marking_attendance.sql",
+                "db" : "attendance_db"
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_sec_working_tot": "sum",
+                        "cols.att_sec_marked_tot": "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.att_sec_working_tot": "sum",
+                        "cols.att_sec_marked_tot": "sum"
+                    },
+                    "ranking_val_desc": "cols.att_sec_mark_perc",
+                    "num_col": "cols.att_sec_marked_tot",
+                    "den_col": "cols.att_sec_working_tot",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary schools' sections marking attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_sec_working_tot": "sum",
+                            "cols.att_sec_marked_tot": "sum", 
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "columns_to_drop" : [
+                        "cols.att_sec_working_tot",
+                        "cols.att_sec_marked_tot"
+                    ],
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_sec_mark_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+                
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_sec_working_tot": "sum",
+                        "cols.att_sec_marked_tot": "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.att_sec_working_tot": "sum",
+                        "cols.att_sec_marked_tot": "sum"
+                    },
+                    "ranking_val_desc": "cols.att_sec_mark_perc",
+                    "num_col": "cols.att_sec_marked_tot",
+                    "den_col": "cols.att_sec_working_tot",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary schools' sections marking attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_sec_working_tot": "sum",
+                            "cols.att_sec_marked_tot": "sum", 
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "columns_to_drop" : [
+                        "cols.att_sec_working_tot",
+                        "cols.att_sec_marked_tot"
+                    ],
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_sec_mark_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "report_name": "students_attendance",
+            "report_code" : "STU_ATT",
+            "report_category": "Attendance",
+            "report_desc": "Students attendance report",
+            "generate_report": true,
+            "source_config" : {
+                "query_file_name" : "students_attendance.sql",
+                "db" : "attendance_db"
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_stu_avg_present_perc": "mean",
+                        "cols.att_stu_avg_absent_perc": "mean"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.att_stu_avg_present_perc": "mean",
+                        "cols.att_stu_avg_absent_perc": "mean"
+                    },
+                    "ranking_val_desc": "cols.att_stu_avg_present_perc",
+                    "ranking_col": "cols.att_stu_avg_present_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary students attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_stu_avg_present_perc": "mean", 
+                            "cols.att_stu_avg_absent_perc": "mean", 
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "columns_rename_dict" : {
+                        "cols.att_stu_avg_present_perc" : "cols.att_stu_avg_present_frmt",
+                        "cols.att_stu_avg_absent_perc" : "cols.att_stu_avg_absent_frmt"
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_stu_avg_present_frmt", "cols.att_stu_avg_absent_frmt"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+                
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_stu_avg_present_perc": "mean",
+                        "cols.att_stu_avg_absent_perc": "mean"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.att_stu_avg_present_perc": "mean",
+                        "cols.att_stu_avg_absent_perc": "mean"
+                    },
+                    "ranking_val_desc": "cols.att_stu_avg_present_perc",
+                    "ranking_col": "cols.att_stu_avg_present_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary students attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_stu_avg_present_perc": "mean",
+                            "cols.att_stu_avg_absent_perc": "mean",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "columns_rename_dict" : {
+                        "cols.att_stu_avg_present_perc" : "cols.att_stu_avg_present_frmt",
+                        "cols.att_stu_avg_absent_perc" : "cols.att_stu_avg_absent_frmt"
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_stu_avg_present_frmt", "cols.att_stu_avg_absent_frmt"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+
+        {
+            "report_name": "teachers_attendance",
+            "report_code" : "TCH_ATT",
+            "report_category": "Attendance",
+            "report_desc": "Teachers attendance report",
+            "generate_report": true,
+            "source_config" : {
+                "query_file_name" : "teachers_attendance.sql",
+                "db" : "attendance_db"
+            },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_tch_avg_present_perc": "mean",
+                        "cols.att_tch_avg_absent_perc": "mean"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.att_tch_avg_present_perc": "mean",
+                        "cols.att_tch_avg_absent_perc": "mean"
+                    },
+                    "ranking_val_desc": "cols.att_tch_avg_present_perc",
+                    "ranking_col": "cols.att_tch_avg_present_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Elementary teachers attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_tch_avg_present_perc": "mean", 
+                            "cols.att_tch_avg_absent_perc": "mean", 
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "columns_rename_dict" : {
+                        "cols.att_tch_avg_present_perc" : "cols.att_tch_avg_present_frmt",
+                        "cols.att_tch_avg_absent_perc" : "cols.att_tch_avg_absent_frmt"
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_tch_avg_present_frmt", "cols.att_tch_avg_absent_frmt"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+                
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.att_tch_avg_present_perc": "mean",
+                        "cols.att_tch_avg_absent_perc": "mean"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "number_ranking",
+                    "agg_dict": {
+                        "cols.att_tch_avg_present_perc": "mean",
+                        "cols.att_tch_avg_absent_perc": "mean"
+                    },
+                    "ranking_val_desc": "cols.att_tch_avg_present_perc",
+                    "ranking_col": "cols.att_tch_avg_present_perc",
+                    "sort": "True",
+                    "ascending": "False"
+                },
+                "format_config" : {
+                    "heading" : "Secondary teachers attendance report",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.att_tch_avg_present_perc": "mean",
+                            "cols.att_tch_avg_absent_perc": "mean",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "columns_rename_dict" : {
+                        "cols.att_tch_avg_present_perc" : "cols.att_tch_avg_present_frmt",
+                        "cols.att_tch_avg_absent_perc" : "cols.att_tch_avg_absent_frmt"
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.att_tch_avg_present_frmt", "cols.att_tch_avg_absent_frmt"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+
+        {    
+            "report_name": "kalai_thiruvizha_participation",
+            "report_code" : "KT_P",
+            "report_category": "Attendance",
+            "report_desc": "Kalai Thiruvizha Participation report",
             "generate_report": false,
             "source_config" : {
-                "query_file_name" : "teacher_attendance_last30days_v2.sql",
-                "db" : "attendance_db",
-                "source_file_name" : "teacher_attendance_last30days_v2_24-02-23.xlsx",
+                "source_file_name" : "kalai_thiruvizha_participants_count.xlsx",
                 "source_sheet_name" : "Report",
                 "skip_rows" : 0
             },
@@ -127,42 +645,21 @@
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {
-                        "cols.tot_marked": "sum",
-                        "cols.tot_unmarked" : "sum",
-                        "cols.school_name": "count"
+                        "cols.participants" : "sum", 
+                        "cols.tot_students" : "sum"
                     }
                 },
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.tot_marked": "sum",
-                        "cols.tot_unmarked" : "sum",
-                        "cols.school_name": "sum"
+                        "cols.participants": "sum", 
+                        "cols.tot_students" : "sum"
                     },
-                    "ranking_val_desc": "cols.perc_tchrs_updated",
-                    "num_col": "cols.tot_marked",
-                    "den_col": "cols.school_name",
+                    "ranking_val_desc": "cols.per_participants",
+                    "num_col": "cols.participants",
+                    "den_col": "cols.tot_students",
                     "sort": "True",
                     "ascending": "False"
-                },
-                "format_config" : {
-                    "heading" : "Elementary Teachers marked attendance report",
-                    "subtotal_outlines_dict" : {
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-                            "agg_cols_func_dict" : {
-                                "cols.tot_marked": "sum",
-                                "cols.tot_unmarked" : "sum",
-                                "cols.school_name": "sum",
-                                "cols.deo_elem_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_elm": ""}
-                    },
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.perc_tchrs_updated"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
                 }
             },
             "secondary_report" : {
@@ -171,134 +668,48 @@
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {
-                        "cols.tot_marked": "sum",
-                        "cols.tot_unmarked" : "sum",
-                        "cols.school_name": "count"
-                    }
+                        "cols.participants" : "sum", 
+                        "cols.tot_students" : "sum"
+                        }
                 },
                 "ranking_args": {
                     "ranking_type" : "percent_ranking",
                     "agg_dict": {
-                        "cols.tot_marked": "sum",
-                        "cols.tot_unmarked" : "sum",
-                        "cols.school_name": "sum"
+                        "cols.participants": "sum", 
+                        "cols.tot_students" : "sum"
                     },
-                    "ranking_val_desc": "cols.perc_tchrs_updated",
-                    "num_col": "cols.tot_marked",
-                    "den_col": "cols.school_name",
+                    "ranking_val_desc": "cols.per_participants",
+                    "num_col": "cols.participants",
+                    "den_col": "cols.tot_students",
                     "sort": "True",
                     "ascending": "False"
-                },
-                "format_config" : {
-                    "heading" : "Secondary Teachers marked attendance report",
-                    "subtotal_outlines_dict" : {
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
-                        "agg_cols_func_dict" : {
-                            "cols.tot_marked": "sum",
-                            "cols.tot_unmarked" : "sum",
-                            "cols.school_name": "sum",
-                            "cols.deo_sec_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                }
+            },
+            "format_config" : {
+                "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                    "agg_cols_func_dict" : {
+                        "cols.fully_mapped": "sum",
+                        "cols.part_mapped": "sum",
+                        "cols.tot_schools": "sum",
+                        "cols.deo_sec_rank": "mean"
                     },
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.perc_tchrs_updated"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
-                }
-            }
-        },
-
-        {    
-        "report_name": "kalai_thiruvizha_participation",
-        "report_code" : "KT_P",
-        "report_category": "Attendance",
-        "report_desc": "Kalai Thiruvizha Participation report",
-        "generate_report": false,
-        "source_config" : {
-            "source_file_name" : "kalai_thiruvizha_participants_count.xlsx",
-            "source_sheet_name" : "Report",
-            "skip_rows" : 0
-        },
-        "pre_process_brc_merge": false,
-        "brc_merge_config" : {
-            "join_on" : ["cols.block_name", "cols.udise_col"],
-            "merge_type" : "left"
-        },
-        "post_process_brc_merge" : false,
-        "elementary_report" : {
-            "generate_report": true,
-            "un_ranked_report_args" : {
-                "custom_unranked_report": false,
-                "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
-                "grouping_agg_dict" : {
-                    "cols.participants" : "sum", 
-                    "cols.tot_students" : "sum"
-                }
-            },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.participants": "sum", 
-                    "cols.tot_students" : "sum"
+                    "text_append_dict" : {"cols.deo_name_sec": "Total"}
                 },
-                "ranking_val_desc": "cols.per_participants",
-                "num_col": "cols.participants",
-                "den_col": "cols.tot_students",
-                "sort": "True",
-                "ascending": "False"
-            }
-        },
-        "secondary_report" : {
-            "generate_report": true,
-            "un_ranked_report_args" : {
-                "custom_unranked_report": false,
-                "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
-                "grouping_agg_dict" : {
-                    "cols.participants" : "sum", 
-                    "cols.tot_students" : "sum"
-                    }
-            },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.participants": "sum", 
-                    "cols.tot_students" : "sum"
-                },
-                "ranking_val_desc": "cols.per_participants",
-                "num_col": "cols.participants",
-                "den_col": "cols.tot_students",
-                "sort": "True",
-                "ascending": "False"
-            }
-        },
-        "format_config" : {
-            "subtotal_outlines_dict" : {
-                "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
-                "agg_cols_func_dict" : {
-                    "cols.fully_mapped": "sum",
-                    "cols.part_mapped": "sum",
-                    "cols.tot_schools": "sum",
-                    "cols.deo_sec_rank": "mean"
-                },
-                "text_append_dict" : {"cols.deo_name_sec": "Total"}
-            },
-            "format_dict" : {
-                "conditional_format" : {
-                    "columns" : ["cols.perc_fully_mapped"],
-                    "format": {"type": "3_color_scale"}
-                },
-                "format_cells" : {
-                    "columns" : ["cols.perc_fully_mapped"],
-                    "format" : {"num_format": "0.00%"}
-    
-                }
-            }
-        }
+                "format_dict" : {
+                    "conditional_format" : {
+                        "columns" : ["cols.perc_fully_mapped"],
+                        "format": {"type": "3_color_scale"}
+                    },
+                    "format_cells" : {
+                        "columns" : ["cols.perc_fully_mapped"],
+                        "format" : {"num_format": "0.00%"}
         
-    }
+                    }
+                }
+            }
+            
+        }
     
 
     ]
