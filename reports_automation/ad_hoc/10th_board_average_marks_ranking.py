@@ -139,10 +139,14 @@ def main():
     # Read the database connection credentials
     credentials_dict = dbutilities.read_conn_credentials('db_credentials_rabboni.json')
 
-    # Get the 10th government school average marks from the database as a Pandas DataFrame object
-    raw_data = dbutilities.fetch_data_as_df(credentials_dict, 'sslc_govt_school_avg_marks.sql')
+    # Get the 10th government school average marks for the accademic year 2022-23 from the database as a Pandas DataFrame object
+    raw_data_23 = dbutilities.fetch_data_as_df(credentials_dict, 'sslc_govt_school_avg_marks.sql')
+    # Get the 10th government school average marks for the accademic year 2021-22 from the database as a Pandas DataFrame object
+    raw_data_22 = dbutilities.fetch_data_as_df(credentials_dict, 'prev_yr_sslc_govt_school_avg_marks.sql')
+    raw_data = raw_data_23.merge(raw_data_22, how='left', on=[cols.district_name, cols.block_name, cols.udise_col, cols.school_name])
     # Rename the column names to standard format
     raw_data = column_cleaner.standardise_column_names(raw_data)
+
 
     # Declaring what column to sort and ranking column names
     rank_state_columns = {
