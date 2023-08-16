@@ -3,14 +3,16 @@
         "sources": [
           {
             "source_file_name": "10th_student_lvl_2021-22.xlsx",
-            "source_sheet_name": "raw_data"
+            "source_sheet_name": "raw_data",
+            "skip_rows": 0
           },
           {
-            "source_file_name": "10th_student_lvl_2021-23.xlsx",
+            "source_file_name": "10th_student_lvl_2022-23.xlsx",
             "source_sheet_name": "raw_data"
           }
         ]
       },
+      "grouping_levels": ["cols.district_name", "cols.block_name", "cols.udise_col"],
       "agg_dict": {
         "prev_academic_year": {
           "cols.prev_tot_stu": "count",

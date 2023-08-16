@@ -12,8 +12,8 @@ import utilities.utilities as utilities
 
 import pandas as pd
 
-import config_reader
-from config_types import ConfigTypes as config_types
+import reports.config_reader as config_reader
+from reports.config_types import ConfigTypes as config_types
 
 
 def get_data_from_config(source_config_dict, save_source=False):
