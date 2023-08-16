@@ -10,6 +10,9 @@ from collections import OrderedDict
 
 import utilities.file_utilities as file_utilities
 
+__curr_location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
 ceo_review_config_files = ['ceo_review/attendance_configs.json',
                 'ceo_review/board_results_configs.json',
                 'ceo_review/class_configs.json',
@@ -93,18 +96,21 @@ def get_config(config_name:str, config_category:str, config_file_name:str=None):
     """
 
     # Load the JSON file with the locations of all the config files
-    config_files_locations = json.load('config_files_locations.json')
+    file_path = os.path.join(__curr_location__, 'config_files_locations.json')
+
+    with open(file_path, 'r') as read_file:
+            config_files_locations = json.load(read_file)        
 
     # Get the config category specific config files location information
     config_cat_specific_loc_info = config_files_locations[config_category]
 
-    if config_sub_category is not None:
+    if config_file_name is not None:
         # Build the path to the file given to contain the config
         config_file_path = file_utilities.build_file_path(config_file_name, config_cat_specific_loc_info['dir_levels'])
 
         # Read the file
         with open(config_file_path, 'r') as read_file:
-            all_configs = json.load(read_file)["report_configs"]
+            all_configs = json.load(read_file)
 
         for config in all_configs:
             if config["report_name"] == config_name or config["report_code"] == config_name:

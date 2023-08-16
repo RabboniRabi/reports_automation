@@ -1,14 +1,22 @@
 {
+  "report_configs": [
+    {
+      "report_name": "10th_board_dist_lvl_report_card",
+      "report_code" : "10TH_BRD_DIST_LVL_RPT_CARD",
+      "report_desc": "Configuration to generate district level reports for 10th board results",
       "source_config": {
         "sources": [
           {
-            "source_file_name": "10th_student_lvl_2021-22.xlsx",
+            "source_name" : "curr_yr_data",
+            "source_file_name": "10th_board_stu_subj_wise_data_22_23.xlsx",
             "source_sheet_name": "raw_data",
             "skip_rows": 0
           },
           {
-            "source_file_name": "10th_student_lvl_2022-23.xlsx",
-            "source_sheet_name": "raw_data"
+            "source_name" : "prev_yr_data",
+            "source_file_name": "10th_board_stu_subj_wise_data_21_22.xlsx",
+            "source_sheet_name": "raw_data",
+            "skip_rows": 0
           }
         ]
       },
@@ -105,3 +113,5 @@
         "cols.average_marks_23"
       ]
     }
+  ]
+}

@@ -400,7 +400,7 @@ def build_dir_path(dir_levels:list):
     # Assign the full directory path initially to the root directory path and then update
     dir_path = root_dir
     for dir in dir_levels: 
-        dir_path = os.path.join(file_path, dir)
+        dir_path = os.path.join(dir_path, dir)
 
     return dir_path
 

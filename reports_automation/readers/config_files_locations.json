@@ -8,7 +8,7 @@
     "miscellaneous_configs" : {
         "dir_levels": ["miscellaneous", "configs"],
         "files" : [
-            "10th_board_data_prep.json"
+            "board_results.json"
             ]
     }
 }

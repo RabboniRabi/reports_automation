@@ -9,14 +9,28 @@ import readers.config_reader_v2 as config_reader
 import readers.data_fetcher_v2 as data_fetcher
 
 
-file_open = open("configs/10th_board_results.json", "r")
+"""file_open = open("configs/10th_board_results.json", "r")
 config = json.load(file_open)
 source_config = config["source_config"]
 source_data = source_config["sources"]
 print(type(source_data[0]))
 df_data = data_fetcher.get_data_from_config(source_data[0])
 print(df_data)
-file_open.close()
+file_open.close()"""
+
+def get_prepped_data_for_analysis():
+    """
+    Function to prepare the 10th board results data for analysis
+
+    Returns:
+    --------
+
+    """
+    df_data_set = data_fetcher.get_data_set('10TH_BRD_DIST_LVL_RPT_CARD', 'miscellaneous_configs')
+
+    print('df_data_set', df_data_set)
+
+    return df_data_set
 
 
 
@@ -48,3 +62,5 @@ def main(raw_data, grouping_levels, agg_dict):
 
 
 
+if __name__ == "__main__":
+    get_prepped_data_for_analysis()
