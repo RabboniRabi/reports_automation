@@ -1,0 +1,105 @@
+{
+  "report_configs": [
+    {
+      "source_config": {
+        "sources": [
+          {
+            "source_file_name": ".xlsx",
+            "source_sheet_name": "Report"
+          },
+          {
+            "source_file_name": ".xlsx",
+            "source_sheet_name": "Report"
+          }
+        ]
+      },
+      "agg_dict": {
+        "prev_academic_year": {
+          "cols.prev_tot_marks": "median",
+          "cols.prev_tamil_marks": "median",
+          "cols.prev_eng_marks": "median",
+          "cols.prev_math_marks": "median",
+          "cols.prev_science_marks": "median",
+          "cols.prev_social_marks": "median"
+        },
+        "curr_academic_year": {
+          "cols.curr_tot_marks": "median",
+          "cols.curr_tamil_marks": "median",
+          "cols.curr_eng_marks": "median",
+          "cols.curr_math_marks": "median",
+          "cols.curr_science_marks": "median",
+          "cols.curr_social_marks": "median"
+        }
+      },
+      "ranking_args_state": {
+        "cols.curr_tot_marks": {
+          "insert_rank_col": "cols.rank_state",
+          "index": 1,
+          "ascending": "False"
+        },
+        "cols.curr_tamil_marks": {
+          "insert_rank_col": "cols.lang_rank_state",
+          "index": 1,
+          "ascending": "False"
+        },
+        "cols.curr_eng_marks": {
+          "insert_rank_col": "cols.eng_rank_state",
+          "index": 1,
+          "ascending": "False"
+        },
+        "cols.curr_math_marks": {
+          "insert_rank_col": "cols.math_rank_state",
+          "index": 1,
+          "ascending": "False"
+        },
+        "cols.curr_science_marks": {
+          "insert_rank_col": "cols.science_rank_state",
+          "index": 1,
+          "ascending": "False"
+        },
+        "cols.curr_social_marks": {
+          "insert_rank_col": "cols.social_rank_state",
+          "index": 1,
+          "ascending": "False"
+        }
+      },
+      "ranking_args_dist": {
+        "cols.curr_tot_marks": {
+          "insert_rank_col": "cols.rank_dist",
+          "index": 2,
+          "ascending": "False"
+        },
+        "cols.curr_tamil_marks": {
+          "insert_rank_col": "cols.lang_rank_dist",
+          "index": 2,
+          "ascending": "False"
+        },
+        "cols.curr_eng_marks": {
+          "insert_rank_col": "cols.eng_rank_dist",
+          "index": 2,
+          "ascending": "False"
+        },
+        "cols.curr_math_marks": {
+          "insert_rank_col": "cols.math_rank_dist",
+          "index": 2,
+          "ascending": "False"
+        },
+        "cols.curr_science_marks": {
+          "insert_rank_col": "cols.science_rank_dist",
+          "index": 2,
+          "ascending": "False"
+        },
+        "cols.curr_social_marks": {
+          "insert_rank_col": "cols.social_rank_dist",
+          "index": 2,
+          "ascending": "False"
+        }
+      },
+      "format_configs": {},
+      "cols_to_drop": [
+        "cols.district_name",
+        "cols.average_marks_23"
+      ]
+    }
+  ]
+}
