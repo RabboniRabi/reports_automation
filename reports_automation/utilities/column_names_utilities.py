@@ -432,7 +432,6 @@ brd_maj_grp_cents = 'Major group Students who secured centum in one or more subj
 brd_voc_grp_cents = 'Vocational group Students who secured centum in one or more subjects'
 brd_tot_stu_w_cents = 'No. of students with centums'
 brd_perc_stu_pass = '% students who have passed'
-average_marks = "average_marks"
 rank_state = 'Rank in State'
 lang_rank_state = 'Language Rank in State'
 eng_rank_state = 'English Rank in State'
@@ -446,11 +445,22 @@ math_rank_dist = 'Mathematics Rank in District'
 science_rank_dist = 'Science Rank in District'
 social_rank_dist = 'Social Rank in District'
 school_performance = "Overall School Performance"
-lang_average_marks = "lang_average_marks"
-eng_average_marks = "eng_average_marks"
-math_average_marks = "math_average_marks"
-science_average_marks = "science_average_marks"
-social_average_marks = "social_average_marks"
+curr_tot_stu = "emis_no_23"
+curr_pass = 'Pass_23'
+curr_tot_marks = "total_23"
+curr_lang_marks = "language_23"
+curr_eng_marks = "english_23"
+curr_math_marks = "maths_23"
+curr_science_marks = "science_23"
+curr_social_marks = "social_23"
+prev_tot_stu = "emis_no_22"
+prev_pass = 'Pass_22'
+prev_tot_marks = "total_22"
+prev_lang_marks = "language_22"
+prev_eng_marks = "english_22"
+prev_math_marks = "maths_22"
+prev_science_marks = "science_22"
+prev_social_marks = "social_22"
 
 
 def get_value(var_name: str):
