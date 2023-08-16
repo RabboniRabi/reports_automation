@@ -380,6 +380,52 @@ def file_exists(file_name: str, dir_path:str):
 
     return file_exists
 
+def build_dir_path(dir_levels:list):
+    """
+    Function to build an OS independent absolute path to a directory
+    anywhere in the project
+    Parameters:
+    -----------
+    dir_levels: list
+        The list of successive directories from the root of the project
+        upto to the final directory
+    Returns:
+    --------
+    The full path to the directory
+    """
+
+    curr_dir_path = Path(os.getcwd())
+    # Get the path to project root directory
+    root_dir = curr_dir_path.parents[0]
+    # Assign the full directory path initially to the root directory path and then update
+    dir_path = root_dir
+    for dir in dir_levels: 
+        dir_path = os.path.join(file_path, dir)
+
+    return dir_path
+
+
+def build_file_path(file_name: str, dir_levels:list):
+    """
+    Function to build a OS independent absolute path to a file 
+    anywhere in the project
+    Parameters:
+    -----------
+    file_name: str
+        The name of the file whose full path has to be built
+    dir_levels: list
+        The list of successive directories from the root of the project
+        upto to the directory containing the file
+    Returns:
+    --------
+    The full path to the file
+    """
+    # Get the path to the directory
+    dir_path = build_dir_path(dir_levels)
+
+    file_path = os.path.join(dir_path, file_name)
+
+    return file_path
 
 def get_file_path(file_name: str, dir_path:str):
     """
@@ -388,7 +434,7 @@ def get_file_path(file_name: str, dir_path:str):
     Parameters:
     -----------
     file_name: str
-        The name of the file full path has to be retrieved
+        The name of the file whose full path has to be retrieved
     dir_path: str
         The path to the directory where the file exists
 

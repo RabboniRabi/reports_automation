@@ -1,0 +1,14 @@
+{
+    "ceo_review_configs" : {
+        "path" : "ceo_review",
+        "files" : ["attendance_configs.json",
+                        "board_results_configs.json"]
+    },
+    "ad_hoc_configs" : {},
+    "miscellaneous_configs" : {
+        "dir_levels": ["miscellaneous", "configs"],
+        "files" : [
+            "10th_board_data_prep.json"
+            ]
+    }
+}
