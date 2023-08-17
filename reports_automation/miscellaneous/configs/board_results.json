@@ -20,13 +20,13 @@
           }
         ]
       },
-      "grouping_levels": ["cols.district_name", "cols.block_name", "cols.udise_col"],
+      "grouping_levels": ["cols.district_name", "cols.block_name", "cols.udise_col", "cols.school_name"],
       "agg_dict": {
         "prev_academic_year": {
           "cols.prev_tot_stu": "count",
           "cols.prev_pass": "sum",
           "cols.prev_tot_marks": "median",
-          "cols.prev_tamil_marks": "median",
+          "cols.prev_lang_marks": "median",
           "cols.prev_eng_marks": "median",
           "cols.prev_math_marks": "median",
           "cols.prev_science_marks": "median",
@@ -36,7 +36,7 @@
           "cols.curr_tot_stu": "count",
           "cols.curr_pass": "sum",
           "cols.curr_tot_marks": "median",
-          "cols.curr_tamil_marks": "median",
+          "cols.curr_lang_marks": "median",
           "cols.curr_eng_marks": "median",
           "cols.curr_math_marks": "median",
           "cols.curr_science_marks": "median",

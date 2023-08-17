@@ -73,14 +73,14 @@ def get_all_active_configs(config_files:list=config_files):
     return active_configs
 
 
-def get_config(config_name:str, config_category:str, config_file_name:str=None):
+def get_config(config_code:str, config_category:str, config_file_name:str=None):
     """
     Function to use the given config name and fetch the configuration to generate a report. 
     If no config is found, None is returned
 
     Parameters:
     ----------
-    config_name: str
+    config_code: str
         The name/code of the config to search for
     config_category: str
         The category of configuration. This will be used to search for the 
@@ -113,7 +113,7 @@ def get_config(config_name:str, config_category:str, config_file_name:str=None):
             all_configs = json.load(read_file)
 
         for config in all_configs:
-            if config["report_name"] == config_name or config["report_code"] == config_name:
+            if config["report_name"] == config_code or config["report_code"] == config_code:
                 # Close the file
                 read_file.close()
                 return config
@@ -138,7 +138,7 @@ def get_config(config_name:str, config_category:str, config_file_name:str=None):
                 all_configs = json.load(read_file)["report_configs"]
 
                 for config in all_configs:
-                    if config["report_name"] == config_name or config["report_code"] == config_name:
+                    if config["report_name"] == config_code or config["report_code"] == config_code:
                         # Close the file
                         read_file.close()
                         return config
@@ -148,14 +148,14 @@ def get_config(config_name:str, config_category:str, config_file_name:str=None):
         return None
 
 
-def get_adhoc_config(config_name:str, config_category:str=None, config_files:list=ad_hoc_config_files):
+def get_adhoc_config(config_code:str, config_category:str=None, config_files:list=ad_hoc_config_files):
     """
     Function to use the given ad hoc config name and fetch the configuration to generate a report. 
     If no config is found, None is returned
 
     Parameters:
     ----------
-    config_name: str
+    config_code: str
         The name/code of the ad hoc config to search for
     config_category: str
         The category of configuration. This will be used to search for the 
@@ -169,18 +169,18 @@ def get_adhoc_config(config_name:str, config_category:str=None, config_files:lis
     --------
     A dictionary of config values for the report. None Object if no config is found.
     """
-    return get_config(config_name, config_category, config_files)
+    return get_config(config_code, config_category, config_files)
 
 
 
-def get_ceo_rpt_config(config_name:str, config_category:str=None, config_files:list=ceo_review_config_files):
+def get_ceo_rpt_config(config_code:str, config_category:str=None, config_files:list=ceo_review_config_files):
     """
     Function to use the given ceo report config name and fetch the configuration to generate a report. 
     If no config is found, None is returned
 
     Parameters:
     ----------
-    config_name: str
+    config_code: str
         The name/code of the ceo report config to search for
     config_category: str
         The category of configuration. This will be used to search for the 
@@ -194,16 +194,16 @@ def get_ceo_rpt_config(config_name:str, config_category:str=None, config_files:l
     --------
     A dictionary of config values for the report. None Object if no config is found.
     """
-    return get_config(config_name, config_category, config_files)       
+    return get_config(config_code, config_category, config_files)
 
-def get_misc_rpt_config(config_name:str, config_category:str=None, config_files:list=misc_config_files):
+def get_misc_rpt_config(config_code:str, config_category:str=None, config_files:list=misc_config_files):
     """
     Function to use the given miscellane report config name and fetch the configuration to generate a report. 
     If no config is found, None is returned
 
     Parameters:
     ----------
-    config_name: str
+    config_code: str
         The name/code of the ceo report config to search for
     config_category: str
         The category of configuration. This will be used to search for the 
@@ -217,16 +217,16 @@ def get_misc_rpt_config(config_name:str, config_category:str=None, config_files:
     --------
     A dictionary of config values for the report. None Object if no config is found.
     """
-    return get_config(config_name, config_category, config_files)      
+    return get_config(config_code, config_category, config_files)
 
-def get_filtered_report_config(config_name:str, config_category:str=None, config_files:list=filtered_report_config_files):
+def get_filtered_report_config(config_code:str, config_category:str=None, config_files:list=filtered_report_config_files):
     """
     Function to use the given filtered config name and fetch the configuration to generate a report. 
     If no config is found, None is returned
 
     Parameters:
     ----------
-    config_name: str
+    config_code: str
         The name/code of the ad hoc config to search for
     config_category: str
         The category of configuration. This will be used to search for the 
@@ -249,7 +249,7 @@ def get_filtered_report_config(config_name:str, config_category:str=None, config
             all_configs = json.load(read_file, object_pairs_hook=OrderedDict)["report_configs"]
 
         for config in all_configs:
-            if config["report_name"] == config_name:
+            if config["report_name"] == config_code:
                 # Close the file
                 read_file.close()
                 return config
@@ -265,7 +265,7 @@ def get_filtered_report_config(config_name:str, config_category:str=None, config
                 all_configs = json.load(read_file, object_pairs_hook=OrderedDict)["report_configs"]
 
                 for config in all_configs:
-                    if config["report_name"] == config_name:
+                    if config["report_name"] == config_code:
                         # Close the file
                         read_file.close()
                         return config
