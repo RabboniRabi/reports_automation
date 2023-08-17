@@ -44,35 +44,12 @@
         }
       },
       "ranking_args_state": {
-        "cols.curr_tot_marks": {
-          "insert_rank_col": "cols.rank_state",
-          "index": 1,
-          "ascending": "False"
-        },
-        "cols.curr_tamil_marks": {
-          "insert_rank_col": "cols.lang_rank_state",
-          "index": 1,
-          "ascending": "False"
-        },
-        "cols.curr_eng_marks": {
-          "insert_rank_col": "cols.eng_rank_state",
-          "index": 1,
-          "ascending": "False"
-        },
-        "cols.curr_math_marks": {
-          "insert_rank_col": "cols.math_rank_state",
-          "index": 1,
-          "ascending": "False"
-        },
-        "cols.curr_science_marks": {
-          "insert_rank_col": "cols.science_rank_state",
-          "index": 1,
-          "ascending": "False"
-        },
-        "cols.curr_social_marks": {
-          "insert_rank_col": "cols.social_rank_state",
-          "index": 1,
-          "ascending": "False"
+        "cols.avg_marks_med_22_23": {
+          "insert_rank_col_name": "cols.rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
         }
       },
       "ranking_args_dist": {
@@ -109,8 +86,7 @@
       },
       "format_configs": {},
       "cols_to_drop": [
-        "cols.district_name",
-        "cols.average_marks_23"
+        "cols.district_name"
       ]
     }
   ]

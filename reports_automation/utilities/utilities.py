@@ -384,45 +384,6 @@ def is_any_row_common(df_larger, df_smaller):
 
     return any_row_matches
 
-def rank_cols_insert(df, ranking_args_dict, rank_frac=False):
-    """
-    Function to rank the data based on the specific columns.
-
-    Parameters:
-    -----------
-    df: Pandas Data Frame
-        Data to rank
-    ranking_args_dict: dict
-        For Example:
-        "cols.curr_eng_marks":{
-            "insert_rank_col": "cols.eng_rank_state",
-            "index": 1,
-            "ascending": "False"
-        }
-
-    rank_frac: bool
-        True - If the rank be represented by rank/total number of records.
-        For Example: (15/175, 16/175...)
-        Default is False - Rank be represented as (1, 2 ,3...)
-
-    Returns:
-    ------
-    Ranked Dataframe
-    """
-    for sort_col, rank_args in ranking_args_dict.items():
-        # Sort the dataframe based on the sort column
-        df.sort_values(by=sort_col, ascending=rank_args["ascending"], inplace=True)
-        # Calculate the index where the rank column needs to be inserted
-        index_col = df.columns.get_loc(sort_col) + rank_args["index"]
-        # Inserting the rank column
-        df.insert(index_col, rank_args["insert_rank_col"], range(1, 1+len(df)))
-
-        if rank_frac is True:
-            total = len(df)
-            df[rank_args["insert_rank_col"]] = df[rank_args["insert_rank_col"]].apply(lambda rank: str(rank_args["insert_rank_col"]) + '/' + str(total))
-
-    return df
-
 
 
 
