@@ -106,14 +106,14 @@ def get_config(config_name:str, config_category:str, config_file_name:str=None):
 
     if config_file_name is not None:
         # Build the path to the file given to contain the config
-        config_file_path = file_utilities.build_file_path(config_file_name, config_cat_specific_loc_info['dir_levels'])
+        config_file_path = file_utilities.build_file_path(config_file_name+'.json', config_cat_specific_loc_info['dir_levels'])
 
         # Read the file
         with open(config_file_path, 'r') as read_file:
-            all_configs = json.load(read_file)
+            all_configs = json.load(read_file)['report_configs']
 
         for config in all_configs:
-            if config["report_name"] == config_name or config["report_code"] == config_name:
+            if (config["report_name"] == config_name) or (config["report_code"] == config_name):
                 # Close the file
                 read_file.close()
                 return config
@@ -135,7 +135,7 @@ def get_config(config_name:str, config_category:str, config_file_name:str=None):
         for config_file in config_files:
             with open(os.path.join(config_files_dir, config_file), 'r') as read_file:
                 
-                all_configs = json.load(read_file)["report_configs"]
+                all_configs = json.load(read_file)['report_configs']
 
                 for config in all_configs:
                     if config["report_name"] == config_name or config["report_code"] == config_name:

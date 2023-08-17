@@ -125,3 +125,63 @@ def update_ranking_master(df_ranking, metric_code, metric_category, school_level
     # Save the updated df_master_ranking
     df_sheet_dict = {ranking_master_sheet_name: df_master_ranking}
     file_utilities.save_to_excel(df_sheet_dict, ranking_master_file_name, ceo_rpts_dir_path)
+
+
+
+def rank_cols_insert(df, ranking_args_dict):
+    """
+    Function to sequentially sort and rank the data on 
+    each of a given set of columns.
+    
+    For each of the columns, data is sorted and ranked in 
+    ascending/descending order.
+
+    The rank of the data based on each of the given columns 
+    is inserted into the data. The location of where to insert
+    the rank for the column can also be specified.
+
+    Post ranking of a column, the data will be sorted according
+    to the column that is being ranked. This can be reset
+    to alphabetic sort if rank wise sort of data is not needed
+
+    The columns and their corresponding ranking variables like
+    ascending/descending and other flags are to be provided as a dict.
+
+
+    Parameters:
+    -----------
+    df: Pandas Data Frame
+        Data to rank
+    ranking_args_dict: dict
+        For Example:
+        "cols.curr_eng_marks": { # Column to rank on
+            "insert_rank_col_name": "cols.eng_rank_state", # name of rank column
+            "index_from_col": 1, # Position to insert the rank column from column
+            "ascending": "False",
+            "rank_frac" : "True",
+                #True - If the rank be represented by rank/total number of records.
+                #For Example: (15/175, 16/175...)
+                #Default is False - Rank be represented as (1, 2 ,3...)
+            "reset_sort" : "False" - Reset the sorted order of data by column
+        }
+
+    Returns:
+    ------
+    Ranked Dataframe
+    """
+    for sort_col, rank_args in ranking_args_dict.items():
+        # Sort the dataframe based on the sort column
+        df.sort_values(by=sort_col, ascending=rank_args['ascending'], inplace=True)
+        # Calculate the index where the rank column needs to be inserted
+        index_col = df.columns.get_loc(sort_col) + rank_args['index_from_col']
+        # Insert the rank column and cell values 1,2,3 to length of data
+        df.insert(index_col, rank_args['insert_rank_col_name'], range(1, 1+len(df)))
+
+        if rank_args['rank_frac']:
+            # Get total number of ranks
+            total_ranks = len(df)
+            # Update the rank values as fraction of total rank: 1/100, 2/100, etc.
+            df[rank_args['insert_rank_col_name']] = df[rank_args['insert_rank_col_name']]\
+                        .apply(lambda rank: str(rank_args['insert_rank_col_name']) + '/' + str(total_ranks))
+
+    return df

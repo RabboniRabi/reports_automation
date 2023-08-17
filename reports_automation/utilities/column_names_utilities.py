@@ -463,6 +463,8 @@ prev_eng_marks = "english_22"
 prev_math_marks = "maths_22"
 prev_science_marks = "science_22"
 prev_social_marks = "social_22"
+avg_marks_med_22_23 = 'avg_marks_median_22_23'
+language_median_22_23 = 'language_median_22_23'
 
 
 def get_value(var_name: str):
@@ -481,6 +483,7 @@ def get_value(var_name: str):
 
     # Remove module part of variable name if it exists
     module_import_name = 'cols.'
+    print('var_name: ', var_name)
     if (module_import_name in var_name):
         var_name = var_name.removeprefix(module_import_name)
     
@@ -548,7 +551,7 @@ def update_dictionary(var_names_dict: dict):
     Parameters:
     -----------
     var_names_dict: dict
-        Dictionary whose keys and values (which are strings of variables) might need to be updated with
+        Dictionary whose keys and values contain variables declared in this script and need to be updated with
         the values of the variable names
     
     Returns:
@@ -559,6 +562,8 @@ def update_dictionary(var_names_dict: dict):
     updated_dict = {}
 
     col_utility_prefix = 'cols.'
+
+    #print('var_names_dict: ', var_names_dict)
     
     for key in var_names_dict.keys():
         if col_utility_prefix in key:
@@ -566,18 +571,57 @@ def update_dictionary(var_names_dict: dict):
             updated_key = get_value(key)
 
             if col_utility_prefix in dict_key_value:
-                updated_value = get_value(dict_key_value)
-                updated_dict[updated_key] = updated_value
+                if type(dict_key_value) is str:
+                    updated_value = get_value(dict_key_value)
+                    updated_dict[updated_key] = updated_value
+                elif type(dict_key_value) is list:
+                    print('list da ', dict_key_value)
+                    updated_value = get_values(dict_key_value)
+                    updated_dict[updated_key] = updated_value
             # Set the updated key-value pair
             else:
                 updated_dict[updated_key] = dict_key_value
-        elif col_utility_prefix in var_names_dict[key]:
-            updated_value = get_value(dict_key_value)
+        # else if value is a string containing 'cols.' prefix, update the value
+        elif type(var_names_dict[key]) is str and col_utility_prefix in var_names_dict[key]:
+            updated_value = get_value(var_names_dict[key])
+            updated_dict[key] = updated_value
+        # else if value is a list with elements containing 'cols.' prefix, update the values
+        elif type(var_names_dict[key]) is list and col_utility_prefix in var_names_dict[key][0]:
+            updated_value = get_values(var_names_dict[key])
             updated_dict[key] = updated_value
         else:
             # Nothing to update
-            updated_dict[key] = dict_key_value
-
-
+            updated_dict[key] = var_names_dict[key]
 
     return updated_dict
+
+
+def update_nested_dictionaries(var_names_dict: dict):
+    """
+    Function to update the keys & values in a given dictionary and it's nested dictionaries.
+    If the keys and values are strings of variable names, they will be updated
+    by mapping to the value assigned to the variable names.
+
+    Parameters:
+    -----------
+    var_names_dict: dict
+        Dictionary whose keys and values contain variables declared in this script and need to be updated with
+        the values of the variable names
+    
+    Returns:
+    -------
+    The updated dictionary
+    """
+
+    fully_updated_dict = update_dictionary(var_names_dict)
+
+    for key in fully_updated_dict:
+        if type(fully_updated_dict[key]) is dict:
+            # Recursively call update_nested_dictionaries
+            #print('calling recursively for value: ', fully_updated_dict[key])
+            fully_updated_dict[key] = update_nested_dictionaries(fully_updated_dict[key])
+        else:
+            #print('updating dict for value: ', fully_updated_dict)
+            fully_updated_dict = update_dictionary(fully_updated_dict)
+
+    return fully_updated_dict
