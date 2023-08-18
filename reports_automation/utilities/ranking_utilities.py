@@ -182,6 +182,6 @@ def rank_cols_insert(df, ranking_args_dict):
             total_ranks = len(df)
             # Update the rank values as fraction of total rank: 1/100, 2/100, etc.
             df[rank_args['insert_rank_col_name']] = df[rank_args['insert_rank_col_name']]\
-                        .apply(lambda rank: str(rank_args['insert_rank_col_name']) + '/' + str(total_ranks))
+                        .apply(lambda rank: str(rank) + '/' + str(total_ranks))
 
     return df
