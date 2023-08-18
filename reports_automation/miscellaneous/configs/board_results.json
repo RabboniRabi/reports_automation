@@ -43,6 +43,28 @@
           "cols.social_marks": "median"
         }
       },
+      "process_args": {
+        "school_performance": {
+          "cols.curr_avg_marks": {
+          "insert_rank_col_name": "cols.curr_school_performance",
+          "index_from_col": 6
+          },
+        "cols.prev_avg_marks": {
+          "insert_rank_col_name": "cols.prev_school_performance",
+          "index_from_col": 7
+          }
+        },
+        "curr_yr_prev_yr_diff": {
+          "cols.curr_pass_perc": "cols.prev_pass_perc",
+          "cols.curr_avg_marks": "cols.prev_avg_marks",
+          "cols.curr_lang_marks": "cols.prev_lang_marks",
+          "cols.curr_eng_marks": "cols.prev_eng_marks",
+          "cols.curr_math_marks": "cols.prev_math_marks",
+          "cols.curr_science_marks": "cols.prev_science_marks",
+          "cols.curr_social_marks": "cols.prev_social_marks"
+        }
+
+      },
       "ranking_args_state": {
         "cols.curr_avg_marks": {
           "insert_rank_col_name": "cols.rank_state",
