@@ -19,7 +19,7 @@ df_data = data_fetcher.get_data_from_config(source_data[0])
 print(df_data)
 file_open.close()"""
 
-def get_prepped_data_for_analysis():
+def get_prepped_data_for_analysis(report_config):
     """
     Function to prepare the 10th board results data for analysis
 
@@ -27,9 +27,9 @@ def get_prepped_data_for_analysis():
     --------
 
     """
-    # Get the overall configuration for the report code
-    report_config = config_reader.get_config("10TH_BRD_DIST_LVL_RPT_CARD", "miscellaneous_configs")
+    # Get the source data configuration for the report code
     source_config = report_config['source_config']
+    # Reading the Excel files as a dict
     df_data_set = data_fetcher.get_data_set_from_config(source_config, "miscellaneous_configs")
 
     # Getting previous academic year and current academic year as a separate dataframe
@@ -62,6 +62,8 @@ def get_prepped_data_for_analysis():
 
     # Merging both the datasets
     raw_data = curr_ac_yr_raw_data.merge(prev_ac_yr_raw_data, how='left', on=grouping_levels)
+
+    # Filling the null values with the current academic year values
     raw_data.fillna({
         cols.prev_tot_marks: curr_ac_yr_raw_data[cols.curr_tot_marks],
         cols.prev_lang_marks: curr_ac_yr_raw_data[cols.curr_lang_marks],
@@ -71,9 +73,6 @@ def get_prepped_data_for_analysis():
         cols.prev_social_marks: curr_ac_yr_raw_data[cols.curr_social_marks],
         cols.prev_pass_perc: curr_ac_yr_raw_data[cols.curr_pass_perc]
     }, inplace=True)
-    print(raw_data.columns)
-    dir_path = file_utilities.get_gen_reports_dir_path()
-    file_utilities.save_to_excel({"test": raw_data}, "10th_test_prev_yr_curr_yr.xlsx", dir_path=dir_path)
 
     return raw_data
 
