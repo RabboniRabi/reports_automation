@@ -445,24 +445,35 @@ math_rank_dist = 'Mathematics Rank in District'
 science_rank_dist = 'Science Rank in District'
 social_rank_dist = 'Social Rank in District'
 school_performance = "Overall School Performance"
-curr_tot_stu = "emis_no_23"
-curr_pass = 'Pass_23'
-curr_pass_perc = 'Pass %_23'
-curr_tot_marks = "total_23"
-curr_lang_marks = "language_23"
-curr_eng_marks = "english_23"
-curr_math_marks = "maths_23"
-curr_science_marks = "science_23"
-curr_social_marks = "social_23"
-prev_tot_stu = "emis_no_22"
-prev_pass = 'Pass_22'
-prev_pass_perc = 'Pass %_22'
-prev_tot_marks = "total_22"
-prev_lang_marks = "language_22"
-prev_eng_marks = "english_22"
-prev_math_marks = "maths_22"
-prev_science_marks = "science_22"
-prev_social_marks = "social_22"
+tot_stu = 'EMIS_NO'
+stu_pass = 'Pass'
+pass_perc = 'Pass %'
+tot_marks = 'total'
+lang_marks = 'language'
+eng_marks = 'english'
+math_marks = 'maths'
+science_marks = 'science'
+social_marks = 'social'
+curr_tot_stu = "EMIS_NO_count_curr_yr"
+curr_pass = 'Pass_sum_curr_yr'
+curr_pass_perc = 'Pass %_curr_yr'
+curr_tot_marks = "total_median_curr_yr"
+curr_avg_marks = "avg_median_curr_yr"
+curr_lang_marks = "language_median_curr_yr"
+curr_eng_marks = "english_median_curr_yr"
+curr_math_marks = "maths_median_curr_yr"
+curr_science_marks = "science_median_curr_yr"
+curr_social_marks = "social_median_curr_yr"
+prev_tot_stu = "EMIS_NO_count_prv_yr"
+prev_pass = 'Pass_sum_prv_yr'
+prev_pass_perc = 'Pass %_prv_yr'
+prev_tot_marks = "total_median_prv_yr"
+prev_avg_marks = "avg_median_prv_yr"
+prev_lang_marks = "language_median_prv_yr"
+prev_eng_marks = "english_median_prv_yr"
+prev_math_marks = "maths_median_prv_yr"
+prev_science_marks = "science_median_prv_yr"
+prev_social_marks = "social_median_prv_yr"
 avg_marks_med_22_23 = 'avg_marks_median_22_23'
 language_median_22_23 = 'language_median_22_23'
 
@@ -483,7 +494,6 @@ def get_value(var_name: str):
 
     # Remove module part of variable name if it exists
     module_import_name = 'cols.'
-    print('var_name: ', var_name)
     if (module_import_name in var_name):
         var_name = var_name.removeprefix(module_import_name)
     

@@ -23,29 +23,64 @@
       "grouping_levels": ["cols.district_name", "cols.block_name", "cols.udise_col", "cols.school_name"],
       "agg_dict": {
         "prev_academic_year": {
-          "cols.prev_tot_stu": "count",
-          "cols.prev_pass": "sum",
-          "cols.prev_tot_marks": "median",
-          "cols.prev_lang_marks": "median",
-          "cols.prev_eng_marks": "median",
-          "cols.prev_math_marks": "median",
-          "cols.prev_science_marks": "median",
-          "cols.prev_social_marks": "median"
+          "cols.tot_stu": "count",
+          "cols.stu_pass": "sum",
+          "cols.tot_marks": "median",
+          "cols.lang_marks": "median",
+          "cols.eng_marks": "median",
+          "cols.math_marks": "median",
+          "cols.science_marks": "median",
+          "cols.social_marks": "median"
         },
         "curr_academic_year": {
-          "cols.curr_tot_stu": "count",
-          "cols.curr_pass": "sum",
-          "cols.curr_tot_marks": "median",
-          "cols.curr_lang_marks": "median",
-          "cols.curr_eng_marks": "median",
-          "cols.curr_math_marks": "median",
-          "cols.curr_science_marks": "median",
-          "cols.curr_social_marks": "median"
+          "cols.tot_stu": "count",
+          "cols.stu_pass": "sum",
+          "cols.tot_marks": "median",
+          "cols.lang_marks": "median",
+          "cols.eng_marks": "median",
+          "cols.math_marks": "median",
+          "cols.science_marks": "median",
+          "cols.social_marks": "median"
         }
       },
       "ranking_args_state": {
-        "cols.avg_marks_med_22_23": {
+        "cols.curr_avg_marks": {
           "insert_rank_col_name": "cols.rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
+        },
+        "cols.curr_lang_marks": {
+          "insert_rank_col_name": "cols.lang_rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
+        },
+        "cols.curr_eng_marks": {
+          "insert_rank_col_name": "cols.eng_rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
+        },
+        "cols.curr_math_marks": {
+          "insert_rank_col_name": "cols.math_rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
+        },
+        "cols.curr_science_marks": {
+          "insert_rank_col_name": "cols.science_rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
+        },
+        "cols.curr_social_marks": {
+          "insert_rank_col_name": "cols.social_rank_state",
           "index_from_col": 1,
           "ascending": false,
           "rank_frac" : true,
@@ -53,35 +88,47 @@
         }
       },
       "ranking_args_dist": {
-        "cols.curr_tot_marks": {
-          "insert_rank_col": "cols.rank_dist",
-          "index": 2,
-          "ascending": "False"
+        "cols.curr_avg_marks": {
+          "insert_rank_col_name": "cols.rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
         },
         "cols.curr_lang_marks": {
-          "insert_rank_col": "cols.lang_rank_dist",
-          "index": 2,
-          "ascending": "False"
+          "insert_rank_col_name": "cols.lang_rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
         },
         "cols.curr_eng_marks": {
-          "insert_rank_col": "cols.eng_rank_dist",
-          "index": 2,
-          "ascending": "False"
+          "insert_rank_col_name": "cols.eng_rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
         },
         "cols.curr_math_marks": {
-          "insert_rank_col": "cols.math_rank_dist",
-          "index": 2,
-          "ascending": "False"
+          "insert_rank_col_name": "cols.math_rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
         },
         "cols.curr_science_marks": {
-          "insert_rank_col": "cols.science_rank_dist",
-          "index": 2,
-          "ascending": "False"
+          "insert_rank_col_name": "cols.science_rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
         },
         "cols.curr_social_marks": {
-          "insert_rank_col": "cols.social_rank_dist",
-          "index": 2,
-          "ascending": "False"
+          "insert_rank_col_name": "cols.social_rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : true,
+          "reset_sort" : "False"
         }
       },
       "format_configs": {},

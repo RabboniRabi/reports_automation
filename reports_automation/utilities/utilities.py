@@ -360,6 +360,40 @@ def get_grouping_level_wise_col_values_count(df, group_levels, column, col_value
     return df_supp_cat_count
 
 
+def group_agg_rename(df, grouping_levels, agg_dict:dict, append_str=''):
+	"""
+	Function to group data to given grouping levels, aggregating each data column 
+	with its corresponding aggregation function given in the dictionary and
+	renaming the columns to relect the aggregated nature of the data.
+
+	Parameters:
+	-----------
+	df: Pandas DataFrame
+		The data to group
+	grouping_levels: list
+		The list of columns to group the data upto (levels to group)
+	agg_dict: dict
+        The columns to aggregate and their corresponding functions
+	append_st: str
+		The string to append to the column name of each of the aggregate column
+
+	Returns:
+	-------
+	The grouped data
+	"""
+
+	# Group and aggregate the data
+	df_grouped = df.groupby(grouping_levels, as_index=False).agg(agg_dict)
+
+	# Rename the columns to reflect the aggregated nature of the data
+	cols_to_rename = {}
+	for agg_col in agg_dict.keys():
+		cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col] + '_' + append_str
+	
+	df_grouped.rename(columns=cols_to_rename, inplace=True)
+
+	return df_grouped
+
 def is_any_row_common(df_larger, df_smaller):
     """
     Function to check if atleast one row in both of the given dataframes is common.

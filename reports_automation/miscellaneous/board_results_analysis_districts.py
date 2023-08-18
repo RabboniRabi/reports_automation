@@ -28,27 +28,18 @@ def create_district_wise_split_10th_board_reports():
     config = config_reader.get_config('10th_board_dist_lvl_report_card', 'miscellaneous_configs')
     config = cols.update_nested_dictionaries(config)
 
-    updated_config = cols.update_nested_dictionaries(config)
-
     # Fetch and prep the data
     df_prepped = tenth_board_data_prep.get_prepped_data_for_analysis(config)
 
-    dir_path = file_utilities.get_gen_reports_dir_path()
-    file_utilities.save_to_excel({"test": df_prepped}, "10th_test_prev_yr_curr_yr_merge.xlsx", dir_path=dir_path)
-    # Process the data
-
     # Rank the data at state level
+    school_state_lvl_ranking_args = config['ranking_args_state']
+    df_ranked_state = ranking_utilities.rank_cols_insert(df_prepped, school_state_lvl_ranking_args)
 
-    # Read test data for now
-    #merged_data_path = '/home/rabboni/Documents/EMIS/Data Reporting/reports/extracted/Aug_23/10th_marks_schl_lvl.xlsx'
-    #merged_data = pd.read_excel(merged_data_path, sheet_name='10th_SCHL_LVL', skiprows=0)
+    # Split data district wise and put them in a dictionary
 
-    # Get the arguments to rank the school at a state level
-    #school_state_lvl_ranking_args = cols.update_nested_dictionaries(config['ranking_args_state'])
-    #print('school_state_lvl_ranking_args', school_state_lvl_ranking_args)
-    #df_ranked_state = ranking_utilities.rank_cols_insert(df_prepped, school_state_lvl_ranking_args)
+    # For each item in the dictionary, call the ranking function to calculate rank in district
 
-    # df_ranked_state.to_excel(merged_data_path, sheet_name='10th_SCHL_LVL')
+    # Save each district data as a separate file in a sub-folder
 
 
 

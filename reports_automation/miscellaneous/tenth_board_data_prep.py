@@ -7,24 +7,23 @@ import json
 import utilities.column_names_utilities as cols
 import readers.config_reader_v2 as config_reader
 import readers.data_fetcher_v2 as data_fetcher
+import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import data_cleaning.column_cleaner as column_cleaner
 
-"""file_open = open("configs/10th_board_results.json", "r")
-config = json.load(file_open)
-source_config = config["source_config"]
-source_data = source_config["sources"]
-print(type(source_data[0]))
-df_data = data_fetcher.get_data_from_config(source_data[0])
-print(df_data)
-file_open.close()"""
 
 def get_prepped_data_for_analysis(report_config):
     """
     Function to prepare the 10th board results data for analysis
 
+    Parameters:
+    ----------
+    report_config: dict
+        The configuration containing variable values that will be used to prepare the data
+
     Returns:
     --------
+    Data prepared as a data frame object
 
     """
     # Get the source data configuration for the report code
@@ -46,35 +45,49 @@ def get_prepped_data_for_analysis(report_config):
     curr_yr_agg_dict = agg_dict['curr_academic_year']
 
     # Grouping the previous academic year student level data to school level
-    prev_ac_yr_raw_data = prev_ac_yr_raw_data.groupby(by=grouping_levels, as_index=False).agg(prev_yr_agg_dict)
-    # Getting the Pass %
-    prev_ac_yr_raw_data[cols.prev_pass_perc] = round(
-        ((prev_ac_yr_raw_data[cols.prev_pass] / prev_ac_yr_raw_data[cols.prev_tot_stu]) * 100), 2)
+    #prev_ac_yr_raw_data = prev_ac_yr_raw_data.groupby(by=grouping_levels, as_index=False).agg(prev_yr_agg_dict)
+    prev_ac_yr_schl_lvl = utilities.group_agg_rename(prev_ac_yr_raw_data, grouping_levels, prev_yr_agg_dict,'prv_yr')
+    
+    # Add the Pass % at school level
+    prev_ac_yr_schl_lvl[cols.prev_pass_perc] = round(
+        ((prev_ac_yr_schl_lvl[cols.prev_pass] / prev_ac_yr_schl_lvl[cols.prev_tot_stu]) * 100), 2)
+
+    # Add the average median marks at school level
+    prev_ac_yr_schl_lvl[cols.prev_avg_marks] = round((prev_ac_yr_schl_lvl[cols.prev_tot_marks] / 5), 2)
 
     # Deleting the unnecessary columns
-    prev_ac_yr_raw_data.drop(columns=[cols.prev_pass, cols.prev_tot_stu], inplace=True)
+    prev_ac_yr_schl_lvl.drop(columns=[cols.prev_pass, cols.prev_tot_stu, cols.prev_tot_marks], inplace=True)
 
     # Grouping the current academic year student level data to school level
-    curr_ac_yr_raw_data = curr_ac_yr_raw_data.groupby(by=grouping_levels, as_index=False).agg(curr_yr_agg_dict)
+    #curr_ac_yr_raw_data = curr_ac_yr_raw_data.groupby(by=grouping_levels, as_index=False).agg(curr_yr_agg_dict)
+    curr_ac_yr_schl_lvl = utilities.group_agg_rename(curr_ac_yr_raw_data, grouping_levels, prev_yr_agg_dict,'curr_yr')
+
     # Getting the Pass %
-    curr_ac_yr_raw_data[cols.curr_pass_perc] = round(
-        ((curr_ac_yr_raw_data[cols.curr_pass] / curr_ac_yr_raw_data[cols.curr_tot_stu]) * 100), 2)
+    curr_ac_yr_schl_lvl[cols.curr_pass_perc] = round(
+        ((curr_ac_yr_schl_lvl[cols.curr_pass] / curr_ac_yr_schl_lvl[cols.curr_tot_stu]) * 100), 2)
+    
+    # Add the average median marks at school level
+    curr_ac_yr_schl_lvl[cols.curr_avg_marks] = round((curr_ac_yr_schl_lvl[cols.curr_tot_marks] / 5), 2)
+
+    # Deleting the unnecessary columns
+    curr_ac_yr_schl_lvl.drop(columns=[cols.curr_tot_marks], inplace=True)
 
     # Merging both the datasets
-    raw_data = curr_ac_yr_raw_data.merge(prev_ac_yr_raw_data, how='left', on=grouping_levels)
+    merged_schl_lvl_data = pd.merge(curr_ac_yr_schl_lvl, prev_ac_yr_schl_lvl, how='left', on=grouping_levels)
 
     # Filling the null values with the current academic year values
-    raw_data.fillna({
-        cols.prev_tot_marks: curr_ac_yr_raw_data[cols.curr_tot_marks],
-        cols.prev_lang_marks: curr_ac_yr_raw_data[cols.curr_lang_marks],
-        cols.prev_eng_marks: curr_ac_yr_raw_data[cols.curr_eng_marks],
-        cols.prev_math_marks: curr_ac_yr_raw_data[cols.curr_math_marks],
-        cols.prev_science_marks: curr_ac_yr_raw_data[cols.curr_science_marks],
-        cols.prev_social_marks: curr_ac_yr_raw_data[cols.curr_social_marks],
-        cols.prev_pass_perc: curr_ac_yr_raw_data[cols.curr_pass_perc]
+    merged_schl_lvl_data.fillna({
+        cols.prev_avg_marks: curr_ac_yr_schl_lvl[cols.curr_avg_marks],
+        cols.prev_lang_marks: curr_ac_yr_schl_lvl[cols.curr_lang_marks],
+        cols.prev_eng_marks: curr_ac_yr_schl_lvl[cols.curr_eng_marks],
+        cols.prev_math_marks: curr_ac_yr_schl_lvl[cols.curr_math_marks],
+        cols.prev_science_marks: curr_ac_yr_schl_lvl[cols.curr_science_marks],
+        cols.prev_social_marks: curr_ac_yr_schl_lvl[cols.curr_social_marks],
+        cols.prev_pass_perc: curr_ac_yr_schl_lvl[cols.curr_pass_perc]
     }, inplace=True)
 
-    return raw_data
+
+    return merged_schl_lvl_data
 
 
 
