@@ -85,7 +85,9 @@ def create_district_wise_split_10th_board_reports():
     school_state_lvl_ranking_args = config['ranking_args_state']
     df_ranked_state = ranking_utilities.rank_cols_insert(df_processed, school_state_lvl_ranking_args)
 
+
     # Split data district wise and put them in a dictionary
+
     df_split_dist = report_splitter.split_report(df_ranked_state, cols.district_name)
 
     # For each item in the dictionary, call the ranking function to calculate rank in district

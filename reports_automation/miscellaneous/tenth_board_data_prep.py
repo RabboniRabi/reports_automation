@@ -41,12 +41,11 @@ def get_prepped_data_for_analysis(report_config):
     # Getting grouping levels and columns to aggregate information from the json
     grouping_levels = report_config['grouping_levels']
     agg_dict = report_config['agg_dict']
-    prev_yr_agg_dict = agg_dict['prev_academic_year']
-    curr_yr_agg_dict = agg_dict['curr_academic_year']
+
 
     # Grouping the previous academic year student level data to school level
     #prev_ac_yr_raw_data = prev_ac_yr_raw_data.groupby(by=grouping_levels, as_index=False).agg(prev_yr_agg_dict)
-    prev_ac_yr_schl_lvl = utilities.group_agg_rename(prev_ac_yr_raw_data, grouping_levels, prev_yr_agg_dict,'prv_yr')
+    prev_ac_yr_schl_lvl = utilities.group_agg_rename(prev_ac_yr_raw_data, grouping_levels, agg_dict, 'prv_yr')
     
     # Add the Pass % at school level
     prev_ac_yr_schl_lvl[cols.prev_pass_perc] = round(
@@ -60,7 +59,7 @@ def get_prepped_data_for_analysis(report_config):
 
     # Grouping the current academic year student level data to school level
     #curr_ac_yr_raw_data = curr_ac_yr_raw_data.groupby(by=grouping_levels, as_index=False).agg(curr_yr_agg_dict)
-    curr_ac_yr_schl_lvl = utilities.group_agg_rename(curr_ac_yr_raw_data, grouping_levels, prev_yr_agg_dict,'curr_yr')
+    curr_ac_yr_schl_lvl = utilities.group_agg_rename(curr_ac_yr_raw_data, grouping_levels, agg_dict,'curr_yr')
 
     # Getting the Pass %
     curr_ac_yr_schl_lvl[cols.curr_pass_perc] = round(
