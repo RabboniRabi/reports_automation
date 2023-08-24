@@ -1,290 +1,343 @@
 {
-    "report_configs": [
-
-        {
-            "report_name": "students_ageing_in_common_pool",
-            "report_code" : "STU_AGE_CP",
-            "report_category": "Enrolment",
-            "report_desc": "Students in Common Pool for over 30 days - CEO Report",
-            "generate_report": false,
-            "source_config" : {
-                "source_file_name" : "commonpool_classwise_report.xlsx",
-                "source_sheet_name" : "Abstract",
-                "skip_rows" : 0
-            },
-            "pre_process_brc_merge": true,
-            "brc_merge_config" : {
-                "join_on" : ["cols.block_name", "cols.udise_col"],
-                "merge_type" : "left"
-            },
-            "post_process_brc_merge" : true,
-            "elementary_report" : {
-                "generate_report": true,
-                "un_ranked_report_args" : {
-                    "custom_unranked_report": true,
-                    "grouping_cols" : [],
-                    "grouping_agg_dict" : {}
-                },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.total_cp_students": "sum",
-                        "cols.ageing": "sum"
-                        
-                    },
-                    "ranking_val_desc": "cols.perc_ageing",
-                    "num_col": "cols.ageing",
-                    "den_col": "cols.total_cp_students",
-                    "sort": "True",
-                    "ascending": "True"
-                },
-                "format_config" : {
-                    "heading" : "Elementary students ageing in common pool report",
-                    "subtotal_outlines_dict" : {                        
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-                        "agg_cols_func_dict" : {
-                            "cols.class_1" : "sum",
-                            "cols.class_2" : "sum",
-                            "cols.class_3" : "sum",
-                            "cols.class_4" : "sum",
-                            "cols.class_5" : "sum",
-                            "cols.class_6" : "sum",
-                            "cols.class_7" : "sum",
-                            "cols.class_8" : "sum",
-                            "cols.total_cp_students": "sum",
-                            "cols.ageing": "sum",
-                            "cols.deo_elem_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_elm": ""}
-                    },
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.perc_ageing"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
-                }
-            },
-            "secondary_report" : {
-                "generate_report": true,
-                "un_ranked_report_args" : {
-                    "custom_unranked_report": true,
-                    "grouping_cols" : [],
-                    "grouping_agg_dict" : {}
-                },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.total_cp_students": "sum",
-                        "cols.ageing": "sum"
-                    },
-                    "ranking_val_desc": "cols.perc_ageing",
-                    "num_col": "cols.ageing",
-                    "den_col": "cols.total_cp_students",
-                    "sort": "True",
-                    "ascending": "True"
-                },
-                "format_config" : {
-                    "heading" : "Secondary students ageing in common pool report",
-                    "subtotal_outlines_dict" : {
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
-                        "agg_cols_func_dict" : {
-                            "cols.class_1" : "sum",
-                            "cols.class_2" : "sum",
-                            "cols.class_3" : "sum",
-                            "cols.class_4" : "sum",
-                            "cols.class_5" : "sum",
-                            "cols.class_6" : "sum",
-                            "cols.class_7" : "sum",
-                            "cols.class_8" : "sum",
-                            "cols.class_9" : "sum",
-                            "cols.class_10" : "sum",
-                            "cols.class_11" : "sum",
-                            "cols.total_cp_students": "sum",
-                            "cols.ageing": "sum",
-                            "cols.deo_sec_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_sec": ""}
-                    }, 
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.perc_ageing"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
-                }
-            }
+  "report_configs": [
+    {
+      "report_name": "students_ageing_in_common_pool",
+      "report_code": "STU_AGE_CP",
+      "report_category": "Enrolment",
+      "report_desc": "Students in Common Pool for over 30 days - CEO Report",
+      "generate_report": false,
+      "source_config": {
+        "source_file_name": "commonpool_classwise_report.xlsx",
+        "source_sheet_name": "Abstract",
+        "skip_rows": 0
+      },
+      "pre_process_brc_merge": true,
+      "brc_merge_config": {
+        "join_on": [
+          "cols.block_name",
+          "cols.udise_col"
+        ],
+        "merge_type": "left"
+      },
+      "post_process_brc_merge": true,
+      "elementary_report": {
+        "generate_report": true,
+        "un_ranked_report_args": {
+          "custom_unranked_report": true,
+          "grouping_cols": [],
+          "grouping_agg_dict": {}
         },
-        {
-            "report_name": "schools_without_enrollment",
-            "report_code": "SCH_WO_STU",
-            "report_category": "enrollment",
-            "report_desc": "Schools without students",
-            "generate_report": false,
-            "source_config": {
-                "source_file_name":"Sch-Enrollment-Abstract.xlsx",
-                "source_sheet_name" : "Report",
-                "skip_rows" : 4
+        "ranking_args": {
+          "ranking_type": "percent_ranking",
+          "agg_dict": {
+            "cols.total_cp_students": "sum",
+            "cols.ageing": "sum"
+          },
+          "ranking_val_desc": "cols.perc_ageing",
+          "num_col": "cols.ageing",
+          "den_col": "cols.total_cp_students",
+          "sort": "True",
+          "ascending": "True"
+        },
+        "format_config": {
+          "heading": "Elementary students ageing in common pool report",
+          "subtotal_outlines_dict": {
+            "level_subtotal_cols_dict": {
+              "1": "cols.deo_name_elm"
             },
-            "pre_process_brc_merge": true,
-            "brc_merge_config" : {
-                "join_on" : ["cols.block_name", "cols.udise_col"],
-                "merge_type" : "left"
+            "agg_cols_func_dict": {
+              "cols.class_1": "sum",
+              "cols.class_2": "sum",
+              "cols.class_3": "sum",
+              "cols.class_4": "sum",
+              "cols.class_5": "sum",
+              "cols.class_6": "sum",
+              "cols.class_7": "sum",
+              "cols.class_8": "sum",
+              "cols.total_cp_students": "sum",
+              "cols.ageing": "sum",
+              "cols.deo_elem_rank": "mean"
             },
-            "post_process_brc_merge" : false,
-            "elementary_report" : {
-            "generate_report": true,
-            "un_ranked_report_args": {
-            "custom_unranked_report": false,
-            "grouping_cols": [
-                "cols.deo_name_elm",
-                "cols.block_name"
-            ],
-            "grouping_agg_dict": {
-                "cols.tot_schools" : "sum",
-                "cols.sch_with_no_students": "sum"
+            "text_append_dict": {
+              "cols.deo_name_elm": ""
             }
-            },
-            "ranking_args": {},
-            "format_config" : {
-                "heading" : "Elementary schools without students enrollment report",
-                "subtotal_outlines_dict" : {
-                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-                    "agg_cols_func_dict" : {
-                        "cols.tot_schools" : "sum",
-                        "cols.sch_with_no_students": "sum"
-                    },
-                    "text_append_dict" : {"cols.deo_name_elm": ""}
-                },
-                "format_dicts" : []
+          },
+          "format_dicts": [
+            {
+              "columns": [
+                "cols.perc_ageing"
+              ],
+              "format": {
+                "num_format": "0.00%"
+              }
             }
+          ]
+        }
+      },
+      "secondary_report": {
+        "generate_report": true,
+        "un_ranked_report_args": {
+          "custom_unranked_report": true,
+          "grouping_cols": [],
+          "grouping_agg_dict": {}
+        },
+        "ranking_args": {
+          "ranking_type": "percent_ranking",
+          "agg_dict": {
+            "cols.total_cp_students": "sum",
+            "cols.ageing": "sum"
+          },
+          "ranking_val_desc": "cols.perc_ageing",
+          "num_col": "cols.ageing",
+          "den_col": "cols.total_cp_students",
+          "sort": "True",
+          "ascending": "True"
+        },
+        "format_config": {
+          "heading": "Secondary students ageing in common pool report",
+          "subtotal_outlines_dict": {
+            "level_subtotal_cols_dict": {
+              "1": "cols.deo_name_sec"
             },
-            "secondary_report" : {
-            "generate_report": true,
-            "un_ranked_report_args": {
-                "custom_unranked_report": false,
-                "grouping_cols": [
-                    "cols.deo_name_elm",
-                    "cols.block_name"
-                ],
-                "grouping_agg_dict": {
-                    "cols.tot_schools" : "sum",
-                    "cols.sch_with_no_students": "sum"
-                }
+            "agg_cols_func_dict": {
+              "cols.class_1": "sum",
+              "cols.class_2": "sum",
+              "cols.class_3": "sum",
+              "cols.class_4": "sum",
+              "cols.class_5": "sum",
+              "cols.class_6": "sum",
+              "cols.class_7": "sum",
+              "cols.class_8": "sum",
+              "cols.class_9": "sum",
+              "cols.class_10": "sum",
+              "cols.class_11": "sum",
+              "cols.total_cp_students": "sum",
+              "cols.ageing": "sum",
+              "cols.deo_sec_rank": "mean"
             },
-            "ranking_args": {},
-            "format_config" : {
-                "heading" : "Secondary schools without students enrollment report",
-                "subtotal_outlines_dict" : {
-                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-                    "agg_cols_func_dict" : {
-                        "cols.tot_schools" : "sum",
-                        "cols.sch_with_no_students": "sum"
-                    },
-                    "text_append_dict" : {"cols.deo_name_elm": ""}
-                },
-                "format_dicts" : []
+            "text_append_dict": {
+              "cols.deo_name_sec": ""
             }
+          },
+          "format_dicts": [
+            {
+              "columns": [
+                "cols.perc_ageing"
+              ],
+              "format": {
+                "num_format": "0.00%"
+              }
+            }
+          ]
+        }
       }
+    },
+    {
+      "report_name": "schools_without_enrollment",
+      "report_code": "SCH_WO_STU",
+      "report_category": "enrollment",
+      "report_desc": "Schools without students",
+      "generate_report": false,
+      "source_config": {
+        "source_file_name": "Sch-Enrollment-Abstract.xlsx",
+        "source_sheet_name": "Report",
+        "skip_rows": 4
+      },
+      "pre_process_brc_merge": true,
+      "brc_merge_config": {
+        "join_on": [
+          "cols.block_name",
+          "cols.udise_col"
+        ],
+        "merge_type": "left"
+      },
+      "post_process_brc_merge": false,
+      "elementary_report": {
+        "generate_report": true,
+        "un_ranked_report_args": {
+          "custom_unranked_report": false,
+          "grouping_cols": [
+            "cols.deo_name_elm",
+            "cols.block_name"
+          ],
+          "grouping_agg_dict": {
+            "cols.tot_schools": "sum",
+            "cols.sch_with_no_students": "sum"
+          }
         },
-        {
-            "report_name": "increase_in_government_school_enrollment",
-            "report_code" : "INC_GOV_ENRLMNT",
-            "report_category": "Enrolment",
-            "report_desc": "Increase in Government Schools' Student Enrollment",
-            "generate_report": true,
-            "source_config" : {
-                "query_file_name" : "govt_increase_in_enrollment.sql",
-                "db" : "tn_schools_db"
-           },
-            "pre_process_brc_merge": false,
-            "brc_merge_config" : {
-                "join_on" : ["cols.block_name", "cols.udise_col"],
-                "merge_type" : "left"
+        "ranking_args": {},
+        "format_config": {
+          "heading": "Elementary schools without students enrollment report",
+          "subtotal_outlines_dict": {
+            "level_subtotal_cols_dict": {
+              "1": "cols.deo_name_elm"
             },
-            "post_process_brc_merge" : false,
-            "elementary_report" : {
-                "generate_report": true,
-                "un_ranked_report_args" : {
-                    "custom_unranked_report": false,
-                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
-                    "grouping_agg_dict" : {
-                        "cols.students_enrolled_cls1_2022_23": "sum",
-                        "cols.students_enrolled_cls1_2023_24" : "sum"
-                    }
-                },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.students_enrolled_cls1_2022_23": "sum",
-                        "cols.students_enrolled_cls1_2023_24" : "sum"
-                    },
-                    "ranking_val_desc": "cols.students_enrolled_cls1_change_perc",
-                    "num_col": "cols.students_enrolled_cls1_2023_24",
-                    "den_col": "cols.students_enrolled_cls1_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
-                },
-                "format_config" : {
-                    "heading" : "Increase in Elementary Government Schools' Student Enrollment as on",
-                    "subtotal_outlines_dict" : {
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-                        "agg_cols_func_dict" : {
-                            "cols.students_enrolled_cls1_2023_24": "sum",
-                            "cols.students_enrolled_cls1_2022_23" : "sum",
-                            "cols.deo_elem_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_elm": ""}
-                    },
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.students_enrolled_cls1_change_perc"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
-                }
+            "agg_cols_func_dict": {
+              "cols.tot_schools": "sum",
+              "cols.sch_with_no_students": "sum"
             },
-            "secondary_report" : {
-                "generate_report": false,
-                "un_ranked_report_args" : {
-                    "custom_unranked_report": false,
-                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
-                    "grouping_agg_dict" : {
-                        "cols.students_enrolled_cls1_2022_23": "sum",
-                        "cols.students_enrolled_cls1_2023_24" : "sum"
-                    }
-                },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.students_enrolled_cls1_2022_23": "sum",
-                        "cols.students_enrolled_cls1_2023_24" : "sum"
-                    },
-                    "ranking_val_desc": "cols.students_enrolled_cls1_change_perc",
-                    "num_col": "cols.students_enrolled_cls1_2023_24",
-                    "den_col": "cols.students_enrolled_cls1_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
-                },
-                "format_config" : {
-                    "heading" : "Increase in Secondary Government Schools' Student Enrollment as on",
-                    "subtotal_outlines_dict" : {
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
-                        "agg_cols_func_dict" : {
-                            "cols.students_enrolled_cls1_2023_24": "sum",
-                            "cols.students_enrolled_cls1_2022_23" : "sum",
-                            "cols.deo_sec_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_sec": ""}
-                    },
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.students_enrolled_cls1_change_perc"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
-                }
+            "text_append_dict": {
+              "cols.deo_name_elm": ""
+            }
+          },
+          "format_dicts": []
+        }
+      },
+      "secondary_report": {
+        "generate_report": true,
+        "un_ranked_report_args": {
+          "custom_unranked_report": false,
+          "grouping_cols": [
+            "cols.deo_name_elm",
+            "cols.block_name"
+          ],
+          "grouping_agg_dict": {
+            "cols.tot_schools": "sum",
+            "cols.sch_with_no_students": "sum"
+          }
+        },
+        "ranking_args": {},
+        "format_config": {
+          "heading": "Secondary schools without students enrollment report",
+          "subtotal_outlines_dict": {
+            "level_subtotal_cols_dict": {
+              "1": "cols.deo_name_elm"
             },
-
-    ]
+            "agg_cols_func_dict": {
+              "cols.tot_schools": "sum",
+              "cols.sch_with_no_students": "sum"
+            },
+            "text_append_dict": {
+              "cols.deo_name_elm": ""
+            }
+          },
+          "format_dicts": []
+        }
+      }
+    },
+    {
+      "report_name": "increase_in_government_school_enrollment",
+      "report_code": "INC_GOV_ENRLMNT",
+      "report_category": "Enrolment",
+      "report_desc": "Increase in Government Schools' Student Enrollment",
+      "generate_report": true,
+      "source_config": {
+        "query_file_name": "govt_increase_in_enrollment.sql",
+        "db": "tn_schools_db"
+      },
+      "pre_process_brc_merge": false,
+      "brc_merge_config": {
+        "join_on": [
+          "cols.block_name",
+          "cols.udise_col"
+        ],
+        "merge_type": "left"
+      },
+      "post_process_brc_merge": false,
+      "elementary_report": {
+        "generate_report": true,
+        "un_ranked_report_args": {
+          "custom_unranked_report": false,
+          "grouping_cols": [
+            "cols.deo_name_elm",
+            "cols.block_name"
+          ],
+          "grouping_agg_dict": {
+            "cols.students_enrolled_cls1_2022_23": "sum",
+            "cols.students_enrolled_cls1_2023_24": "sum"
+          }
+        },
+        "ranking_args": {
+          "ranking_type": "percent_ranking",
+          "agg_dict": {
+            "cols.students_enrolled_cls1_2022_23": "sum",
+            "cols.students_enrolled_cls1_2023_24": "sum"
+          },
+          "ranking_val_desc": "cols.students_enrolled_cls1_change_perc",
+          "num_col": "cols.students_enrolled_cls1_2023_24",
+          "den_col": "cols.students_enrolled_cls1_2022_23",
+          "sort": "True",
+          "ascending": "False"
+        },
+        "format_config": {
+          "heading": "Increase in Elementary Government Schools' Student Enrollment as on",
+          "subtotal_outlines_dict": {
+            "level_subtotal_cols_dict": {
+              "1": "cols.deo_name_elm"
+            },
+            "agg_cols_func_dict": {
+              "cols.students_enrolled_cls1_2023_24": "sum",
+              "cols.students_enrolled_cls1_2022_23": "sum",
+              "cols.deo_elem_rank": "mean"
+            },
+            "text_append_dict": {
+              "cols.deo_name_elm": ""
+            }
+          },
+          "format_dicts": [
+            {
+              "columns": [
+                "cols.students_enrolled_cls1_change_perc"
+              ],
+              "format": {
+                "num_format": "0.00%"
+              }
+            }
+          ]
+        }
+      },
+      "secondary_report": {
+        "generate_report": false,
+        "un_ranked_report_args": {
+          "custom_unranked_report": false,
+          "grouping_cols": [
+            "cols.deo_name_sec",
+            "cols.block_name"
+          ],
+          "grouping_agg_dict": {
+            "cols.students_enrolled_cls1_2022_23": "sum",
+            "cols.students_enrolled_cls1_2023_24": "sum"
+          }
+        },
+        "ranking_args": {
+          "ranking_type": "percent_ranking",
+          "agg_dict": {
+            "cols.students_enrolled_cls1_2022_23": "sum",
+            "cols.students_enrolled_cls1_2023_24": "sum"
+          },
+          "ranking_val_desc": "cols.students_enrolled_cls1_change_perc",
+          "num_col": "cols.students_enrolled_cls1_2023_24",
+          "den_col": "cols.students_enrolled_cls1_2022_23",
+          "sort": "True",
+          "ascending": "False"
+        },
+        "format_config": {
+          "heading": "Increase in Secondary Government Schools' Student Enrollment as on",
+          "subtotal_outlines_dict": {
+            "level_subtotal_cols_dict": {
+              "1": "cols.deo_name_sec"
+            },
+            "agg_cols_func_dict": {
+              "cols.students_enrolled_cls1_2023_24": "sum",
+              "cols.students_enrolled_cls1_2022_23": "sum",
+              "cols.deo_sec_rank": "mean"
+            },
+            "text_append_dict": {
+              "cols.deo_name_sec": ""
+            }
+          },
+          "format_dicts": [
+            {
+              "columns": [
+                "cols.students_enrolled_cls1_change_perc"
+              ],
+              "format": {
+                "num_format": "0.00%"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
 }
