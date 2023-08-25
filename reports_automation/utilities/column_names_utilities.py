@@ -423,6 +423,7 @@ cg_ecnom_supp_need = 'Economic Support Needed'
 brd_tot_stu_appr = 'No. of students who appeared for all subjects'
 brd_tot_stu_pass = 'No. of students passed'
 brd_pass_perc = 'Pass %'
+brd_pass_perc_med = 'Median Pass %'
 brd_avg_marks = 'Average marks'
 brd_marks_30_to_60_count = 'Students who secured marks between 35% to 60%'
 brd_marks_60_to_80_count = 'Students who secured marks between 60% to 80%'
@@ -480,15 +481,30 @@ prev_eng_marks = "english_median_prv_yr"
 prev_math_marks = "maths_median_prv_yr"
 prev_science_marks = "science_median_prv_yr"
 prev_social_marks = "social_median_prv_yr"
-avg_marks_med_22_23 = 'avg_marks_median_22_23'
-language_median_22_23 = 'language_median_22_23'
+brd_pass_perc_cmp_lst_yr = 'Pass % compared to last year'
+brd_avg_cmp_lst_yr = 'Student Average marks compared to last year'
+brd_lang_cmp_lst_yr = 'Language marks compared to last year'
+brd_eng_cmp_lst_yr = 'English marks compared to last year'
+brd_math_cmp_lst_yr = 'Mathematics marks compared to last year'
+brd_social_cmp_lst_yr = 'Social marks compared to last year'
+brd_science_cmp_lst_yr = 'Science marks compared to last year'
+brd_med_avg_mrks = 'Median of student Average marks'
+brd_med_lang_mrks = "Median Language mark"
+brd_med_eng_mrks = "Median English mark"
+brd_med_math_mrks = "Median Mathematics mark"
+brd_med_science_mrks = "Median Science mark"
+brd_med_social_mrks = "Median Social mark"
+
 
 
 def get_value(var_name: str):
     """
-    Function to get the value mapped to the variable defined here.
-    This function is used to fetch the value when the 
-    variable name gets coverted to string (when reading from JSON)
+    Function to get the value mapped to the variable defined in this file.
+    This resolution of variable name to value is necessary as variables
+    defined in JSON dont automatically get resolved to the value assigned to it
+    when read in Python.
+
+    If the value doesnt exist, the given variable name is returned as is.
     
     Parameters:
     ----------
@@ -504,8 +520,11 @@ def get_value(var_name: str):
         var_name = var_name.removeprefix(module_import_name)
     
     # Get the value mapped to the variable
-    value = globals()[var_name]
-    return value
+    try:
+        value = globals()[var_name]
+        return value
+    except KeyError:
+        return var_name    
 
 def get_values(var_names_list: list):
     """

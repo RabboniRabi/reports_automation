@@ -11,17 +11,17 @@ import utilities.column_names_utilities as cols
 import xlsxwriter
 
 
-def apply_cond_frmt(writer: xlsxwriter, sheet_name, col_index, cond_frmt_dict, no_of_rows):
+def apply_cond_frmt(worksheet, workbook, col_index, cond_frmt_dict, no_of_rows):
     """
     Function to apply conditional formatting on given data and return
     the formatted xlsxwriter object
 
     Parameters:
     ----------
-    writer: xlsxwriter
-        The data as a xlsxwriter object
-    sheet_name: str
-        The name of the excel sheet where column to format is    
+    worksheet: Worksheet
+        An XlsxWriter Worksheet object
+    workbook: Workbook
+        An XlsxWriter Workbook object  
     col_index: int
         The index of the column on which to apply the formatting
     cond_frmt_dict: dict
@@ -34,7 +34,6 @@ def apply_cond_frmt(writer: xlsxwriter, sheet_name, col_index, cond_frmt_dict, n
     no_of_rows: int
         The number of data rows
     """
-    worksheet = writer.sheets[sheet_name]
 
     # Get the excel alphabet for the column. 
     col_excel_alphabet = xlsxwriter.utility.xl_col_to_name(col_index)
@@ -156,7 +155,7 @@ def format_col_to_percent_and_save(df, column_name, sheet_name, file_name, dir_p
     writer.save()
 
 
-def apply_formatting(format_dicts_list, df, worksheet, workbook):
+def apply_formatting(format_dicts_list, df, worksheet, workbook, start_row=2):
     """
     Function to apply formatting for each list of columns in a given 
     list of formatting dictionaries.
@@ -182,6 +181,9 @@ def apply_formatting(format_dicts_list, df, worksheet, workbook):
         An XlsxWriter worksheet object
     workbook: Workbook
         An XlsxWriter workbook object
+    start_row: int
+        The row to start writing the column format from. 
+        Default is 2 as heading will be in row 0 and column headers at row 1.
     """
     # Define the base formatting that needs to be presisted for all cells
     common_format = {'align' : 'center', 'border' : 3}
@@ -193,19 +195,42 @@ def apply_formatting(format_dicts_list, df, worksheet, workbook):
         # Get the resolved column name values
         columns = cols.get_values(columns)
 
-        format = format_dict['format']
+        
 
-        # Update the given format with the common format, 
-        #so that the common formatting is not lost.
-        format.update(common_format)
+        if format_dict['conditional_format_flag']:
 
-        # For each column, get the index and call apply_frmt_col 
-        # to apply formatting for that column
-        for column in columns:
+            # For each column, get the index and call apply_cond_frmt 
+            # to apply conditional formatting for that column
+            cond_format = format_dict['conditional_format']
             
-            col_index = df.columns.get_loc(column)
-            # Start row is 2 as heading will be in row 0 and column headers at row 1
-            apply_frmt_col(worksheet, workbook, col_index, df, format, start_row=2)
+            # If custom formatting is given for conditional format
+            if 'format' in format_dict:
+                format = format_dict['format']
+                # Get the format dictionary as a workbook format object
+                custom_format = workbook.add_format(format)
+                # Update the conditional format dictionary with the custom format
+                cond_format.update({'format': custom_format})
+            for column in columns:
+                
+                col_index = df.columns.get_loc(column)
+                no_of_rows = df.shape[0]
+                
+                apply_cond_frmt(worksheet, workbook, col_index, cond_format, no_of_rows)
+        else: # Apply normal formatting
+
+            format = format_dict['format']
+
+            # Update the given format with the common format, 
+            # so that the common formatting is not lost.
+            format.update(common_format)
+
+            # For each column, get the index and call apply_frmt_col 
+            # to apply formatting for that column
+            for column in columns:
+                
+                col_index = df.columns.get_loc(column)
+                
+                apply_frmt_col(worksheet, workbook, col_index, df, format, start_row)
 
 
 def insert_heading(df, heading_text, worksheet, workbook):
