@@ -6,7 +6,7 @@
             "report_code" : "CWSN_TRANS_8_9",
             "report_category": "Transition",
             "report_desc": "CWSN Transition Rate from Class 8 to 9",
-            "generate_report": false,
+            "generate_report": true,
             "source_config" : {
                 "query_file_name" : "cwsn_transition_8_to_9.sql",
                 "db" : "tn_schools_db"
@@ -105,7 +105,7 @@
             "report_code" : "CWSN_TRANS_5_6",
             "report_category": "Transition",
             "report_desc": "CWSN Transition Rate from Class 5 to 6",
-            "generate_report": false,
+            "generate_report": true,
             "source_config" : {
                 "query_file_name" : "cwsn_transition_5_to_6.sql",
                 "db" : "tn_schools_db"
@@ -204,7 +204,7 @@
             "report_code" : "CWSN_TRANS_10_11",
             "report_category": "Transition",
             "report_desc": "CWSN Transition Rate from Class 10 to 11",
-            "generate_report": false,
+            "generate_report": true,
             "source_config" : {
                 "query_file_name" : "cwsn_transition_10_to_11.sql",
                 "db" : "tn_schools_db"

@@ -1129,7 +1129,7 @@
             "report_code" : "SCH_ISS_CYCLE",
             "report_category": "Schemes",
             "report_desc": "Schools issuing cycles report",
-            "generate_report": false,
+            "generate_report": true,
             "source_config" : {
                 "sources" : [
                     {
