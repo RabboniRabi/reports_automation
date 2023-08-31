@@ -40,7 +40,7 @@ def get_ceo_deo_mapping():
 
         ceo_deo_mapping[ceo] = {
             "Elementary_DEOs" : deo_elems.tolist(),
-            "Seondary_DEOs" : deo_secs.tolist()
+            "Secondary_DEOs" : deo_secs.tolist()
         }
 
     return ceo_deo_mapping
@@ -62,6 +62,47 @@ def get_and_save_ceo_deo_mapping():
     # Write the dictionary to the JSON file
     with open(file_path, 'w') as file:
         json.dump(ceo_deo_mapping, file, indent=4)
+
+
+
+def get_no_of_elem_deos():
+    """
+    Function to fetch number of elementary DEOs
+
+    Returns:
+    -------
+    Number of elementary DEOs
+    """
+
+    no_of_elem_deos = 0
+
+    ceo_deo_mapping = get_ceo_deo_mapping()
+
+    # For each ceo, get the number of elementary DEOs and update the total number
+    for ceo in ceo_deo_mapping.keys():
+        no_of_elem_deos += len(ceo_deo_mapping[ceo]['Elementary_DEOs'])
+
+    return no_of_elem_deos
+
+def get_no_of_sec_deos():
+    """
+    Function to fetch number of secondary DEOs
+
+    Returns:
+    -------
+    Number of secondary DEOs
+    """
+
+    no_of_sec_deos = 0
+
+    ceo_deo_mapping = get_ceo_deo_mapping()
+
+    # For each ceo, get the number of elementary DEOs and update the total number
+    for ceo in ceo_deo_mapping.keys():
+        no_of_sec_deos += len(ceo_deo_mapping[ceo]['Secondary_DEOs'])
+
+    return no_of_sec_deos
+
 
 
 if __name__ == "__main__":

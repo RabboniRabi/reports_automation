@@ -40,28 +40,37 @@ filtered_report_config_files = ['filtered_reports/teachers.json']
 
 config_files = ceo_review_config_files + ad_hoc_config_files + filtered_report_config_files
 
-def get_all_active_configs(config_files:list=config_files):
+def get_all_active_ceo_configs():
     """
-    Function to fetch all the active report configurations given in the
-    config JSON files.
-
-    Parameters:
-    -----------
-    config_files: list
-        The file names of all the configurations in JSON format. 
-        Default is the list declared in the script
+    Function to fetch all the active ceo review report generation JSON configurations
+    as a list of dictionaries
 
     Returns:
     -------
-    Returns array of configurations dictionaries where each item in the dictionary is for each report
+    Returns array of configurations dictionaries where each item in the list 
+    is the configuration for each report
     """
     # Define a list of active configurations
     active_configs = []
 
-    for config_file_name in config_files:
+    # Load the JSON file with the locations of all the config files
+    file_path = os.path.join(__curr_location__, 'config_files_locations.json')
 
-        with open('configs/' + config_file_name, 'r') as read_file:
-            all_configs = json.load(read_file)["report_configs"]
+    with open(file_path, 'r') as read_file:
+            config_files_locations = json.load(read_file)        
+
+    # Get the ceo review reports specific config files location information
+    ceo_configs_loc_info = config_files_locations['ceo_review_configs']
+
+    # For each file with the configurations
+    for file_name in ceo_configs_loc_info['files']:
+        # Build the path to the file given to contain the config
+        config_file_path = file_utilities.build_file_path(file_name, ceo_configs_loc_info['dir_levels'])
+
+        print ('reading: ', config_file_path)
+        # Read the file
+        with open(config_file_path, 'r') as read_file:
+            all_configs = json.load(read_file)['report_configs']
 
         for config in all_configs:
             if config["generate_report"]:
