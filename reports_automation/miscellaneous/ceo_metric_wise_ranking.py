@@ -7,6 +7,8 @@ For each metric, the average ranks for all DEOS assigned to the CEO is calculate
 import sys
 sys.path.append('../')
 
+import math
+
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.column_names_utilities as cols
@@ -31,7 +33,7 @@ def calculate_ceo_ranks_for_deo_lvl_rpts():
 
     # Get the august ranking master
     dir_path = file_utilities.get_ceo_rpts_dir_path()
-    file_path = file_utilities.get_file_path('ranking_master_august.xlsx', dir_path)
+    file_path = file_utilities.get_file_path('ranking_master_july.xlsx', dir_path)
 
     df_ranking_master = file_utilities.read_sheet(file_path, sheet_name='ranking')
 
@@ -64,7 +66,7 @@ def calculate_ceo_ranks_for_deo_lvl_rpts():
             # Update rank of CEO for metric
             df_ceo_ranking[metric_code].loc[df_ceo_ranking['CEO']==ceo] = mean_ceo_rank_metric
 
-    file_utilities.save_to_excel({'ceo_avg_rank': df_ceo_ranking}, 'ceo_ranks_for_deo_lvl_reports_august.xlsx', dir_path)        
+    file_utilities.save_to_excel({'ceo_avg_rank': df_ceo_ranking}, 'ceo_ranks_for_deo_lvl_reports_july.xlsx', dir_path)        
 
     return df_ceo_ranking
 
@@ -90,11 +92,12 @@ def calculate_inverted_ceo_ranks_for_deo_lvl_rpts():
 
     # For each metric, calculate the inverted rank
     for metric_code in metric_wise_max_ceo_rank_dict.keys():
-        max_rank = metric_wise_max_ceo_rank_dict[metric_code]
-        df_ceo_ranking[metric_code] = (max_rank + 1) - df_ceo_ranking[metric_code]
+        if metric_code in df_ceo_ranking.columns.to_list():
+            max_rank = metric_wise_max_ceo_rank_dict[metric_code]
+            df_ceo_ranking[metric_code] = (max_rank + 1) - df_ceo_ranking[metric_code]
 
     dir_path = file_utilities.get_ceo_rpts_dir_path()
-    file_utilities.save_to_excel({'ceo_avg_inv_rank': df_ceo_ranking}, 'inverted_ceo_ranks_for_deo_lvl_reports_august.xlsx', dir_path)        
+    file_utilities.save_to_excel({'ceo_avg_inv_rank': df_ceo_ranking}, 'inverted_ceo_ranks_for_deo_lvl_reports_july.xlsx', dir_path)        
 
 
 
@@ -165,15 +168,15 @@ def get_metric_wise_ceo_max_rank():
 
     for metric_code in metric_schl_lvls_app.keys():
 
-        if all([school_levels.ELEMENTARY.value, school_levels.SECONDARY.value]) in metric_schl_lvls_app[metric_code]:
-            metric_wise_rank[metric_code] = round((no_of_elem_deos + no_of_sec_deos)/2,0)
-            print('metric wise max rank for: ', metric_code, ' is: ', round((no_of_elem_deos + no_of_sec_deos)/2,0))
+        if school_levels.ELEMENTARY.value in metric_schl_lvls_app[metric_code] \
+                    and school_levels.SECONDARY.value in metric_schl_lvls_app[metric_code] :
+            max_rank = math.ceil((no_of_elem_deos + no_of_sec_deos)/2)
         elif school_levels.ELEMENTARY.value in metric_schl_lvls_app[metric_code]:
-            metric_wise_rank[metric_code] = no_of_elem_deos
-            print('metric wise max rank for: ', metric_code, ' is: ', no_of_elem_deos)
+            max_rank = no_of_elem_deos
         elif school_levels.SECONDARY.value in metric_schl_lvls_app[metric_code]:
-            print('metric wise max rank for: ', metric_code, ' is: ', no_of_sec_deos)
-            metric_wise_rank[metric_code] = no_of_sec_deos
+            max_rank = no_of_sec_deos
+
+        metric_wise_rank[metric_code] = max_rank
 
     return metric_wise_rank
             

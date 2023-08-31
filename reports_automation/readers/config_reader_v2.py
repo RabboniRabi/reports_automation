@@ -67,7 +67,6 @@ def get_all_active_ceo_configs():
         # Build the path to the file given to contain the config
         config_file_path = file_utilities.build_file_path(file_name, ceo_configs_loc_info['dir_levels'])
 
-        print ('reading: ', config_file_path)
         # Read the file
         with open(config_file_path, 'r') as read_file:
             all_configs = json.load(read_file)['report_configs']
