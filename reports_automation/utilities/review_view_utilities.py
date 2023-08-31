@@ -185,7 +185,7 @@ def prepare_report_for_review(df, format_config, ranking_args_dict, sheet_name, 
     format_utilities.format_col_header(updated_df, worksheet, workbook)
 
     # Save the formatted data
-    writer.save()
+    writer.close()
 
 
 

@@ -471,7 +471,7 @@ def save_to_excel(df_sheet_dict, file_name, dir_path = get_gen_reports_dir_path(
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(datatoexcel, sheet_name=key, index=index)
         print('Saving ', key, ' sheet in excel file: ', file_name, '....')
-    datatoexcel.save()
+    datatoexcel.close()
     print('Save done')
 
 
