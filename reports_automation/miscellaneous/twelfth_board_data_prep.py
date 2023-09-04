@@ -1,8 +1,8 @@
 import sys
 sys.path.append('../')
 
-import readers.config_reader_v2 as config_reader
-import readers.data_fetcher_v2 as data_fetcher
+import readers.config_reader as config_reader
+import readers.data_fetcher as data_fetcher
 import data_cleaning.column_cleaner as column_cleaner
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities

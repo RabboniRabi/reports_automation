@@ -12,8 +12,7 @@ import utilities.utilities as utilities
 
 import pandas as pd
 
-import readers.config_reader_v2 as config_reader
-#from config_types_v2 import ConfigTypes as config_types
+import readers.config_reader as config_reader
 
 
 def get_data_from_config(source_config_dict, save_source=False):

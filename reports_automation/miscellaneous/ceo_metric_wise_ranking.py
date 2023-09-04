@@ -14,7 +14,7 @@ import utilities.file_utilities as file_utilities
 import utilities.column_names_utilities as cols
 
 from enums.school_levels import SchoolLevels as school_levels
-import readers.config_reader_v2 as config_reader
+import readers.config_reader as config_reader
 
 import pandas as pd
 
@@ -118,7 +118,7 @@ def get_schl_lvls_app_for_active_metrics():
     """
 
     # Get all the active configurations
-    active_configs = config_reader.get_all_active_ceo_configs()
+    active_configs = config_reader.get_all_active_ceo_review_configs()
 
     # Define the metric-school levels applicability dictionary
     metric_schl_lvls_app = {}

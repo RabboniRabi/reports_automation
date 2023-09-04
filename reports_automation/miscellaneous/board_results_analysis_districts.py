@@ -11,9 +11,9 @@ import pandas as pd
 
 
 
-import readers.config_reader_v2 as config_reader
+import readers.config_reader as config_reader
 import utilities.report_splitter_utilities as report_splitter
-import readers.data_fetcher_v2 as data_fetcher
+import readers.data_fetcher as data_fetcher
 import utilities.ranking_utilities as ranking_utilities
 import utilities.file_utilities as file_utilities
 import utilities.format_utilities as format_utilities

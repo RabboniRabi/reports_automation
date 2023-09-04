@@ -5,8 +5,8 @@ import pandas as pd
 sys.path.append('../')
 import json
 import utilities.column_names_utilities as cols
-import readers.config_reader_v2 as config_reader
-import readers.data_fetcher_v2 as data_fetcher
+import readers.config_reader as config_reader
+import readers.data_fetcher as data_fetcher
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import data_cleaning.column_cleaner as column_cleaner
