@@ -28,7 +28,7 @@ cols_to_save = [cols.name, cols.desig, cols.rank_col, cols.ranking_value, cols.r
 
 
 
-def calc_ranking(df, group_cols, ranking_args_dict):
+def calc_ranking(df, ranking_args_dict):
     """
     Function to calculate ranking for data based on the type of ranking given.
     The function uses the dictionary in ranking_utilities to match the ranking type and 
@@ -38,8 +38,6 @@ def calc_ranking(df, group_cols, ranking_args_dict):
     ----------
     df: Pandas DataFrame
         The data to be ranked
-    group_levels: list
-        The list of columns to group by
     ranking_args_dict: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {
@@ -58,7 +56,7 @@ def calc_ranking(df, group_cols, ranking_args_dict):
     ranking_type = ranking_args_dict['ranking_type']
     ranking_func = ranking_funcs_utilities.get_ranking_funcs().get(ranking_type)
     
-    return ranking_func(df, group_cols, ranking_args_dict)
+    return ranking_func(df, ranking_args_dict)
 
 
 

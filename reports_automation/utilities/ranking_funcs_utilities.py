@@ -8,7 +8,7 @@ import utilities.column_names_utilities as cols
 
 import pandas as pd
 
-def percent_ranking(df, group_levels, ranking_args_dict):
+def percent_ranking(df, ranking_args_dict):
     """
     Function to rank data based on percentage (value of one column compared to another column)
     
@@ -16,8 +16,6 @@ def percent_ranking(df, group_levels, ranking_args_dict):
     -----------
     df: Pandas DataFrame
         The data to be ranked
-    group_levels: list
-        The list of columns to group by
     ranking_args_dict: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {
@@ -38,24 +36,34 @@ def percent_ranking(df, group_levels, ranking_args_dict):
     """
 
     # Get the values from the ranking arguments dictionary
-    agg_dict = ranking_args_dict['agg_dict']
     ranking_val_desc = ranking_args_dict['ranking_val_desc']
     num_col = ranking_args_dict['num_col']
     den_col = ranking_args_dict['den_col']
-    sort = ranking_args_dict['sort']
+    #sort = ranking_args_dict['sort']
     ascending = ranking_args_dict['ascending']
+    if 'show_rank_col' in ranking_args_dict and ranking_args_dict['ranking_args_dict']:
+        show_rank_col = True
+    else:
+        show_rank_col = False
 
     # If grouping levels is given
-    if (group_levels is not None):
+    """if (group_levels is not None and 'agg_dict' in ranking_args_dict):
+        agg_dict = ranking_args_dict['agg_dict']
         # Group by grouping levels and aggregate by given columns and aggregate function
         df_rank = df.groupby(group_levels, as_index=False, sort=sort).agg(agg_dict)
     else:
-        df_rank = df.copy()
+        df_rank = df.copy()"""
+
+    # Group the data for ranking, if ranking level grouping configuration is given in ranking_args
+    df_rank = _group_data_for_ranking(df, ranking_args_dict)
 
     # Calculate fraction of values (to be used for ranking)
     df_rank[cols.ranking_value] = (df_rank[num_col]/df_rank[den_col])
     df_rank[cols.ranking_value].fillna(0, inplace=True)
-    df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method='min')
+
+
+    df_rank = _sort_and_rank(df_rank, cols.ranking_value, ascending, show_rank_col)
+    """df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method='min')
     
     # Add the ranking value description to the ranked data
     df_rank[cols.ranking_value_desc] = ranking_val_desc
@@ -65,7 +73,7 @@ def percent_ranking(df, group_levels, ranking_args_dict):
     if sort:
         df_rank.sort_values(by=[cols.rank_col], inplace=True)
 
-    df_rank = df_rank.reset_index()    
+    df_rank = df_rank.reset_index()    """
 
     return df_rank
 
@@ -268,6 +276,90 @@ def number_ranking(df, group_levels, ranking_args_dict):
 
     return df_rank
 
+def _group_data_for_ranking(df, ranking_args):
+    """
+    Helper function to group the data before it is ranked.
+    Grouping is based on grouping levels and aggregate functions given in ranking arguments.
+
+    In some scenarios, data might need to be grouped further before being ranked.
+    Eg: Data at Block level, but needs to be ranked at DEO level.
+    If no grouping related arguments are given, data is returned without grouping.
+
+    Parameters:
+    ----------
+    df: Pandas DataFrame
+        The data to be grouped before ranking
+    ranking_args: dict
+        A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
+            Eg: 
+            "ranking_args" : {
+                        "ranking_type" : "percent_ranking",
+                        "ranking_group_level" : ["cols.district_name"],
+                        "agg_dict": {
+                            "cols.cg_clg_nm": "count", 
+                            "cols.student_name" : "count"
+                        },
+                        "ranking_val_desc": "cols.cg_perc_stu_w_clg_name",
+                        "num_col": "cols.cg_clg_nm",
+                        "den_col": "cols.student_name",
+                        "sort": "True",
+                        "ascending": "False",
+                        "show_rank_col" : "False"
+                    }
+    """
+    # If the grouping before ranking configuration is present
+    if 'ranking_group_level' in ranking_args and 'agg_dict' in ranking_args:
+
+        ranking_group_level = ranking_args['ranking_group_level']
+        agg_dict = ranking_args['agg_dict']
+        sort = ranking_args_dict['sort']
+
+        # If grouping level list and grouping aggregate dictionary is not empty
+        if len(ranking_group_level) > 0 and agg_dict:
+            # Group the data
+            df_rank = df.groupby(ranking_group_level, as_index=False, sort=sort).agg(agg_dict)
+    else:
+        return df.copy() # Check if copy or original can be sent
+
+
+
+
+def _sort_and_rank(df, ranking_val_col, ascending, show_rank):
+    """
+    Function to sort and rank the data based on values in a specified column.
+
+    The data can be plain sorted or sorted along with a rank column. The order
+    of sorting can also be specified.
+
+    Parameters:
+    -----------
+    df: Pandas DataFrame
+        The data to be sorted and ranked
+    ranking_val_col: str
+        The name of the column whose columns are to be sorted and ranked
+    ascending: bool
+        Whether data is to be sorted in ascending order
+    show_rank: bool
+        Flag indicating if rank column needs to be shown.
+
+    Return:
+    -------
+    Pandas DataFrame object of sorted and if configured, ranked data    
+    """
+
+    # Sort the values
+    df.sort_values(by[ranking_val_col], ascending=ascending, inplace=True)
+    
+    # If rank is to be shown in the data, add the rank column to the data
+    if show_rank:
+        df[cols.rank_col] = df[cols.ranking_value].rank(method="min")
+
+    # Add the ranking value description to the ranked data
+    df[cols.ranking_value_desc] = ranking_val_desc
+  
+    df = df.reset_index()
+
+    return df
 
 
 

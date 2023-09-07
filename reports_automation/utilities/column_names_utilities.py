@@ -20,12 +20,15 @@ yes_col = 'Yes'
 no_col = 'No'
 web = 'Website'
 mobile = 'Mobile'
-management_type = "management_type"
+management = 'management'
+management_type = 'management_type'
 category_type ="category_type"
 distinct_udise_count = 'count(DISTINCT udise_code)'
+gender = 'Gender'
 
 
 school_category = 'category'
+school_category_full_name = 'School_Category'
 school_level = 'school_level'
 class_number = 'class'
 school_type = 'school_type'
@@ -416,6 +419,7 @@ cg_stu_supp_req = 'support'
 cg_couns_supp_need = 'Counselling Support Needed'
 cg_admin_supp_need = 'Administrative Support Needed'
 cg_ecnom_supp_need = 'Economic Support Needed'
+cg_perc_stu_w_clg_name = '% students with college name'
 
 
 
@@ -618,7 +622,8 @@ def update_dictionary(var_names_dict: dict):
             updated_value = get_value(var_names_dict[key])
             updated_dict[key] = updated_value
         # else if value is a list with elements containing 'cols.' prefix, update the values
-        elif type(var_names_dict[key]) is list and col_utility_prefix in var_names_dict[key][0]:
+        elif type(var_names_dict[key]) is list and len(var_names_dict[key]) > 0 \
+                and col_utility_prefix in var_names_dict[key][0]:
             updated_value = get_values(var_names_dict[key])
             updated_dict[key] = updated_value
         else:
@@ -645,12 +650,22 @@ def update_nested_dictionaries(var_names_dict: dict):
     The updated dictionary
     """
 
+    # First update the dictionary
     fully_updated_dict = update_dictionary(var_names_dict)
+
+    # Then check for nested dictionaries and recursively call this function
+    # to update the dictionaries
 
     for key in fully_updated_dict:
         if type(fully_updated_dict[key]) is dict:
             # Recursively call update_nested_dictionaries
             fully_updated_dict[key] = update_nested_dictionaries(fully_updated_dict[key])
+        # If there is a list of dictionaries
+        elif type(fully_updated_dict[key]) is list:
+            for i in range(0,len(fully_updated_dict[key])):
+                if type(fully_updated_dict[key][i]) is dict:
+                    # update each dictionary
+                    fully_updated_dict[key][i] = update_nested_dictionaries(fully_updated_dict[key][i])
         else:
             fully_updated_dict = update_dictionary(fully_updated_dict)
 

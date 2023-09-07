@@ -37,16 +37,20 @@
                 "combine_data_type" : "concat",
                 "combine_data_configs" : {
                     "text_books_high_higher_sec_govt" : {
-                        "join" : "outer"
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
                     },
                     "text_books_high_higher_sec_aided" : {
-                        "join" : "outer"
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
                     },
                     "text_books_pri_mid_govt" : {
-                        "join" : "outer"
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
                     },
                     "text_books_pri_mid_aided" : {
-                        "join" : "outer"
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
                     }
                 }
             },            

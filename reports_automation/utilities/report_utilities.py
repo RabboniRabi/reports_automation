@@ -299,14 +299,25 @@ def combine_multiple_datasets(df_data_set:dict, combine_type:str, combine_data_c
     if combine_type == combine_data_types.MERGE.value:
         # Merge the data
 
-        # Initially set the merged data to the primary data
-        df_combined = df_data_set['primary_data']
+        # Get the primary data to which the rest of the data sets need to be merged
+        primary_merge_data_config = combine_data_configs['primary_merge_data'] 
+        primary_merge_data_name = primary_merge_data_config['source_name']
+
+        # Drop and assign the primary data set to a variable that will hold the overall combined data
+        cols_to_drop = primary_merge_data_config['cols_to_drop_before_merge'] 
+        df_combined = df_data_set[primary_merge_data_name].drop(columns=cols_to_drop)
+
+        # Delete the primary data reference from the config dictionary as the 
+        # dictionary keys will be iterated in the next step - not a clean way of doing things
+        del combine_data_configs['primary_merge_data']
+
 
         for key in combine_data_configs.keys():
             # Get the merge config
             merge_config = combine_data_configs[key]
-            # Get the data for the key in merge config and merge it
-            df_combined = df_combined.merge(df_data_set[key], how=merge_config['merge_type'], on=merge_config['join_on'])
+            # Get the data for the key in merge config, drop any columns to be dropped and then merge
+            df_data = df_data_set[key].drop(columns=merge_config['cols_to_drop_before_merge'])
+            df_combined = df_combined.merge(df_data, how=merge_config['merge_type'], on=merge_config['join_on'])
 
     elif combine_type == combine_data_types.CONCAT.value:
         # Concatenate the data
@@ -316,8 +327,9 @@ def combine_multiple_datasets(df_data_set:dict, combine_type:str, combine_data_c
         for key in combine_data_configs.keys():
             # Get the concatenation config
             concat_config = combine_data_configs[key]
-            # Get the data for the key in concat config and concatenate it
-            df_combined = pd.concat([df_combined, df_data_set[key]], join=concat_config['join']) 
+            # Get the data for the key in concat, drop any columns to be dropped config and then concatenate
+            df_data = df_data_set[key].drop(columns=concat_config['cols_to_drop_before_concat'])
+            df_combined = pd.concat([df_combined, df_data], join=concat_config['join']) 
 
     return df_combined
 

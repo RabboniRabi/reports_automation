@@ -3,14 +3,14 @@ Module with functions to fetch reports given report codes/names.
 
 This module can be paired with a constructor in the future to create APIs to these functions.
 """
-
-import config_reader
-import ceo_report_generator
-import data_fetcher
-import ad_hoc_report_generator
-
 import sys
 sys.path.append('../')
+
+import readers.config_reader as config_reader
+import ceo_report_generator
+import ad_hoc_report_generator
+
+
 
 import utilities.file_utilities as file_utilities
 
@@ -76,7 +76,7 @@ def generate_ad_hoc_report(report_code, save_source=False, save_report=False):
     Parameters:
     ----------
     report_code: str
-        The name/code of the report/metric to fetch the CEO report for
+        The name/code of the report/metric to fetch the Ad Hoc report for
     save_source: bool
         Flag indicating if a copy of data fetched from database needs to be saved.
         To be used within the application. Default is False.
@@ -91,11 +91,8 @@ def generate_ad_hoc_report(report_code, save_source=False, save_report=False):
     # Get the overall configuration for the report code
     report_config = config_reader.get_adhoc_config(report_code)
 
-    # Get the data set
-    df_data_set = data_fetcher.get_data_set(report_code, 'ad_hoc_config', save_source)
-
     # Get the ad hoc report
-    ad_hoc_rpt = ad_hoc_report_generator.get_report(report_config, df_data_set)
+    ad_hoc_rpt = ad_hoc_report_generator.get_report(report_config, save_report)
 
     if save_report:
         report_name = report_config['report_name']

@@ -21,7 +21,7 @@
                 ]
     },
     "ad_hoc_configs" : {
-        "dir_levels": ["reports", "configs", "ceo_review"],
+        "dir_levels": ["reports", "configs", "ad_hoc"],
         "files" : [
                     "attendance_configs.json",
                     "cg_configs.json",
