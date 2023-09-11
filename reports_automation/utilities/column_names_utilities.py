@@ -12,7 +12,8 @@ block_name = 'block_name'
 block = 'Block'
 udise_col = 'udise_code'
 school_name ='school_name'
-total_student_count  = 'total'
+total_student_count = 'total'
+total_students = 'total_students'
 name = 'Name'
 month_col = 'Month'
 year_col = 'Year'
@@ -23,6 +24,7 @@ mobile = 'Mobile'
 management_type = "management_type"
 category_type ="category_type"
 distinct_udise_count = 'count(DISTINCT udise_code)'
+emis_id = 'emis_id'
 
 
 school_category = 'category'
@@ -69,6 +71,7 @@ class_8 = '8'
 class_9 = '9'
 class_10 = '10'
 class_11 = '11'
+class_12 = '12'
 
 
 #CWSN Transition specific column names
@@ -242,6 +245,8 @@ admitted_not_admitted = 'Not Admitted from To be Admitted'
 admitted = 'Admitted from To be Admitted'
 oosc_stu_id = 'student_id'
 oosc_no_stu_absent_greater_6 = 'Number of students absent for greater than 6 days'
+oosc_pot_dropout_count = 'Total Potential Dropouts'
+oosc_perc_pot_dropouts = '% of Potential Dropouts'
 
 # Hi-tech lab report specific column names
 up_time_hrs = 'up_time_hrs'
