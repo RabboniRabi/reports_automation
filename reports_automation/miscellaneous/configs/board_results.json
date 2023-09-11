@@ -1,0 +1,447 @@
+{
+  "report_configs": [
+    {
+      "report_name": "10th_board_dist_lvl_report_card",
+      "report_code" : "10TH_BRD_DIST_LVL_RPT_CARD",
+      "report_desc": "Configuration to generate district level reports for 10th board results",
+      "source_config": {
+        "sources": [
+          {
+            "source_name" : "curr_yr_data",
+            "source_file_name": "10th_board_stu_subj_wise_data_22_23.xlsx",
+            "source_sheet_name": "raw_data",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "prev_yr_data",
+            "source_file_name": "10th_board_stu_subj_wise_data_21_22.xlsx",
+            "source_sheet_name": "raw_data",
+            "skip_rows": 0
+          }
+        ]
+      },
+      "grouping_levels": ["cols.district_name", "cols.block_name", "cols.udise_col", "cols.school_name"],
+      "agg_dict": {
+          "cols.tot_stu": "count",
+          "cols.stu_pass": "sum",
+          "cols.tot_marks": "median",
+          "cols.lang_marks": "median",
+          "cols.eng_marks": "median",
+          "cols.math_marks": "median",
+          "cols.science_marks": "median",
+          "cols.social_marks": "median"
+      },
+      "process_args": {
+        "school_performance": {
+          "cols.curr_avg_marks": {
+          "insert_rank_col_name": "cols.curr_school_performance",
+          "index_from_col": 6
+          },
+        "cols.prev_avg_marks": {
+          "insert_rank_col_name": "cols.prev_school_performance",
+          "index_from_col": 7
+          }
+        },
+        "curr_yr_prev_yr_diff": {
+          "cols.curr_pass_perc": "cols.prev_pass_perc",
+          "cols.curr_avg_marks": "cols.prev_avg_marks",
+          "cols.curr_lang_marks": "cols.prev_lang_marks",
+          "cols.curr_eng_marks": "cols.prev_eng_marks",
+          "cols.curr_math_marks": "cols.prev_math_marks",
+          "cols.curr_science_marks": "cols.prev_science_marks",
+          "cols.curr_social_marks": "cols.prev_social_marks"
+        }
+
+      },
+      "ranking_args_state": {
+        "cols.curr_avg_marks": {
+          "insert_rank_col_name": "cols.rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : false
+        },
+        "cols.curr_lang_marks": {
+          "insert_rank_col_name": "cols.lang_rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : false
+        },
+        "cols.curr_eng_marks": {
+          "insert_rank_col_name": "cols.eng_rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : false
+        },
+        "cols.curr_math_marks": {
+          "insert_rank_col_name": "cols.math_rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : false
+        },
+        "cols.curr_science_marks": {
+          "insert_rank_col_name": "cols.science_rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : false
+        },
+        "cols.curr_social_marks": {
+          "insert_rank_col_name": "cols.social_rank_state",
+          "index_from_col": 1,
+          "ascending": false,
+          "rank_frac" : false
+        }
+      },
+      "ranking_args_dist": {
+        
+        "cols.curr_lang_marks": {
+          "insert_rank_col_name": "cols.lang_rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : false
+        },
+        "cols.curr_eng_marks": {
+          "insert_rank_col_name": "cols.eng_rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : false
+        },
+        "cols.curr_math_marks": {
+          "insert_rank_col_name": "cols.math_rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : false
+        },
+        "cols.curr_science_marks": {
+          "insert_rank_col_name": "cols.science_rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : false
+        },
+        "cols.curr_social_marks": {
+          "insert_rank_col_name": "cols.social_rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : false
+        },
+        "cols.curr_avg_marks": {
+          "insert_rank_col_name": "cols.rank_dist",
+          "index_from_col": 2,
+          "ascending": false,
+          "rank_frac" : false
+        }
+      },
+      "format_configs": {
+        "cols_to_drop": [
+          "cols.district_name", "cols.prev_lang_marks", "cols.prev_eng_marks",
+          "cols.prev_science_marks", "cols.prev_social_marks", "cols.prev_pass_perc",
+          "cols.curr_pass", "cols.prev_avg_marks", "cols.prev_math_marks"
+        ],
+        "cols_to_rename" : {
+          "cols.curr_tot_stu" : "cols.tot_students",
+          "cols.curr_pass_perc" : "cols.brd_pass_perc_med",
+          "Pass %_curr_yr_difference" : "cols.brd_pass_perc_cmp_lst_yr",
+          "cols.curr_avg_marks" : "cols.brd_med_avg_mrks",
+          "avg_median_curr_yr_difference" : "cols.brd_avg_cmp_lst_yr",
+          "cols.curr_lang_marks" : "cols.brd_med_lang_mrks",
+          "language_median_curr_yr_difference" : "cols.brd_lang_cmp_lst_yr",
+          "cols.curr_eng_marks" : "cols.brd_med_eng_mrks",
+          "english_median_curr_yr_difference" : "cols.brd_eng_cmp_lst_yr",
+          "cols.curr_math_marks" : "cols.brd_med_math_mrks",
+          "maths_median_curr_yr_difference" : "cols.brd_math_cmp_lst_yr",
+          "cols.curr_science_marks" : "cols.brd_med_science_mrks",
+          "science_median_curr_yr_difference" : "cols.brd_science_cmp_lst_yr",
+          "cols.curr_social_marks" : "cols.brd_med_social_mrks",
+          "social_median_curr_yr_difference" : "cols.brd_social_cmp_lst_yr"
+
+        },
+        "cols_order" : [
+          "cols.block_name", "cols.udise_col", "cols.school_name",
+          "cols.tot_students", "cols.brd_pass_perc_med", "cols.brd_pass_perc_cmp_lst_yr",
+          "cols.brd_med_avg_mrks", "cols.brd_avg_cmp_lst_yr",
+          "cols.rank_state", "cols.rank_dist",
+          "cols.curr_school_performance", "cols.prev_school_performance", 
+          "cols.brd_med_lang_mrks", "cols.brd_lang_cmp_lst_yr", 
+          "cols.lang_rank_state", "cols.lang_rank_dist",
+          "cols.brd_med_eng_mrks", "cols.brd_eng_cmp_lst_yr", 
+          "cols.eng_rank_state", "cols.eng_rank_dist",
+          "cols.brd_med_math_mrks", "cols.brd_math_cmp_lst_yr", 
+          "cols.math_rank_state", "cols.math_rank_dist",
+          "cols.brd_med_science_mrks", "cols.brd_science_cmp_lst_yr", 
+          "cols.science_rank_state", "cols.science_rank_dist",
+          "cols.brd_med_social_mrks", "cols.brd_social_cmp_lst_yr", 
+          "cols.social_rank_state", "cols.social_rank_dist"
+        ],
+        "cols_headers_to_be_appended_w_no_of_state_ranks" : [
+          "cols.rank_state", 
+          "cols.lang_rank_state",
+          "cols.eng_rank_state",
+          "cols.math_rank_state",
+          "cols.science_rank_state",
+          "cols.social_rank_state"
+        ],
+        "cols_headers_to_be_appended_w_no_of_dist_ranks" : [
+          "cols.rank_dist",
+          "cols.lang_rank_dist",
+          "cols.eng_rank_dist",
+          "cols.math_rank_dist",
+          "cols.science_rank_dist",
+          "cols.social_rank_dist"
+        ],
+        "format_dicts_list" : [
+          {
+            "description" : "Add green up, yellow same, red down arrows to indicate comparative performance",
+            "columns" : [
+                          "cols.brd_pass_perc_cmp_lst_yr", 
+                          "cols.brd_avg_cmp_lst_yr",
+                          "cols.brd_lang_cmp_lst_yr",
+                          "cols.brd_eng_cmp_lst_yr",
+                          "cols.brd_math_cmp_lst_yr", 
+                          "cols.brd_science_cmp_lst_yr",
+                          "cols.brd_social_cmp_lst_yr"
+                        ],
+            "conditional_format_flag" : true,
+            "conditional_format" : {
+                        "type" : "icon_set",
+                        "icon_style": "3_arrows",
+                        "icons": [
+                            {"criteria": ">", "type": "number", "value": "0"},
+                            {"criteria": "==,", "type": "number", "value": "0"}
+                        ]
+                      }
+          },
+          {
+            "description" : "Highlight cells that have 'good' values",
+            "columns" : ["cols.curr_school_performance", "cols.prev_school_performance"],
+            "conditional_format_flag" : true,
+            "conditional_format" : {
+                        "type" : "cell",
+                        "criteria": "equal to",
+                        "value" : "\"Good\""
+                      },
+            "format": {
+              "bg_color" : "#21bf43",
+              "border" : 1
+            }
+
+          },
+          {
+            "description" : "Highlight cells that have 'satisfactory' values",
+            "columns" : ["cols.curr_school_performance", "cols.prev_school_performance"],
+            "conditional_format_flag" : true,
+            "conditional_format" : {
+                        "type" : "cell",
+                        "criteria": "equal to",
+                        "value" : "\"Satisfactory\""
+                      },
+            "format": {
+              "bg_color" : "#cbf23b",
+              "border" : 1
+            }
+
+          },
+          {
+            "description" : "Highlight cells that have needs 'improvement' values",
+            "columns" : ["cols.curr_school_performance", "cols.prev_school_performance"],
+            "conditional_format_flag" : true,
+            "conditional_format" : {
+                        "type" : "cell",
+                        "criteria": "equal to",
+                        "value" : "\"Needs Improvement\""
+                      },
+            "format": {
+              "bg_color" : "#bebb0b",
+              "border" : 1
+            }
+
+          },
+          {
+            "description" : "Highlight cells that have 'poor' values",
+            "columns" : ["cols.curr_school_performance", "cols.prev_school_performance"],
+            "conditional_format_flag" : true,
+            "conditional_format" : {
+                        "type" : "cell",
+                        "criteria": "equal to",
+                        "value" : "\"Poor\""
+                      },
+            "format": {
+              "bg_color" : "#d56416",
+              "border" : 1
+            }
+
+          },
+          {
+            "description" : "Highlight values in comparison columns that are positively very high",
+            "columns" : [
+                          "cols.brd_pass_perc_cmp_lst_yr", "cols.brd_avg_cmp_lst_yr",
+                          "cols.brd_lang_cmp_lst_yr", "cols.brd_eng_cmp_lst_yr",
+                          "cols.brd_math_cmp_lst_yr", "cols.brd_science_cmp_lst_yr",
+                          "cols.brd_social_cmp_lst_yr"
+                        ],
+            "conditional_format_flag" : true,
+            "conditional_format" : {
+                        "type" : "cell",
+                        "criteria": ">",
+                        "value" : 20
+                      },
+            "format": {
+              "bg_color" : "#0dc9a1",
+              "border" : 1
+            }
+          },
+          {
+            "description" : "Highlight values in comparison columns that are positively high",
+            "columns" : [
+                          "cols.brd_pass_perc_cmp_lst_yr", "cols.brd_avg_cmp_lst_yr",
+                          "cols.brd_lang_cmp_lst_yr", "cols.brd_eng_cmp_lst_yr",
+                          "cols.brd_math_cmp_lst_yr", "cols.brd_science_cmp_lst_yr",
+                          "cols.brd_social_cmp_lst_yr"
+                        ],
+            "conditional_format_flag" : true,
+            "conditional_format" : {
+                        "type" : "cell",
+                        "criteria": ">",
+                        "value" : 10
+                      },
+            "format": {
+              "bg_color" : "#0af5c3",
+              "border" : 1
+            }
+          },
+          {
+            "description" : "Highlight values in comparison columns that are negatively very high",
+            "columns" : [
+                          "cols.brd_pass_perc_cmp_lst_yr", "cols.brd_avg_cmp_lst_yr",
+                          "cols.brd_lang_cmp_lst_yr", "cols.brd_eng_cmp_lst_yr",
+                          "cols.brd_math_cmp_lst_yr", "cols.brd_science_cmp_lst_yr",
+                          "cols.brd_social_cmp_lst_yr"
+                        ],
+            "conditional_format_flag" : true,
+            "conditional_format" : {
+                        "type" : "cell",
+                        "criteria": "<",
+                        "value" : -20
+                      },
+            "format": {
+              "bg_color" : "#e37224"
+            }
+          },
+          {
+            "description" : "Highlight values in comparison columns that are negatively high",
+            "columns" : [
+                          "cols.brd_pass_perc_cmp_lst_yr", "cols.brd_avg_cmp_lst_yr",
+                          "cols.brd_lang_cmp_lst_yr", "cols.brd_eng_cmp_lst_yr",
+                          "cols.brd_math_cmp_lst_yr", "cols.brd_science_cmp_lst_yr",
+                          "cols.brd_social_cmp_lst_yr"
+                        ],
+            "conditional_format_flag" : true,
+            "conditional_format" : {
+                        "type" : "cell",
+                        "criteria": "<",
+                        "value" : -10
+                      },
+            "format": {
+              "bg_color" : "#faa14d",
+              "border" : 1
+            }
+          }
+        ]
+      }
+      
+    },
+    {
+      "report_name": "12th_board_dist_lvl_report_card",
+      "report_code" : "12TH_BRD_DIST_LVL_RPT_CARD",
+      "report_desc": "Configuration to generate district level reports for 12th board results",
+      "source_config": {
+        "sources": [
+          {
+            "source_name" : "curr_yr_data",
+            "source_file_name": "12th_board_stu_subj_wise_data_22_23.xlsx",
+            "source_sheet_name": "raw_data",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "prev_yr_data",
+            "source_file_name": ".xlsx",
+            "source_sheet_name": "raw_data",
+            "skip_rows": 0
+          }
+
+        ]
+      },
+      "grouping_levels": ["cols.district_name", "cols.block_name", "cols.udise_col", "cols.school_name"],
+      "subjects": {
+        "main_group": [
+          "ECONOMICS",
+          "PHYSICS",
+          "CHEMISTRY",
+          "MATHEMATICS",
+          "BIOLOGY",
+          "BOTANY",
+          "ZOOLOGY",
+          "COMMERCE",
+          "ACCOUNTANCY",
+          "BUSINESS MATHEMATICS AND STATISTICS",
+          "COMPUTER APPLICATIONS",
+          "COMPUTER SCIENCE"
+        ],
+        "arts_group": [
+          "GEOGRAPHY",
+          "COMMUNICATIVE ENGLISH",
+          "HISTORY",
+          "POLITICAL SCIENCE",
+          "ETHICS AND INDIAN CULTURE",
+          "ADVANCED LANGUAGE(TAMIL)"
+        ],
+        "vocational_group": [
+          "NURSING GENERAL",
+          "HOME SCIENCE",
+          "BASIC MECHANICAL ENGINEERING - THEORY",
+          "BASIC MECHANICAL ENGINEERING",
+          "BASIC ELECTRICAL ENGINEERING - THEORY",
+          "BASIC ELECTRICAL ENGINEERING",
+          "BASIC ELECTRONICS ENGINEERING - THEORY",
+          "BASIC ELECTRONICS ENGINEERING",
+          "BASIC CIVIL ENGINEERING - THEORY",
+          "BASIC CIVIL ENGINEERING",
+          "BASIC AUTOMOBILE ENGINEERING - THEORY",
+          "BASIC AUTOMOBILE ENGINEERING",
+          "TEXTILE TECHNOLOGY  - THEORY",
+          "TEXTILE TECHNOLOGY",
+          "NURSING - THEORY",
+          "NURSING",
+          "TEXTILES AND DRESS DESIGNING - THEORY",
+          "TEXTILES AND DRESS DESIGNING",
+          "FOOD SERVICE MANAGEMENT - THEORY",
+          "FOOD SERVICE MANAGEMENT",
+          "COMPUTER TECHNOLOGY",
+          "AGRICULTURAL SCIENCE- THEORY",
+          "AGRICULTURAL SCIENCE",
+          "OFFICE MANAGEMENT AND SECRETARYSHIP - THEORY",
+          "TYPOGRAPHY AND COMPUTER APPLICATIONS",
+          "AUDITING"
+        ],
+        "others_group": [
+          "BIO-CHEMISTRY",
+          "MICRO-BIOLOGY",
+          "NUTRITION & DIETETICS",
+          "STATISTICS"
+        ]
+      },
+      "sub_mark": {
+        "SUBNAME_B3": "BMARK3",
+        "SUBNAME_B4": "BMARK4",
+        "SUBNAME_B5": "BMARK5",
+        "SUBNAME_B6": "BMARK6"
+      },
+      "agg_dict": {
+        "cols.tot_stu": "count",
+        "cols.stu_pass": "sum",
+        "cols.lang_marks": "median",
+        "cols.eng_marks": "median",
+        "cols.tot_marks": "median"
+      }
+
+    }
+  ]
+}

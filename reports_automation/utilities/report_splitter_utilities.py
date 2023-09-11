@@ -30,7 +30,7 @@ def split_report(df_report, column_to_split_on):
 
     return split_data_dict
 
-def save_split_report(split_df_data,dir_name):
+def save_split_report(split_df_data, dir_name):
     """
     Function to save the multiple dataframes in a dictionary to an Excel files
 

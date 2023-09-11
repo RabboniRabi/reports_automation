@@ -428,6 +428,7 @@ cg_ecnom_supp_need = 'Economic Support Needed'
 brd_tot_stu_appr = 'No. of students who appeared for all subjects'
 brd_tot_stu_pass = 'No. of students passed'
 brd_pass_perc = 'Pass %'
+brd_pass_perc_med = 'Median Pass %'
 brd_avg_marks = 'Average marks'
 brd_marks_30_to_60_count = 'Students who secured marks between 35% to 60%'
 brd_marks_60_to_80_count = 'Students who secured marks between 60% to 80%'
@@ -450,19 +451,66 @@ eng_rank_dist = 'English Rank in District'
 math_rank_dist = 'Mathematics Rank in District'
 science_rank_dist = 'Science Rank in District'
 social_rank_dist = 'Social Rank in District'
-school_performance = "Overall School Performance"
-lang_average_marks = "lang_average_marks"
-eng_average_marks = "eng_average_marks"
-math_average_marks = "math_average_marks"
-science_average_marks = "science_average_marks"
-social_average_marks = "social_average_marks"
+curr_school_performance = "Overall School Performance"
+prev_school_performance = 'Previous Year Overall School Performance'
+group_code = 'group_code'
+mark_3 = 'BMARK3'
+mark_4 = 'BMARK4'
+mark_5 = 'BMARK5'
+mark_6 = 'BMARK6'
+tot_stu = 'EMIS_NO'
+stu_pass = 'Pass'
+pass_perc = 'Pass %'
+tot_marks = 'total'
+lang_marks = 'language'
+eng_marks = 'english'
+math_marks = 'maths'
+science_marks = 'science'
+social_marks = 'social'
+curr_tot_stu = "EMIS_NO_count_curr_yr"
+curr_pass = 'Pass_sum_curr_yr'
+curr_pass_perc = 'Pass %_curr_yr'
+curr_tot_marks = "total_median_curr_yr"
+curr_avg_marks = "avg_median_curr_yr"
+curr_lang_marks = "language_median_curr_yr"
+curr_eng_marks = "english_median_curr_yr"
+curr_math_marks = "maths_median_curr_yr"
+curr_science_marks = "science_median_curr_yr"
+curr_social_marks = "social_median_curr_yr"
+prev_tot_stu = "EMIS_NO_count_prv_yr"
+prev_pass = 'Pass_sum_prv_yr'
+prev_pass_perc = 'Pass %_prv_yr'
+prev_tot_marks = "total_median_prv_yr"
+prev_avg_marks = "avg_median_prv_yr"
+prev_lang_marks = "language_median_prv_yr"
+prev_eng_marks = "english_median_prv_yr"
+prev_math_marks = "maths_median_prv_yr"
+prev_science_marks = "science_median_prv_yr"
+prev_social_marks = "social_median_prv_yr"
+brd_pass_perc_cmp_lst_yr = 'Pass % compared to last year'
+brd_avg_cmp_lst_yr = 'Student Average marks compared to last year'
+brd_lang_cmp_lst_yr = 'Language marks compared to last year'
+brd_eng_cmp_lst_yr = 'English marks compared to last year'
+brd_math_cmp_lst_yr = 'Mathematics marks compared to last year'
+brd_social_cmp_lst_yr = 'Social marks compared to last year'
+brd_science_cmp_lst_yr = 'Science marks compared to last year'
+brd_med_avg_mrks = 'Median of student Average marks'
+brd_med_lang_mrks = "Median Language mark"
+brd_med_eng_mrks = "Median English mark"
+brd_med_math_mrks = "Median Mathematics mark"
+brd_med_science_mrks = "Median Science mark"
+brd_med_social_mrks = "Median Social mark"
+
 
 
 def get_value(var_name: str):
     """
-    Function to get the value mapped to the variable defined here.
-    This function is used to fetch the value when the 
-    variable name gets coverted to string (when reading from JSON)
+    Function to get the value mapped to the variable defined in this file.
+    This resolution of variable name to value is necessary as variables
+    defined in JSON dont automatically get resolved to the value assigned to it
+    when read in Python.
+
+    If the value doesnt exist, the given variable name is returned as is.
     
     Parameters:
     ----------
@@ -478,8 +526,11 @@ def get_value(var_name: str):
         var_name = var_name.removeprefix(module_import_name)
     
     # Get the value mapped to the variable
-    value = globals()[var_name]
-    return value
+    try:
+        value = globals()[var_name]
+        return value
+    except KeyError:
+        return var_name
 
 def get_values(var_names_list: list):
     """
@@ -541,7 +592,7 @@ def update_dictionary(var_names_dict: dict):
     Parameters:
     -----------
     var_names_dict: dict
-        Dictionary whose keys and values (which are strings of variables) might need to be updated with
+        Dictionary whose keys and values contain variables declared in this script and need to be updated with
         the values of the variable names
     
     Returns:
@@ -559,18 +610,55 @@ def update_dictionary(var_names_dict: dict):
             updated_key = get_value(key)
 
             if col_utility_prefix in dict_key_value:
-                updated_value = get_value(dict_key_value)
-                updated_dict[updated_key] = updated_value
+                if type(dict_key_value) is str:
+                    updated_value = get_value(dict_key_value)
+                    updated_dict[updated_key] = updated_value
+                elif type(dict_key_value) is list:
+                    updated_value = get_values(dict_key_value)
+                    updated_dict[updated_key] = updated_value
             # Set the updated key-value pair
             else:
                 updated_dict[updated_key] = dict_key_value
-        elif col_utility_prefix in var_names_dict[key]:
-            updated_value = get_value(dict_key_value)
+        # else if value is a string containing 'cols.' prefix, update the value
+        elif type(var_names_dict[key]) is str and col_utility_prefix in var_names_dict[key]:
+            updated_value = get_value(var_names_dict[key])
+            updated_dict[key] = updated_value
+        # else if value is a list with elements containing 'cols.' prefix, update the values
+        elif type(var_names_dict[key]) is list and col_utility_prefix in var_names_dict[key][0]:
+            updated_value = get_values(var_names_dict[key])
             updated_dict[key] = updated_value
         else:
             # Nothing to update
-            updated_dict[key] = dict_key_value
-
-
+            updated_dict[key] = var_names_dict[key]
 
     return updated_dict
+
+
+
+def update_nested_dictionaries(var_names_dict: dict):
+    """
+    Function to update the keys & values in a given dictionary and it's nested dictionaries.
+    If the keys and values are strings of variable names, they will be updated
+    by mapping to the value assigned to the variable names.
+
+    Parameters:
+    -----------
+    var_names_dict: dict
+        Dictionary whose keys and values contain variables declared in this script and need to be updated with
+        the values of the variable names
+
+    Returns:
+    -------
+    The updated dictionary
+    """
+
+    fully_updated_dict = update_dictionary(var_names_dict)
+
+    for key in fully_updated_dict:
+        if type(fully_updated_dict[key]) is dict:
+            # Recursively call update_nested_dictionaries
+            fully_updated_dict[key] = update_nested_dictionaries(fully_updated_dict[key])
+        else:
+            fully_updated_dict = update_dictionary(fully_updated_dict)
+
+    return fully_updated_dict

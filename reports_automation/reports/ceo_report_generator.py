@@ -8,9 +8,8 @@ sys.path.append('../')
 import utilities.report_utilities as report_utilities
 import utilities.file_utilities as file_utilities
 import utilities.review_view_utilities as review_view_utilities
-import utilities.update_variable_names_utilities as update_variable_names_utilities
-import data_fetcher
-import config_reader
+import readers.data_fetcher as data_fetcher
+import readers.config_reader as config_reader
 import utilities.column_names_utilities as cols
 import importlib
 
@@ -46,7 +45,7 @@ def get_ceo_report_raw_data(report_config: dict, save_source=False):
         sys.exit('No report configuration found. Cannot generate the report!')
 
     # Update the variable names in the report config JSON
-    update_variable_names_utilities.update_ceo_review_config_dict(report_config)
+    report_config = cols.update_nested_dictionaries(report_config)
 
     # Get the source configuration
     source_config = report_config['source_config']
@@ -130,6 +129,9 @@ def get_ceo_report(report_config: dict, school_level, report_level, save_source=
     The generated CEO report as a Pandas DataFrame object.
     """
 
+    # Update the variable names in the report config JSON
+    config = cols.update_nested_dictionaries(config)
+
     # Get the raw data merged with the BRC-CRC mapping
     df_data = get_ceo_report_raw_data(report_config, save_source)
 
@@ -185,9 +187,12 @@ def generate_all(generate_fresh: bool = True):
         Flag to indicate if all reports for the month needed need to be generated fresh.
         Default is True. If False, already generated reports for the month are ignored.
     """
-    active_configs = config_reader.get_all_active_configs(config_reader.ceo_review_config_files)
+    active_configs = config_reader.get_all_active_ceo_review_configs()
 
     for config in active_configs:
+
+        # Update the variable names in the report config JSON
+        config = cols.update_nested_dictionaries(config)
 
         report_name = config['report_name']
 
