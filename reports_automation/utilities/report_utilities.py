@@ -79,7 +79,7 @@ def get_brc_master(sheet_name=brc_master_sheet_name):
     return brc_master
 
 
-def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_category):
+def get_elem_ranked_report(df_summary, ranking_config, metric_code, metric_category):
 
     """
     Function create and return the elementary ranked report on given data by calculating
@@ -92,17 +92,43 @@ def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_ca
 
     df_summary: Pandas DataFrame
         The raw processed, summarised and ready for ranking
-    ranking_args_dict: dict
+    ranking_config: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
-        Eg: ranking_args_dict = {
-        ranking_type' : 'percent_ranking',
-        'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
-        'ranking_val_desc' : '% moved to CP',
-        'num_col' : 'class_1',
-        'den_col' : 'Total',
-        'sort' : True, 
-        'ascending' : False
-        }
+        Eg:
+            'ranking_config' : {
+                'ranking_args': {
+                    'ranking_type' : 'percent_ranking',
+                    'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
+                    'ranking_val_desc' : '% moved to CP',
+                    'num_col' : 'class_1',
+                    'den_col' : 'Total',
+                    'sort' : true,
+                    'ascending' : false,
+                    '// Below configs are to be used' : '//if data is to be ranked directly without grouping',
+                    '// Below configs are ignored' :  '//if data_ranking_levels config is present',
+                    'show_rank_col' : true/false,
+                    'rank_col_name' : 'to be given if show_rank_col is true',
+                    'show_rank_val: : true/false,
+                    'ranking_val_desc' : 'to be given if show_rank_val is true'
+                }
+                '//Below data ranking levels are optional' : '//To be used if data is to be grouped and ranked'
+                'data_ranking_levels' : {
+                    'deo_level' : {
+                        'grouping_levels' : ['cols.deo_name'],
+                        'show_rank_col' : true,
+                        'rank_col_name' : 'cols.deo_elem_rank',
+                        'show_rank_val' : false,
+                        '//ranking_val_desc is not needed' : '//as show_rank_val flag is false
+                    },
+                    'block_level' : {
+                        'grouping_levels' : ['cols.deo_name', 'cols.block_name'],
+                        'show_rank_col': false,
+                        '//rank_col_name is not needed' : '//as show_rank_col flag is false
+                        'show_rank_val' : true,
+                        'ranking_val_desc' : 'cols.perc_screened'
+                    }
+                }
+            } 
     metric_code: str
         The code of the metric on which the data is ranked
     metric_category: str
@@ -115,37 +141,21 @@ def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_ca
         # Drop the school level column as it will no longer be needed
         df_summary.drop(columns=[cols.school_level],axis=1, inplace=True)                     
 
-    # Get the ranking for the BEOs
-    #beo_ranking = ranking_utilities.calc_ranking(df_summary, beo_ranking_group_cols, ranking_args_dict)
+    # Get Elementary report, ranked
+    elem_ranked_report = ranking_utilities.calc_ranking(df_summary, ranking_config)
 
     # Make a copy of the ranking to update master sheet
-    #beo_ranking_for_master = beo_ranking.copy()
-
-    # Update the BEO ranked data with designation
-    #beo_ranking_for_master[cols.desig] = 'BEO'
-
-    # Rename the BEO name column
-    #beo_ranking_for_master.rename(columns={cols.beo_name: cols.name, cols.district_name: cols.district}, inplace = True)
-
-    # Update the master ranking with the BEO ranking
-    #ranking_utilities.update_ranking_master(beo_ranking_for_master, metric_code, metric_category, 'Elementary')
-
-
-    deo_elm_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols, ranking_args_dict)
-
-
-
-    # Make a copy of the ranking to update master sheet
-    deo_elm_ranking_for_master = deo_elm_ranking.copy()
+    deo_elm_ranking_for_master = elem_ranked_report.copy()
 
     # Update the DEO ranked data with designation
-    deo_elm_ranking_for_master[cols.desig] = 'DEO'
+    #deo_elm_ranking_for_master[cols.desig] = 'DEO'
 
     # Rename the DEO name column
-    deo_elm_ranking_for_master.rename(columns={cols.deo_name_elm: cols.name}, inplace = True)
+    #deo_elm_ranking_for_master.rename(columns={cols.deo_name_elm: cols.name}, inplace = True)
 
-    # Update the master ranking with the BEO ranking
-    ranking_utilities.update_ranking_master(deo_elm_ranking_for_master, metric_code, metric_category, 'Elementary')
+    # Update the master ranking with the DEO ranking
+    ranking_val_desc = ranking_config['block_level']['ranking_val_desc']
+    ranking_utilities.update_deo_ranking_master(deo_elm_ranking_for_master, metric_code, metric_category, 'Elementary', ranking_val_desc)
 
     # Merge the data with the ranks
 
@@ -155,17 +165,17 @@ def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_ca
     #beo_ranking.rename(columns={cols.rank_col: cols.beo_rank}, inplace=True)
 
     # Take only subset columns of DEO ranked data
-    deo_elm_ranking = deo_elm_ranking[[cols.deo_name_elm, cols.rank_col]]
+    #deo_elm_ranking = deo_elm_ranking[[cols.deo_name_elm, cols.rank_col]]
     # Rename the rank column
-    deo_elm_ranking.rename(columns={cols.rank_col: cols.deo_elem_rank}, inplace=True)
+    #deo_elm_ranking.rename(columns={cols.rank_col: cols.deo_elem_rank}, inplace=True)
 
     # Since the ranking values will be grouped to beo level, the ranking values of each individual row
     # of data before being grouped and ranked is missed. That data will be more useful for review.
     # That data is inserted here. Not a clean way of doing things. Yes.
-    data_level_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols + [cols.block_name], ranking_args_dict)
+    """data_level_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols + [cols.block_name], ranking_args_dict)
 
     # Drop the ranking value and ranking description column
-    data_level_ranking.drop(columns={cols.rank_col, cols.ranking_value_desc}, inplace=True)
+    data_level_ranking.drop(columns={cols.rank_col, cols.ranking_value_desc}, inplace=True)"""
 
 
     # Add the data level ranking value
@@ -177,28 +187,28 @@ def get_elem_ranked_report(df_summary, ranking_args_dict, metric_code, metric_ca
 
     # Replace the two lines below with the three lines above when beo ranking is enabled
     # Add the data level ranking value
-    elementary_report = pd.merge(df_summary, data_level_ranking[[cols.block_name, cols.deo_name_elm, \
+    """elementary_report = pd.merge(df_summary, data_level_ranking[[cols.block_name, cols.deo_name_elm, \
             cols.ranking_value]], on=[cols.deo_name_elm, cols.block_name])
 
-    elementary_report = pd.merge(elementary_report, deo_elm_ranking, on=[cols.deo_name_elm])
+    elementary_report = pd.merge(elementary_report, deo_elm_ranking, on=[cols.deo_name_elm])"""
     
 
     # Rename the name of the column: ranking value to description of the ranking value
-    elementary_report.rename(columns = {cols.ranking_value: ranking_args_dict['ranking_val_desc']}, inplace=True)
+    #elementary_report.rename(columns = {cols.ranking_value: ranking_args_dict['ranking_val_desc']}, inplace=True)
 
     # Sort the data by district and rank
     #elementary_report.sort_values(by=[cols.deo_elem_rank, cols.deo_name_elm, cols.beo_rank], ascending=True, inplace=True)
     # Replace the line above with the line below when beo ranking is done
-    elementary_report.sort_values(by=[cols.deo_elem_rank, cols.deo_name_elm], ascending=True, inplace=True)
+    elem_ranked_report.sort_values(by=[cols.deo_elem_rank, cols.deo_name_elm], ascending=True, inplace=True)
 
 
     # Drop duplicate columns
-    elementary_report = elementary_report.T.drop_duplicates().T
+    elem_ranked_report = elem_ranked_report.T.drop_duplicates().T
 
-    return elementary_report
+    return elem_ranked_report
 
 
-def get_sec_ranked_report(df_summary, ranking_args_dict, metric_code, metric_category):
+def get_sec_ranked_report(df_summary, ranking_config, metric_code, metric_category):
     """
     Function create and return the ranked secondary report on given data by calculating
     the DEO (Secondary) ranking and updating the data.
@@ -210,17 +220,43 @@ def get_sec_ranked_report(df_summary, ranking_args_dict, metric_code, metric_cat
 
     df_summary: Pandas DataFrame
         The raw processed, summarised and ready for ranking
-    ranking_args_dict: dict
+    ranking_config: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
-        Eg: ranking_args_dict = {
-        ranking_type' : 'percent_ranking',
-        'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
-        'ranking_val_desc' : '% moved to CP',
-        'num_col' : 'class_1',
-        'den_col' : 'Total',
-        'sort' : True, 
-        'ascending' : False
-        }
+        Eg:
+            'ranking_config' : {
+                'ranking_args': {
+                    'ranking_type' : 'percent_ranking',
+                    'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
+                    'ranking_val_desc' : '% moved to CP',
+                    'num_col' : 'class_1',
+                    'den_col' : 'Total',
+                    'sort' : true,
+                    'ascending' : false,
+                    '// Below configs are to be used' : '//if data is to be ranked directly without grouping',
+                    '// Below configs are ignored' :  '//if data_ranking_levels config is present',
+                    'show_rank_col' : true/false,
+                    'rank_col_name' : 'to be given if show_rank_col is true',
+                    'show_rank_val: : true/false,
+                    'ranking_val_desc' : 'to be given if show_rank_val is true'
+                }
+                '//Below data ranking levels are optional' : '//To be used if data is to be grouped and ranked'
+                'data_ranking_levels' : {
+                    'deo_level' : {
+                        'grouping_levels' : ['cols.deo_name'],
+                        'show_rank_col' : true,
+                        'rank_col_name' : 'cols.deo_elem_rank',
+                        'show_rank_val' : false,
+                        '//ranking_val_desc is not needed' : '//as show_rank_val flag is false
+                    },
+                    'block_level' : {
+                        'grouping_levels' : ['cols.deo_name', 'cols.block_name'],
+                        'show_rank_col': false,
+                        '//rank_col_name is not needed' : '//as show_rank_col flag is false
+                        'show_rank_val' : true,
+                        'ranking_val_desc' : 'cols.perc_screened'
+                    }
+                }
+            } 
     metric_code: str
         The code of the metric on which the data is ranked
     metric_category: str
@@ -233,24 +269,25 @@ def get_sec_ranked_report(df_summary, ranking_args_dict, metric_code, metric_cat
         # Drop the school level column as it will no longer be needed
         df_summary.drop(columns=[cols.school_level], inplace=True)
 
-    # Get the ranking for the secondary DEOs
-    deo_sec_ranking = ranking_utilities.calc_ranking(df_summary, deo_secnd_ranking_group_cols, ranking_args_dict)
+    # Get secondary report, ranked
+    sec_ranked_report = ranking_utilities.calc_ranking(df_summary, ranking_config)
 
     # Make a copy of the ranking to update master sheet
-    deo_sec_ranking_for_master = deo_sec_ranking.copy()
+    deo_sec_ranking_for_master = sec_ranked_report.copy()
 
     # Update the DEO ranked data with designation
-    deo_sec_ranking_for_master[cols.desig] = 'DEO'
+    #deo_sec_ranking_for_master[cols.desig] = 'DEO'
 
     # Rename the DEO name column
-    deo_sec_ranking_for_master.rename(columns={cols.deo_name_sec: cols.name, cols.district_name: cols.district}, inplace = True)
+    #deo_sec_ranking_for_master.rename(columns={cols.deo_name_sec: cols.name, cols.district_name: cols.district}, inplace = True)
 
-    # Update the master ranking with the DEOs ranking
-    ranking_utilities.update_ranking_master(deo_sec_ranking_for_master, metric_code, metric_category, 'Secondary')
+    # Update the master ranking with the DEO ranking
+    ranking_val_desc = ranking_config['block_level']['ranking_val_desc']
+    ranking_utilities.update_deo_ranking_master(deo_sec_ranking_for_master, metric_code, metric_category, 'Secondary', ranking_val_desc)
 
     #secondary_report = pd.append([report_summary, deo_sec_ranking], axis=1)
 
-    # Take only subset columns of DEO ranked data
+    """# Take only subset columns of DEO ranked data
     deo_sec_ranking = deo_sec_ranking[[cols.deo_name_sec, cols.rank_col]]
     # Rename the rank column
     deo_sec_ranking.rename(columns={cols.rank_col: cols.deo_sec_rank}, inplace=True)
@@ -269,15 +306,15 @@ def get_sec_ranked_report(df_summary, ranking_args_dict, metric_code, metric_cat
     secondary_report.rename(columns = {cols.ranking_value: ranking_args_dict['ranking_val_desc']}, inplace=True)
 
     # Add the DEO level ranks
-    secondary_report = pd.merge(secondary_report, deo_sec_ranking, on=[cols.deo_name_sec])
+    secondary_report = pd.merge(secondary_report, deo_sec_ranking, on=[cols.deo_name_sec])"""
 
     # Sort the data by district and rank
-    secondary_report.sort_values(by=[cols.deo_sec_rank, cols.deo_name_sec], ascending=True, inplace=True)
+    sec_ranked_report.sort_values(by=[cols.deo_sec_rank, cols.deo_name_sec], ascending=True, inplace=True)
 
     # Drop duplicate columns
-    secondary_report = secondary_report.T.drop_duplicates().T
+    sec_ranked_report = sec_ranked_report.T.drop_duplicates().T
 
-    return secondary_report
+    return sec_ranked_report
 
 
 

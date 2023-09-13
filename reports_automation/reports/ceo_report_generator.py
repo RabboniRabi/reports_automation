@@ -332,7 +332,7 @@ def _generate_elem_report(ceo_rpt_raw_data, elem_report_config:dict, report_name
     # Check if ranking is required in report
     if report_level == ceo_report_levels.RANKED.value or report_level == ceo_report_levels.RANKED:
         # Generate ranking and update report
-        ranking_dict = elem_report_config['ranking_args']
+        ranking_dict = elem_report_config['ranking_config']
         # Get the elementary ranked report
         report = report_utilities.get_elem_ranked_report(report, ranking_dict, metric_code, metric_category)
 
@@ -388,7 +388,7 @@ def _generate_sec_report(ceo_rpt_raw_data, sec_report_config:dict, report_name, 
     # Check if ranking is required in report
     if report_level == ceo_report_levels.RANKED.value or report_level == ceo_report_levels.RANKED:
         # Generate ranking and update report
-        ranking_dict = sec_report_config['ranking_args']
+        ranking_dict = sec_report_config['ranking_config']
         # Get the secondary ranked report
         report = report_utilities.get_sec_ranked_report(report, ranking_dict, metric_code, metric_category)
 
