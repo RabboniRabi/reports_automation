@@ -6,6 +6,7 @@ from datetime import datetime
 
 import pandas as pd
 
+
 def get_today_date():
     """
     Function to return a string representation of the current day's date
@@ -17,7 +18,7 @@ def get_today_date():
     return datetime.now().strftime('%d-%m-%y')
 
 
-def xlookup(lookup_value, lookup_array, return_array, if_not_found = ''):
+def xlookup(lookup_value, lookup_array, return_array, if_not_found=''):
     """
     Function to perform the XLOOKUP function in Excel
     """
@@ -27,6 +28,7 @@ def xlookup(lookup_value, lookup_array, return_array, if_not_found = ''):
 
     else:
         return match_value.tolist()[0]
+
 
 def filter_dataframe_column(df, column_name, values_in):
     """
@@ -46,6 +48,7 @@ def filter_dataframe_column(df, column_name, values_in):
     df_filtered = df[df[column_name].isin(values_in)]
     return df_filtered
 
+
 def filter_dataframe_not_in_column(df, column_name, values_in):
     """
     Function to filter a data frame for columns values other than those given
@@ -64,6 +67,7 @@ def filter_dataframe_not_in_column(df, column_name, values_in):
     df_filtered = df[~df[column_name].isin(values_in)]
     return df_filtered
 
+
 def filter_column_le(df, column_name, threshold_value):
     """
     Function to filter a dataframe object by values less than or equal to given threshold value
@@ -79,7 +83,7 @@ def filter_column_le(df, column_name, threshold_value):
     -------
     The filtered Pandas DataFrame object   
     """
-    df_filtered = df[df[column_name].le(threshold_value)]       
+    df_filtered = df[df[column_name].le(threshold_value)]
     return df_filtered
 
 
@@ -98,8 +102,9 @@ def filter_column_ge(df, column_name, threshold_value):
     -------
     The filtered Pandas DataFrame object   
     """
-    df_filtered = df[df[column_name].ge(threshold_value)]       
+    df_filtered = df[df[column_name].ge(threshold_value)]
     return df_filtered
+
 
 def columns_subset(df, columns):
     """
@@ -118,6 +123,7 @@ def columns_subset(df, columns):
     for column in columns:
         df_subset[column] = df[column]
     return df_subset
+
 
 def pivot_table_w_subtotals(df, values, indices, columns, aggfunc, fill_value):
     """
@@ -143,21 +149,23 @@ def pivot_table_w_subtotals(df, values, indices, columns, aggfunc, fill_value):
     Flat table with data aggregrated and tabulated
     """
     listOfTable = []
-    subtotal_name_cols = 0 # The column index where cell values are appended with the string: total (To indicate subtotals)
+    subtotal_name_cols = 0  # The column index where cell values are appended with the string: total (To indicate subtotals)
     for indexNumber in range(len(indices)):
         n = indexNumber + 1
         # Pivot on subset of indices 0 to n
-        table = pd.pivot_table(df,values=values,index=indices[:n],columns=columns,aggfunc=aggfunc,fill_value=fill_value).reset_index()
-        if subtotal_name_cols < len(indices) - 1: # No need to add the string total to the last of the index columns
-            table[indices[subtotal_name_cols]] = table[indices[subtotal_name_cols]] + ' Total ' # Add the string total to the name
-            subtotal_name_cols += 1 # Increment by 1
+        table = pd.pivot_table(df, values=values, index=indices[:n], columns=columns, aggfunc=aggfunc,
+                               fill_value=fill_value).reset_index()
+        if subtotal_name_cols < len(indices) - 1:  # No need to add the string total to the last of the index columns
+            table[indices[subtotal_name_cols]] = table[indices[
+                subtotal_name_cols]] + ' Total '  # Add the string total to the name
+            subtotal_name_cols += 1  # Increment by 1
         for column in indices[n:]:
-            #print(table)
-            table[column] = '' # make the columns of indices n to length(indices) blank
+            # print(table)
+            table[column] = ''  # make the columns of indices n to length(indices) blank
         listOfTable.append(table)
     concatTable = pd.concat(listOfTable).sort_index()
     concatTable = concatTable.set_index(keys=indices)
-    return concatTable.sort_index(axis=0,ascending=True)
+    return concatTable.sort_index(axis=0, ascending=True)
 
 
 def get_date_appended_excel_filename(file_name):
@@ -173,7 +181,6 @@ def get_date_appended_excel_filename(file_name):
     """
     now = datetime.now()
     return file_name + '_' + now.strftime('%d-%m-%y') + '.xlsx'
-
 
 
 def insert_row(df, row_number, row_value):
@@ -192,7 +199,7 @@ def insert_row(df, row_number, row_value):
         The row index to insert the value at
     row_value:
         The value to be inserted into the data frame object        
-    """   
+    """
     # Slice the data frame into two along the row_number value
     df_upper = df[0:row_number]
     df_lower = df[row_number:]
@@ -201,15 +208,13 @@ def insert_row(df, row_number, row_value):
     df_upper.loc[row_number] = row_value
 
     # Concatenate the two sliced data frames
-    df_result = pd.concat([df_upper,df_lower])
+    df_result = pd.concat([df_upper, df_lower])
 
     # Reassign the index labels
     df_result.index = [*range(df_result.shape[0])]
-  
+
     # Return the updated dataframe
     return df_result
-
-
 
 
 def build_row(master_columns, df_partial_row, text_append_dict):
@@ -245,21 +250,21 @@ def build_row(master_columns, df_partial_row, text_append_dict):
         # If column is also in the column of the partial dataframe
         if column in subset_columns[:]:
 
-            row_index = df_partial_row.index.tolist()[0] # Get the index of the single row
-            
+            row_index = df_partial_row.index.tolist()[0]  # Get the index of the single row
+
             # Get any additional text to append to the value at this column
             if column in text_append_dict.keys():
                 append_text = ' ' + text_append_dict[column]
                 cell_value = str(df_partial_row.loc[row_index, column]) + append_text
             else:
-                cell_value = df_partial_row.loc[row_index, column]   
+                cell_value = df_partial_row.loc[row_index, column]
 
-            # Append value to the position in this column
+                # Append value to the position in this column
             new_row.append(cell_value)
         else:
             # Append empty value
-            new_row.append('')   
-    return new_row    
+            new_row.append('')
+    return new_row
 
 
 def filter_group_count_valid_values(df, group_levels, filter_columns_regex_dict):
@@ -292,7 +297,7 @@ def filter_group_count_valid_values(df, group_levels, filter_columns_regex_dict)
         accepted_values_regex = filter_columns_regex_dict[column]
         df_col_accepted_vals = filter_df_by_regex_match(df, column, accepted_values_regex)
         # Apply grouping on the filtered data and count the accepted values in the columns
-        df_grouped = df_col_accepted_vals.groupby(group_levels,sort=False)[column].count().reset_index()
+        df_grouped = df_col_accepted_vals.groupby(group_levels, sort=False)[column].count().reset_index()
 
         # If iterating for the first time, there wont be previous grouping to merge
         if first_iteration:
@@ -300,10 +305,11 @@ def filter_group_count_valid_values(df, group_levels, filter_columns_regex_dict)
             first_iteration = False
         else:
             # columns to merge will be grouping columns plus the current iterated column
-            merge_cols = group_levels + [column]    
-            df_filtered_grouped = df_filtered_grouped.merge(df_grouped[merge_cols], on=group_levels, how='outer').reset_index()
+            merge_cols = group_levels + [column]
+            df_filtered_grouped = df_filtered_grouped.merge(df_grouped[merge_cols], on=group_levels,
+                                                            how='outer').reset_index()
 
-    return df_filtered_grouped      
+    return df_filtered_grouped
 
 
 def filter_df_by_regex_match(df, column, accepted_values_regex):
@@ -350,18 +356,18 @@ def get_grouping_level_wise_col_values_count(df, group_levels, column, col_value
 
     # Pivot the table - group to grouping levels and count the number of distinct values in column
     df_pivot = pd.pivot_table(df, index=group_levels, columns=column,
-                aggfunc='size', fill_value=0, sort=False).reset_index()
+                              aggfunc='size', fill_value=0, sort=False).reset_index()
 
     # Filter the result of the pivot with columns containing grouping levels and supported categories
-    selected_columns = group_levels + col_values            
+    selected_columns = group_levels + col_values
 
     df_supp_cat_count = df_pivot[selected_columns]
 
     return df_supp_cat_count
 
 
-def group_agg_rename(df, grouping_levels, agg_dict:dict, append_str=''):
-	"""
+def group_agg_rename(df, grouping_levels, agg_dict: dict, append_str=''):
+    """
 	Function to group data to given grouping levels, aggregating each data column 
 	with its corresponding aggregation function given in the dictionary and
 	renaming the columns to relect the aggregated nature of the data.
@@ -382,17 +388,18 @@ def group_agg_rename(df, grouping_levels, agg_dict:dict, append_str=''):
 	The grouped data
 	"""
 
-	# Group and aggregate the data
-	df_grouped = df.groupby(grouping_levels, as_index=False).agg(agg_dict)
+    # Group and aggregate the data
+    df_grouped = df.groupby(grouping_levels, as_index=False).agg(agg_dict)
 
-	# Rename the columns to reflect the aggregated nature of the data
-	cols_to_rename = {}
-	for agg_col in agg_dict.keys():
-		cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col] + '_' + append_str
-	
-	df_grouped.rename(columns=cols_to_rename, inplace=True)
+    # Rename the columns to reflect the aggregated nature of the data
+    cols_to_rename = {}
+    for agg_col in agg_dict.keys():
+        cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col] + '_' + append_str
 
-	return df_grouped
+    df_grouped.rename(columns=cols_to_rename, inplace=True)
+
+    return df_grouped
+
 
 def is_any_row_common(df_larger, df_smaller):
     """
@@ -401,8 +408,10 @@ def is_any_row_common(df_larger, df_smaller):
 
     Parameters:
     -----------
-    df_larger: The larger of the two dataframes to be compared. Nominal.
-    df_smaller: The smaller of the two dataframes to be compared. Nominal.
+    df_larger: Pandas DataFrame
+        The larger of the two dataframes to be compared. Nominal.
+    df_smaller: Pandas DataFrame
+        The smaller of the two dataframes to be compared. Nominal.
 
     Returns:
     -------
@@ -419,5 +428,34 @@ def is_any_row_common(df_larger, df_smaller):
     return any_row_matches
 
 
+def update_master_data(df_master_data, df_new_data):
+    """
+    Function to update a master(larger) data with new data.
 
+    Both DataFrames are expected to have the same columns.
 
+    New data is concatenated to the master data and duplicates
+    are removed.
+
+    Parameters:
+    -----------
+    df_master_data: Pandas DataFrame
+        The master data DataFrame to be updated.
+    df_new_data: Pandas DataFrame
+        The new data DataFrame to be added to the master data.
+
+    Returns:
+    --------
+    The updated master data
+    """
+
+    # Concatenate the master data with new data
+    df_master_data = pd.concat([df_master_data, df_new_data])
+
+    print('data post concat', df_master_data.head())
+    # Remove the duplicates
+    df_master_data.drop_duplicates(inplace=True)
+
+    print('data post dropping duplicates', df_master_data.head())
+
+    return df_master_data
