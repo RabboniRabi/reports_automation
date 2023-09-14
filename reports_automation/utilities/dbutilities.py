@@ -203,3 +203,53 @@ def fetch_data_in_batches_as_df (credentials_dict, script_file_name, batch_size=
     connection.close()
 
     return full_df
+
+def fetch_data_as_df_V2 (credentials_dict, script_file_name, params):
+    """
+    Function to fetch data from the database using a query and return the data as a pandas dataframe object
+
+    Parameters
+    ---------
+    credentials_dict: dict
+        A dictionary of credentials to use to connect to the database
+        eg: {
+        "username": "<username>",
+        "password": "<password>",
+        "db_name": "<dbname>",
+        "host_name": "<hostname>"
+        }
+    script_file_name: str
+        The file name with the sql script to be executed to fetch the data
+    Returns
+    -------
+    Query results as a dataframe object
+    """
+    connection = create_server_connection(credentials_dict)
+    # when the parameters is none
+    if params is None:
+       query = file_utilities.open_script(script_file_name).read()
+
+       print('Executing Query...')
+       try:
+           df_data = pd.read_sql_query(query, connection)
+           print('Query Execution Successful')
+       except (DatabaseError, Error) as err:
+           print(f'Error: ', err)
+           err_msg = 'Error in executing query in ' + script_file_name
+           sys.exit(err_msg)
+
+    # Close the database connection
+       connection.close()
+       return df_data
+
+    else:
+       params=[]
+       query=""" """
+       query = query.format(*params)
+       df_parameterized = pd.read_sql_query(query, connection)
+       connection.close()
+       return df_parameterized
+
+
+
+
