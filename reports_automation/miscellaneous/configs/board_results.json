@@ -359,72 +359,87 @@
             "source_file_name": "12th_board_stu_subj_wise_data_22_23.xlsx",
             "source_sheet_name": "raw_data",
             "skip_rows": 0
+          },
+          {
+            "source_name" : "prev_yr_data",
+            "source_file_name": ".xlsx",
+            "source_sheet_name": "raw_data",
+            "skip_rows": 0
           }
 
         ]
       },
       "grouping_levels": ["cols.district_name", "cols.block_name", "cols.udise_col", "cols.school_name"],
-      "main_subjects_grouping": {
-        "Physics": {
-          "BMARK3": [2501, 2502, 2503, 2504, 2505, 2506, 2601, 2602, 2603, 2604, 2605, 2606, 2607, 2608]
-        },
-        "Chemistry": {
-          "BMARK4": [2501, 2502, 2503, 2504, 2505, 2506, 2601, 2602, 2603, 2604, 2605, 2606, 2607, 2608]
-        },
-        "Mathematics": {
-          "BMARK3": [2921, 2922, 2923, 2924, 2925, 2926],
-          "BMARK5": [2506],
-          "BMARK6": [2501, 2502, 2503, 2504, 2505]
-        },
-        "Biology": {
-          "BMARK3": [2951, 2931],
-          "BMARK5": [2503, 2601, 2602, 2603, 2604, 2605, 2606, 2607]
-        },
-        "Computer Science": {
-          "BMARK5": [2502],
-          "BMARK6": [2601]
-        },
-        "Botany": {
-          "BMARK5": [2608]
-        },
-        "Zoology": {
-          "BMARK6": [2608]
-        },
-        "Commerce": {
-          "BMARK3": [2961, 2962],
-          "BMARK4": [2702, 2706, 2707, 2708],
-          "BMARK5": [2701, 2703, 2704, 2705]
-        },
-        "Accountancy": {
-          "BMARK4": [2961, 2962],
-          "BMARK5": [2702, 2706, 2707, 2708],
-          "BMARK6": [2701, 2703, 2704, 2705]
-        },
-        "Economics": {
-          "BMARK3": [2702, 2708, 2705, 2707, 2706],
-          "BMARK4": [2704, 2701, 2703],
-          "BMARK5": [2804, 2806, 2802, 2805],
-          "BMARK6": [2801]
-        },
-        "Business Mathematics & Statistics": {
-          "BMARK6": [2708]
-        },
-        "Computer Applications": {
-          "BMARK5": [2962],
-          "BMARK6": [2702, 2802]
-        }
+      "subjects": {
+        "main_group": [
+          "ECONOMICS",
+          "PHYSICS",
+          "CHEMISTRY",
+          "MATHEMATICS",
+          "BIOLOGY",
+          "BOTANY",
+          "ZOOLOGY",
+          "COMMERCE",
+          "ACCOUNTANCY",
+          "BUSINESS MATHEMATICS AND STATISTICS",
+          "COMPUTER APPLICATIONS",
+          "COMPUTER SCIENCE"
+        ],
+        "arts_group": [
+          "GEOGRAPHY",
+          "COMMUNICATIVE ENGLISH",
+          "HISTORY",
+          "POLITICAL SCIENCE",
+          "ETHICS AND INDIAN CULTURE",
+          "ADVANCED LANGUAGE(TAMIL)"
+        ],
+        "vocational_group": [
+          "NURSING GENERAL",
+          "HOME SCIENCE",
+          "BASIC MECHANICAL ENGINEERING - THEORY",
+          "BASIC MECHANICAL ENGINEERING",
+          "BASIC ELECTRICAL ENGINEERING - THEORY",
+          "BASIC ELECTRICAL ENGINEERING",
+          "BASIC ELECTRONICS ENGINEERING - THEORY",
+          "BASIC ELECTRONICS ENGINEERING",
+          "BASIC CIVIL ENGINEERING - THEORY",
+          "BASIC CIVIL ENGINEERING",
+          "BASIC AUTOMOBILE ENGINEERING - THEORY",
+          "BASIC AUTOMOBILE ENGINEERING",
+          "TEXTILE TECHNOLOGY  - THEORY",
+          "TEXTILE TECHNOLOGY",
+          "NURSING - THEORY",
+          "NURSING",
+          "TEXTILES AND DRESS DESIGNING - THEORY",
+          "TEXTILES AND DRESS DESIGNING",
+          "FOOD SERVICE MANAGEMENT - THEORY",
+          "FOOD SERVICE MANAGEMENT",
+          "COMPUTER TECHNOLOGY",
+          "AGRICULTURAL SCIENCE- THEORY",
+          "AGRICULTURAL SCIENCE",
+          "OFFICE MANAGEMENT AND SECRETARYSHIP - THEORY",
+          "TYPOGRAPHY AND COMPUTER APPLICATIONS",
+          "AUDITING"
+        ],
+        "others_group": [
+          "BIO-CHEMISTRY",
+          "MICRO-BIOLOGY",
+          "NUTRITION & DIETETICS",
+          "STATISTICS"
+        ]
       },
-      "minor_subject_groupings": {
-        "Vocational Group": [2926, 2931, 2962, 2921, 2922, 2923, 2924, 2925, 2941, 2942,
-         2951, 2961, 2971, 2972, 2973, 2974, 2975, 2976, 2977, 2978, 2979, 2980, 2981, 2982],
-        "Arts Group": [2704, 2606, 2703, 2705, 2706, 2707, 2801, 2802, 2803, 2804, 2805, 2806],
-        "Others": [2501, 2504, 2701, 2602, 2603, 2605, 2801]
+      "sub_mark": {
+        "SUBNAME_B3": "BMARK3",
+        "SUBNAME_B4": "BMARK4",
+        "SUBNAME_B5": "BMARK5",
+        "SUBNAME_B6": "BMARK6"
       },
       "agg_dict": {
         "cols.tot_stu": "count",
         "cols.stu_pass": "sum",
         "cols.lang_marks": "median",
-        "cols.eng_marks": "median"
+        "cols.eng_marks": "median",
+        "cols.tot_marks": "median"
       }
 
     }

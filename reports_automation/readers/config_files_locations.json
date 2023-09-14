@@ -1,14 +1,38 @@
 {
     "ceo_review_configs" : {
-        "path" : "ceo_review",
-        "files" : ["attendance_configs.json",
-                        "board_results_configs.json"]
+        "dir_levels": ["reports", "configs", "ceo_review"],
+        "files" : [
+                    "attendance_configs.json",
+                    "board_results_configs.json",
+                    "class_configs.json",
+                    "cwsn_configs.json",
+                    "cwsn_transition_configs.json",
+                    "enrolment_configs.json",
+                    "g2c_configs.json",
+                    "health_configs.json",
+                    "library_configs.json",
+                    "observations_configs.json",
+                    "oosc_configs.json",
+                    "schemes.json",
+                    "student_transition_configs.json",
+                    "sports_configs.json",
+                    "training_attendance.json",
+                    "tc_issued_configs.json"
+                ]
     },
-    "ad_hoc_configs" : {},
+    "ad_hoc_configs" : {
+        "dir_levels": ["reports", "configs", "ceo_review"],
+        "files" : [
+                    "attendance_configs.json",
+                    "cg_configs.json",
+                    "updation_status_configs.json"
+                ]
+    },
     "miscellaneous_configs" : {
         "dir_levels": ["miscellaneous", "configs"],
         "files" : [
-            "board_results.json"
+            "board_results.json",
+            "tenth_metric_wise_grouping.json"
             ]
     }
 }

@@ -20,6 +20,8 @@ yes_col = 'Yes'
 no_col = 'No'
 web = 'Website'
 mobile = 'Mobile'
+all_management = 'All_Management'
+management = 'management'
 management_type = "management_type"
 category_type ="category_type"
 distinct_udise_count = 'count(DISTINCT udise_code)'
@@ -459,6 +461,8 @@ tot_marks = 'total'
 lang_marks = 'language'
 eng_marks = 'english'
 math_marks = 'maths'
+science_theory = 'science_theo'
+science_prac = 'science_prac'
 science_marks = 'science'
 social_marks = 'social'
 curr_tot_stu = "EMIS_NO_count_curr_yr"
@@ -597,8 +601,6 @@ def update_dictionary(var_names_dict: dict):
     updated_dict = {}
 
     col_utility_prefix = 'cols.'
-
-    #print('var_names_dict: ', var_names_dict)
     
     for key in var_names_dict.keys():
         if col_utility_prefix in key:
@@ -610,7 +612,6 @@ def update_dictionary(var_names_dict: dict):
                     updated_value = get_value(dict_key_value)
                     updated_dict[updated_key] = updated_value
                 elif type(dict_key_value) is list:
-                    print('list da ', dict_key_value)
                     updated_value = get_values(dict_key_value)
                     updated_dict[updated_key] = updated_value
             # Set the updated key-value pair
@@ -653,10 +654,8 @@ def update_nested_dictionaries(var_names_dict: dict):
     for key in fully_updated_dict:
         if type(fully_updated_dict[key]) is dict:
             # Recursively call update_nested_dictionaries
-            #print('calling recursively for value: ', fully_updated_dict[key])
             fully_updated_dict[key] = update_nested_dictionaries(fully_updated_dict[key])
         else:
-            #print('updating dict for value: ', fully_updated_dict)
             fully_updated_dict = update_dictionary(fully_updated_dict)
 
     return fully_updated_dict

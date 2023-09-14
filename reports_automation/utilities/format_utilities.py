@@ -197,7 +197,7 @@ def apply_formatting(format_dicts_list, df, worksheet, workbook, start_row=2):
 
         
 
-        if format_dict['conditional_format_flag']:
+        if 'conditional_format_flag' in format_dict and format_dict['conditional_format_flag']:
 
             # For each column, get the index and call apply_cond_frmt 
             # to apply conditional formatting for that column
