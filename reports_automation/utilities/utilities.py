@@ -66,8 +66,23 @@ def filter_dataframe_not_in_column(df, column_name, values_in):
     """
     df_filtered = df[~df[column_name].isin(values_in)]
     return df_filtered
+def filter_not_in_dataframe(df, column_names, values):
+    """
+    Function to filter the dataframe for multiple columns removing the given set of values
+    Args:
+        df: Pandas Dataframe
+        column_names: list
+        Column names you want to filter
+        values: list
+        Row values you want to exclude from the dataframe
 
+    Returns:
+        Filtered dataframe
+    """
+    for col_name in column_names:
 
+        df = filter_dataframe_not_in_column(df, col_name, values)
+    return df
 def filter_column_le(df, column_name, threshold_value):
     """
     Function to filter a dataframe object by values less than or equal to given threshold value
@@ -259,7 +274,7 @@ def build_row(master_columns, df_partial_row, text_append_dict):
             else:
                 cell_value = df_partial_row.loc[row_index, column]
 
-                # Append value to the position in this column
+            # Append value to the position in this column
             new_row.append(cell_value)
         else:
             # Append empty value
