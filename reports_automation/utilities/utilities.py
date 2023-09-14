@@ -454,7 +454,7 @@ def update_master_data(df_master_data, df_new_data):
 
     print('data post concat', df_master_data.head())
     # Remove the duplicates
-    df_master_data.drop_duplicates(inplace=True)
+    df_master_data.drop_duplicates(subset=['emis_no'], inplace=True)
 
     print('data post dropping duplicates', df_master_data.head())
 
