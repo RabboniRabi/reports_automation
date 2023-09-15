@@ -94,6 +94,11 @@ def calc_ranking(df, ranking_config):
 
     # Check if data has to be grouped and ranked
     if 'data_ranking_levels' in ranking_config:
+        # Make a copy of the data to use for merging different levels of ranked data with original data
+        df_ranked = df.copy()
+        # Declare show rank column and show rank value flags
+        show_rank_col_flag, show_rank_val_flag = False, False
+
         # For each grouping and ranking, call the ranking type specific function to rank the data
         # with updated ranking_args
         for key in ranking_config['data_ranking_levels']:
@@ -102,25 +107,54 @@ def calc_ranking(df, ranking_config):
             
             # Get a copy of the ranking_args and update it for the current grouping and ranking
             ranking_args_for_key = ranking_config['ranking_args'].copy()
-
-            ranking_args_for_key = grouping_lvl_ranking_config['grouping_levels']
             
-            if 'show_rank_col' in grouping_lvl_ranking_config
+            if 'show_rank_col' in grouping_lvl_ranking_config and grouping_lvl_ranking_config['show_rank_col']:
                 ranking_args_for_key['show_rank_col'] = grouping_lvl_ranking_config['show_rank_col']
                 ranking_args_for_key['rank_col_name'] = grouping_lvl_ranking_config['rank_col_name']
+                show_rank_col_flag = True
             
-            if 'show_rank_val' in grouping_lvl_ranking_config
+            if 'show_rank_val' in grouping_lvl_ranking_config and grouping_lvl_ranking_config['show_rank_val']:
                 ranking_args_for_key['show_rank_val'] = grouping_lvl_ranking_config['show_rank_val']
                 ranking_args_for_key['ranking_val_desc'] = grouping_lvl_ranking_config['ranking_val_desc']
+                show_rank_val_flag = True
+
+            # Group the data to the level it needs to be ranked on
+            grouping_levels = grouping_lvl_ranking_config['grouping_levels']
+            df_grouped = df.groupby(grouping_levels, as_index=False, sort=False).agg(ranking_args_for_key['agg_dict'])
 
             # Call the ranking_type specific ranking function
             ranking_type = ranking_args_for_key['ranking_type']
             ranking_func = ranking_funcs_utilities.get_ranking_funcs().get(ranking_type)
+
+            print('ranking_args_for_key: ', ranking_args_for_key)
             
-            data_ranked_for_grouping_lvl = ranking_func(df, ranking_args_for_key)
+            data_ranked_for_grouping_lvl = ranking_func(df_grouped, ranking_args_for_key)
+
+            print('data_ranked_for_grouping_lvl', data_ranked_for_grouping_lvl)
 
             # Merge the ranked data for the given grouping level with the data
-            df = pd.merge(df, data_ranked_for_grouping_lvl, how='left', on=ranking_args_for_key['grouping_levels'])
+            print('data_ranked_for_grouping_lvl columns: ', data_ranked_for_grouping_lvl.columns.to_list())
+            # Merge the rank and rank values, depending on which flags are true
+            if show_rank_col_flag and show_rank_val_flag:
+                print('both flags are true')
+                # Get the subset of data with grouping levels and rank column and rank value column
+                df_subset = data_ranked_for_grouping_lvl[grouping_levels + \
+                            [grouping_lvl_ranking_config['rank_col_name'], grouping_lvl_ranking_config['ranking_val_desc']]]
+            elif show_rank_col_flag:
+                            # Get the subset of data with grouping levels and rank column and rank value column
+                df_subset = data_ranked_for_grouping_lvl[grouping_levels + [grouping_lvl_ranking_config['rank_col_name']]]
+            elif show_rank_val_flag:
+                            # Get the subset of data with grouping levels and rank column and rank value column
+                df_subset = data_ranked_for_grouping_lvl[grouping_levels + [grouping_lvl_ranking_config['ranking_val_desc']]]
+            else:
+                # No source configuration was found
+                sys.exit('Atleast one of show_rank_col or show_rank_val flags need to be true')
+
+            # Merge the ranked data for the current grouping level with the consolidated ranked data    
+            df_ranked = pd.merge(df_ranked, df_subset, how='left', on=grouping_levels)
+            print('df columns post merge: ', df.columns.to_list())
+            # Reset the flags to false for next iteration
+            show_rank_col_flag, show_rank_val_flag = False, False
 
     else:
         # Call the ranking_type specific ranking function 
@@ -129,9 +163,9 @@ def calc_ranking(df, ranking_config):
         ranking_type = ranking_args['ranking_type']
         ranking_func = ranking_funcs_utilities.get_ranking_funcs().get(ranking_type)
             
-        df = ranking_func(df, ranking_args)
+        df_ranked = ranking_func(df, ranking_args)
 
-    return df
+    return df_ranked
 
 def calc_ranking_old(df, ranking_args_dict):
     """
@@ -212,13 +246,13 @@ def update_deo_ranking_master(df_ranking, metric_code, metric_category, school_l
         cols.month_col: 'string',
         cols.year_col: 'int'})
     
-    # Get the master ranking file. In the future, this needs to be saved and fetched from a database
-    ranking_file_path = file_utilities.get_file_path(ranking_master_file_name, ceo_rpts_dir_path)
-
     # If file does not exist, save the ranking to the file
     if not file_utilities.file_exists(ranking_master_file_name, ceo_rpts_dir_path):
         df_master_ranking = df_ranking
     else:
+
+        # Get the master ranking file. In the future, this needs to be saved and fetched from a database
+        ranking_file_path = file_utilities.get_file_path(ranking_master_file_name, ceo_rpts_dir_path)
 
         # Get the master ranking file
         df_master_ranking = pd.read_excel(ranking_file_path, ranking_master_sheet_name)

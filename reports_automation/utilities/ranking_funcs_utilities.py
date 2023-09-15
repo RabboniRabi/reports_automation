@@ -49,11 +49,11 @@ def percent_ranking(df, ranking_args_dict):
     #df_rank = _group_data_for_ranking(df, ranking_args_dict)
 
     # Calculate fraction of values (to be used for ranking)
-    df_rank[cols.ranking_value] = (df[num_col]/df[den_col])
-    df_rank[cols.ranking_value].fillna(0, inplace=True)
+    df[cols.ranking_value] = (df[num_col]/df[den_col])
+    df[cols.ranking_value].fillna(0, inplace=True)
 
 
-    df_rank = _sort_rank_and_show_hide_cols(df_rank, ranking_args_dict)
+    df_rank = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
 
 
     """df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method='min')
@@ -307,17 +307,18 @@ def _sort_rank_and_show_hide_cols(df, ranking_args_dict):
     """
 
     # Sort the values
-    df.sort_values(by[cols.ranking_value], ascending=ranking_args_dict['ascending'], inplace=True)
+    ascending = ranking_args_dict['ascending']
+    df.sort_values(by=[cols.ranking_value], ascending=ascending, inplace=True)
 
     # Add a rank column if flag indicates that rank should be shown
     if 'show_rank_col' in ranking_args_dict and ranking_args_dict['show_rank_col']:
-        df[ranking_args['rank_col_name']] = df[cols.ranking_value].rank(method="min")
+        df[ranking_args_dict['rank_col_name']] = df[cols.ranking_value].rank(ascending=ascending, method="min")
     
     # Check if flag indicates that rank value should be shown
     if 'show_rank_val' in ranking_args_dict and ranking_args_dict['show_rank_val']:
         # Rename the ranking value description
         df.rename(columns={cols.ranking_value:ranking_args_dict['ranking_val_desc']}, inplace=True)
-    else if 'show_rank_val' in ranking_args_dict and not ranking_args_dict['show_rank_val']:
+    elif 'show_rank_val' in ranking_args_dict and not ranking_args_dict['show_rank_val']:
         # Drop the rank value column
         df_rank.drop(columns=[cols.ranking_value], inplace=True)
   

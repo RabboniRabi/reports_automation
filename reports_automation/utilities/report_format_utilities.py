@@ -23,7 +23,7 @@ import xlsxwriter
 
 from datetime import datetime
 
-def prepare_report_for_review(df, format_config, ranking_args_dict, sheet_name, file_name, dir_path):
+def format_ceo_review_report(df, format_config, ranking_config, sheet_name, file_name, dir_path):
     """
     Function to prepare the final report for viewing by:
         - computing subtotals
@@ -59,17 +59,19 @@ def prepare_report_for_review(df, format_config, ranking_args_dict, sheet_name, 
                     }
                 }
             }
-    ranking_args_dict: dict
+    ranking_config: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
-        Eg: ranking_args_dict = {
-        'group_levels' : ['district', 'name', 'designation'],
-        'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
-        'ranking_val_desc' : '% moved to CP',
-        'num_col' : 'class_1',
-        'den_col' : 'Total',
-        'sort' : True, 
-        'ascending' : False
-        }
+        This dictionary contains the ranking_args dict, which will be mainly used to update the formatted data
+        with ranking values/ranks
+        Eg: ranking_args = {
+                'ranking_type' : 'percent_ranking',
+                'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
+                'ranking_val_desc' : '% moved to CP',
+                'num_col' : 'class_1',
+                'den_col' : 'Total',
+                'sort' : True,
+                'ascending' : False
+                }
     sheet_name: str
         The name of the sheet to save the data in.
     file_name: str
@@ -79,13 +81,13 @@ def prepare_report_for_review(df, format_config, ranking_args_dict, sheet_name, 
     """
 
     # Get the subtotal and outlines specific configurations
-    subtotal_outlines_dict = _update_subtotal_outlines_dict(format_config['subtotal_outlines_dict'])
+    subtotal_outlines_dict = format_config['subtotal_outlines_dict']
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
     agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
     text_append_dict = subtotal_outlines_dict['text_append_dict']
 
     # Compute sub-totals and insert into provided dataframe
-    subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, format_config, ranking_args_dict)
+    subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, subtotal_outlines_dict, ranking_config)
 
     # Get the updated DataFrame object - with the subtotals inserted
     updated_df = subtotals_result_dict['updated_df']
@@ -93,7 +95,9 @@ def prepare_report_for_review(df, format_config, ranking_args_dict, sheet_name, 
     df_subtotal_rows = subtotals_result_dict['subtotals']
 
     # Get and update the data frame with a grand total row at the bottom of the data set  
-    grand_total_row = _get_grand_total_row(df, ranking_args_dict)
+    ranking_val_desc = ranking_config['ranking_args']['ranking_val_desc']
+    agg_dict = ranking_config['ranking_args']['agg_dict']
+    grand_total_row = _get_grand_total_row(df, agg_dict, ranking_val_desc)
     print('grand_total_row: ', grand_total_row)
     updated_df.loc['Grand Total'] = grand_total_row
     
@@ -188,46 +192,109 @@ def prepare_report_for_review(df, format_config, ranking_args_dict, sheet_name, 
     writer.close()
 
 
-
-
-def _update_subtotal_outlines_dict(subtotal_outlines_dict:dict):
+def format_ad_hoc_report_and_save(df_reports, summary_sheets_args, file_name):
     """
-    Internal function to update subtotal outline dict keys and values.
-    
-    When JSON configuration with variable keys and variable values are read
-    as a dict, the variable resolution does not manually happen. 
-    
-    This utility function resolves the keys and values in the subtotal outlines dict
-    
+    Function to prepare the add hoc report for viewing by applying the given 
+    formatting configurations on the data.
+
+    The function also saves the formatted data in the current day of the month
+    folder in generated reports folder.
+
     Parameters:
-    -----------
-    subtotal_outlines_dict: dict
-        The subtotal and outlines configuration dictionary fetched from JSON
-    
-    Returns:
-    --------
-    The updated subtotal outlines dictionary
+    ----------
+    df_reports: dict
+        The ad hoc report summaries as a dictionary of Pandas DataFrame objects
+    summary_sheets_args: dict
+        Dictionary of arguments required to create summaries of data each of which 
+        contains a dictionary of format configurations to be used to clean up the data 
+        and apply visual formatting.
+        Eg:
+        "format_config" : {
+                        "heading" : "Career Guidance 12th passout support required report",
+                        "cols_to_drop": [],
+                        "cols_rename_dict" : {
+                            "cols.student_name" : "cols.cg_stu_appld"
+                        },
+                        "format_dicts" : [
+                            {
+                                "description" : "Apply percentage formatting",
+                                "columns" : ["cols.cg_stu_appld"],
+                                "format" : {"num_format": "0.00%"}
+                            },
+                            {
+                                "description" : "Apply 3 colour gradient heatmap",
+                                "columns" : ["cols.cg_stu_appld"],
+                                "conditional_format_flag" : true,
+                                "conditional_format" : {"type": "3_color_scale"}
+                              }
+                        ]
+                    }
+    file_name: str
+        The file name to be used to save the data
     """
 
-    # Update the subtotal level values
-    level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
-    for key in level_subtotal_cols_dict.keys():
-        var_val = level_subtotal_cols_dict[key]
-        updated_val = cols.get_value(var_val)
-        level_subtotal_cols_dict[key] = updated_val
+    # Create a summary sheet name - format configs dict
+    summary_format_config_dict = {}
+    for summary_sheet_args in summary_sheets_args:
+        summary_format_config_dict[summary_sheet_args['summary_sheet_code']] = summary_sheet_args['format_config']
 
-    # Update the aggregate columns function dictionary
-    updated_agg_cols_func_dict = cols.update_dictionary_var_strs(subtotal_outlines_dict['agg_cols_func_dict'])
-    subtotal_outlines_dict['agg_cols_func_dict'] = updated_agg_cols_func_dict
+    # For each summary data in the dictionary, apply the formatting
+    for sheet_name, df_summary in df_reports.items():
 
-    # Update text append dict
-    updated_text_append_dict = cols.update_dictionary_var_strs(subtotal_outlines_dict['text_append_dict'])
-    subtotal_outlines_dict['text_append_dict'] = updated_text_append_dict
+        # If sheet name is base report, skip the formatting
+        if sheet_name == 'base_report':
+            continue
 
-    return subtotal_outlines_dict
+        # Get the format configs for the sheet
+        format_config = summary_format_config_dict[sheet_name]
+
+        # Check for rename configuration and update
+        if 'cols_rename_dict' in format_config and bool(format_config['cols_rename_dict']):
+            columns_rename_dict = format_config['cols_rename_dict']
+            df_summary.rename(columns=columns_rename_dict, inplace=True)
+
+        # Drop any columns configured to be dropped
+        if 'cols_to_drop' in format_config and bool(format_config['cols_to_drop']):
+            cols_to_drop = format_config['cols_to_drop']
+            df_summary.drop(columns=cols_to_drop, inplace=True)
+
+    # Convert the dictionary of data frames to dictionary of xlsxwriter objects for formatting
+    dir_path = file_utilities.get_curr_day_month_gen_reports_dir_path()
+    writer = file_utilities.get_xlsxwriter_obj(df_reports, file_name, dir_path)
+
     
+    # Format and save the xlsxwriter objects
+    for key in df_reports.keys():
 
-def _get_grand_total_row(df, ranking_args_dict):
+        # Get the worksheet
+        workbook = writer.book
+        worksheet = workbook.get_worksheet_by_name(key)
+
+        # Apply formatting for all sheets other than base_report
+        if key != 'base_report':
+            # Get the format dictionaries
+            format_config = summary_format_config_dict[key] 
+            format_dicts_list = format_config['format_dicts']
+
+            # Apply border to the data
+            format_utilities.apply_border(df_reports[key], worksheet, workbook)
+
+            # Apply formatting specified in JSON
+            format_utilities.apply_formatting(format_dicts_list, df_reports[key], worksheet, workbook, start_row=1)
+
+            # Insert heading for the summary sheet
+            format_utilities.insert_heading(df_reports[key], format_config['heading'], worksheet, workbook)
+
+            # Format the header
+            format_utilities.format_col_header(df_reports[key], worksheet, workbook)
+    
+        
+    writer.save()        
+
+
+
+
+def _get_grand_total_row(df, agg_dict, ranking_val_desc):
     """
     Internal function to create a grand total row to insert at the bottom of the data set.
 
@@ -243,8 +310,7 @@ def _get_grand_total_row(df, ranking_args_dict):
     -------
     The grand total row to insert
     """
-    # Get the aggregate dictionary
-    agg_dict = ranking_args_dict['agg_dict']
+
     no_of_columns = len(df.columns.to_list())
     
     # First set first cell as grand total and all cells in row to empty string. 
@@ -271,8 +337,7 @@ def _get_grand_total_row(df, ranking_args_dict):
         grand_total_row[df.columns.get_loc(key)] = cell_total
 
     # Add the ranking value average to the row
-    ranking_val_desc_col  = ranking_args_dict['ranking_val_desc']
-    grand_total_row[df.columns.get_loc(ranking_val_desc_col)] = df[ranking_val_desc_col].mean()
+    grand_total_row[df.columns.get_loc(ranking_val_desc_col)] = df[ranking_val_desc].mean()
 
     return grand_total_row
 

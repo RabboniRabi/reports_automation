@@ -98,11 +98,11 @@ def create_district_wise_split_10th_board_reports():
         # Updating the ranked dataframe to the corresponding district in the dictionary
         df_split_dist.update({dist: df_ranked_dist})
 
-    format_save_reports(df_split_dist, config['format_configs'])
+    format_save_reports(df_split_dist, config['format_config'])
 
 
 
-def format_save_reports(df_dict, format_configs):
+def format_save_reports(df_dict, format_config):
     """
     Function to format the data in given dictionary of data sets and save.
 
@@ -110,7 +110,7 @@ def format_save_reports(df_dict, format_configs):
     -----------
     df_dict: dict
         Dictionary of data set, each of which needs to be formatted and saved
-    format_configs: dict
+    format_config: dict
         The format configurations to be applied on the data
     """
 
@@ -121,9 +121,9 @@ def format_save_reports(df_dict, format_configs):
         no_of_state_ranks += df_dict[key].shape[0]
 
     # Clean up data
-    cols_to_drop = format_configs['cols_to_drop']
-    cols_to_rename = format_configs['cols_to_rename']
-    cols_order = format_configs['cols_order']
+    cols_to_drop = format_config['cols_to_drop']
+    cols_to_rename = format_config['cols_to_rename']
+    cols_order = format_config['cols_order']
     for key in df_dict.keys():
 
         # Drop unncessary columns    
@@ -141,8 +141,8 @@ def format_save_reports(df_dict, format_configs):
         no_of_dist_ranks = df_dict[key].shape[0]
 
         # Append the rank columns name with the number of ranks
-        state_rank_cols = format_configs['cols_headers_to_be_appended_w_no_of_state_ranks']
-        dist_rank_cols = format_configs['cols_headers_to_be_appended_w_no_of_dist_ranks']
+        state_rank_cols = format_config['cols_headers_to_be_appended_w_no_of_state_ranks']
+        dist_rank_cols = format_config['cols_headers_to_be_appended_w_no_of_dist_ranks']
         rank_cols_rename_dict = {}
         for rank_col in state_rank_cols:
             rank_cols_rename_dict[rank_col] = rank_col + ' (' + str(no_of_state_ranks) + ')'
@@ -159,7 +159,7 @@ def format_save_reports(df_dict, format_configs):
     xlsxwriters_dict = file_utilities.get_xlsxwriter_objs(df_dict, dir_path)
     
     # Get the formatting to be applied on all the datasets
-    format_dicts_list = format_configs['format_dicts_list']
+    format_dicts_list = format_config['format_dicts_list']
 
     # Format and Save the xlsxwriter objects
     for key in xlsxwriters_dict.keys():

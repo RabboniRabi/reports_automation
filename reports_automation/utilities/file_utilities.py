@@ -445,6 +445,7 @@ def get_file_path(file_name: str, dir_path:str):
     file_path = os.path.join(dir_path, file_name)
 
     if(not os.path.isfile(file_path)):
+        print('File: ', file_name, ' does not exist in ', dir_path)
         sys.exit('File does not exist in given directory')
 
     return file_path

@@ -17,30 +17,42 @@ import utilities.ranking_utilities as ranking_utilities
 import utilities.column_names_utilities as cols
 import utilities.utilities as utilities
 
-def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
+def compute_insert_subtotals(df, subtotal_outlines_dict, ranking_config):
     """
     Function to compute subtotals for a given set of columns. The order of computation
-    of subtotals is based on the ascending order of levels. For each column to subtotal,
+    of subtotals is based on the ascending order of levels. For each column to subtotaled,
     the aggregation operations are applied to columns given to be aggregated.
-    
-    The function returns a Pandas DataFrame object of new subtotaled rows that have been
-    inserted into the original DataFrame object
     
     Parameters:
     ----------
     df: Pandas DataFrame object
         The original DataFrame object on which subtotaling operations are to be performed
         and subtotal rows to be inserted
-    level_subtotal_cols_dict: dict
-        A level - subtotal column key value pair dictionary. The level determines the order
-        of columns for which subtotaling aggregation operations are performed
-    agg_cols_func_dict: dict
-        A grouping column - aggregate function dictionary. This dictionary contains the columns
-        to group by as keys and their corresponding aggregating function as values
-    text_append_dict: dict
-        A dictionary of column names key and text values. The dictionary will be used
-        to append text to values in each subtotaled column
-
+    subtotal_outlines_dict: dict
+        Dictionary with configuration information for calculating subtotals.
+        The dictionary contains the following nested dictionaries:
+        level_subtotal_cols_dict: dict
+            A level - subtotal column key value pair dictionary. The level determines the order
+            of columns for which subtotaling aggregation operations are performed
+        agg_cols_func_dict: dict
+            A grouping column - aggregate function dictionary. This dictionary contains the columns
+            to group by as keys and their corresponding aggregating function as values
+        text_append_dict: dict
+            A dictionary of column names key and text values. The dictionary will be used
+            to append text to values in each subtotaled column
+        Eg:
+         "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                    "agg_cols_func_dict" : {
+                        "cols.cwsn_tot": "sum",
+                        "cols.udid_count": "sum",
+                        "cols.deo_elem_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
+    ranking_config: dict
+        Dictionary with ranking configuration information that will be used to update
+        the subtotal rows with ranking values
+    
     Returns:
     -------
     A dictionary with three values: 
@@ -54,11 +66,12 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
     }
     """
 
-    subtotal_outlines_dict = report_config_dict['subtotal_outlines_dict']
+    #subtotal_outlines_dict = report_config_dict['subtotal_outlines_dict']
 
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
     agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
     text_append_dict = subtotal_outlines_dict['text_append_dict']
+    ranking_val_desc_for_subtotal_rows = ranking_config['ranking_args']['ranking_val_desc']
 
     # Get all the column names in the master data frame
     master_columns = df.columns.values
@@ -82,9 +95,9 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
         df_group_agg = df.groupby([subtotal_col], as_index=False,sort=False).agg(agg_cols_func_dict)
 
         # If ranking args dict is given
-        if (ranking_args_dict):
+        if (ranking_config):
             # Update the subtotal rows with ranking values
-            df_group_agg = update_subtotaled_row_with_ranking_val(df_group_agg, ranking_args_dict)
+            df_group_agg = update_subtotaled_row_with_ranking_val(df_group_agg, ranking_config, ranking_val_desc_for_subtotal_rows)
         
         # Update the indices of the data frame before matching and inserting subtotal rows below
         df.reset_index(inplace=True, drop=True)
@@ -125,21 +138,26 @@ def compute_insert_subtotals(df, report_config_dict, ranking_args_dict):
     return {'updated_df': df, 'subtotals': df_subtotal_rows, 'subtotal_row_indices': subtotals_row_indices_list}
 
 
-def update_subtotaled_row_with_ranking_val(df_subtotaled, ranking_args_dict):
+def update_subtotaled_row_with_ranking_val(df_subtotaled, ranking_config, ranking_val_desc):
     """
     Function to update the subtotaled row with ranking value.
+
     The ranking value cell for each subtotaled row is not summed, counted or taken a mean of
     as other columns as it will not represent a true value. The true value will depend on other columns.
     For example: percentage students attending classes will depend on present student/total student and not
     on the average percentages of sub-sections of the subtotal.
 
+    So, this function is written to aggregate the ranking value from the data at the subtotaled level
+    and not to take a mean of aggregated data
+
     Parameters:
     ----------
     df_subtotaled: Pandas DataFrame
         The subtotaled rows data
-    ranking_args_dict: dict
+    ranking_config: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
-        Eg: ranking_args_dict = {
+        This dictionary contains the ranking_args dict, which will be mainly used to update the ranking value
+        Eg: ranking_args = {
                 'ranking_type' : 'percent_ranking',
                 'agg_dict': {'schools' : 'count', 'students screened' : 'sum'},
                 'ranking_val_desc' : '% moved to CP',
@@ -148,21 +166,36 @@ def update_subtotaled_row_with_ranking_val(df_subtotaled, ranking_args_dict):
                 'sort' : True,
                 'ascending' : False
                 }
+    ranking_val_desc: str
+        The name of the column with the ranking values
     Returns:
     --------
     Subtotal rows data updated with ranking values
     """
-    ranking_args_dict['sort'] = False
+    # Take a copy of the ranking config
+    subtotal_ranking_config = ranking_config.copy()
+
+    # Set the sort flag to false, so that the order of the data is retained
+    subtotal_ranking_config['ranking_args']['sort'] = False
+
+    # Update the ranking config with the ranking value description name
+    subtotal_ranking_config['show_rank_col'] = False
+    subtotal_ranking_config['show_rank_val'] = True
+    subtotal_ranking_config['ranking_val_desc'] = ranking_val_desc
+
+    # Delete the data_ranking_levels part of the ranking_config as we want the ranking function to
+    # only calculate the ranking value for the subtotal level grouped data
+    del subtotal_ranking_config['data_ranking_levels']
     
     # Calculate ranking for the data with subtotal rows
-    data_level_ranking = ranking_utilities.calc_ranking(df_subtotaled, None, ranking_args_dict)
+    data_level_ranking = ranking_utilities.calc_ranking(df_subtotaled, subtotal_ranking_config)
     # Update the ranking value
-    df_subtotaled[ranking_args_dict['ranking_val_desc']] = data_level_ranking[cols.ranking_value]
+    #df_subtotaled[ranking_args_dict['ranking_val_desc']] = data_level_ranking[cols.ranking_value]
 
-    return df_subtotaled
+    return data_level_ranking
 
 
-def subtotal_outline_and_save(df, level_subtotal_cols_dict, agg_cols_func_dict, sheet_name, file_name, dir_path, text_append_dict={}):
+def subtotal_outline_and_save(df, subtotal_outlines_dict, ranking_config, sheet_name, file_name, dir_path, text_append_dict={}):
     """
     Helper function to compute subotals, apply outlines and save the data.
 
@@ -170,12 +203,27 @@ def subtotal_outline_and_save(df, level_subtotal_cols_dict, agg_cols_func_dict, 
     ----------
     df: Pandas DataFrame
         The data to work on
-    level_subtotal_cols_dict: dict
-        A level - subtotal column key value pair dictionary. The level determines the order
-        of columns for which subtotaling aggregation operations are performed
-    agg_cols_func_dict: dict
-        A grouping column - aggregate function dictionary. This dictionary contains the columns
-        to group by as keys and their corresponding aggregating function as values
+    subtotal_outlines_dict: dict
+        Dictionary with configuration information for calculating subtotals.
+        The dictionary contains the following nested dictionaries:
+        level_subtotal_cols_dict: dict
+            A level - subtotal column key value pair dictionary. The level determines the order
+            of columns for which subtotaling aggregation operations are performed
+        agg_cols_func_dict: dict
+            A grouping column - aggregate function dictionary. This dictionary contains the columns
+            to group by as keys and their corresponding aggregating function as values
+        text_append_dict: dict
+            A dictionary of column names key and text values. The dictionary will be used
+            to append text to values in each subtotaled column
+        Eg:
+         "subtotal_outlines_dict" : {
+                    "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                    "agg_cols_func_dict" : {
+                        "cols.cwsn_tot": "sum",
+                        "cols.udid_count": "sum",
+                        "cols.deo_elem_rank": "mean"
+                    },
+                    "text_append_dict" : {"cols.deo_name_elm": ""}
     sheet_name: str
         The name of the sheet to save the data in.
     file_name: str
@@ -188,9 +236,11 @@ def subtotal_outline_and_save(df, level_subtotal_cols_dict, agg_cols_func_dict, 
         
     """
 
+    level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
+    agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
+
     # Compute sub-totals and insert into provided dataframe
-    subtotals_result_dict = compute_insert_subtotals(
-        df, level_subtotal_cols_dict, agg_cols_func_dict, text_append_dict)
+    subtotals_result_dict = compute_insert_subtotals(df, subtotal_outlines_dict, ranking_config)
 
     # Get the updated DataFrame object - with the subtotals inserted
     updated_df = subtotals_result_dict['updated_df']

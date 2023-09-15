@@ -7,7 +7,7 @@ sys.path.append('../')
 
 import utilities.report_utilities as report_utilities
 import utilities.file_utilities as file_utilities
-import utilities.review_view_utilities as review_view_utilities
+import utilities.report_format_utilities as report_format_utilities
 import readers.data_fetcher as data_fetcher
 import readers.config_reader as config_reader
 import utilities.column_names_utilities as cols
@@ -254,7 +254,7 @@ def generate_all(generate_fresh: bool = True):
                 format_config = elem_report_config['format_config']
                 if format_config is not None:
                     # Call review view utilities to format and save the report
-                    review_view_utilities.prepare_report_for_review(elem_report\
+                    report_format_utilities.format_ceo_review_report(elem_report\
                             , format_config, elem_report_config['ranking_args'], metric_code, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
                 else:
                     # Save the report without any formatting
@@ -275,7 +275,7 @@ def generate_all(generate_fresh: bool = True):
                 format_config = sec_report_config['format_config']
                 if format_config is not None:
                     # Call review view utilities to format and save the report
-                    review_view_utilities.prepare_report_for_review(sec_report\
+                    report_format_utilities.format_ceo_review_report(sec_report\
                             , format_config, sec_report_config['ranking_args'], metric_code, sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
                 else:
                     # Save the report without any formatting

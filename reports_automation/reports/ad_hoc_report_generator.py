@@ -9,13 +9,20 @@ import utilities.column_names_utilities as cols
 import utilities.file_utilities as file_utilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.report_utilities as report_utilities
+import utilities.report_format_utilities as report_format_utilities
 import importlib
 import data_cleaning.column_cleaner as column_cleaner
 import readers.data_fetcher as data_fetcher
+import readers.config_reader as config_reader
 
 def get_report(report_config: dict, save_source:bool=False):
     """
     Function to generate the ad hoc report for a metric with given report configuration. 
+
+    The final report can have multiple sheets each with a different summary of the data
+    generated using the configuration provided. 
+
+    The base report can also be included as another sheet for reference.
 
     Parameters:
     ----------
@@ -26,7 +33,7 @@ def get_report(report_config: dict, save_source:bool=False):
 
     Returns:
     --------
-    The generated ad hoc report as a Pandas DataFrame object.
+    The generated ad hoc report summaries as a dictionary of Pandas DataFrame objects
     """
 
     if report_config is None:
@@ -39,8 +46,6 @@ def get_report(report_config: dict, save_source:bool=False):
     # Get the base data
     df_base_report = _get_data_for_ad_hoc_report(report_config, save_source)
 
-    print('df_base_report: ', df_base_report)
-
     #file_utilities.save_to_excel({'base_report': df_base_report}, 'df_base_report.xlsx')
 
     # Create report summary sheets from base data for given summary sheets configurations
@@ -51,7 +56,6 @@ def get_report(report_config: dict, save_source:bool=False):
     if report_config['include_base_report']:
         df_reports['base_report'] = df_base_report
 
-    file_utilities.save_to_excel(df_reports, 'ad_hoc_report_test.xlsx')
 
     return df_reports
     
@@ -185,12 +189,12 @@ def _get_summary_sheets(df_base_report, summary_sheets_args):
                 sys.exit(err)
 
         # Sort and rank data if configuration is given
-        ranking_args = summary_sheet_args['ranking_args']
-        if ranking_args is not None and bool(ranking_args):
-            df_summary = ranking_utilities.calc_ranking(df_summary, None, ranking_args)
+        ranking_config = summary_sheet_args['ranking_config']
+        if ranking_config is not None and bool(ranking_config):
+            df_summary = ranking_utilities.calc_ranking(df_summary, ranking_config)
 
         # Add the summary to the dictionary of data reports
-        df_reports[summary_sheet_args['summary_sheet_name']] = df_summary
+        df_reports[summary_sheet_args['summary_sheet_code']] = df_summary
 
     return df_reports
 
@@ -214,4 +218,23 @@ def save_report(report_name: str, df_reports_dict):
 
 
 
-    
+def generate_format_save_report(report_code):
+    """
+    Function to generate, format and save the ad hoc report for a given report code/name. 
+
+    Parameters:
+    ----------
+    report_code: str
+        The name/code of the report/metric to fetch the Ad Hoc report for
+    """
+
+    # Get the overall configuration for the report code
+    report_config = config_reader.get_adhoc_config(report_code)
+
+    # Get the ad hoc report
+    ad_hoc_rpt = get_report(report_config, save_report)
+
+    # Format and save the report
+    report_format_utilities.format_ad_hoc_report_and_save(
+        ad_hoc_rpt, report_config['summary_sheets_args'], report_config['report_name']+'.xlsx')
+

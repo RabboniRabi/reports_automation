@@ -37,9 +37,18 @@ def main():
     # Define any additional text that need to be appended to the sub-totaled column values
     text_append_dict = {'district_name':'Total', 'edu_dist_name':'Sub-Total'}
 
+    subtotal_outlines_dict = {}
+    subtotal_outlines_dict['level_subtotal_cols_dict'] = level_subtotal_cols_dict
+    subtotal_outlines_dict['agg_cols_func_dict'] = group_cols_agg_func_dict
+    subtotal_outlines_dict['text_append_dict'] = text_append_dict
+
+    # Create a ranking config - TODO
+    ranking_config = {}
+
+
+
     # Compute sub-totals and insert into provided dataframe
-    subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(
-        df, level_subtotal_cols_dict, group_cols_agg_func_dict, text_append_dict)
+    subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, subtotal_outlines_dict, ranking_config)
 
     # Get the updated DataFrame object - with the subtotals inserted
     updated_df = subtotals_result_dict['updated_df']

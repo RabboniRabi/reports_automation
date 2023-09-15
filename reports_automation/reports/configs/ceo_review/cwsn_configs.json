@@ -27,18 +27,36 @@
                     "cols.udid_count" : "sum"
                 }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.udid_count" : "sum"
+            "ranking_config": {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.cwsn_tot": "sum", 
+                        "cols.udid_count" : "sum"
+                    },
+                    "ranking_val_desc" : "cols.perc_students_with_UDID",
+                    "num_col": "cols.udid_count",
+                    "den_col": "cols.cwsn_tot",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_students_with_UDID",
-                "num_col": "cols.udid_count",
-                "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "data_ranking_levels" : {
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_elem_rank",
+                        "show_rank_val" : false
+                    },
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "BEO Rank",
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_students_with_UDID"
+                    }
+                }
             },
+            
             "format_config" : {
                 "heading" : "Elementary CWSN students having UDIDs report as on ",
                 "subtotal_outlines_dict" : {
@@ -68,18 +86,35 @@
                     "cols.udid_count" : "sum"
                 }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.cwsn_tot": "sum", 
-                    "cols.udid_count" : "sum"
+            "ranking_config": {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.cwsn_tot": "sum", 
+                        "cols.udid_count" : "sum"
+                    },
+                    "ranking_val_desc": "cols.perc_students_with_UDID",
+                    "num_col": "cols.udid_count",
+                    "den_col": "cols.cwsn_tot",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_students_with_UDID",
-                "num_col": "cols.udid_count",
-                "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "data_ranking_levels" : {
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_elem_rank",
+                        "show_rank_val" : false
+                    },
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_students_with_UDID"
+                    }
+                }
             },
+            
             "format_config" : {
                 "heading" : "Secondary CWSN students having UDIDs report",
                 "subtotal_outlines_dict" : {

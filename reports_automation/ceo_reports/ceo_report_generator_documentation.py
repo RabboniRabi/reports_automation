@@ -10,8 +10,8 @@ This will entail 2 main functions:
             ceo_raw_data = get_ceo_report_raw_data(config[code], 'raw data with brc-crc mapping', save_source=True)
             elementary_report = get_ceo_report(config[code], 'Elementary', 'ranked')
             secondary_report = get_ceo_report(config[code], 'Secondary', 'ranked')
-            review_view_utilities.prepare_report_for_review(elementary_report)
-            review_view_utilities.prepare_report_for_review(secondary_report)
+            report_format_utilities.format_ceo_review_report(elementary_report)
+            report_format_utilities.format_ceo_review_report(secondary_report)
 
     def get_ceo_report_raw_data(code, temp, param, save_source = False):
         config = config_reader.get_config(code)
