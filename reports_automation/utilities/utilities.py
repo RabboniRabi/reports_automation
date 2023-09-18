@@ -66,22 +66,26 @@ def filter_dataframe_not_in_column(df, column_name, values_in):
     """
     df_filtered = df[~df[column_name].isin(values_in)]
     return df_filtered
-def filter_not_in_dataframe(df, column_names, values):
+def filter_dataframe(df, filter_dict, include= True):
     """
-    Function to filter the dataframe for multiple columns removing the given set of values
+    Function to filter the dataframe for multiple columns either by including or excluding the given set of values
     Args:
         df: Pandas Dataframe
-        column_names: list
-        Column names you want to filter
-        values: list
-        Row values you want to exclude from the dataframe
+        filter_dict: dict
+        {Column names : values need to be filtered}
+        include: bool
+        Default is true
+        If include is false, the values corresponding to the column will be excluded
+        else it will be included
 
     Returns:
         Filtered dataframe
     """
-    for col_name in column_names:
-
-        df = filter_dataframe_not_in_column(df, col_name, values)
+    for col_name, values in filter_dict.items():
+        if include==True:
+            df = filter_dataframe_column(df, col_name, values)
+        else:
+            df = filter_dataframe_not_in_column(df, col_name, values)
     return df
 def filter_column_le(df, column_name, threshold_value):
     """
