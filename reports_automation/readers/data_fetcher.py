@@ -12,8 +12,7 @@ import utilities.utilities as utilities
 
 import pandas as pd
 
-import config_reader
-from config_types import ConfigTypes as config_types
+import readers.config_reader as config_reader
 
 
 def get_data_from_config(source_config_dict, save_source=False):
@@ -93,7 +92,7 @@ def get_data_from_config(source_config_dict, save_source=False):
     return df_data
 
 
-def get_data(report_code, save_source=False):
+def get_data(report_code:str, config_category:str, save_source=False):
     """
     This function fetches the data by getting and using the appropriate
     source data configuration from the report_configs.json file
@@ -108,6 +107,10 @@ def get_data(report_code, save_source=False):
     ----------
     report_code: str
         The name/code of the report/metric to fetch the data for
+    config_category: str
+        The category of configuration. This will be used to search for the 
+        configuration in the directory containing configuration files for this category. 
+        Default is None. All available configuration files will be searched.
     save_source: bool
         Flag indicating if a copy of data fetched from database needs to be saved.
         To be used within the application. Default is False.
@@ -117,7 +120,7 @@ def get_data(report_code, save_source=False):
     Raw data as a Pandas DataFrame object
     """
     # Get the overall configuration for the report
-    config = config_reader.get_config(report_code)
+    config = config_reader.get_config(report_code, config_category)
 
     # Get the source data configuration for the report
     source_config = config.get('source_config')
@@ -163,7 +166,7 @@ def get_data_set_from_config(source_configs:dict, save_source=False):
 
     return df_data_set
 
-def get_data_set(report_code, config_type:str, save_source=False):
+def get_data_set(report_code, config_category:str, save_source=False):
     """
     This function fetches multiple source datasets by getting and using the appropriate
     source data configurations from the report_configs.json file
@@ -178,9 +181,10 @@ def get_data_set(report_code, config_type:str, save_source=False):
     ----------
     report_code: str
         The name/code of the report/metric to fetch the data for
-    config_type: str
-        The type of configuration to search the report code in. The value supplied will be matched
-        against the values in the config_types enum.
+    config_category: str
+        The category of configuration. This will be used to search for the 
+        configuration in the directory containing configuration files for this category. 
+        Default is None. All available configuration files will be searched.
     save_source: bool
         Flag indicating if a copy of data fetched from database needs to be saved.
         To be used within the application. Default is False.
@@ -190,13 +194,7 @@ def get_data_set(report_code, config_type:str, save_source=False):
     Dataset as Pandas DataFrame Objects dictionary
     """
     # Get the overall configuration for the report
-    # Check if a config type has been given to narrow the search for the report configuration
-    if (config_type == config_types.AH_HOC.value):
-        config = config_reader.get_adhoc_config(report_code)
-    elif (config_type == config_types.CEO_REVIEW.value):
-        config = config_reader.get_ceo_rpt_config(report_code)
-    else:
-        config = config_reader.get_config(report_code)
+    config = config_reader.get_config(report_code, config_category)
 
 
     # Get the source data configurations for the report

@@ -1129,7 +1129,7 @@
             "report_code" : "SCH_ISS_CYCLE",
             "report_category": "Schemes",
             "report_desc": "Schools issuing cycles report",
-            "generate_report": false,
+            "generate_report": true,
             "source_config" : {
                 "sources" : [
                     {
@@ -1212,7 +1212,7 @@
             "report_code" : "SCH_ISS_LAP",
             "report_category": "Schemes",
             "report_desc": "Schools issuing laptops report",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "sources" : [
                     {

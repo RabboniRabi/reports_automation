@@ -380,6 +380,52 @@ def file_exists(file_name: str, dir_path:str):
 
     return file_exists
 
+def build_dir_path(dir_levels:list):
+    """
+    Function to build an OS independent absolute path to a directory
+    anywhere in the project
+    Parameters:
+    -----------
+    dir_levels: list
+        The list of successive directories from the root of the project
+        upto to the final directory
+    Returns:
+    --------
+    The full path to the directory
+    """
+
+    curr_dir_path = Path(os.getcwd())
+    # Get the path to project root directory
+    root_dir = curr_dir_path.parents[0]
+    # Assign the full directory path initially to the root directory path and then update
+    dir_path = root_dir
+    for dir in dir_levels: 
+        dir_path = os.path.join(dir_path, dir)
+
+    return dir_path
+
+
+def build_file_path(file_name: str, dir_levels:list):
+    """
+    Function to build a OS independent absolute path to a file 
+    anywhere in the project
+    Parameters:
+    -----------
+    file_name: str
+        The name of the file whose full path has to be built
+    dir_levels: list
+        The list of successive directories from the root of the project
+        upto to the directory containing the file
+    Returns:
+    --------
+    The full path to the file
+    """
+    # Get the path to the directory
+    dir_path = build_dir_path(dir_levels)
+
+    file_path = os.path.join(dir_path, file_name)
+
+    return file_path
 
 def get_file_path(file_name: str, dir_path:str):
     """
@@ -388,7 +434,7 @@ def get_file_path(file_name: str, dir_path:str):
     Parameters:
     -----------
     file_name: str
-        The name of the file full path has to be retrieved
+        The name of the file whose full path has to be retrieved
     dir_path: str
         The path to the directory where the file exists
 
@@ -425,7 +471,7 @@ def save_to_excel(df_sheet_dict, file_name, dir_path = get_gen_reports_dir_path(
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(datatoexcel, sheet_name=key, index=index)
         print('Saving ', key, ' sheet in excel file: ', file_name, '....')
-    datatoexcel.save()
+    datatoexcel.close()
     print('Save done')
 
 
@@ -437,7 +483,7 @@ def get_xlsxwriter_obj(df_sheet_dict, file_name, file_path = get_gen_reports_dir
     Parameters:
     ----------
     df_sheet_dict: dictionary
-        A dictionary containing sheet-dataframe key-value paits
+        A dictionary containing sheet-dataframe key-value pairs
     file_name: str
         File name to save the data in
     file_path: str, optional
@@ -459,3 +505,39 @@ def get_xlsxwriter_obj(df_sheet_dict, file_name, file_path = get_gen_reports_dir
     for key in df_sheet_dict.keys():
         df_sheet_dict[key].to_excel(writer, sheet_name=key, index=index,startrow=start_row,startcol=start_col)
     return writer
+
+
+def get_xlsxwriter_objs(df_dict, dir_path=get_curr_day_month_gen_report_name_dir_path, index=False,start_row=0, start_col=0):
+    """
+    Function to convert the Pandas DataFrame objects in the given dictionary 
+    to a ready to use and save dictionary of XlsxWriter objects to be saved
+    in the given directory path.
+
+    Parameters:
+    ----------
+    df_dict: dictionary
+        A dictionary of key-name, value-data frame pairs
+    dir_path: str, optional
+        The directory path to save the file in. Default is current day, month generated reports directory   
+    index: bool
+        Boolean value indicating if row names need to be written. Default is False
+    start_row: int
+        Integer value indicating the which row the dataframe will be printed in
+    start_col: int
+        Integer value indicating the which column the dataframe will be printed in
+
+    Returns:
+    -------
+    Dictionary of XlsxWriter objects    
+    """
+    # Declare a dictionary of xlsxwriter objects
+    xlsxwriters_dict = {}
+
+    # Iterate through the data frames and get the corresponding xlsxwriter objects
+    for key in df_dict.keys():
+        df = df_dict[key]
+        xlsxwriters_dict[key] = get_xlsxwriter_obj({key:df}, str(key).title()+'.xlsx', dir_path, index, start_row, start_col)
+
+    return xlsxwriters_dict
+
+
