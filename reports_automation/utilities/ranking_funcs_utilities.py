@@ -312,7 +312,14 @@ def _sort_rank_and_show_hide_cols(df, ranking_args_dict):
 
     # Add a rank column if flag indicates that rank should be shown
     if 'show_rank_col' in ranking_args_dict and ranking_args_dict['show_rank_col']:
-        df[ranking_args_dict['rank_col_name']] = df[cols.ranking_value].rank(ascending=ascending, method="min")
+        # Check if data needs to be ranked within a group
+        if 'rank_within_parent_group' in ranking_args_dict and ranking_args_dict['rank_within_parent_group']:
+            parent_grouping_levels = ranking_args_dict['rank_within_parent_grouping_levels']
+            df[ranking_args_dict['rank_col_name']] = df.groupby(parent_grouping_levels)[cols.ranking_value]\
+                                        .rank(ascending=ascending, method="min")
+        else:
+            # Else, rank the data
+            df[ranking_args_dict['rank_col_name']] = df[cols.ranking_value].rank(ascending=ascending, method="min")
     
     # Check if flag indicates that rank value should be shown
     if 'show_rank_val' in ranking_args_dict and ranking_args_dict['show_rank_val']:

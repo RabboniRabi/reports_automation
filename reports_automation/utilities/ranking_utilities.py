@@ -38,6 +38,9 @@ def calc_ranking(df, ranking_config):
     the configuration or on a specified column. 
 
     Multiple ranks can be calculated for different grouping of data. 
+    
+    Ranks can also be given within groups in the data. For example, 7 blocks in district A
+    and 4 blocks in district B can be ranked 1-7 and 1-4 respectively within the data.
 
     There are also flags(toggles) to show rank, ranking value, to sort data, to order data, etc.
 
@@ -82,6 +85,11 @@ def calc_ranking(df, ranking_config):
                         '//rank_col_name is not needed' : '//as show_rank_col flag is false
                         'show_rank_val' : true,
                         'ranking_val_desc' : 'cols.perc_screened'
+                        '// or above two lines can be replaced with' : '//the following to do within group ranking',
+                        'show_rank_col' : true,
+                        'rank_col_name' : 'block_rank',
+                        'rank_within_parent_group': true,
+                        'rank_within_parent_grouping_levels' : ['cols.deo_name_elm']
                     }
                 }
             } 
@@ -117,6 +125,11 @@ def calc_ranking(df, ranking_config):
                 ranking_args_for_key['show_rank_val'] = grouping_lvl_ranking_config['show_rank_val']
                 ranking_args_for_key['ranking_val_desc'] = grouping_lvl_ranking_config['ranking_val_desc']
                 show_rank_val_flag = True
+            
+            if 'rank_within_parent_group' in grouping_lvl_ranking_config and grouping_lvl_ranking_config['rank_within_parent_group']:
+                ranking_args_for_key['rank_within_parent_group'] = grouping_lvl_ranking_config['rank_within_parent_group']
+                ranking_args_for_key['rank_within_parent_grouping_levels'] = grouping_lvl_ranking_config['rank_within_parent_grouping_levels']
+
 
             # Group the data to the level it needs to be ranked on
             grouping_levels = grouping_lvl_ranking_config['grouping_levels']

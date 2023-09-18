@@ -49,8 +49,7 @@
                     },
                     "block_level" : {
                         "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
-                        "show_rank_col" : true,
-                        "rank_col_name" : "BEO Rank",
+                        "show_rank_col": false,
                         "show_rank_val" : true,
                         "ranking_val_desc" : "cols.perc_students_with_UDID"
                     }
