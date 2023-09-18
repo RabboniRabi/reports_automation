@@ -6,7 +6,7 @@
             "report_code" : "TCH_LV_BL_UP",
             "report_category": "Attendance",
             "report_desc": "Teacher leave balance updation report",
-            "generate_report": false,
+            "generate_report": true,
             "source_config" : {
                 "source_file_name" : "teacher_leave_balance_updt_report.xlsx",
                 "source_sheet_name" : "Summary",

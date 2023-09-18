@@ -7,7 +7,7 @@
         "report_desc": "CWSN having UDID report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 0
         },
@@ -108,7 +108,7 @@
         "report_desc": "CWSN having NID report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 0
         },
@@ -209,7 +209,7 @@
         "report_desc": "CWSN having accounts report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 0
         },
