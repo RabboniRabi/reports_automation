@@ -1,0 +1,66 @@
+{
+  "report_configs": [
+    {
+      "report_name": "10th_board_block_level_report",
+      "report_code" : "10TH_BRD_ALL_MGMT_URBAN_RURAL_LVL_RPT",
+      "report_desc": "Configuration to generate grouping level reports for 10th board results",
+      "source_config_curr_yr": {
+        "sources": [
+          {
+            "source_name" : "govt",
+            "source_file_name": "SSLC_stud_level_government_2022-23.xlsx",
+            "source_sheet_name": "govt_2023",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "aided",
+            "source_file_name": "SSLC_stud_level_aided_2022-23.xlsx",
+            "source_sheet_name": "aided_2023",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "un_aided",
+            "source_file_name": "SSLC_stud_level_private_2022-23.xlsx",
+            "source_sheet_name": "private_2023",
+            "skip_rows": 0
+          }
+        ]
+      },
+      "sources_prev_yr": {
+        "sources": [
+          {
+            "source_name" : "govt",
+            "source_file_name": "SSLC_stud_level_government_2021-22.xlsx",
+            "source_sheet_name": "govt_2022",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "aided",
+            "source_file_name": "SSLC_stud_level_aided_2021-22.xlsx",
+            "source_sheet_name": "aided_2022",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "un_aided",
+            "source_file_name": "SSLC_stud_level_private_2021-22.xlsx",
+            "source_sheet_name": "private_2022",
+            "skip_rows": 0
+          }
+        ]
+      },
+      "grouping_levels": {
+        "state_grouping_levels": ["cols.management"],
+        "district_grouping_levels": ["cols.district_name", "cols.management"],
+        "block_grouping_levels": ["cols.district_name", "cols.block_name", "cols.management"]
+      },
+      "agg_dict": {
+        "cols.tot_stu": "count",
+        "cols.stu_pass": "sum",
+        "cols.tot_marks": "median",
+        "cols.urban_marks": "median",
+        "cols.rural_marks": "median"
+
+      }
+    }
+  ]
+}

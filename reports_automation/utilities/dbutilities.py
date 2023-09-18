@@ -204,7 +204,7 @@ def fetch_data_in_batches_as_df (credentials_dict, script_file_name, batch_size=
 
     return full_df
 
-def fetch_data_as_df_V2 (credentials_dict, script_file_name, params):
+def fetch_data_as_df_V2 (credentials_dict, script_file_name, params:list):
     """
     Function to fetch data from the database using a query and return the data as a pandas dataframe object
 
@@ -243,9 +243,7 @@ def fetch_data_as_df_V2 (credentials_dict, script_file_name, params):
        return df_data
 
     else:
-       params=[]
-       query=""" """
-       query = query.format(*params)
+       query ="".format(*params)
        df_parameterized = pd.read_sql_query(query, connection)
        connection.close()
        return df_parameterized
