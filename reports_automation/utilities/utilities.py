@@ -39,7 +39,7 @@ def get_prev_month():
     today = dt.date.today()
     first = today.replace(day=1)
 
-    last_month = first - datetime.timedelta(days=1)
+    last_month = first - dt.timedelta(days=1)
 
     return last_month.strftime("%h")
 
@@ -55,7 +55,7 @@ def get_year_of_prev_month():
     today = dt.date.today()
     first = today.replace(day=1)
 
-    last_month = first - datetime.timedelta(days=1)
+    last_month = first - dt.timedelta(days=1)
 
     return last_month.strftime("%Y")
 
@@ -118,27 +118,33 @@ def filter_dataframe_not_in_column(df, column_name, values_in):
     """
     df_filtered = df[~df[column_name].isin(values_in)]
     return df_filtered
-def filter_dataframe(df, filter_dict, include= True):
+
+def filter_dataframe(df, filter_dict, include=True):
     """
     Function to filter the dataframe for multiple columns either by including or excluding the given set of values
-    Args:
-        df: Pandas Dataframe
-        filter_dict: dict
-        {Column names : values need to be filtered}
-        include: bool
+
+    Parameters:
+    ----------
+    df: Pandas Dataframe
+        The data to filter
+    filter_dict: dict
+        {'Column_names' : [values need to be filtered]}
+    include: bool
         Default is true
         If include is false, the values corresponding to the column will be excluded
         else it will be included
 
     Returns:
-        Filtered dataframe
+    --------
+    Filtered dataframe
     """
     for col_name, values in filter_dict.items():
-        if include==True:
+        if include:
             df = filter_dataframe_column(df, col_name, values)
         else:
             df = filter_dataframe_not_in_column(df, col_name, values)
     return df
+
 def filter_column_le(df, column_name, threshold_value):
     """
     Function to filter a dataframe object by values less than or equal to given threshold value

@@ -1,0 +1,78 @@
+{
+    "report_configs": [
+      {
+        "report_name": "ceo_review_progress_report_formats",
+        "report_code" : "CEO_REV_PRG_RPT_FRMT",
+        "format_dicts_list" : [
+            {
+              "description" : "Add green up, yellow same, red down arrows to indicate comparative performance",
+              "conditional_format_flag" : true,
+              "conditional_format" : {
+                          "type" : "icon_set",
+                          "icon_style": "3_arrows",
+                          "icons": [
+                              {"criteria": ">=", "type": "number", "value": 0.001},
+                              {"criteria": "<=", "type": "number", "value": -0.001}
+                          ]
+                        }
+            },
+            {
+              "description" : "Highlight values in comparison columns that are positively very high",
+              "columns" : [],
+              "conditional_format_flag" : true,
+              "conditional_format" : {
+                          "type" : "cell",
+                          "criteria": ">",
+                          "value" : 20
+                        },
+              "format": {
+                "bg_color" : "#0dc9a1",
+                "border" : 1
+              }
+            },
+            {
+              "description" : "Highlight values in comparison columns that are positively high",
+              "columns" : [],
+              "conditional_format_flag" : true,
+              "conditional_format" : {
+                          "type" : "cell",
+                          "criteria": ">",
+                          "value" : 10
+                        },
+              "format": {
+                "bg_color" : "#0af5c3",
+                "border" : 1
+              }
+            },
+            {
+              "description" : "Highlight values in comparison columns that are negatively very high",
+              "columns" : [],
+              "conditional_format_flag" : true,
+              "conditional_format" : {
+                          "type" : "cell",
+                          "criteria": "<",
+                          "value" : -20
+                        },
+              "format": {
+                "bg_color" : "#e37224",
+                "border" : 1
+              }
+            },
+            {
+              "description" : "Highlight values in comparison columns that are negatively high",
+              "columns" : [],
+              "conditional_format_flag" : true,
+              "conditional_format" : {
+                          "type" : "cell",
+                          "criteria": "<",
+                          "value" : -10
+                        },
+              "format": {
+                "bg_color" : "#faa14d",
+                "border" : 1
+              }
+            }
+        ]
+      }
+    ]
+}

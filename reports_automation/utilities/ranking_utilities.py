@@ -189,6 +189,57 @@ def rank_cols_insert(df, ranking_args_dict):
     return df
 
 
+def build_metric_wise_ranking_report(df_ranking_master):
+    """
+    Function to use the data in the ranking master format and
+    create a ranking report where each metric code is 
+    a column and the ranks people have received for that metric code
+    are values.
+
+    Parameters:
+    ----------
+    df_ranking_master: Pandas DataFrame
+        The ranking master data
+
+    Returns:
+    -------
+    Pandas DataFrame object of the the progress report
+    """
+
+    # Declare an empty DataFrame
+    df_metric_wise_ranking = pd.DataFrame()
+    
+    # Get the metric codes in the given data
+    metric_codes = df_ranking_master[cols.metric_code].unique()
+
+    # Get the unique names in the given ranking master
+    names = df_ranking_master[cols.name].unique()
+
+    # Put the above names in the name column
+    df_metric_wise_ranking[cols.name] = names
+
+
+    # Iterate through the metric codes
+    for metric_code in metric_codes:
+        # Filter the data to the current metric code
+        df_metric_code_filtered = utilities.filter_dataframe_column(\
+                                    df_ranking_master.copy(), cols.metric_code, [metric_code])
+
+        # Create a column with the metric code as column name and values as rank
+        df_metric_code_filtered[metric_code] = df_metric_code_filtered[cols.rank_col]
+
+        # Merge the metric code rank values to the metric wise ranking data
+        df_metric_wise_ranking = pd.merge(df_metric_wise_ranking, \
+                                    df_metric_code_filtered[[cols.name, metric_code]], on=[cols.name])
+
+    # Sort the data alphabetically by names
+    df_metric_wise_ranking.sort_values(by=cols.name)
+
+
+    return df_metric_wise_ranking
+
+
+
 def get_ceo_rev_ranking_master_data(designations: list, school_levels:list, months:list, years:list):
     """
     Function to get the CEO review ranking master data for given
@@ -204,6 +255,10 @@ def get_ceo_rev_ranking_master_data(designations: list, school_levels:list, mont
         The months for which the data is to be fetched
     years: list 
         The years for which the data is to be fetched
+
+    Returns:
+    --------
+    The ceo review ranking master data filtered for the given parameters
     """
 
     # Get the path to the ranking master
@@ -214,6 +269,13 @@ def get_ceo_rev_ranking_master_data(designations: list, school_levels:list, mont
     df_ranking_master = file_utilities.read_sheet(file_path, 'ranking')
 
     # Get the ranking master data matching the given criteria
+    df_filter_criteria = {}
+    df_filter_criteria[cols.desig] = designations
+    df_filter_criteria[cols.school_level] = school_levels
+    df_filter_criteria[cols.month_col] = months
+    df_filter_criteria[cols.year_col] = years
 
-    return df_ranking_master
+    df_ranking_master_filtered = utilities.filter_dataframe(df_ranking_master, df_filter_criteria)
+
+    return df_ranking_master_filtered
 
