@@ -3,6 +3,7 @@ Module with utility functions that can be commonly used across the project.
 """
 
 from datetime import datetime
+import datetime as dt
 
 import pandas as pd
 
@@ -15,6 +16,57 @@ def get_today_date():
     The current date as a 'DD:MM:YY' format string
     """
     return datetime.now().strftime('%d-%m-%y')
+
+def get_curr_month():
+    """
+    Function to return a string representation of the current month name
+
+    Returns:
+    --------
+    The current month in a 3 letter abbreviated format
+    """
+    return datetime.now().strftime('%h')
+
+def get_prev_month():
+    """
+    Function to return a string representation of the previous month name
+
+    Returns:
+    --------
+    The previous month in a 3 letter abbreviated format
+    """
+    today = dt.date.today()
+    first = today.replace(day=1)
+
+    last_month = first - datetime.timedelta(days=1)
+
+    return last_month.strftime("%h")
+
+def get_year_of_prev_month():
+    """
+    Function to return a string representation of the year of 
+    the month previous to the current month
+
+    Returns:
+    --------
+    The current year in YYYY format
+    """
+    today = dt.date.today()
+    first = today.replace(day=1)
+
+    last_month = first - datetime.timedelta(days=1)
+
+    return last_month.strftime("%Y")
+
+def get_curr_year():
+    """
+    Function to return a string representation of the current year
+
+    Returns:
+    --------
+    The current year in YYYY format
+    """
+    return datetime.now().strftime('%Y')
 
 
 def xlookup(lookup_value, lookup_array, return_array, if_not_found = ''):

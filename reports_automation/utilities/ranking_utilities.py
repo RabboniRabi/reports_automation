@@ -5,10 +5,13 @@ Module with utilitiy functions to calculate and save ranking
 import os
 import sys
 sys.path.append('../')
+
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.ranking_funcs_utilities as ranking_funcs_utilities
 import utilities.column_names_utilities as cols
+
+from enums.school_levels import SchoolLevels as school_levels
 
 import pandas as pd
 from datetime import datetime
@@ -184,3 +187,33 @@ def rank_cols_insert(df, ranking_args_dict):
                         .apply(lambda rank: str(rank) + '/' + str(total_ranks))
 
     return df
+
+
+def get_ceo_rev_ranking_master_data(designations: list, school_levels:list, months:list, years:list):
+    """
+    Function to get the CEO review ranking master data for given
+    designation, school level, month and year
+
+    Parameters:
+    -----------
+    designations: list
+        The designations of the staff whose ranking details is to be fetched
+    school_levels: list
+        The school levels (Elementary/Secondary) for which the data is to be fetched
+    months: list
+        The months for which the data is to be fetched
+    years: list 
+        The years for which the data is to be fetched
+    """
+
+    # Get the path to the ranking master
+    ceo_rpts_dir_path = file_utilities.get_ceo_rpts_dir_path()
+    file_path = file_utilities.get_file_path('ranking_master.xlsx', ceo_rpts_dir_path)
+
+    # Read the ranking master data as a Pandas DataFrame object
+    df_ranking_master = file_utilities.read_sheet(file_path, 'ranking')
+
+    # Get the ranking master data matching the given criteria
+
+    return df_ranking_master
+
