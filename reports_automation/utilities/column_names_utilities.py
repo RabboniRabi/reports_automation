@@ -21,6 +21,8 @@ yes_col = 'Yes'
 no_col = 'No'
 web = 'Website'
 mobile = 'Mobile'
+all_management = 'All_Management'
+management = 'management'
 management_type = "management_type"
 category_type ="category_type"
 distinct_udise_count = 'count(DISTINCT udise_code)'
@@ -425,6 +427,7 @@ cg_ecnom_supp_need = 'Economic Support Needed'
 
 
 # board exams report specific columns
+stu_name = 'NAME'
 brd_tot_stu_appr = 'No. of students who appeared for all subjects'
 brd_tot_stu_pass = 'No. of students passed'
 brd_pass_perc = 'Pass %'
@@ -465,6 +468,8 @@ tot_marks = 'total'
 lang_marks = 'language'
 eng_marks = 'english'
 math_marks = 'maths'
+science_theory = 'science_theo'
+science_prac = 'science_prac'
 science_marks = 'science'
 social_marks = 'social'
 curr_tot_stu = "EMIS_NO_count_curr_yr"

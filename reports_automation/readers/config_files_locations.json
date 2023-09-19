@@ -31,7 +31,8 @@
     "miscellaneous_configs" : {
         "dir_levels": ["miscellaneous", "configs"],
         "files" : [
-            "board_results.json"
+            "board_results.json",
+            "tenth_metric_wise_grouping.json"
             ]
     }
 }
