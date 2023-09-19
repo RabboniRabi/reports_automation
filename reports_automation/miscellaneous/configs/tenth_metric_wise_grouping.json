@@ -26,7 +26,7 @@
           }
         ]
       },
-      "sources_prev_yr": {
+      "source_config_prev_yr": {
         "sources": [
           {
             "source_name" : "govt",
@@ -52,6 +52,17 @@
         "state_grouping_levels": ["cols.management"],
         "district_grouping_levels": ["cols.district_name", "cols.management"],
         "block_grouping_levels": ["cols.district_name", "cols.block_name", "cols.management"]
+      },
+      "filter_dict": {
+        "cols.stu_name": ["DELETED"],
+        "cols.tot_marks": ["XXX", "AAA"],
+        "cols.lang_marks": ["XXX", "AAA"],
+        "cols.eng_marks": ["XXX", "AAA"],
+        "cols.math_marks": ["XXX", "AAA"],
+        "cols.science_theory": ["XXX", "AAA"],
+        "cols.science_prac": ["XXX", "AAA"],
+        "cols.science_marks": ["XXX", "AAA"],
+        "cols.social_marks": ["XXX", "AAA"]
       },
       "agg_dict": {
         "cols.tot_stu": "count",

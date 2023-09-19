@@ -422,6 +422,7 @@ cg_ecnom_supp_need = 'Economic Support Needed'
 
 
 # board exams report specific columns
+stu_name = 'NAME'
 brd_tot_stu_appr = 'No. of students who appeared for all subjects'
 brd_tot_stu_pass = 'No. of students passed'
 brd_pass_perc = 'Pass %'
