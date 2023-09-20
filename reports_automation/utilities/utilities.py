@@ -555,6 +555,9 @@ def subtract_dfs(df_first, df_second, cols:list):
     df_subtracted = df_first.copy()
 
     for col in cols:
-        df_subtracted[col] = df_first[col] - df_second[col]
+        if col in df_second:
+            df_subtracted[col] = df_first[col] - df_second[col]
+        else:
+            df_subtracted[col] = 0
 
     return df_subtracted

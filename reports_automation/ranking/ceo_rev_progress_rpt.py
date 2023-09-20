@@ -42,6 +42,8 @@ def generate_ceo_rev_deo_progress_report(deo_lvl: school_levels):
     # Get the data in progress report format
     df_curr_month_rpt = ranking_utilities.build_metric_wise_ranking_report(df_curr_month_ranks)
 
+    print('DEO names: ', df_curr_month_rpt[cols.name].unique())
+
 
     # Testing
     #file_utilities.save_to_excel({'test': df_curr_month_rpt}, 'df_curr_month_rpt.xlsx')

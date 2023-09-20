@@ -13,6 +13,8 @@ import readers.weightage_fetcher as weightage_fetcher
 
 import utilities.column_names_utilities as cols
 
+import pandas as pd
+
 
 from enums.school_levels import SchoolLevels as school_levels
 
@@ -40,7 +42,7 @@ def generate_ceo_rev_deo_cons_ranking(deo_lvl: school_levels):
     # Get the data in progress report format
     df_curr_month_rpt = ranking_utilities.build_metric_wise_ranking_report(df_curr_month_ranks)
 
-    # Get the metric wise weightages
+    # Get the metric wise ranking weightages
     metric_ranking_weightages = weightage_fetcher.fetch_ceo_rev_metric_ranking_weightages(deo_lvl.value)
 
     # Get the current month consolidated ranking
@@ -58,15 +60,22 @@ def generate_ceo_rev_deo_cons_ranking(deo_lvl: school_levels):
     # Get the data in progress report format
     df_prev_month_rpt = ranking_utilities.build_metric_wise_ranking_report(df_prev_month_ranks)
 
-    # Get the improvement report
+    # Get the improvement report - Difference in metric ranks in current month from previous month
     df_improv = utilities.subtract_dfs(df_curr_month_rpt, df_prev_month_rpt, curr_month_metric_codes)
+
+    # Get the metric wise improvement weightages
+    metric_improv_weightages = weightage_fetcher.fetch_ceo_rev_metric_improv_weightages(deo_lvl.value)
+
+    # Get the improvement consolidated ranking
+    df_improv_cons_ranking = ranking_utilities.compute_consolidated_ranking(df_improv, \
+                                            metric_improv_weightages, invert_rank=False)
 
     # Compute the overall ranking
     df_overall_ranking = pd.DataFrame()
     df_overall_ranking[cols.name] = df_curr_month_rpt[cols.name]
-    df_overall_ranking['Current month weighted Score'] = df_curr_month_rpt['Total Weighted Score']
-    df_overall_ranking['Improvement weighted Score'] = df_improv['Total Weighted Score']
-    df_overall_ranking['Overall Weighted Score'] = df_overall_ranking['Current month weighted Score'] + 
+    df_overall_ranking['Current month weighted Score'] = curr_month_cons_ranking['Total Weighted Score']
+    df_overall_ranking['Improvement weighted Score'] = df_improv_cons_ranking['Total Weighted Score']
+    df_overall_ranking['Overall Weighted Score'] = df_overall_ranking['Current month weighted Score'] + \
                                                         df_overall_ranking['Improvement weighted Score']    
 
     # Sort the values and rank

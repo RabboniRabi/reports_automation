@@ -22,7 +22,7 @@ from datetime import datetime
 ranking_master_file_name = 'ranking_master.xlsx'
 ranking_master_sheet_name = 'ranking'
 # Get the path to the ceo_reports folder for the month
-ceo_rpts_dir_path = file_utilities.get_ceo_rpts_dir_path()
+ranking_rpts_dir_path = file_utilities.get_ranking_reports_dir()
 
 
 # Define the columns to save to the ranking master
@@ -101,7 +101,7 @@ def update_ranking_master(df_ranking, metric_code, metric_category, school_level
         cols.year_col: 'int'})
     
     # Get the master ranking file. In the future, this needs to be saved and fetched from a database
-    ranking_file_path = os.path.join(ceo_rpts_dir_path, ranking_master_file_name)
+    ranking_file_path = os.path.join(ranking_rpts_dir_path, ranking_master_file_name)
 
     # If file does not exist, save the ranking to the file
     if not os.path.exists(ranking_file_path):
@@ -127,7 +127,7 @@ def update_ranking_master(df_ranking, metric_code, metric_category, school_level
 
     # Save the updated df_master_ranking
     df_sheet_dict = {ranking_master_sheet_name: df_master_ranking}
-    file_utilities.save_to_excel(df_sheet_dict, ranking_master_file_name, ceo_rpts_dir_path)
+    file_utilities.save_to_excel(df_sheet_dict, ranking_master_file_name, ranking_rpts_dir_path)
 
 
 
@@ -215,8 +215,12 @@ def build_metric_wise_ranking_report(df_ranking_master):
     # Get the unique names in the given ranking master
     names = df_ranking_master[cols.name].unique()
 
+
     # Put the above names in the name column
     df_metric_wise_ranking[cols.name] = names
+
+    print('names: ', df_metric_wise_ranking[cols.name])
+
 
 
     # Iterate through the metric codes
@@ -230,11 +234,12 @@ def build_metric_wise_ranking_report(df_ranking_master):
 
         # Merge the metric code rank values to the metric wise ranking data
         df_metric_wise_ranking = pd.merge(df_metric_wise_ranking, \
-                                    df_metric_code_filtered[[cols.name, metric_code]], on=[cols.name])
+                                    df_metric_code_filtered[[cols.name, metric_code]], on=[cols.name], how='left')
 
     # Sort the data alphabetically by names
     df_metric_wise_ranking.sort_values(by=cols.name)
 
+    print('names post func processing: ', df_metric_wise_ranking[cols.name])
 
     return df_metric_wise_ranking
 
@@ -262,8 +267,8 @@ def get_ceo_rev_ranking_master_data(designations: list, school_levels:list, mont
     """
 
     # Get the path to the ranking master
-    ceo_rpts_dir_path = file_utilities.get_ceo_rpts_dir_path()
-    file_path = file_utilities.get_file_path('ranking_master.xlsx', ceo_rpts_dir_path)
+    ranking_rpts_dir_path = file_utilities.get_ranking_reports_dir()
+    file_path = file_utilities.get_file_path('ranking_master.xlsx', ranking_rpts_dir_path)
 
     # Read the ranking master data as a Pandas DataFrame object
     df_ranking_master = file_utilities.read_sheet(file_path, 'ranking')
@@ -280,7 +285,7 @@ def get_ceo_rev_ranking_master_data(designations: list, school_levels:list, mont
     return df_ranking_master_filtered
 
 
-def get_inverted_rank(df_ranking, metric_codes):
+def get_inverted_rank(df_ranking, metric_codes:list):
     """
     Function to invert the rank values in a report with
     column wise metric ranks.
@@ -298,6 +303,7 @@ def get_inverted_rank(df_ranking, metric_codes):
 
     # Invert the ranks
     for metric_code in metric_codes:
+        print('metric_code: ', metric_code)
         df_ranking[metric_code] = (max_rank + 1) - df_ranking[metric_code]
 
     return df_ranking
@@ -326,7 +332,7 @@ def compute_consolidated_ranking(df_ranking, metric_weightage:dict, invert_rank:
 
     df_cons_ranking = df_ranking.copy()
 
-    metric_codes = metric_weightage.keys()
+    metric_codes = list(metric_weightage.keys())
 
     df_cons_ranking['Total Weighted Score'] = 0
 

@@ -326,7 +326,7 @@ def get_ranking_reports_dir():
     -------
     The path to the progress report files directory
     """
-    dir_path = os.path.join(get_ceo_rpts_dir_path(), 'progress_reports')
+    dir_path = os.path.join(get_ceo_rpts_dir_path(), 'ranking')
 
     # If directory does not exist
     if not os.path.isdir(dir_path):

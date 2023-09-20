@@ -5,7 +5,7 @@ Module with functions to fetch ranking weightages for report metrics
 import sys
 sys.path.append('../')
 
-import reader.config_reader as config_reader
+import readers.config_reader as config_reader
 from enums.school_levels import SchoolLevels as school_levels
 
 def fetch_ceo_rev_metric_ranking_weightages(report_level:str=None):
@@ -36,8 +36,7 @@ def fetch_ceo_rev_metric_ranking_weightages(report_level:str=None):
 
     if report_level == school_levels.ELEMENTARY.value:
         config_level = 'elementary_report'
-    elif:
-        report_level == school_levels.SECONDARY.value:
+    elif report_level == school_levels.SECONDARY.value:
         config_level = 'secondary_report'
     else:
         config_level = 'ceo'
@@ -50,13 +49,16 @@ def fetch_ceo_rev_metric_ranking_weightages(report_level:str=None):
 
     # Go through each active CEO review config and build the metric weightages dict
     for config in ceo_review_configs:
+
+        print('getting weightage for config: ', config['report_code'])
         
         metric_code = config['report_code']
 
         if config_level == 'ceo':
 
-            metric_weigtages_dict[metric_code] = config['ranking_weightage']
-        else:
+            metric_weigtages_dict[metric_code] = config['ranking_weightage']    
+        # Else if generate_report flag is true for elementary/secondary, get the weightage
+        elif config[config_level]['generate_report']:
             metric_weigtages_dict[metric_code] = config[config_level]['ranking_weightage']
 
     return metric_weigtages_dict
@@ -90,8 +92,7 @@ def fetch_ceo_rev_metric_improv_weightages(report_level:str=None):
 
     if report_level == school_levels.ELEMENTARY.value:
         config_level = 'elementary_report'
-    elif:
-        report_level == school_levels.SECONDARY.value:
+    elif report_level == school_levels.SECONDARY.value:
         config_level = 'secondary_report'
     else:
         config_level = 'ceo'
@@ -110,7 +111,8 @@ def fetch_ceo_rev_metric_improv_weightages(report_level:str=None):
         if config_level == 'ceo':
 
             metric_weigtages_dict[metric_code] = config['improvement_weightage']
-        else:
+        # Else if generate_report flag is true for elementary/secondary, get the weightage
+        elif config[config_level]['generate_report']:
             metric_weigtages_dict[metric_code] = config[config_level]['improvement_weightage']
 
     return metric_weigtages_dict

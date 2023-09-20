@@ -32,7 +32,7 @@ def calculate_ceo_ranks_for_deo_lvl_rpts():
     """
 
     # Get the august ranking master
-    dir_path = file_utilities.get_ceo_rpts_dir_path()
+    dir_path = file_utilities.get_ranking_reports_dir()
     file_path = file_utilities.get_file_path('ranking_master_july.xlsx', dir_path)
 
     df_ranking_master = file_utilities.read_sheet(file_path, sheet_name='ranking')
