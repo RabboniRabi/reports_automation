@@ -6,6 +6,8 @@
         "report_category": "Enrolment",
         "report_desc": "Students' health screening report",
         "generate_report": false,
+        "ranking_weightage" : 1,
+        "improvement_weightage" : 0.5,
         "source_config" : {
             "source_file_name" : "Student-health-checkup-rpt.xlsx",
             "source_sheet_name" : "Report",
@@ -19,6 +21,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -60,6 +64,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -106,6 +112,8 @@
         "report_category": "Enrolment",
         "report_desc": "Schools' health screening report",
         "generate_report": false,
+        "ranking_weightage" : 5,
+        "improvement_weightage" : 2,
         "source_config" : {
             "source_file_name" : "Student-health-checkup-rpt.xlsx",
             "source_sheet_name" : "Report",
@@ -119,6 +127,8 @@
         "post_process_brc_merge" : true,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -160,6 +170,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],

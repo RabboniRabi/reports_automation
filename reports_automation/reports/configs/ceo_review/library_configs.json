@@ -6,6 +6,8 @@
         "report_category": "Library",
         "report_desc": "Library shelves created report",
         "generate_report": true,
+        "ranking_weightage" : 1,
+        "improvement_weightage" : 0,
         "source_config" : {
             "source_file_name" : "Library-shelf-report.xlsx",
             "source_sheet_name" : "Report",
@@ -19,6 +21,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 1,
+            "improvement_weightage" : 0,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -63,6 +67,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 1,
+            "improvement_weightage" : 0,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -113,6 +119,8 @@
         "report_category": "Library",
         "report_desc": "Library books assigning teachers report",
         "generate_report": true,
+        "ranking_weightage" : 2,
+        "improvement_weightage" : 2,
         "source_config" : {
             "source_file_name" : "Library-Books-Assigning-Rpt.xlsx",
             "source_sheet_name" : "Report",
@@ -126,6 +134,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 4,
+            "improvement_weightage" : 1,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -170,6 +180,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 4,
+            "improvement_weightage" : 1,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],

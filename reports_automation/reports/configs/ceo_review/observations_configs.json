@@ -7,6 +7,8 @@
         "report_category": "observations",
         "report_desc": "Palli Parvai observations report",
         "generate_report": false,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "source_config" : {
             "source_file_name" : "kalai_thiruvizha_participants_count.xlsx",
             "source_sheet_name" : "Report",
@@ -20,6 +22,8 @@
         "post_process_brc_merge" : true,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "un_ranked_report_args" : {
                 "custom_unranked_report": true,
                 "grouping_cols" : [],
@@ -57,6 +61,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "un_ranked_report_args" : {
                 "custom_unranked_report": true,
                 "grouping_cols" : [],

@@ -156,6 +156,7 @@ def format_col_to_percent_and_save(df, column_name, sheet_name, file_name, dir_p
 
 
 def apply_formatting(format_dicts_list, df, worksheet, workbook, start_row=2):
+
     """
     Function to apply formatting for each list of columns in a given 
     list of formatting dictionaries.

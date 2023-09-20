@@ -6,6 +6,8 @@
       "report_category": "Enrolment",
       "report_desc": "OoSc - admitted Report",
       "generate_report": true,
+      "ranking_weightage" : 0,
+      "improvement_weightage" : 0,
       "source_config": {
         "source_file_name": "OSC-Survey-Full-Rpt.xlsx",
         "source_sheet_name": "Report",
@@ -22,6 +24,8 @@
       "post_process_brc_merge": false,
       "elementary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -80,6 +84,8 @@
       },
       "secondary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -251,6 +257,8 @@
       "report_category": "Enrolment",
       "report_desc": "Potential dropout",
       "generate_report": true,
+      "ranking_weightage" : 2,
+      "improvement_weightage" : 0,
       "source_config": {
         "source_file_name": "potential_dropout_rpt.xlsx",
         "source_sheet_name": "Details",
@@ -267,6 +275,8 @@
       "post_process_brc_merge": false,
       "elementary_report": {
         "generate_report": true,
+        "ranking_weightage" : 3,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -335,6 +345,8 @@
       },
       "secondary_report": {
         "generate_report": true,
+        "ranking_weightage" : 3,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
