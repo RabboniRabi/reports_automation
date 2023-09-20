@@ -6,6 +6,8 @@
         "report_category": "Enrolment",
         "report_desc": "CWSN having UDID report",
         "generate_report": true,
+        "ranking_weightage" : 3,
+        "improvement_weightage" : 1,
         "source_config" : {
             "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
@@ -19,6 +21,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -60,6 +64,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -107,6 +113,8 @@
         "report_category": "Enrolment",
         "report_desc": "CWSN having NID report",
         "generate_report": true,
+        "ranking_weightage" : 3,
+        "improvement_weightage" : 1,
         "source_config" : {
             "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
@@ -120,6 +128,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -161,6 +171,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -208,6 +220,8 @@
         "report_category": "Enrolment",
         "report_desc": "CWSN having accounts report",
         "generate_report": true,
+        "ranking_weightage" : 3,
+        "improvement_weightage" : 1,
         "source_config" : {
             "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
@@ -221,6 +235,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -266,6 +282,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],

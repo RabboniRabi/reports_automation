@@ -7,6 +7,8 @@
             "report_category": "Exams",
             "report_desc": "12th board exam results report",
             "generate_report": false,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "source_file_name" : "sslc_hsc_student_marks_summary.xlsx",
                 "source_sheet_name" : "hsc_school_summary",
@@ -23,6 +25,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -96,6 +100,8 @@
             "report_category": "Exams",
             "report_desc": "10th board exam results report",
             "generate_report": false,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "source_file_name" : "sslc_hsc_student_marks_summary.xlsx",
                 "source_sheet_name" : "sslc_school_summary",
@@ -112,6 +118,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
