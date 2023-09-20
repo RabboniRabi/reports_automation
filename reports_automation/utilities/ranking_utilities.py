@@ -279,3 +279,80 @@ def get_ceo_rev_ranking_master_data(designations: list, school_levels:list, mont
 
     return df_ranking_master_filtered
 
+
+def get_inverted_rank(df_ranking, metric_codes):
+    """
+    Function to invert the rank values in a report with
+    column wise metric ranks.
+
+    Parameters:
+    -----------
+    df_ranking: Pandas DataFrame
+        The data whose metric wise ranking values are to be inverted
+    metric_codes: list
+        The list of metric code column names with ranking values
+    """
+
+    # Get the maximum ranks in the data
+    max_rank = max(df_ranking[metric_codes[0]].unique())
+
+    # Invert the ranks
+    for metric_code in metric_codes:
+        df_ranking[metric_code] = (max_rank + 1) - df_ranking[metric_code]
+
+    return df_ranking
+
+
+def compute_consolidated_ranking(df_ranking, metric_weightage:dict, invert_rank:bool=True):
+    """
+    Function to compute consolidated ranking for given metric wise rank values data
+
+    Parameters:
+    -----------
+    df_ranking: Pandas DataFrame
+        The data whose metric wise ranking values are to be used for consolidated ranking
+    metric_weightage_dict: dict
+        Dictionary of metric - weightage value key value pairs
+    invert_rank: bool
+        Flag indicating if rank values need to be inverted before it is multiplied with the weightage.
+        For example, when using rank based weightage, rank values need to be inverted. i.e:
+        higher ranks need to get more weightage. When using improvement based weightage, improvement values
+        dont need to be inverted as more the improvement, higher the weightage value needs to be.
+
+    Returns:
+    --------
+    Pandas DataFrame object of consolidated ranking from total of metric wise weightage
+    """
+
+    df_cons_ranking = df_ranking.copy()
+
+    metric_codes = metric_weightage.keys()
+
+    df_cons_ranking['Total Weighted Score'] = 0
+
+    # Check and invert the ranks if needed
+    if invert_rank:
+        df_ranking = get_inverted_rank(df_ranking, metric_codes)
+
+    # For each metric
+    for metric_code in metric_codes:
+        # Calculate the weighted rank for the metric code
+        df_cons_ranking[metric_code] = df_cons_ranking[metric_code] * metric_weightage[metric_code]
+
+        # Updated the total weighted score
+        df_cons_ranking['Total Weighted Score'] += df_cons_ranking[metric_code]
+
+    # Sort the values and rank
+    df_cons_ranking = df_cons_ranking.sort_values(by='Total Weighted Score', \
+                                    ascending=False).reset_index()
+
+    df_cons_ranking[cols.rank_col] = df_cons_ranking['Total Weighted Score']\
+                                                    .rank(ascending=False, method='min')
+
+
+    return df_cons_ranking
+        
+
+
+
+

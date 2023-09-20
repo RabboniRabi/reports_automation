@@ -536,3 +536,25 @@ def update_master_data(df_master_data, df_new_data):
     print('data post dropping duplicates', df_master_data.head())
 
     return df_master_data
+
+def subtract_dfs(df_first, df_second, cols:list):
+    """
+    Function to element wise subtract values in columns
+    between two data frame objects.
+
+    Parameters:
+    ----------
+    df_first: Pandas DataFrame
+        The data on the left of the - sign
+    df_second: Pandas DataFrame
+        The data on the right of the - sign
+    cols: list
+        The list of columns to subtract
+    """
+
+    df_subtracted = df_first.copy()
+
+    for col in cols:
+        df_subtracted[col] = df_first[col] - df_second[col]
+
+    return df_subtracted
