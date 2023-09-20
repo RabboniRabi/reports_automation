@@ -7,6 +7,8 @@
             "report_category": "Transition",
             "report_desc": "TC issued Rate - Class 8",
             "generate_report": false,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "tc_issued_class_8.sql",
                 "db" : "tn_schools_db"
@@ -19,6 +21,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -60,6 +64,8 @@
             },
             "secondary_report" : {
                 "generate_report": false,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -106,6 +112,8 @@
             "report_category": "Transition",
             "report_desc": "TC issued Rate - Class 5",
             "generate_report": false,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "tc_issued_class_5.sql",
                 "db" : "tn_schools_db"
@@ -118,6 +126,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -159,6 +169,8 @@
             },
             "secondary_report" : {
                 "generate_report": false,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -205,6 +217,8 @@
             "report_category": "Transition",
             "report_desc": "TC issued Rate - Class 10 ",
             "generate_report": false,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "tc_issued_class_10.sql",
                 "db" : "tn_schools_db"
@@ -217,6 +231,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": false,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -258,6 +274,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
