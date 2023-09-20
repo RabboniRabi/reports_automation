@@ -7,6 +7,8 @@
             "report_category": "Sports",
             "report_desc": "Sports battery test schools report",
             "generate_report": true,
+            "ranking_weightage" : 4,
+            "improvement_weightage" : 1,
             "source_config" : {
                 "source_file_name" : "Battery-test-completion-status-rpt.xlsx",
                 "source_sheet_name" : "Battery_Test_Detailed",
@@ -20,6 +22,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 5,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -62,6 +66,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 5,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -110,6 +116,8 @@
             "report_category": "Sports",
             "report_desc": "Sports battery test students report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "source_file_name" : "Battery-test-completion-status-rpt.xlsx",
                 "source_sheet_name" : "Battery_Test_Detailed",
@@ -123,6 +131,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -187,6 +197,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -257,6 +269,8 @@
             "report_category": "Sports",
             "report_desc": "Sports equipment delivery status report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "source_file_name" : "Sports-Delivery-Update-Status-Rpt.xlsx",
                 "source_sheet_name" : "Report",
@@ -270,6 +284,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -312,6 +328,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -353,8 +371,5 @@
                 }
             }
         }
-
-        
-
     ]
 }

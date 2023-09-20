@@ -6,6 +6,8 @@
       "report_category": "Attendance",
       "report_desc": "hm_training_attendance_report",
       "generate_report": false,
+      "ranking_weightage" : 0,
+      "improvement_weightage" : 0,
       "source_config": {
       "source_file_name" : "HS HM training attendance.xlsx",
                 "source_sheet_name" : "training_attendance",
@@ -19,6 +21,8 @@
     "post_process_brc_merge": false,
     "elementary_report" : {
       "generate_report": false,
+      "ranking_weightage" : 0,
+      "improvement_weightage" : 0,
       "un_ranked_report_args": {
         "custom_unranked_report": false,
         "grouping_cols": [
@@ -69,6 +73,8 @@
             },
     "secondary_report": {
       "generate_report": true,
+      "ranking_weightage" : 0,
+      "improvement_weightage" : 0,
       "un_ranked_report_args": {
         "custom_unranked_report": false,
         "grouping_cols": [

@@ -6,6 +6,8 @@
             "report_code" : "TCH_LV_BL_UP",
             "report_category": "Attendance",
             "report_desc": "Teacher leave balance updation report",
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "generate_report": true,
             "source_config" : {
                 "source_file_name" : "teacher_leave_balance_updt_report.xlsx",
@@ -20,6 +22,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -61,6 +65,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -108,6 +114,8 @@
             "report_category": "Attendance",
             "report_desc": "Schools marking teachers attendance report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "schools_marking_teachers_attendance.sql",
                 "db" : "attendance_db"
@@ -120,6 +128,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -161,6 +171,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -207,6 +219,8 @@
             "report_category": "Attendance",
             "report_desc": "Schools marking students attendance report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "schools_marking_students_attendance.sql",
                 "db" : "attendance_db"
@@ -219,6 +233,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -260,6 +276,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -306,6 +324,8 @@
             "report_category": "Attendance",
             "report_desc": "Sections marking attendance report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "sections_marking_attendance.sql",
                 "db" : "attendance_db"
@@ -318,6 +338,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -364,6 +386,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -414,6 +438,8 @@
             "report_category": "Attendance",
             "report_desc": "Students attendance report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "students_attendance.sql",
                 "db" : "attendance_db"
@@ -426,6 +452,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -471,6 +499,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -521,6 +551,8 @@
             "report_category": "Attendance",
             "report_desc": "Teachers attendance report",
             "generate_report": true,
+            "ranking_weightage" : 0.5,
+            "improvement_weightage" : 0.2,
             "source_config" : {
                 "query_file_name" : "teachers_attendance.sql",
                 "db" : "attendance_db"
@@ -533,6 +565,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 1,
+                "improvement_weightage" : 0.5,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -578,6 +612,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 1,
+                "improvement_weightage" : 0.5,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -628,6 +664,8 @@
             "report_category": "Attendance",
             "report_desc": "Kalai Thiruvizha Participation report",
             "generate_report": false,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "source_file_name" : "kalai_thiruvizha_participants_count.xlsx",
                 "source_sheet_name" : "Report",
@@ -641,6 +679,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -664,6 +704,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],

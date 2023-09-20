@@ -7,6 +7,8 @@
             "report_category": "Schemes",
             "report_desc": "Schools issuing text books report",
             "generate_report": true,
+            "ranking_weightage" : 2,
+            "improvement_weightage" : 1,
             "source_config" : {
                 "sources" : [
                     {
@@ -58,6 +60,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 3,
+                "improvement_weightage" : 1.5,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -100,6 +104,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 3,
+                "improvement_weightage" : 1.5,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -147,6 +153,8 @@
             "report_category": "Schemes",
             "report_desc": "Schools issuing uniforms report",
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1,
             "source_config" : {
                 "sources" : [
                     {
@@ -198,6 +206,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 3,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -240,6 +250,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 4,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -287,6 +299,8 @@
             "report_category": "Schemes",
             "report_desc": "Schools issuing notebooks report",
             "generate_report": true,
+            "ranking_weightage" : 2,
+            "improvement_weightage" : 1,
             "source_config" : {
                 "sources" : [
                     {
@@ -338,6 +352,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 3,
+                "improvement_weightage" : 1.5,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -380,6 +396,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 3,
+                "improvement_weightage" : 1.5,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -427,6 +445,8 @@
             "report_category": "Schemes",
             "report_desc": "Schools issuing geometry boxes report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "sources" : [
                     {
@@ -478,6 +498,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -520,6 +542,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -567,6 +591,8 @@
             "report_category": "Schemes",
             "report_desc": "Schools issuing colour pencil report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "sources" : [
                     {
@@ -618,6 +644,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -660,6 +688,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -707,6 +737,8 @@
             "report_category": "Schemes",
             "report_desc": "Schools issuing crayons report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "sources": [
                     {
@@ -759,6 +791,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -801,6 +835,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -848,6 +884,8 @@
             "report_category": "Schemes",
             "report_desc": "Schools issuing atlas report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "sources": [
                     {
@@ -900,6 +938,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,    
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -942,6 +982,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -989,6 +1031,8 @@
             "report_category": "Schemes",
             "report_desc": "Schools issuing bags report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "sources": [
                     {
@@ -1041,6 +1085,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -1083,6 +1129,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -1130,6 +1178,8 @@
             "report_category": "Schemes",
             "report_desc": "Schools issuing cycles report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "sources" : [
                     {
@@ -1166,6 +1216,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -1213,6 +1265,8 @@
             "report_category": "Schemes",
             "report_desc": "Schools issuing laptops report",
             "generate_report": false,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "sources" : [
                     {
@@ -1249,6 +1303,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -1290,6 +1346,5 @@
                 }
             }
         }
-
     ]
 }
