@@ -149,6 +149,8 @@
       "report_category": "Enrolment",
       "report_desc": "OoSc - Students absent for greater than 6 days",
       "generate_report": false,
+      "ranking_weightage" : 0,
+      "improvement_weightage" : 0,
       "source_config": {
         "source_file_name": "Students_absent_greater_than_6_days.xlsx",
         "source_sheet_name": "raw_data",
@@ -165,6 +167,8 @@
       "post_process_brc_merge": false,
       "elementary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -213,6 +217,8 @@
       },
       "secondary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
