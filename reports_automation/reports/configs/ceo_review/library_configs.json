@@ -38,8 +38,8 @@
                 "ranking_val_desc": "cols.perc_shelves_created",
                 "num_col": "cols.shelves_created",
                 "den_col": "cols.tot_secs",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary schools Library shelves created report",
@@ -82,8 +82,8 @@
                 "ranking_val_desc": "cols.perc_shelves_created",
                 "num_col": "cols.shelves_created",
                 "den_col": "cols.tot_secs",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Secondary schools Library shelves created report",
@@ -145,8 +145,8 @@
                 "ranking_val_desc": "cols.perc_sctns_assigning_books",
                 "num_col": "cols.sctns_assigning_books",
                 "den_col": "cols.tot_sections",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary schools Library books assigning teachers report",
@@ -189,8 +189,8 @@
                 "ranking_val_desc": "cols.perc_sctns_assigning_books",
                 "num_col": "cols.sctns_assigning_books",
                 "den_col": "cols.tot_sections",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Secondary schools Library books assigning teachers report",

@@ -44,8 +44,8 @@
                 "ranking_val_desc": "cols.perc_apps_grtr_15_days",
                 "num_col": "cols.tot_pnd_grtr_15_days",
                 "den_col": "cols.tot_app_rcvd",
-                "sort": "True",
-                "ascending": "True"
+                "sort": true,
+                "ascending": true
             },
             "format_config" : {
                 "heading" : "Elementary level % of Pending G2C applications greater than 15 days",
@@ -97,8 +97,8 @@
                 "ranking_val_desc": "cols.perc_apps_grtr_15_days",
                 "num_col": "cols.tot_pnd_grtr_15_days",
                 "den_col": "cols.tot_app_rcvd",
-                "sort": "True",
-                "ascending": "True"
+                "sort": true,
+                "ascending": true
             },
             "format_config" : {
                 "heading" : "Secondary level % of Pending G2C applications greater than 15 days",

@@ -55,8 +55,8 @@
                     },
                     "ranking_val_desc": "cols.brd_pass_perc",
                     "ranking_col": "cols.brd_pass_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools students 12th board exams result report",
@@ -140,8 +140,8 @@
                     },
                     "ranking_val_desc": "cols.brd_pass_perc",
                     "ranking_col": "cols.brd_pass_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools students 10th board exams result report",
