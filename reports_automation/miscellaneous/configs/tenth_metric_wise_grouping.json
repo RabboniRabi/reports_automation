@@ -76,6 +76,95 @@
         "cols.science_marks": "median",
         "cols.social_marks": "median"
       }
+    },
+    {
+      "report_name": "10th_community_wise_academic_report",
+      "report_code": "10TH_BRD_MGMT_COMM_LVL_RPT",
+      "report_desc": "Configuration to generate grouping level community level reports for 10th board results",
+      "source_config_curr_yr": {
+        "sources": [
+          {
+            "source_name": "govt",
+            "source_file_name": "SSLC_stud_level_government_2022-23.xlsx",
+            "source_sheet_name": "govt_2023",
+            "skip_rows": 0
+          },
+          {
+            "source_name": "aided",
+            "source_file_name": "SSLC_stud_level_aided_2022-23.xlsx",
+            "source_sheet_name": "aided_2023",
+            "skip_rows": 0
+          },
+          {
+            "source_name": "un_aided",
+            "source_file_name": "SSLC_stud_level_private_2022-23.xlsx",
+            "source_sheet_name": "private_2023",
+            "skip_rows": 0
+          }
+        ]
+      },
+      "sources_prev_yr": {
+        "sources": [
+          {
+            "source_name": "govt",
+            "source_file_name": "SSLC_stud_level_government_2021-22.xlsx",
+            "source_sheet_name": "govt_2022",
+            "skip_rows": 0
+          },
+          {
+            "source_name": "aided",
+            "source_file_name": "SSLC_stud_level_aided_2021-22.xlsx",
+            "source_sheet_name": "aided_2022",
+            "skip_rows": 0
+          },
+          {
+            "source_name": "un_aided",
+            "source_file_name": "SSLC_stud_level_private_2021-22.xlsx",
+            "source_sheet_name": "private_2022",
+            "skip_rows": 0
+          }
+        ]
+      },
+      "grouping_levels": {
+        "state_grouping_levels": [
+          "cols.management",
+          "cols.stud_comm"
+        ],
+        "district_grouping_levels": [
+          "cols.district_name",
+          "cols.management",
+          "cols.stud_comm"
+        ],
+        "block_grouping_levels": [
+          "cols.district_name",
+          "cols.block_name",
+          "cols.management",
+          "cols.stud_comm"
+        ]
+      },
+        "filter_dict": {
+        "cols.stu_name": ["DELETED"],
+        "cols.tot_marks": ["XXX", "AAA"],
+        "cols.lang_marks": ["XXX", "AAA"],
+        "cols.eng_marks": ["XXX", "AAA"],
+        "cols.math_marks": ["XXX", "AAA"],
+        "cols.science_theory": ["XXX", "AAA"],
+        "cols.science_prac": ["XXX", "AAA"],
+        "cols.science_marks": ["XXX", "AAA"],
+        "cols.social_marks": ["XXX", "AAA"]
+      },
+      "agg_dict": {
+        "cols.tot_stu": "count",
+        "cols.stu_pass": "sum",
+        "cols.tot_marks": "median",
+        "cols.lang_marks": "median",
+        "cols.eng_marks": "median",
+        "cols.math_marks": "median",
+        "cols.science_theory": "median",
+        "cols.science_prac": "median",
+        "cols.science_marks": "median",
+        "cols.social_marks": "median"
+      }
     }
-  ]
+    ]
 }
