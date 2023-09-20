@@ -43,8 +43,8 @@
                     "ranking_val_desc": "cols.perc_present",
                     "num_col": "cols.present",
                     "den_col": "cols.total_invited",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
       "format_config" : {
                     "heading" : "Elementary HM Training Attendance report as on ",
@@ -93,8 +93,8 @@
                     "ranking_val_desc": "cols.perc_present",
                     "num_col": "cols.present",
                     "den_col": "cols.total_invited",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
       "format_config" : {
                     "heading" : "Secondary HM Training Attendance report as on ",

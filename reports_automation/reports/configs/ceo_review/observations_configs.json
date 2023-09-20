@@ -34,8 +34,8 @@
                 "ranking_val_desc": "cols.perc_DEO_obs",
                 "num_col": "cols.deo",
                 "den_col": "cols.deo_target",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "subtotal_outlines_dict" : {
@@ -71,8 +71,8 @@
                 "ranking_val_desc": "cols.per_participants",
                 "num_col": "cols.participants",
                 "den_col": "cols.tot_students",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "subtotal_outlines_dict" : {

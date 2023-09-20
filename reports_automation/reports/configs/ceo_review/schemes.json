@@ -74,8 +74,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_books",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing text books report",
@@ -116,8 +116,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_books",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing text books report",
@@ -214,8 +214,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_uniforms",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing uniforms report",
@@ -256,8 +256,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_uniforms",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending":false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing uniforms report",
@@ -354,8 +354,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_notebooks",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing notebooks report",
@@ -396,8 +396,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_notebooks",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing notebooks report",
@@ -494,8 +494,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_geo_boxes",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing geometry boxes report",
@@ -536,8 +536,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_geo_boxes",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing geometry boxes report",
@@ -634,8 +634,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_colour_pencil",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing colour pencil report",
@@ -676,8 +676,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_colour_pencil",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing colour pencil report",
@@ -775,8 +775,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_crayons",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing crayons report",
@@ -817,8 +817,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_crayons",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending":false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing crayons report",
@@ -916,8 +916,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_atlas",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing atlas report",
@@ -958,8 +958,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_atlas",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing atlas report",
@@ -1057,8 +1057,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_bag",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending":false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing bags report",
@@ -1099,8 +1099,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_bag",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing bags report",
@@ -1182,8 +1182,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_cycle",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing cycles report",
@@ -1265,8 +1265,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_laptop",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing laptops report",

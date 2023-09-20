@@ -35,8 +35,8 @@
           },
           "ranking_val_desc": "cols.student_teacher_ratio",
           "ranking_col": "cols.student_teacher_ratio",
-          "sort": "True",
-          "ascending": "True"
+          "sort": true,
+          "ascending": true
         },
         "format_config": {
           "heading": "Elementary level student teacher ratio ranking report",
@@ -78,8 +78,8 @@
           },
           "ranking_val_desc": "cols.student_teacher_ratio",
           "ranking_col": "cols.student_teacher_ratio",
-          "sort": "True",
-          "ascending": "True"
+          "sort": true,
+          "ascending": true
         },
         "format_config" : {
           "heading": "Secondary level student teacher ratio ranking report",

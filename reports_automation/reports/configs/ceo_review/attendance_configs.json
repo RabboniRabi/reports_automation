@@ -6,7 +6,7 @@
             "report_code" : "TCH_LV_BL_UP",
             "report_category": "Attendance",
             "report_desc": "Teacher leave balance updation report",
-            "generate_report": false,
+            "generate_report": true,
             "source_config" : {
                 "source_file_name" : "teacher_leave_balance_updt_report.xlsx",
                 "source_sheet_name" : "Summary",
@@ -37,8 +37,8 @@
                     "ranking_val_desc": "cols.perc_tchrs_updated",
                     "num_col": "cols.updt_tchrs",
                     "den_col": "cols.tot_tchrs",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary Teachers leave balance updated report",
@@ -78,8 +78,8 @@
                     "ranking_val_desc": "cols.perc_tchrs_updated",
                     "num_col": "cols.updt_tchrs",
                     "den_col": "cols.tot_tchrs",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary Teachers leave balance updated report",
@@ -134,8 +134,8 @@
                     },
                     "ranking_val_desc": "cols.att_sch_markd_tch_perc",
                     "ranking_col": "cols.att_sch_markd_tch_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools marking teachers attendance report",
@@ -175,8 +175,8 @@
                     },
                     "ranking_val_desc": "cols.att_sch_markd_tch_perc",
                     "ranking_col": "cols.att_sch_markd_tch_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools marking teachers attendance report",
@@ -233,8 +233,8 @@
                     },
                     "ranking_val_desc": "cols.att_sch_markd_perc",
                     "ranking_col": "cols.att_sch_markd_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools marking students attendance report",
@@ -274,8 +274,8 @@
                     },
                     "ranking_val_desc": "cols.att_sch_markd_perc",
                     "ranking_col": "cols.att_sch_markd_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools marking students attendance report",
@@ -335,8 +335,8 @@
                     "ranking_val_desc": "cols.att_sec_mark_perc",
                     "num_col": "cols.att_sec_marked_tot",
                     "den_col": "cols.att_sec_working_tot",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending":false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools' sections marking attendance report",
@@ -381,8 +381,8 @@
                     "ranking_val_desc": "cols.att_sec_mark_perc",
                     "num_col": "cols.att_sec_marked_tot",
                     "den_col": "cols.att_sec_working_tot",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools' sections marking attendance report",
@@ -442,8 +442,8 @@
                     },
                     "ranking_val_desc": "cols.att_stu_avg_present_perc",
                     "ranking_col": "cols.att_stu_avg_present_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary students attendance report",
@@ -487,8 +487,8 @@
                     },
                     "ranking_val_desc": "cols.att_stu_avg_present_perc",
                     "ranking_col": "cols.att_stu_avg_present_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary students attendance report",
@@ -549,8 +549,8 @@
                     },
                     "ranking_val_desc": "cols.att_tch_avg_present_perc",
                     "ranking_col": "cols.att_tch_avg_present_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary teachers attendance report",
@@ -594,8 +594,8 @@
                     },
                     "ranking_val_desc": "cols.att_tch_avg_present_perc",
                     "ranking_col": "cols.att_tch_avg_present_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary teachers attendance report",
@@ -658,8 +658,8 @@
                     "ranking_val_desc": "cols.per_participants",
                     "num_col": "cols.participants",
                     "den_col": "cols.tot_students",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 }
             },
             "secondary_report" : {
@@ -681,8 +681,8 @@
                     "ranking_val_desc": "cols.per_participants",
                     "num_col": "cols.participants",
                     "den_col": "cols.tot_students",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 }
             },
             "format_config" : {

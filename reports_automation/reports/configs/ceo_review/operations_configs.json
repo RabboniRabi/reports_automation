@@ -38,8 +38,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_books",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools Hi Tech labs uptime report",
@@ -80,8 +80,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_books",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools Hi Tech labs uptime report",
@@ -140,8 +140,8 @@
                 "ranking_val_desc": "cols.perc_fully_mapped",
                 "num_col": "cols.fully_mapped",
                 "den_col": "cols.tot_schools",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary schools PET to school mapping report",
@@ -183,8 +183,8 @@
                 "ranking_val_desc": "cols.perc_fully_mapped",
                 "num_col": "cols.fully_mapped",
                 "den_col": "cols.tot_schools",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary schools PET to school mapping report",

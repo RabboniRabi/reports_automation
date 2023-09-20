@@ -46,8 +46,8 @@
           "ranking_val_desc": "cols.perc_admitted_oosc",
           "num_col": "cols.stdnts_admttd",
           "den_col": "cols.to_be_admitted",
-          "sort": "True",
-          "ascending": "False"
+          "sort": true,
+          "ascending": false
         },
         "format_config": {
           "heading": "Elementary OoSC students admitted status report as on ",
@@ -104,8 +104,8 @@
           "ranking_val_desc": "cols.perc_admitted_oosc",
           "num_col": "cols.stdnts_admttd",
           "den_col": "cols.to_be_admitted",
-          "sort": "True",
-          "ascending": "False"
+          "sort": true,
+          "ascending": false
         },
         "format_config": {
           "heading": "Secondary OoSC students admitted status report as on ",
@@ -176,8 +176,8 @@
           },
           "ranking_val_desc": "cols.oosc_no_stu_absent_greater_6",
           "ranking_col": "cols.oosc_no_stu_absent_greater_6",
-          "sort": "True",
-          "ascending": "True"
+          "sort": true,
+          "ascending": true
         },
         "format_config": {
           "heading": "Elementary students absent greater than 6 days report as on ",
@@ -252,7 +252,7 @@
       "report_desc": "Potential dropout",
       "generate_report": true,
       "source_config": {
-        "source_file_name": "Potential Dropouts_July 20-Aug 18.xlsx",
+        "source_file_name": "potential_dropout_rpt.xlsx",
         "source_sheet_name": "Details",
         "skip_rows": 0
       },
@@ -295,8 +295,8 @@
           "ranking_val_desc": "cols.oosc_perc_pot_dropouts",
           "num_col": "cols.oosc_pot_dropout_count",
           "den_col": "cols.total_students",
-          "sort": "True",
-          "ascending": "False"
+          "sort": true,
+          "ascending": false
         },
         "format_config": {
           "heading": "Elementary OoSC potential dropout report as on ",
@@ -367,8 +367,8 @@
           "ranking_val_desc": "cols.oosc_perc_pot_dropouts",
           "num_col": "cols.oosc_pot_dropout_count",
           "den_col": "cols.total_students",
-          "sort": "True",
-          "ascending": "False"
+          "sort":true,
+          "ascending": false
         },
         "format_config": {
           "heading": "Secondary OoSC potential dropout report as on ",
