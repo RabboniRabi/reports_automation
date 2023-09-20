@@ -36,8 +36,8 @@
           "ranking_val_desc": "cols.perc_ageing",
           "num_col": "cols.ageing",
           "den_col": "cols.total_cp_students",
-          "sort": "True",
-          "ascending": "True"
+          "sort": true,
+          "ascending": true
         },
         "format_config": {
           "heading": "Elementary students ageing in common pool report",
@@ -90,8 +90,8 @@
           "ranking_val_desc": "cols.perc_ageing",
           "num_col": "cols.ageing",
           "den_col": "cols.total_cp_students",
-          "sort": "True",
-          "ascending": "True"
+          "sort": true,
+          "ascending": true
         },
         "format_config": {
           "heading": "Secondary students ageing in common pool report",
@@ -256,8 +256,8 @@
           "ranking_val_desc": "cols.students_enrolled_cls1_change_perc",
           "num_col": "cols.students_enrolled_cls1_2023_24",
           "den_col": "cols.students_enrolled_cls1_2022_23",
-          "sort": "True",
-          "ascending": "False"
+          "sort": true,
+          "ascending":false
         },
         "format_config": {
           "heading": "Increase in Elementary Government Schools' Student Enrollment as on",
@@ -308,8 +308,8 @@
           "ranking_val_desc": "cols.students_enrolled_cls1_change_perc",
           "num_col": "cols.students_enrolled_cls1_2023_24",
           "den_col": "cols.students_enrolled_cls1_2022_23",
-          "sort": "True",
-          "ascending": "False"
+          "sort": true,
+          "ascending": false
         },
         "format_config": {
           "heading": "Increase in Secondary Government Schools' Student Enrollment as on",
@@ -341,3 +341,4 @@
     }
   ]
 }
+

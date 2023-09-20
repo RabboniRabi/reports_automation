@@ -85,10 +85,17 @@ cwsn_students_count_cls5_2022_23 = 'cwsn_students_count_cls5_2022_23'
 cwsn_students_transitioned_cls6_2023_24 = 'cwsn_students_transitioned_cls6_2023_24'
 cwsn_students_transitioned_cls5_6_perc = '% CWSN students transitioned from Class 5 to 6'
 
+cwsn_students_count_cls9_2022_23 = 'cwsn_students_count_cls9_2022_23'
+cwsn_students_transitioned_cls10_2023_24 = 'cwsn_students_transitioned_cls10_2023_24'
+cwsn_students_transitioned_cls9_10_perc = '% CWSN students transitioned from Class 9 to 10'
 
 cwsn_students_count_cls10_2022_23 = 'cwsn_students_count_cls10_2022_23'
 cwsn_students_transitioned_cls11_2023_24 = 'cwsn_students_transitioned_cls11_2023_24'
 cwsn_students_transitioned_cls10_11_perc = '% CWSN students transitioned from Class 10 to 11'
+
+cwsn_students_count_cls11_2022_23 = 'cwsn_students_count_cls11_2022_23'
+cwsn_students_transitioned_cls12_2023_24 = 'cwsn_students_transitioned_cls12_2023_24'
+cwsn_students_transitioned_cls11_12_perc = '% CWSN students transitioned from Class 11 to 12'
 
 #Student Transition specific column names
 tc_cls8_total_2022_23 = 'tc_cls8_total_2022_23'

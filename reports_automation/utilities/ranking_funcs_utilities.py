@@ -55,6 +55,7 @@ def percent_ranking(df, group_levels, ranking_args_dict):
     # Calculate fraction of values (to be used for ranking)
     df_rank[cols.ranking_value] = (df_rank[num_col]/df_rank[den_col])
     df_rank[cols.ranking_value].fillna(0, inplace=True)
+    print('ascending flag is : ', ascending, ' and type is: ', type(ascending))
     df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method='min')
     
     # Add the ranking value description to the ranked data

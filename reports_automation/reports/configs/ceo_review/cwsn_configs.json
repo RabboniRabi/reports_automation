@@ -7,7 +7,7 @@
         "report_desc": "CWSN having UDID report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 0
         },
@@ -36,8 +36,8 @@
                 "ranking_val_desc": "cols.perc_students_with_UDID",
                 "num_col": "cols.udid_count",
                 "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary CWSN students having UDIDs report as on ",
@@ -77,8 +77,8 @@
                 "ranking_val_desc": "cols.perc_students_with_UDID",
                 "num_col": "cols.udid_count",
                 "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Secondary CWSN students having UDIDs report",
@@ -108,7 +108,7 @@
         "report_desc": "CWSN having NID report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 0
         },
@@ -137,8 +137,8 @@
                 "ranking_val_desc": "cols.perc_students_with_NID",
                 "num_col": "cols.nid_count",
                 "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary CWSN students having NIDs report as on ",
@@ -178,8 +178,8 @@
                 "ranking_val_desc": "cols.perc_students_with_NID",
                 "num_col": "cols.nid_count",
                 "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "sort":true,
+                "ascending":false
             },
             "format_config" : {
                 "heading" : "Secondary CWSN students having NIDs report",
@@ -209,7 +209,7 @@
         "report_desc": "CWSN having accounts report",
         "generate_report": true,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 0
         },
@@ -240,8 +240,8 @@
                 "ranking_val_desc": "cols.perc_students_with_acct",
                 "num_col": "cols.with_acct",
                 "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary CWSN students having accounts report",
@@ -285,8 +285,8 @@
                 "ranking_val_desc": "cols.perc_students_with_acct",
                 "num_col": "cols.with_acct",
                 "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Secondary CWSN students having accounts report",

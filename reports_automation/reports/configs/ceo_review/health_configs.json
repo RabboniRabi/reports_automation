@@ -36,8 +36,8 @@
                 "ranking_val_desc": "cols.perc_screened",
                 "num_col": "cols.screened",
                 "den_col": "cols.total",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary Students' health screening report",
@@ -77,8 +77,8 @@
                 "ranking_val_desc": "cols.perc_screened",
                 "num_col": "cols.screened",
                 "den_col": "cols.total",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Secondary Students' health screening report",
@@ -136,8 +136,8 @@
                 "ranking_val_desc": "cols.perc_comp",
                 "num_col": "cols.fully_comp",
                 "den_col": "cols.total",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary Schools' health screening report",
@@ -177,8 +177,8 @@
                 "ranking_val_desc": "cols.perc_comp",
                 "num_col": "cols.fully_comp",
                 "den_col": "cols.total",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
                 },
             "format_config" : {
                 "heading" : "Secondary Schools' health screening report",

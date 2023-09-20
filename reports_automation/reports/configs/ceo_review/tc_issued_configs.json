@@ -6,7 +6,7 @@
             "report_code" : "TC_ISSUED_8_9",
             "report_category": "Transition",
             "report_desc": "TC issued Rate - Class 8",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "query_file_name" : "tc_issued_class_8.sql",
                 "db" : "tn_schools_db"
@@ -36,8 +36,8 @@
                     "ranking_val_desc": "cols.tc_cls8_issued_2023_24_perc",
                     "num_col": "cols.tc_cls8_issued_2023_24",
                     "den_col": "cols.tc_cls8_total_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary TC Issued - Class 8 as on",
@@ -77,8 +77,8 @@
                     "ranking_val_desc": "cols.tc_cls8_issued_2023_24_perc",
                     "num_col": "cols.tc_cls8_issued_2023_24",
                     "den_col": "cols.tc_cls8_total_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending":false
                 },
                 "format_config" : {
                     "heading" : "Secondary TC Issued - Class 8 as on",
@@ -105,7 +105,7 @@
             "report_code" : "TC_issued_5_6",
             "report_category": "Transition",
             "report_desc": "TC issued Rate - Class 5",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "query_file_name" : "tc_issued_class_5.sql",
                 "db" : "tn_schools_db"
@@ -135,8 +135,8 @@
                     "ranking_val_desc": "cols.tc_cls5_issued_2023_24_perc",
                     "num_col": "cols.tc_cls5_issued_2023_24",
                     "den_col": "cols.tc_cls5_total_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary TC issued - Class 5 as on",
@@ -176,8 +176,8 @@
                     "ranking_val_desc": "cols.tc_cls5_issued_2023_24_perc",
                     "num_col": "cols.tc_cls5_issued_2023_24",
                     "den_col": "cols.tc_cls5_total_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary TC issued - Class 5  as on",
@@ -204,7 +204,7 @@
             "report_code" : "TC_ISSUED_10_11",
             "report_category": "Transition",
             "report_desc": "TC issued Rate - Class 10 ",
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "query_file_name" : "tc_issued_class_10.sql",
                 "db" : "tn_schools_db"
@@ -234,8 +234,8 @@
                     "ranking_val_desc": "cols.tc_cls10_issued_2023_24_perc",
                     "num_col": "cols.tc_cls10_issued_2023_24",
                     "den_col": "cols.tc_cls10_total_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary TC issued - Class 10 as on",
@@ -275,8 +275,8 @@
                     "ranking_val_desc": "cols.tc_cls10_issued_2023_24_perc",
                     "num_col": "cols.tc_cls10_issued_2023_24",
                     "den_col": "cols.tc_cls10_total_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending":false
                 },
                 "format_config" : {
                     "heading" : "Secondary TC issued - Class 10 as on",
