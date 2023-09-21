@@ -149,6 +149,8 @@
       "report_category": "Enrolment",
       "report_desc": "OoSc - Students absent for greater than 6 days",
       "generate_report": false,
+      "ranking_weightage" : 0,
+      "improvement_weightage" : 0,
       "source_config": {
         "source_file_name": "Students_absent_greater_than_6_days.xlsx",
         "source_sheet_name": "raw_data",
@@ -165,6 +167,8 @@
       "post_process_brc_merge": false,
       "elementary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -213,6 +217,8 @@
       },
       "secondary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -255,7 +261,7 @@
       "report_name": "potential_dropout_report",
       "report_code": "OOSC_PD",
       "report_category": "Enrolment",
-      "report_desc": "Potential dropout",
+      "report_desc": "OoSC Potential dropout",
       "generate_report": true,
       "ranking_weightage" : 2,
       "improvement_weightage" : 0,
@@ -306,7 +312,7 @@
           "num_col": "cols.oosc_pot_dropout_count",
           "den_col": "cols.total_students",
           "sort": true,
-          "ascending": false
+          "ascending": true
         },
         "format_config": {
           "heading": "Elementary OoSC potential dropout report as on ",
@@ -380,7 +386,7 @@
           "num_col": "cols.oosc_pot_dropout_count",
           "den_col": "cols.total_students",
           "sort":true,
-          "ascending": false
+          "ascending": true
         },
         "format_config": {
           "heading": "Secondary OoSC potential dropout report as on ",
