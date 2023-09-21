@@ -16,13 +16,18 @@ import data_cleaning.column_cleaner as column_cleaner
     config = cols.update_nested_dictionaries(config)
 
 # Get the source data configuration for the report code
-    source_config_23 = report_config['source_config_curr_yr']
+    source_config_23 = report_configs['source_config_curr_yr']
     # Reading the Excel files as a dict
     df_data_set = data_fetcher.get_data_set_from_config(source_config_23, "miscellaneous_configs")
 
-    source_config_22 = report_config['sources_prev_yr']
+    source_config_22 = report_configs['sources_prev_yr']
     # Reading the Excel files as a dict
     df_data_set = data_fetcher.get_data_set_from_config(source_config_22, "miscellaneous_configs")
 
+    # Fetch and prep the data
+    df_prepped = tenth_board_community_acc.get_prepped_data_for_analysis(config)
 
+    # Process the data before ranking
+    process_config = config['process_args']
+    df_processed = data_process_for_analysis(df_prepped, process_config)
 
