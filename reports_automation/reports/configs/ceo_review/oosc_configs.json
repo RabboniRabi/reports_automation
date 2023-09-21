@@ -261,7 +261,7 @@
       "report_name": "potential_dropout_report",
       "report_code": "OOSC_PD",
       "report_category": "Enrolment",
-      "report_desc": "Potential dropout",
+      "report_desc": "OoSC Potential dropout",
       "generate_report": true,
       "ranking_weightage" : 2,
       "improvement_weightage" : 0,
@@ -312,7 +312,7 @@
           "num_col": "cols.oosc_pot_dropout_count",
           "den_col": "cols.total_students",
           "sort": true,
-          "ascending": false
+          "ascending": true
         },
         "format_config": {
           "heading": "Elementary OoSC potential dropout report as on ",
@@ -386,7 +386,7 @@
           "num_col": "cols.oosc_pot_dropout_count",
           "den_col": "cols.total_students",
           "sort":true,
-          "ascending": false
+          "ascending": true
         },
         "format_config": {
           "heading": "Secondary OoSC potential dropout report as on ",
