@@ -219,9 +219,6 @@ def build_metric_wise_ranking_report(df_ranking_master):
     # Put the above names in the name column
     df_metric_wise_ranking[cols.name] = names
 
-    print('names: ', df_metric_wise_ranking[cols.name])
-
-
 
     # Iterate through the metric codes
     for metric_code in metric_codes:
@@ -238,8 +235,6 @@ def build_metric_wise_ranking_report(df_ranking_master):
 
     # Sort the data alphabetically by names
     df_metric_wise_ranking.sort_values(by=cols.name)
-
-    print('names post func processing: ', df_metric_wise_ranking[cols.name])
 
     return df_metric_wise_ranking
 
@@ -303,7 +298,6 @@ def get_inverted_rank(df_ranking, metric_codes:list):
 
     # Invert the ranks
     for metric_code in metric_codes:
-        print('metric_code: ', metric_code)
         df_ranking[metric_code] = (max_rank + 1) - df_ranking[metric_code]
 
     return df_ranking
@@ -338,14 +332,17 @@ def compute_consolidated_ranking(df_ranking, metric_weightage:dict, invert_rank:
 
     # Check and invert the ranks if needed
     if invert_rank:
-        df_ranking = get_inverted_rank(df_ranking, metric_codes)
+        df_cons_ranking = get_inverted_rank(df_cons_ranking, metric_codes)
 
     # For each metric
     for metric_code in metric_codes:
         # Calculate the weighted rank for the metric code
         df_cons_ranking[metric_code] = df_cons_ranking[metric_code] * metric_weightage[metric_code]
 
-        # Updated the total weighted score
+        # Fill NAs with 0s
+        df_cons_ranking.fillna(0, inplace=True)
+
+        # Update the total weighted score
         df_cons_ranking['Total Weighted Score'] += df_cons_ranking[metric_code]
 
     # Sort the values and rank
@@ -355,7 +352,7 @@ def compute_consolidated_ranking(df_ranking, metric_weightage:dict, invert_rank:
     df_cons_ranking[cols.rank_col] = df_cons_ranking['Total Weighted Score']\
                                                     .rank(ascending=False, method='min')
 
-
+    
     return df_cons_ranking
         
 

@@ -218,7 +218,7 @@
             "report_desc": "CWSN Transition Rate from Class 9 to 10",
             "generate_report": true,
             "ranking_weightage" : 0.5,
-            "improvement_weightage" : 0.2,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "cwsn_transition_9_to_10.sql",
                 "db" : "tn_schools_db"
@@ -284,7 +284,7 @@
             "report_desc": "CWSN Transition Rate from Class 10 to 11",
             "generate_report": true,
              "ranking_weightage" : 1.5,
-            "improvement_weightage" : 2,
+            "improvement_weightage" : 1,
             "source_config" : {
                 "query_file_name" : "cwsn_transition_10_to_11.sql",
                 "db" : "tn_schools_db"
@@ -350,7 +350,7 @@
             "report_desc": "CWSN Transition Rate from Class 11 to 12",
             "generate_report": true,
             "ranking_weightage" : 0.5,
-            "improvement_weightage" : 0.2,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "cwsn_transition_11_to_12.sql",
                 "db" : "tn_schools_db"

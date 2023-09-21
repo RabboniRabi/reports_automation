@@ -49,8 +49,6 @@ def fetch_ceo_rev_metric_ranking_weightages(report_level:str=None):
 
     # Go through each active CEO review config and build the metric weightages dict
     for config in ceo_review_configs:
-
-        print('getting weightage for config: ', config['report_code'])
         
         metric_code = config['report_code']
 

@@ -7,7 +7,7 @@
         "report_desc": "% of Pending G2C applications greater than 15 days",
         "generate_report": true,
         "ranking_weightage" : 5,
-        "improvement_weightage" : 1,
+        "improvement_weightage" : 2,
         "source_config" : {
             "source_file_name" : "g2c_online_pstm_report.xlsx",
             "source_sheet_name" : "Report",

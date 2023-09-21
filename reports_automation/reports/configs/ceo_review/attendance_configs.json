@@ -552,7 +552,7 @@
             "report_desc": "Teachers attendance report",
             "generate_report": true,
             "ranking_weightage" : 0.5,
-            "improvement_weightage" : 0.2,
+            "improvement_weightage" : 0.5,
             "source_config" : {
                 "query_file_name" : "teachers_attendance.sql",
                 "db" : "attendance_db"
@@ -566,7 +566,7 @@
             "elementary_report" : {
                 "generate_report": true,
                 "ranking_weightage" : 1,
-                "improvement_weightage" : 0.5,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -613,7 +613,7 @@
             "secondary_report" : {
                 "generate_report": true,
                 "ranking_weightage" : 1,
-                "improvement_weightage" : 0.5,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],

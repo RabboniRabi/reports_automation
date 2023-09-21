@@ -154,7 +154,7 @@
             "report_desc": "Schools issuing uniforms report",
             "generate_report": true,
             "ranking_weightage" : 3,
-            "improvement_weightage" : 1,
+            "improvement_weightage" : 1.5,
             "source_config" : {
                 "sources" : [
                     {

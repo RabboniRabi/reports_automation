@@ -22,7 +22,7 @@
         "elementary_report" : {
             "generate_report": true,
             "ranking_weightage" : 3,
-            "improvement_weightage" : 1,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -65,7 +65,7 @@
         "secondary_report" : {
             "generate_report": true,
             "ranking_weightage" : 3,
-            "improvement_weightage" : 1,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -129,7 +129,7 @@
         "elementary_report" : {
             "generate_report": true,
             "ranking_weightage" : 3,
-            "improvement_weightage" : 1,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -172,7 +172,7 @@
         "secondary_report" : {
             "generate_report": true,
             "ranking_weightage" : 3,
-            "improvement_weightage" : 1,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -236,7 +236,7 @@
         "elementary_report" : {
             "generate_report": true,
             "ranking_weightage" : 3,
-            "improvement_weightage" : 1,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -283,7 +283,7 @@
         "secondary_report" : {
             "generate_report": true,
             "ranking_weightage" : 3,
-            "improvement_weightage" : 1,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],

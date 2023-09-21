@@ -92,7 +92,7 @@ def generate_ceo_rev_deo_cons_ranking(deo_lvl: school_levels):
     df_dict = {
         'Overall': df_overall_ranking,
         'Current Month' : curr_month_cons_ranking,
-        'Improvement' : df_improv
+        'Improvement' : df_improv_cons_ranking
         }
 
     # Save the data
