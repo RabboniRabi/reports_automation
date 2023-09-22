@@ -9,7 +9,8 @@ import sys
 import utilities.file_utilities as file_utilities
 import pandas as pd
 import pandas.io.sql as psql
-from pandas.io.sql import DatabaseError 
+from pandas.io.sql import DatabaseError
+
 
 def read_conn_credentials(file_name):
     """
@@ -32,7 +33,7 @@ def read_conn_credentials(file_name):
     curr_dir = os.getcwd()
     cred_dir_path = '../credentials/'
     file_path = os.path.join(curr_dir, cred_dir_path, file_name)
-    file = open(file_path, mode = 'r')
+    file = open(file_path, mode='r')
     data = file.read()
     credentials_dict = json.loads(data)
     file.close()
@@ -61,28 +62,29 @@ def create_server_connection(credentials_dict):
     connection = None
     try:
         connection = mysql.connector.connect(
-            host = credentials_dict['host_name'],
-            user = credentials_dict['username'],
-            passwd = credentials_dict['password'],
-            database = credentials_dict['db_name']
+            host=credentials_dict['host_name'],
+            user=credentials_dict['username'],
+            passwd=credentials_dict['password'],
+            database=credentials_dict['db_name']
         )
         print('Database connection successful')
     except Error as err:
         print(f'Error: ', err)
     return connection
 
+
 def get_sqlalchemy_conn_obj(host, port, db_name, user_name, password):
     """
     """
     try:
         dialect_driver = 'mysql://' + user_name + ':' + password + '@' \
-        + host + ':' + port + '/' + db_name
+                         + host + ':' + port + '/' + db_name
         print('dialect driver: ', dialect_driver)
         connection = create_engine(dialect_driver).connect()
         print('Database connection successful')
     except Error as err:
         print('Error: ', err)
-    return connection        
+    return connection
 
 
 def fetch_data(connection, query):
@@ -108,13 +110,13 @@ def fetch_data(connection, query):
         result = cursor.fetchall()
         return result
     except Error as err:
-            print(f'Error: ', err)    
+        print(f'Error: ', err)
 
 
-def fetch_data_as_df (credentials_dict, script_file_name, params=None):
+def fetch_data_as_df(credentials_dict, script_file_name, params:list=None):
     """
     Function to fetch data from the database using a query and return the data as a pandas dataframe object
-    
+
     Parameters
     ---------
     credentials_dict: dict
@@ -127,16 +129,20 @@ def fetch_data_as_df (credentials_dict, script_file_name, params=None):
         }
     script_file_name: str
         The file name with the sql script to be executed to fetch the data
+    params: list
+        Optional list of parameters for query (Default is None)
     Returns
     -------
     Query results as a dataframe object
     """
     connection = create_server_connection(credentials_dict)
     query = file_utilities.open_script(script_file_name).read()
-
-    print('Executing Query...')
     try:
-        df_data = pd.read_sql_query(query, connection, params) 
+        print('Executing Query...')
+        # If parameters for the query are given, update the query
+        if params is not None:
+            query = query.format(*params)
+        df_data = pd.read_sql_query(query, connection)
         print('Query Execution Successful')
     except (DatabaseError, Error) as err:
         print(f'Error: ', err)
@@ -149,7 +155,7 @@ def fetch_data_as_df (credentials_dict, script_file_name, params=None):
     return df_data
 
 
-def fetch_data_in_batches_as_df (credentials_dict, script_file_name, batch_size=100000, params=None):
+def fetch_data_in_batches_as_df(credentials_dict, script_file_name, batch_size=100000, params=None):
     """
     Function to fetch data in batches from the database using a query and return the data as a pandas dataframe object
     
@@ -203,51 +209,5 @@ def fetch_data_in_batches_as_df (credentials_dict, script_file_name, batch_size=
     connection.close()
 
     return full_df
-
-def fetch_data_as_df_V2 (credentials_dict, script_file_name, params:list):
-    """
-    Function to fetch data from the database using a query and return the data as a pandas dataframe object
-
-    Parameters
-    ---------
-    credentials_dict: dict
-        A dictionary of credentials to use to connect to the database
-        eg: {
-        "username": "<username>",
-        "password": "<password>",
-        "db_name": "<dbname>",
-        "host_name": "<hostname>"
-        }
-    script_file_name: str
-        The file name with the sql script to be executed to fetch the data
-    Returns
-    -------
-    Query results as a dataframe object
-    """
-    connection = create_server_connection(credentials_dict)
-    # when the parameters is none
-    if params is None:
-       query = file_utilities.open_script(script_file_name).read()
-
-       print('Executing Query...')
-       try:
-           df_data = pd.read_sql_query(query, connection)
-           print('Query Execution Successful')
-       except (DatabaseError, Error) as err:
-           print(f'Error: ', err)
-           err_msg = 'Error in executing query in ' + script_file_name
-           sys.exit(err_msg)
-
-    # Close the database connection
-       connection.close()
-       return df_data
-
-    else:
-       query ="".format(*params)
-       df_parameterized = pd.read_sql_query(query, connection)
-       connection.close()
-       return df_parameterized
-
-
 
 

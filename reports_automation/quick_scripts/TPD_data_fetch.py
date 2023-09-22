@@ -32,8 +32,8 @@ join user_selected_answers usa
 on
 	usa.userId = usd.u_id
 where
-	usa.qset_id in ({0},{1},{2})"""
-params = [30246,30247,30248]
+	usa.qset_id in ({0},{1})"""
+params = [30246,30248]
 query = query.format(*params)
 df = pd.read_sql_query(query, connection)
 df.to_excel(r'C:\Users\TAMILL\Data Reporting\reports\extracted\Aug_23\TPD_quizes2.xlsx',sheet_name='detials')
