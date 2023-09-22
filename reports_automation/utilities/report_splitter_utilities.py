@@ -48,7 +48,7 @@ def save_split_report(split_df_data, dir_name):
         file_utilities.save_to_excel({'Report': split_df_data[key]}, str(key).title() + '.xlsx', dir_path=dir_path)
 
 
-def split_report_given_file(file_name, column_to_split_on, sheet_name, skiprows=0):
+def split_report_given_file(file_name, sheet_name, dir_name, column_to_split_on,  skiprows=0):
     """
         Function to only split the given data and save it in separate files if there is no custom configurations
 
@@ -57,10 +57,8 @@ def split_report_given_file(file_name, column_to_split_on, sheet_name, skiprows=
         file_name: Source data excel file
         column_to_split_on: column name to split the data on
         sheet_name: which worksheet to use
-
+        dir_name:
         """
-
-
     dir_path = file_utilities.get_curr_month_source_data_dir_path()
     file_path = os.path.join(dir_path, file_name)
     df = file_utilities.read_sheet(file_path, sheet_name, skiprows)
@@ -68,6 +66,6 @@ def split_report_given_file(file_name, column_to_split_on, sheet_name, skiprows=
     df = column_cleaner.standardise_column_names(df)
     split_data_set = split_report(df, column_to_split_on)
 
-    save_split_report(split_data_set)
+    save_split_report(split_data_set, dir_name)
 
 

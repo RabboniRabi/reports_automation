@@ -422,6 +422,7 @@ cg_ecnom_supp_need = 'Economic Support Needed'
 
 
 # board exams report specific columns
+stu_name = 'NAME'
 brd_tot_stu_appr = 'No. of students who appeared for all subjects'
 brd_tot_stu_pass = 'No. of students passed'
 brd_pass_perc = 'Pass %'
@@ -450,6 +451,8 @@ social_rank_dist = 'Social Rank in District'
 curr_school_performance = "Overall School Performance"
 prev_school_performance = 'Previous Year Overall School Performance'
 group_code = 'group_code'
+mark_1 = 'BMARK1'
+mark_2 = 'BMARK2'
 mark_3 = 'BMARK3'
 mark_4 = 'BMARK4'
 mark_5 = 'BMARK5'

@@ -1,0 +1,82 @@
+{
+  "report_configs": [
+    {
+      "report_name": "12th_subjects_groupping",
+      "report_code" : "12TH_SUBJECTS_GROUPING",
+      "report_desc": "Configuration for subjects grouping for 12th board results",
+      "subjects": {
+        "subjects_of_focus": [
+          "PHYSICS",
+          "CHEMISTRY",
+          "MATHEMATICS",
+          "BIOLOGY",
+          "ECONOMICS",
+          "COMMERCE",
+          "COMPUTER SCIENCE"
+        ],
+        "main_group": [
+          "ECONOMICS",
+          "PHYSICS",
+          "CHEMISTRY",
+          "MATHEMATICS",
+          "BIOLOGY",
+          "BOTANY",
+          "ZOOLOGY",
+          "COMMERCE",
+          "ACCOUNTANCY",
+          "BUSINESS MATHEMATICS AND STATISTICS",
+          "COMPUTER APPLICATIONS",
+          "COMPUTER SCIENCE"
+        ],
+        "arts_group": [
+          "GEOGRAPHY",
+          "COMMUNICATIVE ENGLISH",
+          "HISTORY",
+          "POLITICAL SCIENCE",
+          "ETHICS AND INDIAN CULTURE",
+          "ADVANCED LANGUAGE(TAMIL)"
+        ],
+        "vocational_group": [
+          "NURSING GENERAL",
+          "HOME SCIENCE",
+          "BASIC MECHANICAL ENGINEERING - THEORY",
+          "BASIC MECHANICAL ENGINEERING",
+          "BASIC ELECTRICAL ENGINEERING - THEORY",
+          "BASIC ELECTRICAL ENGINEERING",
+          "BASIC ELECTRONICS ENGINEERING - THEORY",
+          "BASIC ELECTRONICS ENGINEERING",
+          "BASIC CIVIL ENGINEERING - THEORY",
+          "BASIC CIVIL ENGINEERING",
+          "BASIC AUTOMOBILE ENGINEERING - THEORY",
+          "BASIC AUTOMOBILE ENGINEERING",
+          "TEXTILE TECHNOLOGY  - THEORY",
+          "TEXTILE TECHNOLOGY",
+          "NURSING - THEORY",
+          "NURSING",
+          "TEXTILES AND DRESS DESIGNING - THEORY",
+          "TEXTILES AND DRESS DESIGNING",
+          "FOOD SERVICE MANAGEMENT - THEORY",
+          "FOOD SERVICE MANAGEMENT",
+          "COMPUTER TECHNOLOGY",
+          "AGRICULTURAL SCIENCE- THEORY",
+          "AGRICULTURAL SCIENCE",
+          "OFFICE MANAGEMENT AND SECRETARYSHIP - THEORY",
+          "TYPOGRAPHY AND COMPUTER APPLICATIONS",
+          "AUDITING"
+        ],
+        "others_group": [
+          "BIO-CHEMISTRY",
+          "MICRO-BIOLOGY",
+          "NUTRITION & DIETETICS",
+          "STATISTICS"
+        ]
+      },
+      "sub_mark": {
+        "SUBNAME_B3": "BMARK3",
+        "SUBNAME_B4": "BMARK4",
+        "SUBNAME_B5": "BMARK5",
+        "SUBNAME_B6": "BMARK6"
+      }
+    }
+  ]
+}

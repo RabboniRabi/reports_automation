@@ -32,7 +32,9 @@
         "dir_levels": ["miscellaneous", "configs"],
         "files" : [
             "board_results.json",
-            "tenth_metric_wise_grouping.json"
+            "tenth_metric_wise_grouping.json",
+            "twelfth_metric_wise_grouping_levels.json",
+            "twelfth_subject_group_mapping.json"
             ]
     }
 }
