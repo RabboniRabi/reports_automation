@@ -328,7 +328,7 @@ def compute_consolidated_ranking(df_ranking, metric_weightage:dict, invert_rank:
 
     metric_codes = list(metric_weightage.keys())
 
-    df_cons_ranking['Total Weighted Score'] = 0
+    df_cons_ranking[cols.cons_tot_wt_scr] = 0
 
     # Check and invert the ranks if needed
     if invert_rank:
@@ -336,6 +336,12 @@ def compute_consolidated_ranking(df_ranking, metric_weightage:dict, invert_rank:
 
     # For each metric
     for metric_code in metric_codes:
+        # If weightage is zero, skip calculating weighted score for the metric
+        if metric_weightage[metric_code] == 0:
+            # Drop the column from consolidated ranking
+            df_cons_ranking.drop(columns=[metric_code], inplace=True)
+            continue
+        
         # Calculate the weighted rank for the metric code
         df_cons_ranking[metric_code] = df_cons_ranking[metric_code] * metric_weightage[metric_code]
 
@@ -343,13 +349,13 @@ def compute_consolidated_ranking(df_ranking, metric_weightage:dict, invert_rank:
         df_cons_ranking.fillna(0, inplace=True)
 
         # Update the total weighted score
-        df_cons_ranking['Total Weighted Score'] += df_cons_ranking[metric_code]
+        df_cons_ranking[cols.cons_tot_wt_scr] += df_cons_ranking[metric_code]
 
     # Sort the values and rank
-    df_cons_ranking = df_cons_ranking.sort_values(by='Total Weighted Score', \
-                                    ascending=False).reset_index()
+    df_cons_ranking = df_cons_ranking.sort_values(by=cols.cons_tot_wt_scr, \
+                                    ascending=False)
 
-    df_cons_ranking[cols.rank_col] = df_cons_ranking['Total Weighted Score']\
+    df_cons_ranking[cols.rank_col] = df_cons_ranking[cols.cons_tot_wt_scr]\
                                                     .rank(ascending=False, method='min')
 
     

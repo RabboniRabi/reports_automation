@@ -11,14 +11,16 @@ import math
 
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
+import utilities.ranking_utilities as ranking_utilities
 import utilities.column_names_utilities as cols
 
 from enums.school_levels import SchoolLevels as school_levels
 import readers.config_reader as config_reader
+import readers.weightage_fetcher as weightage_fetcher
 
 import pandas as pd
 
-import ceo_deo_mapping as mapping
+import miscellaneous.ceo_deo_mapping as mapping
 
 def calculate_ceo_ranks_for_deo_lvl_rpts():
     """
@@ -33,12 +35,17 @@ def calculate_ceo_ranks_for_deo_lvl_rpts():
 
     # Get the august ranking master
     dir_path = file_utilities.get_ranking_reports_dir()
-    file_path = file_utilities.get_file_path('ranking_master_july.xlsx', dir_path)
-
-    df_ranking_master = file_utilities.read_sheet(file_path, sheet_name='ranking')
-
+    
+    # Get the current month data 
+    curr_month = utilities.get_curr_month()
+    curr_year = utilities.get_curr_year()
+    df_ranking_master = ranking_utilities.get_ceo_rev_ranking_master_data(['DEO'], \
+                    [school_levels.ELEMENTARY.value, school_levels.SECONDARY.value], \
+                    [curr_month], [int(curr_year)])
+                                
     # Get the list of unique metric codes
-    metric_codes = df_ranking_master[cols.metric_code].unique().tolist()
+    metric_codes  = df_ranking_master[cols.metric_code].unique()
+
 
     # Get the CEO DEO mapping
     ceo_deo_mapping = mapping.get_ceo_deo_mapping()
@@ -46,8 +53,15 @@ def calculate_ceo_ranks_for_deo_lvl_rpts():
     df_ceo_ranking = pd.DataFrame()
     df_ceo_ranking['CEO'] = ceo_deo_mapping.keys()
 
+    metric_weightages = weightage_fetcher.fetch_ceo_rev_metric_ranking_weightages()
+
     # Get the average rank of each CEO for each metric - not an efficient implementation below
     for metric_code in metric_codes:
+        
+        # If weightage for metric code is 0, skip the metric code
+        if metric_weightages[metric_code] == 0:
+            continue
+
         df_ceo_ranking[metric_code] = 0
         for ceo in ceo_deo_mapping.keys():
             # Get elementary DEOs
@@ -66,7 +80,7 @@ def calculate_ceo_ranks_for_deo_lvl_rpts():
             # Update rank of CEO for metric
             df_ceo_ranking[metric_code].loc[df_ceo_ranking['CEO']==ceo] = mean_ceo_rank_metric
 
-    file_utilities.save_to_excel({'ceo_avg_rank': df_ceo_ranking}, 'ceo_ranks_for_deo_lvl_reports_july.xlsx', dir_path)        
+    file_utilities.save_to_excel({'ceo_avg_rank': df_ceo_ranking}, 'ceo_ranks_for_deo_lvl_reports_sep.xlsx', dir_path)        
 
     return df_ceo_ranking
 
@@ -96,8 +110,8 @@ def calculate_inverted_ceo_ranks_for_deo_lvl_rpts():
             max_rank = metric_wise_max_ceo_rank_dict[metric_code]
             df_ceo_ranking[metric_code] = (max_rank + 1) - df_ceo_ranking[metric_code]
 
-    dir_path = file_utilities.get_ceo_rpts_dir_path()
-    file_utilities.save_to_excel({'ceo_avg_inv_rank': df_ceo_ranking}, 'inverted_ceo_ranks_for_deo_lvl_reports_july.xlsx', dir_path)        
+    dir_path = file_utilities.get_ranking_reports_dir()
+    file_utilities.save_to_excel({'ceo_avg_inv_rank': df_ceo_ranking}, 'inverted_ceo_ranks_for_deo_lvl_reports_sep.xlsx', dir_path)        
 
 
 
@@ -184,6 +198,7 @@ def get_metric_wise_ceo_max_rank():
 
 
 if __name__ == "__main__":
+    
     calculate_inverted_ceo_ranks_for_deo_lvl_rpts()
 
 

@@ -7,12 +7,15 @@ current and previous reports
 import sys
 sys.path.append('../')
 
+import numpy as np
+
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.format_utilities as format_utilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.column_names_utilities as cols
 import readers.config_reader as config_reader
+import readers.weightage_fetcher as weightage_fetcher
 
 from enums.school_levels import SchoolLevels as school_levels
 
@@ -39,11 +42,18 @@ def generate_ceo_rev_deo_progress_report(deo_lvl: school_levels):
                                 
     curr_month_metric_codes  = df_curr_month_ranks[cols.metric_code].unique()
 
+    # Filter out the metrics with zero weightage for the month
+    metric_weightage_dict = weightage_fetcher.fetch_ceo_rev_metric_ranking_weightages(deo_lvl)
+    metrics_to_omit = []
+    for metric_code in curr_month_metric_codes:
+        if metric_weightage_dict[metric_code] == 0:
+            metrics_to_omit.append(metric_code)
+
+    df_curr_month_ranks = utilities.filter_dataframe_not_in_column(\
+                                        df_curr_month_ranks, cols.metric_code, metrics_to_omit)
+
     # Get the data in progress report format
     df_curr_month_rpt = ranking_utilities.build_metric_wise_ranking_report(df_curr_month_ranks)
-
-    print('DEO names: ', df_curr_month_rpt[cols.name].unique())
-
 
     # Testing
     #file_utilities.save_to_excel({'test': df_curr_month_rpt}, 'df_curr_month_rpt.xlsx')
@@ -54,6 +64,10 @@ def generate_ceo_rev_deo_progress_report(deo_lvl: school_levels):
     prev_month_year = utilities.get_year_of_prev_month()
     df_prev_month_ranks = ranking_utilities.get_ceo_rev_ranking_master_data(\
                                 ['DEO'], [deo_lvl.value], [prev_month], [int(prev_month_year)])
+
+    # Filter out the metrics with zero weightage for the current month from the previous month
+    df_prev_month_ranks = utilities.filter_dataframe_not_in_column(\
+                                        df_prev_month_ranks, cols.metric_code, metrics_to_omit)
 
     
     # Get the data in progress report format
@@ -75,9 +89,12 @@ def generate_ceo_rev_deo_progress_report(deo_lvl: school_levels):
     # Merge the rank improvement values data with the current month ranks
     df_curr_month_progress_rpt = df_curr_month_rpt.merge(df_improv, how='left', on=[cols.name])
 
+    # Get the metrics with non zero weightage
+    non_zero_weight_metrics = np.subtract(np.array(curr_month_metric_codes), np.array(metrics_to_omit)).tolist()
+
     # Reorder the metric codes and their corresponding improvement columns together
     df_curr_month_progress_rpt = _reorder_progress_report_cols(df_curr_month_progress_rpt, \
-                                    curr_month_metric_codes, metric_code_append_txt)
+                                    non_zero_weight_metrics, metric_code_append_txt)
     
     """Format the report to visually highlight improvements"""
 

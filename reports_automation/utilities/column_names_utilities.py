@@ -513,7 +513,11 @@ brd_med_math_mrks = "Median Mathematics mark"
 brd_med_science_mrks = "Median Science mark"
 brd_med_social_mrks = "Median Social mark"
 
-
+# consolidated ranking specific column names
+cons_tot_wt_scr = 'Total Weighted Score'
+cons_curr_wt_scr = 'Current month weighted Score'
+cons_impr_wt_scr = 'Improvement weighted Score'
+cons_ovr_wt_scr = 'Overall Weighted Score'
 
 def get_value(var_name: str):
     """

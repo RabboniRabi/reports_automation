@@ -121,7 +121,8 @@ def filter_dataframe_not_in_column(df, column_name, values_in):
 
 def filter_dataframe(df, filter_dict, include=True):
     """
-    Function to filter the dataframe for multiple columns either by including or excluding the given set of values
+    Function to filter the dataframe for multiple columns either by including or 
+    excluding the given set of values.
 
     Parameters:
     ----------
@@ -537,7 +538,8 @@ def update_master_data(df_master_data, df_new_data):
 
     return df_master_data
 
-def subtract_dfs(df_first, df_second, cols:list):
+
+def subtract_dfs(df_first, df_second, cols:list, index_col_name: str):
     """
     Function to element wise subtract values in columns
     between two data frame objects.
@@ -550,14 +552,67 @@ def subtract_dfs(df_first, df_second, cols:list):
         The data on the right of the - sign
     cols: list
         The list of columns to subtract
+    index_col_name: str
+        The name of a column to sort the data by and then subtract them.
+        To ensure correct row wise subtraction.
     """
+
+    # Sort the values before subtracting
+    df_first = df_first.sort_values(by=index_col_name).set_index(index_col_name)
+    df_second = df_second.sort_values(by=index_col_name).set_index(index_col_name)
 
     df_subtracted = df_first.copy()
 
     for col in cols:
-        if col in df_second:
+        if col in df_second and col in df_first:
             df_subtracted[col] = df_first[col] - df_second[col]
         else:
             df_subtracted[col] = 0
 
-    return df_subtracted
+    return df_subtracted.reset_index()
+
+def add_dfs(df_first, df_second, cols:list, index_col_name: str):
+    """
+    Function to element wise add values in columns
+    between two data frame objects.
+
+    Parameters:
+    ----------
+    df_first: Pandas DataFrame
+        The data to add
+    df_second: Pandas DataFrame
+        The data to add
+    cols: list
+        The list of columns to add
+    index_col_name: str
+        The name of a column to sort the data by and then add them.
+        To ensure correct row wise subtraction.
+    """
+
+    # Sort the values before subtracting
+    df_first = df_first.sort_values(by=index_col_name).set_index(index_col_name)
+    df_second = df_second.sort_values(by=index_col_name).set_index(index_col_name)
+
+    df_subtracted = df_first.copy()
+
+    for col in cols:
+        if col in df_second and col in df_first:
+            df_subtracted[col] = df_first[col] + df_second[col]
+        else:
+            df_subtracted[col] = 0
+
+    return df_subtracted.reset_index()
+
+def replace_negatives(x):
+    """
+    Simple function to be used by Pandas applymap function
+    to replaces negative values in the data elements
+    """
+
+    
+    if type(x) == type(''):
+        return x
+    if x < 0:
+        return 0
+    else:
+        return x
