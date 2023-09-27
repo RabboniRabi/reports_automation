@@ -23,7 +23,7 @@ from enums.school_levels import SchoolLevels as school_levels
 def generate_ceo_rev_deo_progress_report(deo_lvl: school_levels):
     """
     Function to generate a progress report for DEOs
-    based on improvement/decrease in ranks for each metric compared
+    based on improvement/drop in ranks for each metric compared
     between current month and previous month.
 
     Parameters:
@@ -39,7 +39,8 @@ def generate_ceo_rev_deo_progress_report(deo_lvl: school_levels):
     curr_year = utilities.get_curr_year()
     df_curr_month_ranks = ranking_utilities.get_ceo_rev_ranking_master_data(\
                                 ['DEO'], [deo_lvl.value], [curr_month], [int(curr_year)])
-                                
+
+    # Get the ranked metrics for current month                    
     curr_month_metric_codes  = df_curr_month_ranks[cols.metric_code].unique()
 
     # Filter out the metrics with zero weightage for the month
@@ -49,15 +50,15 @@ def generate_ceo_rev_deo_progress_report(deo_lvl: school_levels):
         if metric_weightage_dict[metric_code] == 0:
             metrics_to_omit.append(metric_code)
 
-    df_curr_month_ranks = utilities.filter_dataframe_not_in_column(\
-                                        df_curr_month_ranks, cols.metric_code, metrics_to_omit)
+    # Get the metrics with non zero weightage
+    non_zero_wt_metrics = list(filter(lambda i : i not in metrics_to_omit, curr_month_metric_codes))
+
+    # Filter the current month ranking data to only ranks with weightage
+    df_curr_month_ranks = utilities.filter_dataframe_column(df_curr_month_ranks, cols.metric_code, non_zero_wt_metrics)
+
 
     # Get the data in progress report format
     df_curr_month_rpt = ranking_utilities.build_metric_wise_ranking_report(df_curr_month_ranks)
-
-    # Testing
-    #file_utilities.save_to_excel({'test': df_curr_month_rpt}, 'df_curr_month_rpt.xlsx')
-    
 
     # Get the previous month data
     prev_month = utilities.get_prev_month()
@@ -65,36 +66,35 @@ def generate_ceo_rev_deo_progress_report(deo_lvl: school_levels):
     df_prev_month_ranks = ranking_utilities.get_ceo_rev_ranking_master_data(\
                                 ['DEO'], [deo_lvl.value], [prev_month], [int(prev_month_year)])
 
-    # Filter out the metrics with zero weightage for the current month from the previous month
-    df_prev_month_ranks = utilities.filter_dataframe_not_in_column(\
-                                        df_prev_month_ranks, cols.metric_code, metrics_to_omit)
-
+    # Filter only rank data for the non zero weighted metrics used in the current month
+    df_prev_month_ranks = utilities.filter_dataframe_column(df_prev_month_ranks, cols.metric_code, non_zero_wt_metrics)
+    
     
     # Get the data in progress report format
     df_prev_month_rpt = ranking_utilities.build_metric_wise_ranking_report(df_prev_month_ranks)
 
-    # Testing
-    #file_utilities.save_to_excel({'test': df_prev_month_rpt}, 'df_prev_month_rpt.xlsx')
-
-    metric_code_append_txt = '_improvement'
+    metric_code_append_txt = ' improvement'
 
 
-    # Get the improvement in ranks for each metric from previous month
-    df_improv = _get_metric_code_wise_improvement(df_curr_month_rpt, \
-                            df_prev_month_rpt, curr_month_metric_codes, metric_code_append_txt)
+    # Get the improvement report - Difference in metric ranks in current month from previous month
+    df_improv = utilities.subtract_dfs(df_prev_month_rpt, df_curr_month_rpt , non_zero_wt_metrics, cols.name)
 
-    # Testing
-    #file_utilities.save_to_excel({'test': df_improv}, 'df_improv.xlsx')
+    # Append 'improvement' text to the metric code column names before merging it with the current month report
+    rename_dict = {}
+    for metric_code in non_zero_wt_metrics:
+        rename_dict[metric_code] = metric_code + metric_code_append_txt
+    df_improv.rename(columns=rename_dict, inplace=True)
 
     # Merge the rank improvement values data with the current month ranks
     df_curr_month_progress_rpt = df_curr_month_rpt.merge(df_improv, how='left', on=[cols.name])
 
-    # Get the metrics with non zero weightage
-    non_zero_weight_metrics = np.subtract(np.array(curr_month_metric_codes), np.array(metrics_to_omit)).tolist()
 
     # Reorder the metric codes and their corresponding improvement columns together
     df_curr_month_progress_rpt = _reorder_progress_report_cols(df_curr_month_progress_rpt, \
-                                    non_zero_weight_metrics, metric_code_append_txt)
+                                    non_zero_wt_metrics, metric_code_append_txt)
+
+    # Sort the data by DEO name
+    df_curr_month_progress_rpt.sort_values(by=cols.name, inplace=True)
     
     """Format the report to visually highlight improvements"""
 
@@ -108,7 +108,7 @@ def generate_ceo_rev_deo_progress_report(deo_lvl: school_levels):
     worksheet = workbook.get_worksheet_by_name(deo_lvl.value)
 
     # Get the column names of the metrics' improvement
-    metric_codes_improv_names = [f'{x}'+ metric_code_append_txt for x in curr_month_metric_codes]
+    metric_codes_improv_names = [f'{x}'+ metric_code_append_txt for x in non_zero_wt_metrics]
 
 
     # Get the format configs
@@ -125,63 +125,7 @@ def generate_ceo_rev_deo_progress_report(deo_lvl: school_levels):
     writer.save()
 
 
-    # testing
-    #file_utilities.save_to_excel({'test': df_curr_month_progress_rpt}, 'df_curr_month_progress_rpt.xlsx')
 
-
-
-def _get_metric_code_wise_improvement(df_curr, df_prev, metric_codes:list, metric_code_append_txt:str):
-    """
-    Internal helper function to get the improvement in rank/values for 
-    each metric code column in current dataframe from previous dataframe:
-
-    Parameters:
-    -----------
-    df_curr: Pandas DataFrame
-        The current data
-    df_prev: Pandas DataFrame
-        The previous data
-    metric_codes: list
-        The list of metric codes
-    metric_code_append_txt: str
-        Optional text to append to each of the metric code column names.
-        Eg: '_improvment'
-
-    Returns:
-    --------
-    DataFrame with improvement values for each metric code
-    """
-
-    # Sort the data
-    df_curr = df_curr.sort_values(by=cols.name).reset_index()
-    df_prev = df_prev.sort_values(by=cols.name).reset_index()
-
-    #print('df_curr post sorting: ', df_curr)
-    #print('df_prev post sorting: ', df_prev)
-
-    df_improv = df_curr.copy()
-    #print('df_improv before updating: ', df_improv)
-    rename_dict = {}
-
-    for metric_code in metric_codes:
-        if metric_code in df_prev:
-            #print('for ', metric_code, 'df_curr is: ', df_curr[metric_code])
-            #print('for ', metric_code, 'df_prev is: ', df_prev[metric_code])
-            df_improv[metric_code] =  df_prev[metric_code] - df_curr[metric_code]
-            #print('df_improv[metric_code] is: ', df_improv[metric_code])
-        else:
-            df_improv[metric_code] = 0
-
-        # If text to append is given, add the metric to the rename dict
-        if metric_code_append_txt is not None:
-            rename_dict[metric_code] = metric_code + '_improvement'
-
-    # Rename the metric code column names to the text appended column names
-    df_improv.rename(columns=rename_dict, inplace=True)
-
-    #print('df_improv: ', df_improv)
-
-    return df_improv
 
 def _reorder_progress_report_cols(df_progress_rpt, metric_codes:list, metric_code_append_txt: str):
     """
@@ -201,6 +145,7 @@ def _reorder_progress_report_cols(df_progress_rpt, metric_codes:list, metric_cod
     --------
     Reordered progress report as a Pandas DataFrame object
     """
+    print('df_progress_rpt columns: ', df_progress_rpt.columns.to_list())
     # Start with the name column
     list_of_cols = [cols.name]
 
