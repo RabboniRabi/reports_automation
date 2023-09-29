@@ -61,7 +61,7 @@ def percent_ranking(df, ranking_args_dict):
     if sort:
         df_rank.sort_values(by=[cols.rank_col], inplace=True)
 
-    df_rank = df_rank.reset_index()    """
+    df_rank = df_rank.reset_index() 
 
     return df_rank
 
