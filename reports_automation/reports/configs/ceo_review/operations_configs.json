@@ -7,6 +7,8 @@
             "report_category": "Operations",
             "report_desc": "Hi Tech labs uptime report",
             "generate_report": false,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "source_file_name" : "hi-tech_labs_uptime.xlsx",
                 "source_sheet_name" : "uptime_report",
@@ -20,6 +22,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -38,8 +42,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_books",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools Hi Tech labs uptime report",
@@ -64,6 +68,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -80,8 +86,8 @@
                     "ranking_val_desc": "cols.perc_schools_issued_books",
                     "num_col": "cols.scheme_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools Hi Tech labs uptime report",
@@ -112,6 +118,8 @@
         "report_category": "Operations",
         "report_desc": "PET to school mapping report",
         "generate_report": false,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "source_config" : {
             "source_file_name" : "Pet-to-school-Mapping-Rpt.xlsx",
             "source_sheet_name" : "Report",
@@ -125,6 +133,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "un_ranked_report_args" : {
                 "custom_unranked_report": true,
                 "grouping_cols" : [],
@@ -140,8 +150,8 @@
                 "ranking_val_desc": "cols.perc_fully_mapped",
                 "num_col": "cols.fully_mapped",
                 "den_col": "cols.tot_schools",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary schools PET to school mapping report",
@@ -165,6 +175,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "un_ranked_report_args" : {
                 "custom_unranked_report": true,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -183,8 +195,8 @@
                 "ranking_val_desc": "cols.perc_fully_mapped",
                 "num_col": "cols.fully_mapped",
                 "den_col": "cols.tot_schools",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary schools PET to school mapping report",

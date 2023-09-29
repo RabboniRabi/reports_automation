@@ -6,6 +6,8 @@
       "report_category": "Enrolment",
       "report_desc": "Students in Common Pool for over 30 days - CEO Report",
       "generate_report": false,
+      "ranking_weightage" : 0,
+      "improvement_weightage" : 0,
       "source_config": {
         "source_file_name": "commonpool_classwise_report.xlsx",
         "source_sheet_name": "Abstract",
@@ -22,6 +24,8 @@
       "post_process_brc_merge": true,
       "elementary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": true,
           "grouping_cols": [],
@@ -36,8 +40,8 @@
           "ranking_val_desc": "cols.perc_ageing",
           "num_col": "cols.ageing",
           "den_col": "cols.total_cp_students",
-          "sort": "True",
-          "ascending": "True"
+          "sort": true,
+          "ascending": true
         },
         "format_config": {
           "heading": "Elementary students ageing in common pool report",
@@ -76,6 +80,8 @@
       },
       "secondary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": true,
           "grouping_cols": [],
@@ -90,8 +96,8 @@
           "ranking_val_desc": "cols.perc_ageing",
           "num_col": "cols.ageing",
           "den_col": "cols.total_cp_students",
-          "sort": "True",
-          "ascending": "True"
+          "sort": true,
+          "ascending": true
         },
         "format_config": {
           "heading": "Secondary students ageing in common pool report",
@@ -138,6 +144,8 @@
       "report_category": "enrollment",
       "report_desc": "Schools without students",
       "generate_report": false,
+      "ranking_weightage" : 0,
+      "improvement_weightage" : 0,
       "source_config": {
         "source_file_name": "Sch-Enrollment-Abstract.xlsx",
         "source_sheet_name": "Report",
@@ -154,6 +162,8 @@
       "post_process_brc_merge": false,
       "elementary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -185,6 +195,8 @@
       },
       "secondary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -221,6 +233,8 @@
       "report_category": "Enrolment",
       "report_desc": "Increase in Government Schools' Student Enrollment",
       "generate_report": true,
+      "ranking_weightage" : 0,
+      "improvement_weightage" : 0,
       "source_config": {
         "query_file_name": "govt_increase_in_enrollment.sql",
         "db": "tn_schools_db"
@@ -236,6 +250,8 @@
       "post_process_brc_merge": false,
       "elementary_report": {
         "generate_report": true,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -256,8 +272,8 @@
           "ranking_val_desc": "cols.students_enrolled_cls1_change_perc",
           "num_col": "cols.students_enrolled_cls1_2023_24",
           "den_col": "cols.students_enrolled_cls1_2022_23",
-          "sort": "True",
-          "ascending": "False"
+          "sort": true,
+          "ascending":false
         },
         "format_config": {
           "heading": "Increase in Elementary Government Schools' Student Enrollment as on",
@@ -288,6 +304,8 @@
       },
       "secondary_report": {
         "generate_report": false,
+        "ranking_weightage" : 0,
+        "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -308,8 +326,8 @@
           "ranking_val_desc": "cols.students_enrolled_cls1_change_perc",
           "num_col": "cols.students_enrolled_cls1_2023_24",
           "den_col": "cols.students_enrolled_cls1_2022_23",
-          "sort": "True",
-          "ascending": "False"
+          "sort": true,
+          "ascending": false
         },
         "format_config": {
           "heading": "Increase in Secondary Government Schools' Student Enrollment as on",
@@ -341,3 +359,4 @@
     }
   ]
 }
+

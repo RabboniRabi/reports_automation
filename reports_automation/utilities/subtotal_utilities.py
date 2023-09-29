@@ -359,4 +359,3 @@ def correct_col_formatting_loss(worksheet, workbook, df, subtotal_row_indices, f
 
 
 
-        

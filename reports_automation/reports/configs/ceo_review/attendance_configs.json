@@ -6,7 +6,9 @@
             "report_code" : "TCH_LV_BL_UP",
             "report_category": "Attendance",
             "report_desc": "Teacher leave balance updation report",
-            "generate_report": false,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
+            "generate_report": true,
             "source_config" : {
                 "source_file_name" : "teacher_leave_balance_updt_report.xlsx",
                 "source_sheet_name" : "Summary",
@@ -20,6 +22,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -37,8 +41,8 @@
                     "ranking_val_desc": "cols.perc_tchrs_updated",
                     "num_col": "cols.updt_tchrs",
                     "den_col": "cols.tot_tchrs",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary Teachers leave balance updated report",
@@ -61,6 +65,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -78,8 +84,8 @@
                     "ranking_val_desc": "cols.perc_tchrs_updated",
                     "num_col": "cols.updt_tchrs",
                     "den_col": "cols.tot_tchrs",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary Teachers leave balance updated report",
@@ -108,6 +114,8 @@
             "report_category": "Attendance",
             "report_desc": "Schools marking teachers attendance report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "schools_marking_teachers_attendance.sql",
                 "db" : "attendance_db"
@@ -120,6 +128,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -134,8 +144,8 @@
                     },
                     "ranking_val_desc": "cols.att_sch_markd_tch_perc",
                     "ranking_col": "cols.att_sch_markd_tch_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools marking teachers attendance report",
@@ -161,6 +171,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -175,8 +187,8 @@
                     },
                     "ranking_val_desc": "cols.att_sch_markd_tch_perc",
                     "ranking_col": "cols.att_sch_markd_tch_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools marking teachers attendance report",
@@ -207,6 +219,8 @@
             "report_category": "Attendance",
             "report_desc": "Schools marking students attendance report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "schools_marking_students_attendance.sql",
                 "db" : "attendance_db"
@@ -219,6 +233,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -233,8 +249,8 @@
                     },
                     "ranking_val_desc": "cols.att_sch_markd_perc",
                     "ranking_col": "cols.att_sch_markd_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools marking students attendance report",
@@ -260,6 +276,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -274,8 +292,8 @@
                     },
                     "ranking_val_desc": "cols.att_sch_markd_perc",
                     "ranking_col": "cols.att_sch_markd_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools marking students attendance report",
@@ -306,6 +324,8 @@
             "report_category": "Attendance",
             "report_desc": "Sections marking attendance report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "sections_marking_attendance.sql",
                 "db" : "attendance_db"
@@ -318,6 +338,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -335,8 +357,8 @@
                     "ranking_val_desc": "cols.att_sec_mark_perc",
                     "num_col": "cols.att_sec_marked_tot",
                     "den_col": "cols.att_sec_working_tot",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending":false
                 },
                 "format_config" : {
                     "heading" : "Elementary schools' sections marking attendance report",
@@ -364,6 +386,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -381,8 +405,8 @@
                     "ranking_val_desc": "cols.att_sec_mark_perc",
                     "num_col": "cols.att_sec_marked_tot",
                     "den_col": "cols.att_sec_working_tot",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary schools' sections marking attendance report",
@@ -414,6 +438,8 @@
             "report_category": "Attendance",
             "report_desc": "Students attendance report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "query_file_name" : "students_attendance.sql",
                 "db" : "attendance_db"
@@ -426,6 +452,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -442,8 +470,8 @@
                     },
                     "ranking_val_desc": "cols.att_stu_avg_present_perc",
                     "ranking_col": "cols.att_stu_avg_present_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary students attendance report",
@@ -471,6 +499,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -487,8 +517,8 @@
                     },
                     "ranking_val_desc": "cols.att_stu_avg_present_perc",
                     "ranking_col": "cols.att_stu_avg_present_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary students attendance report",
@@ -521,6 +551,8 @@
             "report_category": "Attendance",
             "report_desc": "Teachers attendance report",
             "generate_report": true,
+            "ranking_weightage" : 0.5,
+            "improvement_weightage" : 0.5,
             "source_config" : {
                 "query_file_name" : "teachers_attendance.sql",
                 "db" : "attendance_db"
@@ -533,6 +565,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 1,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -549,8 +583,8 @@
                     },
                     "ranking_val_desc": "cols.att_tch_avg_present_perc",
                     "ranking_col": "cols.att_tch_avg_present_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary teachers attendance report",
@@ -578,6 +612,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 1,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -594,8 +630,8 @@
                     },
                     "ranking_val_desc": "cols.att_tch_avg_present_perc",
                     "ranking_col": "cols.att_tch_avg_present_perc",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary teachers attendance report",
@@ -628,6 +664,8 @@
             "report_category": "Attendance",
             "report_desc": "Kalai Thiruvizha Participation report",
             "generate_report": false,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "source_file_name" : "kalai_thiruvizha_participants_count.xlsx",
                 "source_sheet_name" : "Report",
@@ -641,6 +679,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -658,12 +698,14 @@
                     "ranking_val_desc": "cols.per_participants",
                     "num_col": "cols.participants",
                     "den_col": "cols.tot_students",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 }
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -681,8 +723,8 @@
                     "ranking_val_desc": "cols.per_participants",
                     "num_col": "cols.participants",
                     "den_col": "cols.tot_students",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 }
             },
             "format_config" : {

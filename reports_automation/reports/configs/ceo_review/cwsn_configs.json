@@ -6,8 +6,10 @@
         "report_category": "Enrolment",
         "report_desc": "CWSN having UDID report",
         "generate_report": true,
+        "ranking_weightage" : 3,
+        "improvement_weightage" : 1,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 0
         },
@@ -19,6 +21,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -77,6 +81,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -141,8 +147,10 @@
         "report_category": "Enrolment",
         "report_desc": "CWSN having NID report",
         "generate_report": true,
+        "ranking_weightage" : 3,
+        "improvement_weightage" : 1,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 0
         },
@@ -154,6 +162,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -171,8 +181,8 @@
                 "ranking_val_desc": "cols.perc_students_with_NID",
                 "num_col": "cols.nid_count",
                 "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary CWSN students having NIDs report as on ",
@@ -195,6 +205,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -212,8 +224,8 @@
                 "ranking_val_desc": "cols.perc_students_with_NID",
                 "num_col": "cols.nid_count",
                 "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "sort":true,
+                "ascending":false
             },
             "format_config" : {
                 "heading" : "Secondary CWSN students having NIDs report",
@@ -242,8 +254,10 @@
         "report_category": "Enrolment",
         "report_desc": "CWSN having accounts report",
         "generate_report": true,
+        "ranking_weightage" : 3,
+        "improvement_weightage" : 1,
         "source_config" : {
-            "source_file_name" : "CWSN-Report_for_ceo_review.xlsx",
+            "source_file_name" : "CWD-stu-Rpt.xlsx",
             "source_sheet_name" : "Report",
             "skip_rows" : 0
         },
@@ -255,6 +269,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -274,8 +290,8 @@
                 "ranking_val_desc": "cols.perc_students_with_acct",
                 "num_col": "cols.with_acct",
                 "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Elementary CWSN students having accounts report",
@@ -300,6 +316,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 3,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -319,8 +337,8 @@
                 "ranking_val_desc": "cols.perc_students_with_acct",
                 "num_col": "cols.with_acct",
                 "den_col": "cols.cwsn_tot",
-                "sort": "True",
-                "ascending": "False"
+                "sort": true,
+                "ascending": false
             },
             "format_config" : {
                 "heading" : "Secondary CWSN students having accounts report",

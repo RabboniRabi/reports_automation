@@ -12,7 +12,8 @@ block_name = 'block_name'
 block = 'Block'
 udise_col = 'udise_code'
 school_name ='school_name'
-total_student_count  = 'total'
+total_student_count = 'total'
+total_students = 'total_students'
 name = 'Name'
 month_col = 'Month'
 year_col = 'Year'
@@ -20,13 +21,13 @@ yes_col = 'Yes'
 no_col = 'No'
 web = 'Website'
 mobile = 'Mobile'
+all_management = 'All_Management'
 management = 'management'
-management_type = 'management_type'
+management_type = "management_type"
 category_type ="category_type"
 distinct_udise_count = 'count(DISTINCT udise_code)'
+emis_id = 'emis_id'
 gender = 'Gender'
-
-
 school_category = 'category'
 school_category_full_name = 'School_Category'
 school_level = 'school_level'
@@ -72,6 +73,7 @@ class_8 = '8'
 class_9 = '9'
 class_10 = '10'
 class_11 = '11'
+class_12 = '12'
 
 
 #CWSN Transition specific column names
@@ -83,10 +85,17 @@ cwsn_students_count_cls5_2022_23 = 'cwsn_students_count_cls5_2022_23'
 cwsn_students_transitioned_cls6_2023_24 = 'cwsn_students_transitioned_cls6_2023_24'
 cwsn_students_transitioned_cls5_6_perc = '% CWSN students transitioned from Class 5 to 6'
 
+cwsn_students_count_cls9_2022_23 = 'cwsn_students_count_cls9_2022_23'
+cwsn_students_transitioned_cls10_2023_24 = 'cwsn_students_transitioned_cls10_2023_24'
+cwsn_students_transitioned_cls9_10_perc = '% CWSN students transitioned from Class 9 to 10'
 
 cwsn_students_count_cls10_2022_23 = 'cwsn_students_count_cls10_2022_23'
 cwsn_students_transitioned_cls11_2023_24 = 'cwsn_students_transitioned_cls11_2023_24'
 cwsn_students_transitioned_cls10_11_perc = '% CWSN students transitioned from Class 10 to 11'
+
+cwsn_students_count_cls11_2022_23 = 'cwsn_students_count_cls11_2022_23'
+cwsn_students_transitioned_cls12_2023_24 = 'cwsn_students_transitioned_cls12_2023_24'
+cwsn_students_transitioned_cls11_12_perc = '% CWSN students transitioned from Class 11 to 12'
 
 #Student Transition specific column names
 tc_cls8_total_2022_23 = 'tc_cls8_total_2022_23'
@@ -245,6 +254,8 @@ admitted_not_admitted = 'Not Admitted from To be Admitted'
 admitted = 'Admitted from To be Admitted'
 oosc_stu_id = 'student_id'
 oosc_no_stu_absent_greater_6 = 'Number of students absent for greater than 6 days'
+oosc_pot_dropout_count = 'Total Potential Dropouts'
+oosc_perc_pot_dropouts = '% of Potential Dropouts'
 
 # Hi-tech lab report specific column names
 up_time_hrs = 'up_time_hrs'
@@ -424,6 +435,7 @@ cg_perc_stu_w_clg_name = '% students with college name'
 
 
 # board exams report specific columns
+stu_name = 'NAME'
 brd_tot_stu_appr = 'No. of students who appeared for all subjects'
 brd_tot_stu_pass = 'No. of students passed'
 brd_pass_perc = 'Pass %'
@@ -437,6 +449,7 @@ brd_maj_grp_cents = 'Major group Students who secured centum in one or more subj
 brd_voc_grp_cents = 'Vocational group Students who secured centum in one or more subjects'
 brd_tot_stu_w_cents = 'No. of students with centums'
 brd_perc_stu_pass = '% students who have passed'
+average_marks = "average_marks"
 rank_state = 'Rank in State'
 lang_rank_state = 'Language Rank in State'
 eng_rank_state = 'English Rank in State'
@@ -463,6 +476,8 @@ tot_marks = 'total'
 lang_marks = 'language'
 eng_marks = 'english'
 math_marks = 'maths'
+science_theory = 'science_theo'
+science_prac = 'science_prac'
 science_marks = 'science'
 social_marks = 'social'
 curr_tot_stu = "EMIS_NO_count_curr_yr"
@@ -499,7 +514,11 @@ brd_med_math_mrks = "Median Mathematics mark"
 brd_med_science_mrks = "Median Science mark"
 brd_med_social_mrks = "Median Social mark"
 
-
+# consolidated ranking specific column names
+cons_tot_wt_scr = 'Total Weighted Score'
+cons_curr_wt_scr = 'Current month weighted Score'
+cons_impr_wt_scr = 'Improvement weighted Score'
+cons_ovr_wt_scr = 'Overall Weighted Score'
 
 def get_value(var_name: str):
     """
@@ -528,7 +547,7 @@ def get_value(var_name: str):
         value = globals()[var_name]
         return value
     except KeyError:
-        return var_name    
+        return var_name
 
 def get_values(var_names_list: list):
     """
@@ -633,6 +652,7 @@ def update_dictionary(var_names_dict: dict):
     return updated_dict
 
 
+
 def update_nested_dictionaries(var_names_dict: dict):
     """
     Function to update the keys & values in a given dictionary and it's nested dictionaries.
@@ -644,7 +664,7 @@ def update_nested_dictionaries(var_names_dict: dict):
     var_names_dict: dict
         Dictionary whose keys and values contain variables declared in this script and need to be updated with
         the values of the variable names
-    
+
     Returns:
     -------
     The updated dictionary

@@ -2,110 +2,13 @@
     "report_configs": [
 
         {
-            "report_name": "CWSN_Transition_from_Class_8_to_9",
-            "report_code" : "CWSN_TRANS_8_9",
-            "report_category": "Transition",
-            "report_desc": "CWSN Transition Rate from Class 8 to 9",
-            "generate_report": true,
-            "source_config" : {
-                "query_file_name" : "cwsn_transition_8_to_9.sql",
-                "db" : "tn_schools_db"
-           },
-            "pre_process_brc_merge": false,
-            "brc_merge_config" : {
-                "join_on" : ["cols.block_name", "cols.udise_col"],
-                "merge_type" : "left"
-            },
-            "post_process_brc_merge" : false,
-            "elementary_report" : {
-                "generate_report": true,
-                "un_ranked_report_args" : {
-                    "custom_unranked_report": false,
-                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
-                    "grouping_agg_dict" : {
-                        "cols.cwsn_students_count_cls8_2022_23": "sum",
-                        "cols.cwsn_students_transitioned_cls9_2023_24" : "sum"
-                    }
-                },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.cwsn_students_count_cls8_2022_23": "sum",
-                        "cols.cwsn_students_transitioned_cls9_2023_24" : "sum"
-                    },
-                    "ranking_val_desc": "cols.cwsn_students_transitioned_cls8_9_perc",
-                    "num_col": "cols.cwsn_students_transitioned_cls9_2023_24",
-                    "den_col": "cols.cwsn_students_count_cls8_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
-                },
-                "format_config" : {
-                    "heading" : "Elementary CWSN students transitioned from Class 8 to 9 as on",
-                    "subtotal_outlines_dict" : {
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-                        "agg_cols_func_dict" : {
-                            "cols.cwsn_students_transitioned_cls9_2023_24": "sum",
-                            "cols.cwsn_students_count_cls8_2022_23" : "sum",
-                            "cols.deo_elem_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_elm": ""}
-                    },
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.cwsn_students_transitioned_cls8_9_perc"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
-                }
-            },
-            "secondary_report" : {
-                "generate_report": false,
-                "un_ranked_report_args" : {
-                    "custom_unranked_report": false,
-                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
-                    "grouping_agg_dict" : {
-                        "cols.cwsn_students_count_cls8_2022_23": "sum",
-                        "cols.cwsn_students_transitioned_cls9_2023_24" : "sum"
-                    }
-                },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.cwsn_students_count_cls8_2022_23": "sum",
-                        "cols.cwsn_students_transitioned_cls9_2023_24" : "sum"
-                    },
-                    "ranking_val_desc": "cols.cwsn_students_transitioned_cls8_9_perc",
-                    "num_col": "cols.cwsn_students_transitioned_cls9_2023_24",
-                    "den_col": "cols.cwsn_students_count_cls8_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
-                },
-                "format_config" : {
-                    "heading" : "Secondary CWSN students transitioned from Class 8 to 9 as on",
-                    "subtotal_outlines_dict" : {
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
-                        "agg_cols_func_dict" : {
-                            "cols.cwsn_students_transitioned_cls9_2023_24": "sum",
-                            "cols.cwsn_students_count_cls8_2022_23" : "sum",
-                            "cols.deo_sec_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_sec": ""}
-                    },
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.cwsn_students_transitioned_cls8_9_perc"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
-                }
-            }
-        },
-      {
             "report_name": "CWSN_Transition_from_Class_5_to_6",
             "report_code" : "CWSN_TRANS_5_6",
             "report_category": "Transition",
             "report_desc": "CWSN Transition Rate from Class 5 to 6",
             "generate_report": true,
+            "ranking_weightage" : 2,
+            "improvement_weightage" : 1,
             "source_config" : {
                 "query_file_name" : "cwsn_transition_5_to_6.sql",
                 "db" : "tn_schools_db"
@@ -118,6 +21,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 4,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -135,8 +40,8 @@
                     "ranking_val_desc": "cols.cwsn_students_transitioned_cls5_6_perc",
                     "num_col": "cols.cwsn_students_transitioned_cls6_2023_24",
                     "den_col": "cols.cwsn_students_count_cls5_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary CWSN students transitioned from Class 5 to 6 as on",
@@ -159,6 +64,8 @@
             },
             "secondary_report" : {
                 "generate_report": false,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -176,8 +83,8 @@
                     "ranking_val_desc": "cols.cwsn_students_transitioned_cls5_6_perc",
                     "num_col": "cols.cwsn_students_transitioned_cls6_2023_24",
                     "den_col": "cols.cwsn_students_count_cls5_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary CWSN students transitioned from Class 5 to 6 as on",
@@ -199,12 +106,185 @@
                 }
             }
         },
+        {
+            "report_name": "CWSN_Transition_from_Class_8_to_9",
+            "report_code" : "CWSN_TRANS_8_9",
+            "report_category": "Transition",
+            "report_desc": "CWSN Transition Rate from Class 8 to 9",
+            "generate_report": true,
+            "ranking_weightage" : 2,
+            "improvement_weightage" : 1,
+            "source_config" : {
+                "query_file_name" : "cwsn_transition_8_to_9.sql",
+                "db" : "tn_schools_db"
+           },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": true,
+                "ranking_weightage" : 4,
+                "improvement_weightage" : 1,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.cwsn_students_count_cls8_2022_23": "sum",
+                        "cols.cwsn_students_transitioned_cls9_2023_24" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.cwsn_students_count_cls8_2022_23": "sum",
+                        "cols.cwsn_students_transitioned_cls9_2023_24" : "sum"
+                    },
+                    "ranking_val_desc": "cols.cwsn_students_transitioned_cls8_9_perc",
+                    "num_col": "cols.cwsn_students_transitioned_cls9_2023_24",
+                    "den_col": "cols.cwsn_students_count_cls8_2022_23",
+                    "sort": true,
+                    "ascending": false
+                },
+                "format_config" : {
+                    "heading" : "Elementary CWSN students transitioned from Class 8 to 9 as on",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
+                        "agg_cols_func_dict" : {
+                            "cols.cwsn_students_transitioned_cls9_2023_24": "sum",
+                            "cols.cwsn_students_count_cls8_2022_23" : "sum",
+                            "cols.deo_elem_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_elm": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.cwsn_students_transitioned_cls8_9_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            },
+            "secondary_report" : {
+                "generate_report": false,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.cwsn_students_count_cls8_2022_23": "sum",
+                        "cols.cwsn_students_transitioned_cls9_2023_24" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.cwsn_students_count_cls8_2022_23": "sum",
+                        "cols.cwsn_students_transitioned_cls9_2023_24" : "sum"
+                    },
+                    "ranking_val_desc": "cols.cwsn_students_transitioned_cls8_9_perc",
+                    "num_col": "cols.cwsn_students_transitioned_cls9_2023_24",
+                    "den_col": "cols.cwsn_students_count_cls8_2022_23",
+                    "sort": true,
+                    "ascending": false
+                },
+                "format_config" : {
+                    "heading" : "Secondary CWSN students transitioned from Class 8 to 9 as on",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.cwsn_students_transitioned_cls9_2023_24": "sum",
+                            "cols.cwsn_students_count_cls8_2022_23" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.cwsn_students_transitioned_cls8_9_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "report_name": "CWSN_Transition_from_Class_9_to_10",
+            "report_code" : "CWSN_TRANS_9_10",
+            "report_category": "Transition",
+            "report_desc": "CWSN Transition Rate from Class 9 to 10",
+            "generate_report": true,
+            "ranking_weightage" : 0.5,
+            "improvement_weightage" : 0,
+            "source_config" : {
+                "query_file_name" : "cwsn_transition_9_to_10.sql",
+                "db" : "tn_schools_db"
+           },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": false
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "ranking_weightage" : 2,
+                "improvement_weightage" : 0,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.cwsn_students_count_cls9_2022_23": "sum",
+                        "cols.cwsn_students_transitioned_cls10_2023_24" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.cwsn_students_count_cls9_2022_23": "sum",
+                        "cols.cwsn_students_transitioned_cls10_2023_24" : "sum"
+                    },
+                    "ranking_val_desc": "cols.cwsn_students_transitioned_cls9_10_perc",
+                    "num_col": "cols.cwsn_students_transitioned_cls10_2023_24",
+                    "den_col": "cols.cwsn_students_count_cls9_2022_23",
+                    "sort": true,
+                    "ascending": false
+                },
+                "format_config" : {
+                    "heading" : "Secondary CWSN students transitioned from Class 9 to 10 as on",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.cwsn_students_transitioned_cls10_2023_24": "sum",
+                            "cols.cwsn_students_count_cls9_2022_23" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.cwsn_students_transitioned_cls9_10_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+
          {
             "report_name": "CWSN_Transition_from_Class_10_to_11",
             "report_code" : "CWSN_TRANS_10_11",
             "report_category": "Transition",
             "report_desc": "CWSN Transition Rate from Class 10 to 11",
             "generate_report": true,
+             "ranking_weightage" : 1.5,
+            "improvement_weightage" : 1,
             "source_config" : {
                 "query_file_name" : "cwsn_transition_10_to_11.sql",
                 "db" : "tn_schools_db"
@@ -216,48 +296,12 @@
             },
             "post_process_brc_merge" : false,
             "elementary_report" : {
-                "generate_report": false,
-                "un_ranked_report_args" : {
-                    "custom_unranked_report": false,
-                    "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
-                    "grouping_agg_dict" : {
-                        "cols.cwsn_students_count_cls10_2022_23": "sum",
-                        "cols.cwsn_students_transitioned_cls11_2023_24" : "sum"
-                    }
-                },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.cwsn_students_count_cls10_2022_23": "sum",
-                        "cols.cwsn_students_transitioned_cls11_2023_24" : "sum"
-                    },
-                    "ranking_val_desc": "cols.cwsn_students_transitioned_cls10_11_perc",
-                    "num_col": "cols.cwsn_students_transitioned_cls11_2023_24",
-                    "den_col": "cols.cwsn_students_count_cls10_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
-                },
-                "format_config" : {
-                    "heading" : "Elementary CWSN students transitioned from Class 10 to 11 as on",
-                    "subtotal_outlines_dict" : {
-                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-                        "agg_cols_func_dict" : {
-                            "cols.cwsn_students_transitioned_cls11_2023_24": "sum",
-                            "cols.cwsn_students_count_cls10_2022_23" : "sum",
-                            "cols.deo_elem_rank": "mean"
-                        },
-                        "text_append_dict" : {"cols.deo_name_elm": ""}
-                    },
-                    "format_dicts" : [
-                        {
-                            "columns" : ["cols.cwsn_students_transitioned_cls10_11_perc"],
-                            "format" : {"num_format": "0.00%"}
-                        }
-                    ]
-                }
+                "generate_report": false
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 3,
+                "improvement_weightage" : 2,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -275,8 +319,8 @@
                     "ranking_val_desc": "cols.cwsn_students_transitioned_cls10_11_perc",
                     "num_col": "cols.cwsn_students_transitioned_cls11_2023_24",
                     "den_col": "cols.cwsn_students_count_cls10_2022_23",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary CWSN students transitioned from Class 10 to 11 as on",
@@ -292,6 +336,72 @@
                     "format_dicts" : [
                         {
                             "columns" : ["cols.cwsn_students_transitioned_cls10_11_perc"],
+                            "format" : {"num_format": "0.00%"}
+                        }
+                    ]
+                }
+            }
+        },
+
+        {
+            "report_name": "CWSN_Transition_from_Class_11_to_12",
+            "report_code" : "CWSN_TRANS_11_12",
+            "report_category": "Transition",
+            "report_desc": "CWSN Transition Rate from Class 11 to 12",
+            "generate_report": true,
+            "ranking_weightage" : 0.5,
+            "improvement_weightage" : 0,
+            "source_config" : {
+                "query_file_name" : "cwsn_transition_11_to_12.sql",
+                "db" : "tn_schools_db"
+           },
+            "pre_process_brc_merge": false,
+            "brc_merge_config" : {
+                "join_on" : ["cols.block_name", "cols.udise_col"],
+                "merge_type" : "left"
+            },
+            "post_process_brc_merge" : false,
+            "elementary_report" : {
+                "generate_report": false
+            },
+            "secondary_report" : {
+                "generate_report": true,
+                "ranking_weightage" : 2,
+                "improvement_weightage" : 0,
+                "un_ranked_report_args" : {
+                    "custom_unranked_report": false,
+                    "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
+                    "grouping_agg_dict" : {
+                        "cols.cwsn_students_count_cls11_2022_23": "sum",
+                        "cols.cwsn_students_transitioned_cls12_2023_24" : "sum"
+                    }
+                },
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.cwsn_students_count_cls11_2022_23": "sum",
+                        "cols.cwsn_students_transitioned_cls12_2023_24" : "sum"
+                    },
+                    "ranking_val_desc": "cols.cwsn_students_transitioned_cls11_12_perc",
+                    "num_col": "cols.cwsn_students_transitioned_cls12_2023_24",
+                    "den_col": "cols.cwsn_students_count_cls11_2022_23",
+                    "sort": true,
+                    "ascending": false
+                },
+                "format_config" : {
+                    "heading" : "Secondary CWSN students transitioned from Class 11 to 12 as on",
+                    "subtotal_outlines_dict" : {
+                        "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
+                        "agg_cols_func_dict" : {
+                            "cols.cwsn_students_transitioned_cls12_2023_24": "sum",
+                            "cols.cwsn_students_count_cls11_2022_23" : "sum",
+                            "cols.deo_sec_rank": "mean"
+                        },
+                        "text_append_dict" : {"cols.deo_name_sec": ""}
+                    },
+                    "format_dicts" : [
+                        {
+                            "columns" : ["cols.cwsn_students_transitioned_cls11_12_perc"],
                             "format" : {"num_format": "0.00%"}
                         }
                     ]

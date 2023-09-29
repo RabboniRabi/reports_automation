@@ -10,7 +10,7 @@ from collections import OrderedDict
 
 import utilities.file_utilities as file_utilities
 
-from readers.config_types import ConfigTypes as config_types
+from enums.config_types import ConfigTypes as config_types
 
 __curr_location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))

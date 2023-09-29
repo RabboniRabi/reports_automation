@@ -49,14 +49,9 @@ def percent_ranking(df, ranking_args_dict):
     #df_rank = _group_data_for_ranking(df, ranking_args_dict)
 
     # Calculate fraction of values (to be used for ranking)
-    df[cols.ranking_value] = (df[num_col]/df[den_col])
-    df[cols.ranking_value].fillna(0, inplace=True)
-
-
-    df_rank = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
-
-
-    """df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method='min')
+    df_rank[cols.ranking_value] = (df_rank[num_col]/df_rank[den_col])
+    df_rank[cols.ranking_value].fillna(0, inplace=True)
+    df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method='min')
     
     # Add the ranking value description to the ranked data
     df_rank[cols.ranking_value_desc] = ranking_val_desc

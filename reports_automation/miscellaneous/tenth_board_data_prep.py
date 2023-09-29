@@ -3,15 +3,87 @@ import sys
 import pandas as pd
 
 sys.path.append('../')
-import json
+
 import utilities.column_names_utilities as cols
 import readers.config_reader as config_reader
 import readers.data_fetcher as data_fetcher
 import utilities.utilities as utilities
-import utilities.file_utilities as file_utilities
 import data_cleaning.column_cleaner as column_cleaner
 
+def get_grouping_level_data(df_dict, grouping_levels, agg_dict, col_name_to_concat, filter_dict):
+    """
+    Function to group student level data for different management types and build
+    a consolidated dataframe. Additionally, data is grouped with the given grouping level
+    minus the management type to get aggregated data at 'all management' level.
 
+    For example, grouping levels can be ['District', 'Block', 'management'].
+    The function will group and return data as:
+        district A | Block i | Govt | aggregated data
+        district A | Block i | Aided | aggregated data
+        .
+        .
+        district A | Block i | All Management | aggregated data
+        district A | Block ii | Govt | aggregated data
+        .
+        .
+
+    Parameters:
+    ----------
+    df_dict: dict
+        Management type - student data key-value pairs
+    agg_dict: dict
+        For Example:
+            "agg_dict": {
+                "cols.tot_stu": "count",
+                "cols.stu_pass": "sum",
+                "cols.lang_marks": "median",
+                "cols.eng_marks": "median"
+            }
+    grouping_levels: list
+        For Example to group at a block level: ["cols.district_name", "cols.block_name", "cols.management"]
+    col_name_to_concat: str
+        To concatenate new string value to the aggregate columns
+        For Example: 'curr_yr'
+    filter_dict: dict
+        Data cleaning - excluding invalid values from the dataframe
+
+    Returns:
+    -------
+    Grouped consolidated data frame
+    """
+
+    # Creating an empty dataframe
+    df_master = pd.DataFrame()
+
+
+    # For each school management type dataframe grouping at a given grouping level
+    for management_type, df in df_dict.items():
+
+        # Data cleaning - excluding invalid values from the dataframe
+        df = utilities.filter_dataframe(df, filter_dict, include=False)
+
+        # Concatenating each management type dataframe into a single master dataframe
+        # df_master is to be used afterwards for grouping to 'all management' level
+        df_master = pd.concat([df_master, df])
+        # Grouping each management type df at a given grouping level
+        df = utilities.group_agg_rename(df, grouping_levels, agg_dict, col_name_to_concat)
+        # Replace student level data with grouped data in dictionary
+        df_dict.update({management_type: df})
+
+    # Consolidate grouped data for each management type into a single dataframe
+    merged_df = pd.concat(df_dict.values())
+
+    # Rename values in previously built df_master for the column management type to 'all management'
+    # To help in grouping to all management level
+    df_master[cols.management] = cols.all_management
+
+    # Group and aggregate on this data
+    df_master = utilities.group_agg_rename(df_master, grouping_levels, agg_dict, col_name_to_concat)
+
+    # Concatenate 'all management' grouped data and management type consolidated grouped data
+    df_master = pd.concat([df_master, merged_df])
+
+    return df_master
 def get_prepped_data_for_analysis(report_config):
     """
     Function to prepare the 10th board results data for analysis
@@ -88,8 +160,3 @@ def get_prepped_data_for_analysis(report_config):
 
     return merged_schl_lvl_data
 
-
-
-
-if __name__ == "__main__":
-    get_prepped_data_for_analysis()

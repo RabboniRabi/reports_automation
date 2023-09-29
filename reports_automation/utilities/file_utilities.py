@@ -318,6 +318,59 @@ def get_curr_month_secnd_ceo_rpts_dir_path():
 
     return dir_path   
 
+def get_ranking_reports_dir():
+    """
+    Function to get the directory path to the folder containing the ranking related reports
+
+    Returns:
+    -------
+    The path to the progress report files directory
+    """
+    dir_path = os.path.join(get_ceo_rpts_dir_path(), 'ranking')
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
+
+
+def get_progress_reports_dir():
+    """
+    Function to get the directory path to the folder containing the progress reports:
+    Reports that compare current performance to previous performance
+
+    Returns:
+    -------
+    The path to the progress report files directory
+    """
+    dir_path = os.path.join(get_ranking_reports_dir(), 'progress_reports')
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
+
+def get_cons_ranking_reports_dir():
+    """
+    Function to get the directory path to the folder containing
+    consolidated ranking reports.
+
+    Returns:
+    -------
+    The path to the consolidated report files directory
+    """
+    dir_path = os.path.join(get_ranking_reports_dir(), 'consolidated_ranking')
+
+    # If directory does not exist
+    if not os.path.isdir(dir_path):
+        create_dir(dir_path)
+
+    return dir_path
+
+
+
 def create_dir(dir_path):
     """
     Function to create a directory with the given directory path

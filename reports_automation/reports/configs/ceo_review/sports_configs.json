@@ -7,6 +7,8 @@
             "report_category": "Sports",
             "report_desc": "Sports battery test schools report",
             "generate_report": true,
+            "ranking_weightage" : 1,
+            "improvement_weightage" : 0.5,
             "source_config" : {
                 "source_file_name" : "Battery-test-completion-status-rpt.xlsx",
                 "source_sheet_name" : "Battery_Test_Detailed",
@@ -20,6 +22,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 5,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -36,8 +40,8 @@
                     "ranking_val_desc": "cols.perc_test_comp",
                     "num_col": "cols.test_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary level sports battery test schools report",
@@ -62,6 +66,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 5,
+                "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -78,8 +84,8 @@
                     "ranking_val_desc": "cols.perc_test_comp",
                     "num_col": "cols.test_completed",
                     "den_col": "cols.tot_schools",
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary level sports battery test schools report",
@@ -110,6 +116,8 @@
             "report_category": "Sports",
             "report_desc": "Sports battery test students report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "source_file_name" : "Battery-test-completion-status-rpt.xlsx",
                 "source_sheet_name" : "Battery_Test_Detailed",
@@ -123,6 +131,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -152,8 +162,8 @@
                         "cols.perc_6_10m_shutt_comp", 
                         "cols.perc_4kg_shot_comp", 
                         "cols.perc_long_jump_comp"],
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary level sports battery test students report",
@@ -187,6 +197,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -216,8 +228,8 @@
                         "cols.perc_6_10m_shutt_comp", 
                         "cols.perc_4kg_shot_comp", 
                         "cols.perc_long_jump_comp"],
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary level sports battery test students report",
@@ -257,6 +269,8 @@
             "report_category": "Sports",
             "report_desc": "Sports equipment delivery status report",
             "generate_report": true,
+            "ranking_weightage" : 0,
+            "improvement_weightage" : 0,
             "source_config" : {
                 "source_file_name" : "Sports-Delivery-Update-Status-Rpt.xlsx",
                 "source_sheet_name" : "Report",
@@ -270,6 +284,8 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -286,8 +302,8 @@
                     "ranking_val_desc": "cols.perc_equip_delivered",
                     "num_col": ["cols.fully_delivered", "cols.part_delivered"],
                     "den_col": ["cols.tot_schools"],
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort":true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Elementary level sports equipment delivery status report",
@@ -312,6 +328,8 @@
             },
             "secondary_report" : {
                 "generate_report": true,
+                "ranking_weightage" : 0,
+                "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -328,8 +346,8 @@
                     "ranking_val_desc": "cols.perc_equip_delivered",
                     "num_col": ["cols.fully_delivered", "cols.part_delivered"],
                     "den_col": ["cols.tot_schools"],
-                    "sort": "True",
-                    "ascending": "False"
+                    "sort": true,
+                    "ascending": false
                 },
                 "format_config" : {
                     "heading" : "Secondary level sports equipment delivery status report",
@@ -353,8 +371,5 @@
                 }
             }
         }
-
-        
-
     ]
 }

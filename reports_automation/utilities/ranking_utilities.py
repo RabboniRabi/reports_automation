@@ -5,6 +5,7 @@ Module with utilitiy functions to calculate and save ranking
 import os
 import sys
 sys.path.append('../')
+
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.ranking_funcs_utilities as ranking_funcs_utilities
@@ -20,7 +21,7 @@ from datetime import datetime
 ranking_master_file_name = 'ranking_master.xlsx'
 ranking_master_sheet_name = 'ranking'
 # Get the path to the ceo_reports folder for the month
-ceo_rpts_dir_path = file_utilities.get_ceo_rpts_dir_path()
+ranking_rpts_dir_path = file_utilities.get_ranking_reports_dir()
 
 
 # Define the columns to save to the ranking master
@@ -259,6 +260,9 @@ def update_deo_ranking_master(df_ranking, metric_code, metric_category, school_l
         cols.month_col: 'string',
         cols.year_col: 'int'})
     
+    # Get the master ranking file. In the future, this needs to be saved and fetched from a database
+    ranking_file_path = os.path.join(ranking_rpts_dir_path, ranking_master_file_name)
+
     # If file does not exist, save the ranking to the file
     if not file_utilities.file_exists(ranking_master_file_name, ceo_rpts_dir_path):
         df_master_ranking = df_ranking
@@ -286,7 +290,7 @@ def update_deo_ranking_master(df_ranking, metric_code, metric_category, school_l
 
     # Save the updated df_master_ranking
     df_sheet_dict = {ranking_master_sheet_name: df_master_ranking}
-    file_utilities.save_to_excel(df_sheet_dict, ranking_master_file_name, ceo_rpts_dir_path)
+    file_utilities.save_to_excel(df_sheet_dict, ranking_master_file_name, ranking_rpts_dir_path)
 
 
 
@@ -388,3 +392,180 @@ def _group_data_for_ranking(df, groupong_levels:list, agg_dict:dict, sort:bool):
     if len(ranking_group_level) > 0 and agg_dict:
         # Group the data
         df_rank = df.groupby(ranking_group_level, as_index=False, sort=sort).agg(agg_dict)
+
+def build_metric_wise_ranking_report(df_ranking_master):
+    """
+    Function to use the data in the ranking master format and
+    create a ranking report where each metric code is 
+    a column and the ranks people have received for that metric code
+    are values.
+
+    Parameters:
+    ----------
+    df_ranking_master: Pandas DataFrame
+        The ranking master data
+
+    Returns:
+    -------
+    Pandas DataFrame object of the the progress report
+    """
+
+    # Declare an empty DataFrame
+    df_metric_wise_ranking = pd.DataFrame()
+    
+    # Get the metric codes in the given data
+    metric_codes = df_ranking_master[cols.metric_code].unique()
+
+    # Get the unique names in the given ranking master
+    names = df_ranking_master[cols.name].unique()
+
+
+    # Put the above names in the name column
+    df_metric_wise_ranking[cols.name] = names
+
+
+    # Iterate through the metric codes
+    for metric_code in metric_codes:
+        # Filter the data to the current metric code
+        df_metric_code_filtered = utilities.filter_dataframe_column(\
+                                    df_ranking_master.copy(), cols.metric_code, [metric_code])
+
+        # Create a column with the metric code as column name and values as rank
+        df_metric_code_filtered[metric_code] = df_metric_code_filtered[cols.rank_col]
+
+        # Merge the metric code rank values to the metric wise ranking data
+        df_metric_wise_ranking = pd.merge(df_metric_wise_ranking, \
+                                    df_metric_code_filtered[[cols.name, metric_code]], on=[cols.name], how='left')
+
+    # Sort the data alphabetically by names
+    df_metric_wise_ranking.sort_values(by=cols.name)
+
+    return df_metric_wise_ranking
+
+
+
+def get_ceo_rev_ranking_master_data(designations: list, school_levels:list, months:list, years:list):
+    """
+    Function to get the CEO review ranking master data for given
+    designation, school level, month and year
+
+    Parameters:
+    -----------
+    designations: list
+        The designations of the staff whose ranking details is to be fetched
+    school_levels: list
+        The school levels (Elementary/Secondary) for which the data is to be fetched
+    months: list
+        The months for which the data is to be fetched
+    years: list 
+        The years for which the data is to be fetched
+
+    Returns:
+    --------
+    The ceo review ranking master data filtered for the given parameters
+    """
+
+    # Get the path to the ranking master
+    ranking_rpts_dir_path = file_utilities.get_ranking_reports_dir()
+    file_path = file_utilities.get_file_path('ranking_master.xlsx', ranking_rpts_dir_path)
+
+    # Read the ranking master data as a Pandas DataFrame object
+    df_ranking_master = file_utilities.read_sheet(file_path, 'ranking')
+
+    # Get the ranking master data matching the given criteria
+    df_filter_criteria = {}
+    df_filter_criteria[cols.desig] = designations
+    df_filter_criteria[cols.school_level] = school_levels
+    df_filter_criteria[cols.month_col] = months
+    df_filter_criteria[cols.year_col] = years
+
+    df_ranking_master_filtered = utilities.filter_dataframe(df_ranking_master, df_filter_criteria)
+
+    return df_ranking_master_filtered
+
+
+def get_inverted_rank(df_ranking, metric_codes:list):
+    """
+    Function to invert the rank values in a report with
+    column wise metric ranks.
+
+    Parameters:
+    -----------
+    df_ranking: Pandas DataFrame
+        The data whose metric wise ranking values are to be inverted
+    metric_codes: list
+        The list of metric code column names with ranking values
+    """
+
+    # Get the maximum ranks in the data
+    max_rank = max(df_ranking[metric_codes[0]].unique())
+
+    # Invert the ranks
+    for metric_code in metric_codes:
+        df_ranking[metric_code] = (max_rank + 1) - df_ranking[metric_code]
+
+    return df_ranking
+
+
+def compute_consolidated_ranking(df_ranking, metric_weightage:dict, invert_rank:bool=True):
+    """
+    Function to compute consolidated ranking for given metric wise rank values data
+
+    Parameters:
+    -----------
+    df_ranking: Pandas DataFrame
+        The data whose metric wise ranking values are to be used for consolidated ranking
+    metric_weightage_dict: dict
+        Dictionary of metric - weightage value key value pairs
+    invert_rank: bool
+        Flag indicating if rank values need to be inverted before it is multiplied with the weightage.
+        For example, when using rank based weightage, rank values need to be inverted. i.e:
+        higher ranks need to get more weightage. When using improvement based weightage, improvement values
+        dont need to be inverted as more the improvement, higher the weightage value needs to be.
+
+    Returns:
+    --------
+    Pandas DataFrame object of consolidated ranking from total of metric wise weightage
+    """
+
+    df_cons_ranking = df_ranking.copy()
+
+    metric_codes = list(metric_weightage.keys())
+
+    df_cons_ranking[cols.cons_tot_wt_scr] = 0
+
+    # Check and invert the ranks if needed
+    if invert_rank:
+        df_cons_ranking = get_inverted_rank(df_cons_ranking, metric_codes)
+
+    # For each metric
+    for metric_code in metric_codes:
+        # If weightage is zero, skip calculating weighted score for the metric
+        if metric_weightage[metric_code] == 0:
+            # Drop the column from consolidated ranking
+            df_cons_ranking.drop(columns=[metric_code], inplace=True)
+            continue
+        
+        # Calculate the weighted rank for the metric code
+        df_cons_ranking[metric_code] = df_cons_ranking[metric_code] * metric_weightage[metric_code]
+
+        # Fill NAs with 0s
+        df_cons_ranking.fillna(0, inplace=True)
+
+        # Update the total weighted score
+        df_cons_ranking[cols.cons_tot_wt_scr] += df_cons_ranking[metric_code]
+
+    # Sort the values and rank
+    df_cons_ranking = df_cons_ranking.sort_values(by=cols.cons_tot_wt_scr, \
+                                    ascending=False)
+
+    df_cons_ranking[cols.rank_col] = df_cons_ranking[cols.cons_tot_wt_scr]\
+                                                    .rank(ascending=False, method='min')
+
+    
+    return df_cons_ranking
+        
+
+
+
+

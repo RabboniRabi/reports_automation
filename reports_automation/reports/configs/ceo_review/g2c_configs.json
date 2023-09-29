@@ -6,6 +6,8 @@
         "report_category": "Operations",
         "report_desc": "% of Pending G2C applications greater than 15 days",
         "generate_report": true,
+        "ranking_weightage" : 5,
+        "improvement_weightage" : 2,
         "source_config" : {
             "source_file_name" : "g2c_online_pstm_report.xlsx",
             "source_sheet_name" : "Report",
@@ -19,6 +21,8 @@
         "post_process_brc_merge" : false,
         "elementary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 5,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
@@ -44,8 +48,8 @@
                 "ranking_val_desc": "cols.perc_apps_grtr_15_days",
                 "num_col": "cols.tot_pnd_grtr_15_days",
                 "den_col": "cols.tot_app_rcvd",
-                "sort": "True",
-                "ascending": "True"
+                "sort": true,
+                "ascending": true
             },
             "format_config" : {
                 "heading" : "Elementary level % of Pending G2C applications greater than 15 days",
@@ -72,6 +76,8 @@
         },
         "secondary_report" : {
             "generate_report": true,
+            "ranking_weightage" : 5,
+            "improvement_weightage" : 1.5,
             "un_ranked_report_args" : {
                 "custom_unranked_report": false,
                 "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
@@ -97,8 +103,8 @@
                 "ranking_val_desc": "cols.perc_apps_grtr_15_days",
                 "num_col": "cols.tot_pnd_grtr_15_days",
                 "den_col": "cols.tot_app_rcvd",
-                "sort": "True",
-                "ascending": "True"
+                "sort": true,
+                "ascending": true
             },
             "format_config" : {
                 "heading" : "Secondary level % of Pending G2C applications greater than 15 days",
