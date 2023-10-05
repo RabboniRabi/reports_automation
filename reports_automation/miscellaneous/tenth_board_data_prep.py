@@ -10,7 +10,7 @@ import readers.data_fetcher as data_fetcher
 import utilities.utilities as utilities
 import data_cleaning.column_cleaner as column_cleaner
 
-def get_grouping_level_data(df_dict, grouping_levels, agg_dict, col_name_to_concat, filter_dict):
+def get_grouping_level_data(df_dict, grouping_levels, agg_dict, col_name_to_concat):
     """
     Function to group student level data for different management types and build
     a consolidated dataframe. Additionally, data is grouped with the given grouping level
@@ -60,7 +60,7 @@ def get_grouping_level_data(df_dict, grouping_levels, agg_dict, col_name_to_conc
     for management_type, df in df_dict.items():
 
         # Data cleaning - excluding invalid values from the dataframe
-        df = utilities.filter_dataframe(df, filter_dict, include=False)
+        #df = utilities.filter_dataframe(df, filter_dict, include=False)
 
         # Concatenating each management type dataframe into a single master dataframe
         # df_master is to be used afterwards for grouping to 'all management' level

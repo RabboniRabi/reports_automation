@@ -500,6 +500,8 @@ brd_med_math_mrks = "Median Mathematics mark"
 brd_med_science_mrks = "Median Science mark"
 brd_med_social_mrks = "Median Social mark"
 stud_comm = "community"
+gender = 'gender'
+
 
 
 
