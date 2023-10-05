@@ -1,0 +1,68 @@
+{
+  "report_configs": [
+    {
+      "report_name": "12th_board_block_level_report",
+      "report_code" : "12TH_BRD_ALL_MGMT_LVL_RPT",
+      "report_desc": "Configuration to generate grouping level reports for 12th board results",
+      "source_config_curr_yr": {
+        "sources": [
+          {
+            "source_name" : "govt",
+            "source_file_name": "hsc_stud_level_government_2022_2023.xlsx",
+            "source_sheet_name": "govt_2023",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "aided",
+            "source_file_name": "HSC_stud_level_aided_2022_2023.xlsx",
+            "source_sheet_name": "aided_2023",
+            "skip_rows": 0
+          }
+        ]
+      },
+      "sources_prev_yr": {
+        "sources": [
+          {
+            "source_name" : "govt",
+            "source_file_name": "SSLC_stud_level_government_2021_22.xlsx",
+            "source_sheet_name": "govt_2022",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "aided",
+            "source_file_name": "HSC_stud_level_aided_2021_22.xlsx",
+            "source_sheet_name": "aided_2022",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "un_aided",
+            "source_file_name": "HSC_stud_level_private_2021_22.xlsx",
+            "source_sheet_name": "private_2022",
+            "skip_rows": 0
+          }
+        ]
+      },
+      "grouping_levels": {
+        "state_grouping_levels": ["cols.management"],
+        "district_grouping_levels": ["cols.district_name", "cols.management"],
+        "block_grouping_levels": ["cols.district_name", "cols.block_name", "cols.management"]
+      },
+      "agg_dict": {
+        "cols.tot_stu": "count",
+        "cols.stu_pass": "sum",
+        "cols.tot_marks": "median",
+        "cols.lang_marks": "median",
+        "cols.eng_marks": "median"
+      },
+      "filter_dict": {
+        "cols.stu_name": ["DELETED"],
+        "cols.lang_marks": ["XXX", "AAA"],
+        "cols.eng_marks": ["XXX", "AAA"],
+        "cols.mark_3":  ["XXX", "AAA"],
+        "cols.mark_4":  ["XXX", "AAA"],
+        "cols.mark_5": ["XXX", "AAA"],
+        "cols.mark_6": ["XXX", "AAA"]
+      }
+    }
+  ]
+}
