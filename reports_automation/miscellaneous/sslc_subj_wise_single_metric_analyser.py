@@ -50,7 +50,7 @@ def get_metric_subj_wise_med_sd_rpt(metric: str, df_dict_curr_yr: dict, df_dict_
     prev_yr = utilities.get_prev_year()
 
     # Get block level report
-    block_grouping_lvl = [cols.district, cols.block_name, cols.school_type, metric]
+    block_grouping_lvl = [cols.district_name, cols.block_name, cols.school_type, metric]
     # Get the report for current year
     blk_curr_yr = _get_grouping_lvl_med_sd(block_grouping_lvl, df_dict_curr_yr, median_agg_dict, std_dev_agg_dict)
     # Add year column
@@ -121,10 +121,10 @@ def _get_grouping_lvl_med_sd(grouping_levels: list, df_dict: dict, median_agg_di
     """
 
     # Group the data and get the median values
-    df_med = tenth_board_data_prep.get_grouping_level_data(df_dict, grouping_levels, median_agg_dict, ' median')
+    df_med = tenth_board_data_prep.get_grouping_level_data(df_dict.copy(), grouping_levels, median_agg_dict, ' median')
 
     # Group the data and get the standard deviation values
-    df_sd = tenth_board_data_prep.get_grouping_level_data(df_dict, grouping_levels, std_dev_agg_dict, ' std_dev')
+    df_sd = tenth_board_data_prep.get_grouping_level_data(df_dict.copy(), grouping_levels, std_dev_agg_dict, ' std_dev')
 
     # Merge median and standard deviation value for the grouped data
     df_med_sd = pd.merge(df_med, df_sd, how='inner', on=grouping_levels)
