@@ -1,4 +1,4 @@
-{
+             {
   "report_configs": [
     {
       "report_name": "10th_subj_wise_all_metrics_config",
@@ -48,7 +48,7 @@
           }
         ]
       },
-      "metrics" : ["cols.stud_comm", "cols.gender"],
+      "metrics" : ["cols.stud_comm", "cols.gender", "cols.urbanrural", "cols.medium"],
       "grouping_levels": {
         "state_grouping_levels": [
           "cols.management"
@@ -113,8 +113,6 @@
         "cols.social_marks": "median"
       },
       "agg_dict_std": {
-        "cols.tot_stu": "count",
-        "cols.stu_pass": "sum",
         "cols.tot_marks": "std",
         "cols.lang_marks": "std",
         "cols.eng_marks": "std",

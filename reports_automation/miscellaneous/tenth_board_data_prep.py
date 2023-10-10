@@ -10,7 +10,7 @@ import readers.data_fetcher as data_fetcher
 import utilities.utilities as utilities
 import data_cleaning.column_cleaner as column_cleaner
 
-def get_grouping_level_data(df_dict, grouping_levels, agg_dict, col_name_to_concat):
+def get_grouping_level_data(df_dict, grouping_levels, agg_dict, col_name_to_concat=''):
     """
     Function to group student level data for different management types and build
     a consolidated dataframe. Additionally, data is grouped with the given grouping level

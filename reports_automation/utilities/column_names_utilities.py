@@ -503,6 +503,11 @@ brd_med_science_mrks = "Median Science mark"
 brd_med_social_mrks = "Median Social mark"
 stud_comm = "community"
 gender = 'gender'
+urban_rural = 'urbanrural'
+medium = 'medium'
+
+
+
 
 
 
