@@ -524,12 +524,13 @@ science_prac_std = 'science_prac_std'
 science_std = 'science_std'
 social_std = 'social_std'
 total_std = 'total_std'
-
-
-
-
-
-
+physics = "PHYSICS"
+chemistry = "CHEMISTRY"
+mathematics = "MATHEMATICS"
+biology = "BIOLOGY"
+economics = "ECONOMICS"
+commerce = "COMMERCE"
+computer_science = "COMPUTER SCIENCE"
 
 
 

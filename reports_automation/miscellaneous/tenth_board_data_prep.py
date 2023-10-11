@@ -159,4 +159,3 @@ def get_prepped_data_for_analysis(report_config):
 
 
     return merged_schl_lvl_data
-
