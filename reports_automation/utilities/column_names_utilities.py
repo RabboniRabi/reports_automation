@@ -377,6 +377,7 @@ sections_without_teacher = 'Total number of sections without class teacher'
 english = 'English'
 maths = 'Mathematics'
 tamil = 'Tamil'
+subject = 'Subject'
 
 # Attendance specific columns
 attendance = "Attendance"
@@ -501,10 +502,30 @@ brd_med_eng_mrks = "Median English mark"
 brd_med_math_mrks = "Median Mathematics mark"
 brd_med_science_mrks = "Median Science mark"
 brd_med_social_mrks = "Median Social mark"
+emis_no_count = 'EMIS_NO_count'
+pass_sum = 'Pass_sum'
 stud_comm = "community"
 gender = 'gender'
 urban_rural = 'urbanrural'
 medium = 'medium'
+language_median = 'language_median'
+english_median = 'english_median'
+maths_median = 'maths_median'
+science_theo_median = 'science_theo_median'
+science_prac_median = 'science_prac_median'
+science_median = 'science_median'
+social_median = 'social_median'
+total_median = 'total_median'
+language_std = 'language_std'
+english_std = 'english_std'
+maths_std = 'maths_std'
+science_theo_std = 'science_theo_std'
+science_prac_std = 'science_prac_std'
+science_std = 'science_std'
+social_std = 'social_std'
+total_std = 'total_std'
+
+
 
 
 

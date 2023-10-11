@@ -1,4 +1,4 @@
-             {
+{
   "report_configs": [
     {
       "report_name": "10th_subj_wise_all_metrics_config",
@@ -48,21 +48,7 @@
           }
         ]
       },
-      "metrics" : ["cols.stud_comm", "cols.gender", "cols.urbanrural", "cols.medium"],
-      "grouping_levels": {
-        "state_grouping_levels": [
-          "cols.management"
-        ],
-        "district_grouping_levels": [
-          "cols.district_name",
-          "cols.management"
-        ],
-        "block_grouping_levels": [
-          "cols.district_name",
-          "cols.block_name",
-          "cols.management"
-        ]
-      },
+      "metrics" : ["cols.stud_comm","cols.gender", "cols.urban_rural", "cols.medium"],
       "filter_dict": {
         "cols.stu_name": [
           "DELETED"

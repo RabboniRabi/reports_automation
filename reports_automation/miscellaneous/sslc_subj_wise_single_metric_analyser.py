@@ -66,8 +66,6 @@ def get_metric_subj_wise_med_sd_rpt(metric: str, df_dict_curr_yr: dict, df_dict_
     # concatenate current year and previous year report
     blk_rpt = pd.concat([blk_curr_yr, blk_prev_yr])
 
-
-
     # Get district level report
     district_grouping_lvl = [cols.district_name, cols.management, metric]
     # Get the report for current year
@@ -89,7 +87,6 @@ def get_metric_subj_wise_med_sd_rpt(metric: str, df_dict_curr_yr: dict, df_dict_
     # concatenate current year and previous year report
     dist_rpt = pd.concat([district_curr_yr, district_prev_yr])
 
-
     # Get state level report
     state_grouping_lvl = [cols.management, metric]
     # Get the report for current year
@@ -107,9 +104,7 @@ def get_metric_subj_wise_med_sd_rpt(metric: str, df_dict_curr_yr: dict, df_dict_
     # concatenate current year and previous year report
     state_rpt = pd.concat([state_curr_yr, state_prev_yr])
 
-
     df_metric_subj_wise_rpt = {'Block': blk_rpt, 'District': dist_rpt, 'State': state_rpt}
-
     # return report for metric
     return df_metric_subj_wise_rpt
 
@@ -138,7 +133,6 @@ def _get_grouping_lvl_med_sd(grouping_levels: list, df_dict: dict, median_agg_di
     Report for metric at given grouping level
     """
 
-
     # Convert the mark columns to integers
     col_int_dict = {}
     for key in median_agg_dict.keys():
@@ -148,18 +142,53 @@ def _get_grouping_lvl_med_sd(grouping_levels: list, df_dict: dict, median_agg_di
     for key in df_dict.keys():
         df_dict[key] = df_dict[key].astype(col_int_dict)
 
+    # Declare the subject column names to un-pivot the data on
+    value_vars_list = [cols.lang_marks, cols.eng_marks, cols.math_marks,
+                        cols.science_theory, cols.science_prac, cols.science_marks,
+                        cols.social_marks, cols.tot_marks]
+
     # Group the data and get the median values
     df_med = tenth_board_data_prep.get_grouping_level_data(df_dict.copy(), grouping_levels, median_agg_dict)
 
-    # Rename student count and pass count to readable format
-    df_med.rename(columns={cols.tot_stu:cols.brd_tot_stu_appr, cols.stu_pass:cols.brd_tot_stu_pass}, inplace=True)
-    print('df_med columns: ', df_med.columns.to_list())
+    # Rename the columns to readable format and standard subject names
+    df_med.rename(columns={
+        cols.emis_no_count: cols.brd_tot_stu_appr,
+        cols.pass_sum: cols.brd_tot_stu_pass,
+        cols.language_median: cols.lang_marks,
+        cols.english_median: cols.eng_marks,
+        cols.maths_median: cols.math_marks,
+        cols.science_theo_median: cols.science_theory,
+        cols.science_prac_median: cols.science_prac,
+        cols.science_median: cols.science_marks,
+        cols.social_median: cols.social_marks,
+        cols.total_median: cols.tot_marks},
+                  inplace=True)
+
+    # Melt the subject columns and values into rows with subject and median values
+    df_med = pd.melt(df_med, id_vars=grouping_levels+[cols.brd_tot_stu_appr, cols.brd_tot_stu_pass],
+                        value_vars=value_vars_list, var_name=cols.subject, value_name='median')
+
     # Group the data and get the standard deviation values
     df_sd = tenth_board_data_prep.get_grouping_level_data(df_dict.copy(), grouping_levels, std_dev_agg_dict)
-    print('df_sd columns: ', df_sd.columns.to_list())
+
+    # Rename the columns to readable format and standard subject names
+    df_sd.rename(columns={
+        cols.language_std: cols.lang_marks,
+        cols.english_std: cols.eng_marks,
+        cols.maths_std: cols.math_marks,
+        cols.science_theo_std: cols.science_theory,
+        cols.science_prac_std: cols.science_prac,
+        cols.science_std: cols.science_marks,
+        cols.social_std: cols.social_marks,
+        cols.total_std: cols.tot_marks},
+        inplace=True)
+
+    # Melt the subject columns and values into rows with subject and standard deviation values
+    df_sd = pd.melt(df_sd, id_vars=grouping_levels, value_vars=value_vars_list,
+                        var_name=cols.subject, value_name='std_dev')
 
     # Merge median and standard deviation value for the grouped data
-    df_med_sd = pd.merge(df_med, df_sd, how='inner', on=grouping_levels)
+    df_med_sd = pd.merge(df_med, df_sd, how='inner', on=grouping_levels+[cols.subject])
 
     # return the data
     return df_med_sd
