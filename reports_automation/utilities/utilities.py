@@ -440,7 +440,10 @@ def group_agg_rename(df, grouping_levels, agg_dict: dict, append_str=''):
     # Rename the columns to reflect the aggregated nature of the data
     cols_to_rename = {}
     for agg_col in agg_dict.keys():
-        cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col] + '_' + append_str
+        if append_str != '':
+            cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col] + '_' + append_str
+        else:
+            cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col]
 
     df_grouped.rename(columns=cols_to_rename, inplace=True)
 
