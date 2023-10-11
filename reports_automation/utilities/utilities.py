@@ -3,6 +3,7 @@ Module with utility functions that can be commonly used across the project.
 """
 
 from datetime import datetime
+from datetime import date
 
 import pandas as pd
 
@@ -16,6 +17,28 @@ def get_today_date():
     The current date as a 'DD:MM:YY' format string
     """
     return datetime.now().strftime('%d-%m-%y')
+
+
+def get_curr_year():
+    """
+    Function to return the current year
+
+    Returns:
+    -------
+    The current year in 'YYYY' format int
+    """
+    return date.today().year
+
+
+def get_prev_year():
+    """
+    Function to return the previous year
+
+    Returns:
+    -------
+    The previous year in 'YYYY' format int
+    """
+    return date.today().year - 1
 
 
 def xlookup(lookup_value, lookup_array, return_array, if_not_found=''):
@@ -66,7 +89,9 @@ def filter_dataframe_not_in_column(df, column_name, values_in):
     """
     df_filtered = df[~df[column_name].isin(values_in)]
     return df_filtered
-def filter_dataframe(df, filter_dict, include= True):
+
+
+def filter_dataframe(df, filter_dict, include=True):
     """
     Function to filter the dataframe for multiple columns either by including or excluding the given set of values
     Args:
@@ -82,11 +107,13 @@ def filter_dataframe(df, filter_dict, include= True):
         Filtered dataframe
     """
     for col_name, values in filter_dict.items():
-        if include==True:
+        if include == True:
             df = filter_dataframe_column(df, col_name, values)
         else:
             df = filter_dataframe_not_in_column(df, col_name, values)
     return df
+
+
 def filter_column_le(df, column_name, threshold_value):
     """
     Function to filter a dataframe object by values less than or equal to given threshold value
@@ -413,7 +440,10 @@ def group_agg_rename(df, grouping_levels, agg_dict: dict, append_str=''):
     # Rename the columns to reflect the aggregated nature of the data
     cols_to_rename = {}
     for agg_col in agg_dict.keys():
-        cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col] + '_' + append_str
+        if append_str != '':
+            cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col] + '_' + append_str
+        else:
+            cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col]
 
     df_grouped.rename(columns=cols_to_rename, inplace=True)
 

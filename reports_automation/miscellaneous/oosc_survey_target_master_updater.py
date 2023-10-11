@@ -26,7 +26,7 @@ def main():
 
     print(df_oosc_survey_report)
     # Replace the existing master data with the new updated master data
-    file_utilities.save_to_excel({'Details': df_oosc_survey_report},
+    file_utilities.save_to_excel({'Details ': df_oosc_survey_report},
                                  'OOSC_Survey_2023_24_Target_Report.xlsx',
                                  dir_path=gen_reports_dir_path)
 
