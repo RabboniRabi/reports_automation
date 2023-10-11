@@ -503,12 +503,13 @@ brd_med_science_mrks = "Median Science mark"
 brd_med_social_mrks = "Median Social mark"
 stud_comm = "community"
 gender = 'gender'
-urban_rural = 'urbanrural'
-medium = 'medium'
-
-
-
-
+physics = "PHYSICS"
+chemistry = "CHEMISTRY"
+mathematics = "MATHEMATICS"
+biology = "BIOLOGY"
+economics = "ECONOMICS"
+commerce = "COMMERCE"
+computer_science = "COMPUTER SCIENCE"
 
 
 
