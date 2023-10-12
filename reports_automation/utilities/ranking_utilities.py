@@ -139,18 +139,11 @@ def calc_ranking(df, ranking_config):
             # Call the ranking_type specific ranking function
             ranking_type = ranking_args_for_key['ranking_type']
             ranking_func = ranking_funcs_utilities.get_ranking_funcs().get(ranking_type)
-
-            print('ranking_args_for_key: ', ranking_args_for_key)
             
             data_ranked_for_grouping_lvl = ranking_func(df_grouped, ranking_args_for_key)
 
-            print('data_ranked_for_grouping_lvl', data_ranked_for_grouping_lvl)
-
-            # Merge the ranked data for the given grouping level with the data
-            print('data_ranked_for_grouping_lvl columns: ', data_ranked_for_grouping_lvl.columns.to_list())
             # Merge the rank and rank values, depending on which flags are true
             if show_rank_col_flag and show_rank_val_flag:
-                print('both flags are true')
                 # Get the subset of data with grouping levels and rank column and rank value column
                 df_subset = data_ranked_for_grouping_lvl[grouping_levels + \
                             [grouping_lvl_ranking_config['rank_col_name'], grouping_lvl_ranking_config['ranking_val_desc']]]
@@ -166,7 +159,6 @@ def calc_ranking(df, ranking_config):
 
             # Merge the ranked data for the current grouping level with the consolidated ranked data    
             df_ranked = pd.merge(df_ranked, df_subset, how='left', on=grouping_levels)
-            print('df columns post merge: ', df.columns.to_list())
             # Reset the flags to false for next iteration
             show_rank_col_flag, show_rank_val_flag = False, False
 
@@ -243,12 +235,15 @@ def update_deo_ranking_master(df_ranking, metric_code, metric_category, school_l
 
     # Rename the DEO name rank column to generic name
     if school_level == school_levels.ELEMENTARY.value:
-        df_ranking.rename(columns={cols.deo_name_elm: cols.name}, inplace = True)
+        df_ranking.rename(columns={cols.deo_name_elm: cols.name, cols.deo_elem_rank:cols.rank_col}, inplace = True)
     elif school_level == school_levels.SECONDARY.value:
-        df_ranking.rename(columns={cols.deo_name_sec: cols.name}, inplace = True)
+        df_ranking.rename(columns={cols.deo_name_sec: cols.name, cols.deo_sec_rank:cols.rank_col}, inplace = True)
 
     # Add the ranking value description
     df_ranking[cols.ranking_value_desc] = ranking_val_desc
+
+    # Rename the name of the column containing ranking value to generic 'Ranking Value' 
+    df_ranking.rename(columns = {ranking_val_desc: cols.ranking_value}, inplace=True)
 
     # Convert all column types to string
     df_ranking = df_ranking.astype({
@@ -260,16 +255,14 @@ def update_deo_ranking_master(df_ranking, metric_code, metric_category, school_l
         cols.month_col: 'string',
         cols.year_col: 'int'})
     
-    # Get the master ranking file. In the future, this needs to be saved and fetched from a database
-    ranking_file_path = os.path.join(ranking_rpts_dir_path, ranking_master_file_name)
 
     # If file does not exist, save the ranking to the file
-    if not file_utilities.file_exists(ranking_master_file_name, ceo_rpts_dir_path):
+    if not file_utilities.file_exists(ranking_master_file_name, ranking_rpts_dir_path):
         df_master_ranking = df_ranking
     else:
 
         # Get the master ranking file. In the future, this needs to be saved and fetched from a database
-        ranking_file_path = file_utilities.get_file_path(ranking_master_file_name, ceo_rpts_dir_path)
+        ranking_file_path = file_utilities.get_file_path(ranking_master_file_name, ranking_rpts_dir_path)
 
         # Get the master ranking file
         df_master_ranking = pd.read_excel(ranking_file_path, ranking_master_sheet_name)

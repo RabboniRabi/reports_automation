@@ -13,6 +13,7 @@ sys.path.append('../')
 
 import pandas as pd
 import numpy as np
+import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.subtotal_utilities as subtotal_utilities
 import utilities.outlines_utilities as outlines_utilities
@@ -113,9 +114,12 @@ def format_ceo_review_report(df, format_config, ranking_config, sheet_name, file
     level_outline_ranges_dict = outlines_utilities.build_level_outline_ranges_dict(
         updated_df, df_subtotal_rows, level_subtotal_cols_dict, agg_cols_func_dict)
 
+    # Shift the outline ranges by 1 to accommodate the column headers
+    level_outline_ranges_dict = outlines_utilities.push_outline_ranges_for_formatting(level_outline_ranges_dict, 1)
+
     
     # Shift the data by 1 row down - To create space for report heading
-    df = df.shift(periods=1, fill_value=0)
+    #updated_df = updated_df.shift(periods=1, fill_value=0)
 
     # Extracting the column names for renaming
     col_names = updated_df.columns.to_list()
@@ -144,9 +148,16 @@ def format_ceo_review_report(df, format_config, ranking_config, sheet_name, file
         cols_to_drop = cols.get_values(format_config['columns_to_drop'])
         updated_df.drop(columns=cols_to_drop, inplace=True)
 
+    # Insert a blank row in the top of the data frame to write the heading
+    # Get the number of columns in the data - to merge
+    no_of_columns = len(updated_df.columns.to_list())
 
-    # Correspondingly update the outline ranges as data has been shifted down
-    level_outline_ranges_dict = outlines_utilities.push_outline_ranges_for_formatting(level_outline_ranges_dict, 1)
+    # Insert a blank row to the top of the data frame
+    row_to_insert = []
+    for i in range (0, no_of_columns):
+        #print('column type: ', type(updated_df.columns[i]))
+        row_to_insert.append(type(updated_df.columns[i])(0))
+    updated_df = utilities.insert_row(updated_df, 0, row_to_insert)
 
     # Get the XlsxWriter object
     writer = file_utilities.get_xlsxwriter_obj({sheet_name: updated_df}, file_name, file_path=dir_path)
@@ -163,7 +174,7 @@ def format_ceo_review_report(df, format_config, ranking_config, sheet_name, file
     heading = format_config['heading']
     date = datetime.now().strftime('%d %h %y')
     full_heading = heading + ' - ' + date
-    format_utilities.insert_heading(updated_df, full_heading, worksheet, workbook)
+    format_utilities.write_heading(updated_df, full_heading, worksheet, workbook)
 
     # Apply border to the entire data
     format_utilities.apply_border(updated_df, worksheet, workbook)
@@ -174,6 +185,8 @@ def format_ceo_review_report(df, format_config, ranking_config, sheet_name, file
 
     # Apply formatting to the subtotal rows
     subtotal_row_indices = subtotals_result_dict['subtotal_row_indices']
+    # Add 1 to the subtotal row indices as a heading row has been inserted at the top of the data
+    subtotal_row_indices = [x + 1 for x in subtotal_row_indices]
     subtotal_utilities.format_subtotal_rows(worksheet, workbook, updated_df, subtotal_row_indices)
 
     # correct the formatting loss from applying subtotal row formatting
@@ -282,8 +295,9 @@ def format_ad_hoc_report_and_save(df_reports, summary_sheets_args, file_name):
             # Apply formatting specified in JSON
             format_utilities.apply_formatting(format_dicts_list, df_reports[key], worksheet, workbook, start_row=1)
 
-            # Insert heading for the summary sheet
-            format_utilities.insert_heading(df_reports[key], format_config['heading'], worksheet, workbook)
+            # Insert heading for the summary sheet 
+            # TODO Probably need to insert a blank row in the data before getting the xlsx writer objects
+            format_utilities.write_heading(df_reports[key], format_config['heading'], worksheet, workbook)
 
             # Format the header
             format_utilities.format_col_header(df_reports[key], worksheet, workbook)
@@ -337,7 +351,8 @@ def _get_grand_total_row(df, agg_dict, ranking_val_desc):
         grand_total_row[df.columns.get_loc(key)] = cell_total
 
     # Add the ranking value average to the row
-    grand_total_row[df.columns.get_loc(ranking_val_desc_col)] = df[ranking_val_desc].mean()
+    
+    grand_total_row[df.columns.get_loc(ranking_val_desc)] = df[ranking_val_desc].mean()
 
     return grand_total_row
 
@@ -373,7 +388,7 @@ def _format_grand_total_row(worksheet, workbook, df):
 
     # Rewrite the grand total, but with formatting
     # Add 1 to row index location as report heading will have been inserted at the top
-    worksheet.write_row(row_index+1, 0, df.iloc[row_index - 1], cell_format)
+    worksheet.write_row(row_index, 0, df.iloc[row_index - 1], cell_format)
 
 
 def _correct_grand_total_col_frmt_loss(worksheet, workbook, df, format_dicts_list):
@@ -426,4 +441,4 @@ def _correct_grand_total_col_frmt_loss(worksheet, workbook, df, format_dicts_lis
             col_index = df.columns.get_loc(column)
             # Rewrite the grand total row columns with lost formatting
             # Add 1 to row index location as report heading will have been inserted at the top
-            worksheet.write(row_index+1, col_index, df.iloc[row_index-1, col_index], cell_format)
+            worksheet.write(row_index, col_index, df.iloc[row_index-1, col_index], cell_format)

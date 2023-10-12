@@ -45,17 +45,17 @@
                     "ascending": false
                 },
                 "data_ranking_levels" : {
-                    "deo_level" : {
-                        "grouping_levels" : ["cols.deo_name_elm"],
-                        "show_rank_col" : true,
-                        "rank_col_name" : "cols.deo_elem_rank",
-                        "show_rank_val" : false
-                    },
                     "block_level" : {
                         "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
                         "show_rank_col": false,
                         "show_rank_val" : true,
                         "ranking_val_desc" : "cols.perc_students_with_UDID"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_elem_rank",
+                        "show_rank_val" : false
                     }
                 }
             },

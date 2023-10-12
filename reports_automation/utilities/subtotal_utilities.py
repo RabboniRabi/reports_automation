@@ -189,8 +189,9 @@ def update_subtotaled_row_with_ranking_val(df_subtotaled, ranking_config, rankin
     
     # Calculate ranking for the data with subtotal rows
     data_level_ranking = ranking_utilities.calc_ranking(df_subtotaled, subtotal_ranking_config)
-    # Update the ranking value
-    #df_subtotaled[ranking_args_dict['ranking_val_desc']] = data_level_ranking[cols.ranking_value]
+    
+    # Rename the 'Ranking Value' column name to the ranking value description
+    data_level_ranking.rename(columns={cols.ranking_value: ranking_val_desc}, inplace=True)
 
     return data_level_ranking
 
@@ -288,7 +289,7 @@ def format_subtotal_rows(worksheet, workbook, df, subtotal_row_indices):
     # Set the subtotal rows to bold
     cell_format.set_bold() 
     # Set the subtotal row background to grey
-    cell_format.set_bg_color('#dedcdc')
+    cell_format.set_bg_color('#f0efef')
     # Set the border for the subtotal row
     cell_format.set_border(1)
     # Set the alignment of the text
@@ -297,14 +298,14 @@ def format_subtotal_rows(worksheet, workbook, df, subtotal_row_indices):
     for row_index in subtotal_row_indices:
         # Add 2 to row index location as report heading will have been inserted at the top
         # and column headers will be at row 1
-        worksheet.write_row(row_index + 2, 0, df.iloc[row_index], cell_format)
+        worksheet.write_row(row_index + 1, 0, df.iloc[row_index], cell_format)
     
 
 
 def correct_col_formatting_loss(worksheet, workbook, df, subtotal_row_indices, format_dicts_list):
     """
     Helper function to re-apply the column formatting previously applied
-    and lost when the subtatol row is formatted
+    and lost when the subtotal row is formatted
 
     Parameters:
     ----------
@@ -339,7 +340,7 @@ def correct_col_formatting_loss(worksheet, workbook, df, subtotal_row_indices, f
         # Set the subtotal rows to bold
         cell_format.set_bold() 
         # Set the subtotal row background to grey
-        cell_format.set_bg_color('#dedcdc')
+        cell_format.set_bg_color('#f0efef')
         # Set the border for the subtotal row
         cell_format.set_border(1)
         # Set the alignment of the text
@@ -354,8 +355,7 @@ def correct_col_formatting_loss(worksheet, workbook, df, subtotal_row_indices, f
             for row_index in subtotal_row_indices:
                 # Add 2 to row index location as report heading will have been inserted at row 0
                 # and column headers will be at row 1
-                worksheet.write(row_index + 2, col_index, df.iloc[row_index, col_index], cell_format)
-
+                worksheet.write(row_index + 1, col_index, df.iloc[row_index, col_index], cell_format)
 
 
 

@@ -154,14 +154,13 @@ def get_elem_ranked_report(df_summary, ranking_config, metric_code, metric_categ
     # Update the DEO ranked data with designation
     #deo_elm_ranking_for_master[cols.desig] = 'DEO'
 
-    # Rename the DEO name column
+    """# Rename the DEO name column
     deo_elm_ranking_for_master.rename(columns={
         cols.deo_name_elm: cols.name,
-        cols.deo_elem_rank: cols.rank_col}, inplace = True)
+        cols.deo_elem_rank: cols.rank_col}, inplace = True)"""
 
     # Update the master ranking with the DEO ranking
     ranking_val_desc = ranking_config['data_ranking_levels']['block_level']['ranking_val_desc']
-    print('deo_elm_ranking_for_master columns: ', deo_elm_ranking_for_master.columns.to_list())
     ranking_utilities.update_deo_ranking_master(deo_elm_ranking_for_master, metric_code, metric_category, 'Elementary', ranking_val_desc)
 
     # Merge the data with the ranks

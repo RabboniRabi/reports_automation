@@ -8,7 +8,7 @@
             "report_desc": "Teacher leave balance updation report",
             "ranking_weightage" : 0,
             "improvement_weightage" : 0,
-            "generate_report": true,
+            "generate_report": false,
             "source_config" : {
                 "source_file_name" : "teacher_leave_balance_updt_report.xlsx",
                 "source_sheet_name" : "Summary",

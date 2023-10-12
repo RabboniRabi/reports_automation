@@ -234,9 +234,9 @@ def apply_formatting(format_dicts_list, df, worksheet, workbook, start_row=2):
                 apply_frmt_col(worksheet, workbook, col_index, df, format, start_row)
 
 
-def insert_heading(df, heading_text, worksheet, workbook):
+def write_heading(df, heading_text, worksheet, workbook):
     """
-    Funtion to create a header at the top of the data
+    Funtion to write a heading text at the top row of the data
 
     Parameters:
     -----------
@@ -256,7 +256,7 @@ def insert_heading(df, heading_text, worksheet, workbook):
     # Define the merge format
     merge_format = workbook.add_format({'align': 'center', 'border': 1, 'bold': True})
 
-    # Merge the cells to form the heading
+    # Merge the cells & write the heading
     worksheet.merge_range(0, 0, 0, no_of_columns - 1, heading_text, merge_format)
 
 
@@ -281,8 +281,32 @@ def apply_border(df, worksheet, workbook):
 
     # Write the format to each row in the data
     for i in range(1, no_of_rows):
-        worksheet.write_row(i+1, 0, df.iloc[i-1], cell_format)
+        worksheet.write_row(i, 0, df.iloc[i-1], cell_format)
 
+def apply_border_and_cell_colour(df, html_colour_code, worksheet, workbook):
+    """
+    Function to apply cell border and colour to all cells in the data
+
+    Parameters:
+    ----------
+    df: DataFrame
+        Data as an instance of Pandas DataFrame object
+    html_colour_code: str
+        The HTML colour code to apply on the cells
+    worksheet: Worksheet
+        An XlsxWriter worksheet object
+    workbook: Workbook
+        An XlsxWriter workbook object
+    """
+    # Define the format to apply for all cells
+    cell_format =  workbook.add_format({'align': 'center', 'border': 3, 'bg_color':html_colour_code})
+
+    # Get the number of rows in the data
+    no_of_rows = df.shape[0]
+
+    # Write the format to each row in the data
+    for i in range(1, no_of_rows):
+        worksheet.write_row(i, 0, df.iloc[i-1], cell_format)
 
 def format_col_header(df, worksheet, workbook):
     """

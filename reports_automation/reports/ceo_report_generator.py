@@ -248,17 +248,20 @@ def generate_all(generate_fresh: bool = True):
 
             if elem_report_config['generate_report']:
                 # Call the helper function to generate the elementary report
-                elem_report = _generate_elem_report(df_data, elem_report_config, report_name, ceo_report_levels.RANKED, metric_code, metric_category)
+                elem_report = _generate_elem_report(df_data, elem_report_config, report_name\
+                    , ceo_report_levels.RANKED, metric_code, metric_category)
 
                 # Check if formatting needs to be done
                 format_config = elem_report_config['format_config']
                 if format_config is not None:
                     # Call review view utilities to format and save the report
                     report_format_utilities.format_ceo_review_report(elem_report\
-                            , format_config, elem_report_config['ranking_args'], metric_code, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
+                            , format_config, elem_report_config['ranking_config']\
+                            , metric_code, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
                 else:
                     # Save the report without any formatting
-                    file_utilities.save_to_excel({metric_code: elem_report}, elem_report_name, curr_month_elem_ceo_rpts_dir_path)
+                    file_utilities.save_to_excel({metric_code: elem_report}, elem_report_name\
+                            , curr_month_elem_ceo_rpts_dir_path)
         
         # Secondary Report
         # Check if secondary report needs to be generated

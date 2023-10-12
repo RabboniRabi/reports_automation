@@ -44,26 +44,14 @@ def percent_ranking(df, ranking_args_dict):
     num_col = ranking_args_dict['num_col']
     den_col = ranking_args_dict['den_col']
 
-    
-    # Group the data for ranking, if ranking level grouping configuration is given in ranking_args
-    #df_rank = _group_data_for_ranking(df, ranking_args_dict)
-
     # Calculate fraction of values (to be used for ranking)
-    df_rank[cols.ranking_value] = (df_rank[num_col]/df_rank[den_col])
-    df_rank[cols.ranking_value].fillna(0, inplace=True)
-    df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method='min')
-    
-    # Add the ranking value description to the ranked data
-    df_rank[cols.ranking_value_desc] = ranking_val_desc
-    
-    
-    # Sort by ranking if specified
-    if sort:
-        df_rank.sort_values(by=[cols.rank_col], inplace=True)
+    df[cols.ranking_value] = (df[num_col]/df[den_col])
+    df[cols.ranking_value].fillna(0, inplace=True)
 
-    df_rank = df_rank.reset_index() 
+    # Sort the data, rank it and show/hide columns based on the configuration
+    df = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
 
-    return df_rank
+    return df
 
 
 def percent_ranking_agg(df, group_levels, ranking_args_dict):
@@ -103,6 +91,7 @@ def percent_ranking_agg(df, group_levels, ranking_args_dict):
     den_cols = ranking_args_dict['den_col']
     sort = ranking_args_dict['sort']
     ascending = ranking_args_dict['ascending']
+    
 
     # If grouping levels is given
     if (group_levels is not None):
