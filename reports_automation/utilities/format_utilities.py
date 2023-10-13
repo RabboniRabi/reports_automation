@@ -313,7 +313,7 @@ def format_col_header(df, worksheet, workbook):
     Function to apply formatting for column header
     """
     # Define the format to apply for all cells
-    cell_format =  workbook.add_format({'align': 'center', 'border': 1, 'bold': True, 'bg_color':'#a9a8a8'})
+    cell_format =  workbook.add_format({'align': 'center', 'border': 1, 'bold': True, 'bg_color':'#d3d2d2'})
 
     # Format the column header which will be at row 1.
     worksheet.write_row(1, 0, df.columns.to_list(), cell_format)

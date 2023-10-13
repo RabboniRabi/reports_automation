@@ -131,7 +131,6 @@ def calc_ranking(df, ranking_config):
                 ranking_args_for_key['rank_within_parent_group'] = grouping_lvl_ranking_config['rank_within_parent_group']
                 ranking_args_for_key['rank_within_parent_grouping_levels'] = grouping_lvl_ranking_config['rank_within_parent_grouping_levels']
 
-
             # Group the data to the level it needs to be ranked on
             grouping_levels = grouping_lvl_ranking_config['grouping_levels']
             df_grouped = df.groupby(grouping_levels, as_index=False, sort=False).agg(ranking_args_for_key['agg_dict'])

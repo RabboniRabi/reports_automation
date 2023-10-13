@@ -380,7 +380,7 @@ def _format_grand_total_row(worksheet, workbook, df):
     # Set the subtotal rows to bold
     cell_format.set_bold() 
     # Set the subtotal row background to grey
-    cell_format.set_bg_color('#a9a8a8')
+    cell_format.set_bg_color('#d3d2d2')
     # Set the border for the subtotal row
     cell_format.set_border(1)
     # Set the alignment of the text
@@ -429,7 +429,7 @@ def _correct_grand_total_col_frmt_loss(worksheet, workbook, df, format_dicts_lis
         # Set the subtotal rows to bold
         cell_format.set_bold() 
         # Set the subtotal row background to grey
-        cell_format.set_bg_color('#a9a8a8')
+        cell_format.set_bg_color('#d3d2d2')
         # Set the border for the subtotal row
         cell_format.set_border(1)
         # Set the alignment of the text

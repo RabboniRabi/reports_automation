@@ -88,44 +88,25 @@ def percent_ranking_agg(df, group_levels, ranking_args_dict):
     agg_dict = ranking_args_dict['agg_dict']
     ranking_val_desc = ranking_args_dict['ranking_val_desc']
     num_cols = ranking_args_dict['num_col']
-    den_cols = ranking_args_dict['den_col']
-    sort = ranking_args_dict['sort']
-    ascending = ranking_args_dict['ascending']
-    
-
-    # If grouping levels is given
-    if (group_levels is not None):
-        # Group by grouping levels and aggregate by given columns and aggregate function
-        df_rank = df.groupby(group_levels, as_index=False, sort=sort).agg(agg_dict)
-    else:
-        df_rank = df.copy()
+    den_cols = ranking_args_dict['den_col']    
 
     # Sum values in the numerator and denominator columns
     num_agg = 0
     for col in num_cols:
-        num_agg += df_rank[col]
+        num_agg += df[col]
     
     den_agg = 0
     for col in den_cols:
-        den_agg += df_rank[col]
+        den_agg += df[col]
     
-
     # Calculate fraction of values (to be used for ranking)
-    df_rank[cols.ranking_value] = (num_agg/den_agg)
-    df_rank[cols.ranking_value].fillna(0, inplace=True)
-    df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method='min')
-    
-    # Add the ranking value description to the ranked data
-    df_rank[cols.ranking_value_desc] = ranking_val_desc
-    
-    
-    # Sort by ranking if specified
-    if sort:
-        df_rank.sort_values(by=[cols.rank_col], inplace=True)
+    df[cols.ranking_value] = (num_agg/den_agg)
+    df[cols.ranking_value].fillna(0, inplace=True)
 
-    df_rank = df_rank.reset_index()    
+    # Sort the data, rank it and show/hide columns based on the configuration
+    df = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
 
-    return df_rank
+    return df
 
 
 def avg_ranking(df, group_levels, ranking_args_dict):
@@ -159,42 +140,24 @@ def avg_ranking(df, group_levels, ranking_args_dict):
     agg_dict = ranking_args_dict['agg_dict']
     ranking_val_desc = ranking_args_dict['ranking_val_desc']
     avg_cols = ranking_args_dict['avg_cols']
-    sort = ranking_args_dict['sort']
-    ascending = ranking_args_dict['ascending']
 
-    # If grouping levels is given
-    if (group_levels is not None):
-        # Group by grouping levels and aggregate by given columns and aggregate function
-        df_rank = df.groupby(group_levels, as_index=False, sort=sort).agg(agg_dict).reset_index()
-    else:
-        df_rank = df.copy()
 
 
     # Calculate average of given columns
     for i in range(0, len(avg_cols)):
         if i == 0:
-            total_series = pd.Series(df_rank[avg_cols[i]])
+            total_series = pd.Series(df[avg_cols[i]])
         else:
-            total_series = total_series + df_rank[avg_cols[i]]
+            total_series = total_series + df[avg_cols[i]]
 
     no_of_items = len(avg_cols)
-    df_rank[cols.ranking_value] = (total_series/no_of_items)
-    df_rank[cols.ranking_value].fillna(0, inplace=True)
+    df[cols.ranking_value] = (total_series/no_of_items)
+    df[cols.ranking_value].fillna(0, inplace=True)
 
-    # Sort and rank the values
-    df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method='min')
-    
-    # Add the ranking value description to the ranked data
-    df_rank[cols.ranking_value_desc] = ranking_val_desc
-    
-    
-    # Sort by ranking if specified
-    if sort:
-        df_rank.sort_values(by=[cols.rank_col], inplace=True)
+    # Sort the data, rank it and show/hide columns based on the configuration
+    df = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
 
-    df_rank = df_rank.reset_index()    
-
-    return df_rank
+    return df
 
 def number_ranking(df, group_levels, ranking_args_dict):
     """
@@ -223,35 +186,9 @@ def number_ranking(df, group_levels, ranking_args_dict):
     --------
         The updated DataFrame object with the ranking.
     """
-    # Get the values from the ranking arguments dictionary
-    agg_dict = ranking_args_dict['agg_dict']
-    ranking_val_desc = ranking_args_dict['ranking_val_desc']
-    sort = ranking_args_dict['sort']
-    ascending = ranking_args_dict['ascending']
-    # Get the name of the column to rank on
-    ranking_col = ranking_args_dict['ranking_col']
 
-    # If grouping levels is given
-    if (group_levels is not None):
-        df_rank = df.groupby(group_levels, as_index=False, sort=sort).agg(agg_dict)
-    else:
-        df_rank = df.copy()
-
-    # Rename source data column to be ranked as ranking value - needed by rest of ranking code
-    df_rank.rename(columns={ranking_col: cols.ranking_value}, inplace=True)
-
-    # Sort and rank the values
-    df_rank[cols.rank_col] = df_rank[cols.ranking_value].rank(ascending=ascending, method="min")
-
-    # Add the ranking value description to the ranked data
-    df_rank[cols.ranking_value_desc] = ranking_val_desc
-
-    # Sort by ranking if specified
-    if sort:
-        df_rank.sort_values(by=[cols.rank_col], inplace=True)
-    df_rank = df_rank.reset_index()
-
-    return df_rank
+    # Sort the data, rank it and show/hide columns based on the configuration
+    df = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
 
 
 
@@ -311,7 +248,7 @@ def _sort_rank_and_show_hide_cols(df, ranking_args_dict):
         df.rename(columns={cols.ranking_value:ranking_args_dict['ranking_val_desc']}, inplace=True)
     elif 'show_rank_val' in ranking_args_dict and not ranking_args_dict['show_rank_val']:
         # Drop the rank value column
-        df_rank.drop(columns=[cols.ranking_value], inplace=True)
+        df.drop(columns=[cols.ranking_value], inplace=True)
   
     df = df.reset_index()
 

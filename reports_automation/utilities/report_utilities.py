@@ -83,7 +83,7 @@ def get_elem_ranked_report(df_summary, ranking_config, metric_code, metric_categ
 
     """
     Function create and return the elementary ranked report on given data by calculating
-    the BEO ranking, DEO(Elementary) ranking and updating the data.
+    the DEO(Elementary) ranking and updating the data.
 
     The master ranking data is also updated when this function is called.
 
@@ -144,69 +144,15 @@ def get_elem_ranked_report(df_summary, ranking_config, metric_code, metric_categ
     # Get Elementary report, ranked
     elem_ranked_report = ranking_utilities.calc_ranking(df_summary, ranking_config)
 
-    # Testing that elementary ranked report is coming with correctly ranked data
-    file_utilities.save_to_excel({'test': elem_ranked_report}, 'elem_ranked_report_test.xlsx')
-
     # Make a copy of the ranking to update master sheet
-    # Calculate the ranking for DEO ranking master
     deo_elm_ranking_for_master = elem_ranked_report.copy()
-
-    # Update the DEO ranked data with designation
-    #deo_elm_ranking_for_master[cols.desig] = 'DEO'
-
-    """# Rename the DEO name column
-    deo_elm_ranking_for_master.rename(columns={
-        cols.deo_name_elm: cols.name,
-        cols.deo_elem_rank: cols.rank_col}, inplace = True)"""
 
     # Update the master ranking with the DEO ranking
     ranking_val_desc = ranking_config['data_ranking_levels']['block_level']['ranking_val_desc']
     ranking_utilities.update_deo_ranking_master(deo_elm_ranking_for_master, metric_code, metric_category, 'Elementary', ranking_val_desc)
 
-    # Merge the data with the ranks
-
-    # Take only subset columns of BEO ranked data
-    #beo_ranking = beo_ranking[[cols.beo_user, cols.beo_name, cols.rank_col]]
-    # Rename the rank column
-    #beo_ranking.rename(columns={cols.rank_col: cols.beo_rank}, inplace=True)
-
-    # Take only subset columns of DEO ranked data
-    #deo_elm_ranking = deo_elm_ranking[[cols.deo_name_elm, cols.rank_col]]
-    # Rename the rank column
-    #deo_elm_ranking.rename(columns={cols.rank_col: cols.deo_elem_rank}, inplace=True)
-
-    # Since the ranking values will be grouped to beo level, the ranking values of each individual row
-    # of data before being grouped and ranked is missed. That data will be more useful for review.
-    # That data is inserted here. Not a clean way of doing things. Yes.
-    """data_level_ranking = ranking_utilities.calc_ranking(df_summary, deo_elem_ranking_group_cols + [cols.block_name], ranking_args_dict)
-
-    # Drop the ranking value and ranking description column
-    data_level_ranking.drop(columns={cols.rank_col, cols.ranking_value_desc}, inplace=True)"""
-
-
-    # Add the data level ranking value
-    #elementary_report = pd.merge(df_summary, data_level_ranking[[cols.deo_name_elm, \
-                #cols.school_category, cols.ranking_value]], on=[cols.school_category, cols.deo_name_elm])
-    #elementary_report = pd.merge(elementary_report, beo_ranking, on=[cols.beo_user, cols.beo_name])
-    #elementary_report = pd.merge(elementary_report, deo_elm_ranking, on=[cols.deo_name_elm])
-    
-
-    # Replace the two lines below with the three lines above when beo ranking is enabled
-    # Add the data level ranking value
-    """elementary_report = pd.merge(df_summary, data_level_ranking[[cols.block_name, cols.deo_name_elm, \
-            cols.ranking_value]], on=[cols.deo_name_elm, cols.block_name])
-
-    elementary_report = pd.merge(elementary_report, deo_elm_ranking, on=[cols.deo_name_elm])"""
-    
-
-    # Rename the name of the column: ranking value to description of the ranking value
-    #elementary_report.rename(columns = {cols.ranking_value: ranking_args_dict['ranking_val_desc']}, inplace=True)
-
-    # Sort the data by district and rank
-    #elementary_report.sort_values(by=[cols.deo_elem_rank, cols.deo_name_elm, cols.beo_rank], ascending=True, inplace=True)
-    # Replace the line above with the line below when beo ranking is done
+    # Sort the data by DEO Ranks
     elem_ranked_report.sort_values(by=[cols.deo_elem_rank, cols.deo_name_elm], ascending=True, inplace=True)
-
 
     # Drop duplicate columns
     elem_ranked_report = elem_ranked_report.T.drop_duplicates().T
@@ -281,40 +227,11 @@ def get_sec_ranked_report(df_summary, ranking_config, metric_code, metric_catego
     # Make a copy of the ranking to update master sheet
     deo_sec_ranking_for_master = sec_ranked_report.copy()
 
-    # Update the DEO ranked data with designation
-    #deo_sec_ranking_for_master[cols.desig] = 'DEO'
-
-    # Rename the DEO name column
-    #deo_sec_ranking_for_master.rename(columns={cols.deo_name_sec: cols.name, cols.district_name: cols.district}, inplace = True)
-
     # Update the master ranking with the DEO ranking
-    ranking_val_desc = ranking_config['block_level']['ranking_val_desc']
+    ranking_val_desc = ranking_config['data_ranking_levels']['block_level']['ranking_val_desc']
     ranking_utilities.update_deo_ranking_master(deo_sec_ranking_for_master, metric_code, metric_category, 'Secondary', ranking_val_desc)
 
-    #secondary_report = pd.append([report_summary, deo_sec_ranking], axis=1)
-
-    """# Take only subset columns of DEO ranked data
-    deo_sec_ranking = deo_sec_ranking[[cols.deo_name_sec, cols.rank_col]]
-    # Rename the rank column
-    deo_sec_ranking.rename(columns={cols.rank_col: cols.deo_sec_rank}, inplace=True)
-
-    # Since the ranking values will be grouped to DEO level, the ranking values of each individual row
-    # of data before being grouped and ranked is missed. That data will be more useful for review.
-    # That data is inserted here. Not a clean way of doing things. Yes.
-    data_level_ranking = ranking_utilities.calc_ranking(df_summary, deo_secnd_ranking_group_cols + [cols.block_name], ranking_args_dict)
-
-
-    # Add the data level ranking value
-    secondary_report = pd.merge(df_summary, data_level_ranking[[cols.block_name, cols.deo_name_sec, cols.ranking_value]],\
-                                 on=[cols.deo_name_sec, cols.block_name])
-
-    # Rename the name of the column: ranking value to description of the ranking value
-    secondary_report.rename(columns = {cols.ranking_value: ranking_args_dict['ranking_val_desc']}, inplace=True)
-
-    # Add the DEO level ranks
-    secondary_report = pd.merge(secondary_report, deo_sec_ranking, on=[cols.deo_name_sec])"""
-
-    # Sort the data by district and rank
+    # Sort the data by DEO rank
     sec_ranked_report.sort_values(by=[cols.deo_sec_rank, cols.deo_name_sec], ascending=True, inplace=True)
 
     # Drop duplicate columns

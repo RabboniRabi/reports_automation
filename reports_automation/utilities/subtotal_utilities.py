@@ -289,7 +289,7 @@ def format_subtotal_rows(worksheet, workbook, df, subtotal_row_indices):
     # Set the subtotal rows to bold
     cell_format.set_bold() 
     # Set the subtotal row background to grey
-    cell_format.set_bg_color('#f0efef')
+    cell_format.set_bg_color('#f4f4f4')
     # Set the border for the subtotal row
     cell_format.set_border(1)
     # Set the alignment of the text
@@ -340,7 +340,7 @@ def correct_col_formatting_loss(worksheet, workbook, df, subtotal_row_indices, f
         # Set the subtotal rows to bold
         cell_format.set_bold() 
         # Set the subtotal row background to grey
-        cell_format.set_bg_color('#f0efef')
+        cell_format.set_bg_color('#f4f4f4')
         # Set the border for the subtotal row
         cell_format.set_border(1)
         # Set the alignment of the text

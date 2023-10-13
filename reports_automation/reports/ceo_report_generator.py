@@ -279,7 +279,7 @@ def generate_all(generate_fresh: bool = True):
                 if format_config is not None:
                     # Call review view utilities to format and save the report
                     report_format_utilities.format_ceo_review_report(sec_report\
-                            , format_config, sec_report_config['ranking_args'], metric_code, sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
+                            , format_config, sec_report_config['ranking_config'], metric_code, sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
                 else:
                     # Save the report without any formatting
                     file_utilities.save_to_excel({metric_code: sec_report}, sec_report_name, curr_month_secnd_ceo_rpts_dir_path)
