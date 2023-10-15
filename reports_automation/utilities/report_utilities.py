@@ -144,12 +144,8 @@ def get_elem_ranked_report(df_summary, ranking_config, metric_code, metric_categ
     # Get Elementary report, ranked
     elem_ranked_report = ranking_utilities.calc_ranking(df_summary, ranking_config)
 
-    # Make a copy of the ranking to update master sheet
-    deo_elm_ranking_for_master = elem_ranked_report.copy()
-
     # Update the master ranking with the DEO ranking
-    ranking_val_desc = ranking_config['data_ranking_levels']['block_level']['ranking_val_desc']
-    ranking_utilities.update_deo_ranking_master(deo_elm_ranking_for_master, metric_code, metric_category, 'Elementary', ranking_val_desc)
+    ranking_utilities.update_deo_ranking_master(df_summary, ranking_config, metric_code, metric_category, 'Elementary')
 
     # Sort the data by DEO Ranks
     elem_ranked_report.sort_values(by=[cols.deo_elem_rank, cols.deo_name_elm], ascending=True, inplace=True)
@@ -224,12 +220,8 @@ def get_sec_ranked_report(df_summary, ranking_config, metric_code, metric_catego
     # Get secondary report, ranked
     sec_ranked_report = ranking_utilities.calc_ranking(df_summary, ranking_config)
 
-    # Make a copy of the ranking to update master sheet
-    deo_sec_ranking_for_master = sec_ranked_report.copy()
-
     # Update the master ranking with the DEO ranking
-    ranking_val_desc = ranking_config['data_ranking_levels']['block_level']['ranking_val_desc']
-    ranking_utilities.update_deo_ranking_master(deo_sec_ranking_for_master, metric_code, metric_category, 'Secondary', ranking_val_desc)
+    ranking_utilities.update_deo_ranking_master(df_summary, ranking_config, metric_code, metric_category, 'Secondary')
 
     # Sort the data by DEO rank
     sec_ranked_report.sort_values(by=[cols.deo_sec_rank, cols.deo_name_sec], ascending=True, inplace=True)

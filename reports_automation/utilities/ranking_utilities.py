@@ -204,25 +204,50 @@ def calc_ranking_old(df, ranking_args_dict):
 
 
 
-def update_deo_ranking_master(df_ranking, metric_code, metric_category, school_level, ranking_val_desc):
+def update_deo_ranking_master(df_summary, ranking_config, metric_code, metric_category, school_level):
     """
-    Function to update the DEOs master ranking file with the given ranking data for the current month.
+    Function to calculate & update the DEOs rank and values for the current month and update.
 
     The ranking master file is stored in the ceo_reports folder in generated reports.
     
     Parameters:
     -----------
-    df_ranking: Pandas DataFrame
-        The ranked data for a metric
+    df_summary: Pandas DataFrame
+        The raw processed, summarised and ready for ranking
+    ranking_config: dict
+        A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
     metric_code: str
         The code for the metric used in the calculation of the ranking
     metric_category: str
         The category the ranked metric falls under
     school_level: str
-        The level of school education the ranking is for: Elementary or Secondary    
-    ranking_val_desc: str
-        Description string of ranking value
+        The level of school education the ranking is for: Elementary or Secondary
     """
+
+    # Group and aggregate the data to DEO level
+    deo_grouping_lvl = ranking_config['data_ranking_levels']['deo_level']['grouping_levels']
+    agg_dict = ranking_config['ranking_args']['agg_dict']
+    df_summary_deo_lvl = df_summary.groupby(deo_grouping_lvl).agg(agg_dict)
+
+    # Update the ranking config so that the rank is calculated for the DEO and the values are at DEO level
+    deo_ranking_config = ranking_config.copy()
+    deo_ranking_config['ranking_args']['show_rank_col'] = True
+    rank_col_name = ranking_config['data_ranking_levels']['deo_level']['rank_col_name']
+    deo_ranking_config['ranking_args']['rank_col_name'] = rank_col_name
+    deo_ranking_config['ranking_args']['show_rank_val'] = True
+    ranking_val_desc = ranking_config['data_ranking_levels']['block_level']['ranking_val_desc']
+    deo_ranking_config['ranking_args']['ranking_val_desc'] = ranking_val_desc
+
+    # Drop the block level ranking configuration so that ranking is calculated with grouping further
+    del deo_ranking_config['data_ranking_levels']
+
+    print('deo_ranking_config: ', deo_ranking_config)
+
+    # Call the ranking function to get the DEO level data ranked with values
+    df_ranking = calc_ranking(df_summary_deo_lvl, deo_ranking_config)
+
+    print('df_ranking: ', df_ranking)
+
 
     # Update the ranking data with columns indicating metrics, school level and month-year
     df_ranking[cols.metric_code] = metric_code
