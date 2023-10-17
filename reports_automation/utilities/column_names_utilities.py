@@ -531,6 +531,10 @@ biology = "BIOLOGY"
 economics = "ECONOMICS"
 commerce = "COMMERCE"
 computer_science = "COMPUTER SCIENCE"
+school_name = "school_name"
+pass_perc = "pass_perc"
+
+
 
 
 
