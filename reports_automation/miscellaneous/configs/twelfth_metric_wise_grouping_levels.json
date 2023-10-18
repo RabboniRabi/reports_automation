@@ -14,8 +14,14 @@
           },
           {
             "source_name" : "aided",
-            "source_file_name": "HSC_stud_level_aided_2022_2023.xlsx",
+            "source_file_name": "hsc_stud_level_aided_2022_2023.xlsx",
             "source_sheet_name": "aided_2023",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "private",
+            "source_file_name": "hsc_stud_level_private_2022_2023.xlsx",
+            "source_sheet_name": "private_2023",
             "skip_rows": 0
           }
         ]
