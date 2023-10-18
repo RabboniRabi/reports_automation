@@ -39,19 +39,34 @@
             "cols.oosc_stu_admt_othr_reasons": "sum"
           }
         },
-        "ranking_args": {
-          "ranking_type": "percent_ranking",
-          "agg_dict": {
-            "cols.oosc_tot_surveyed": "sum",
-            "cols.to_be_admitted": "sum",
-            "cols.stdnts_admttd": "sum",
-            "cols.oosc_stu_admt_othr_reasons": "sum"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "percent_ranking",
+            "agg_dict": {
+              "cols.oosc_tot_surveyed": "sum",
+              "cols.to_be_admitted": "sum",
+              "cols.stdnts_admttd": "sum",
+              "cols.oosc_stu_admt_othr_reasons": "sum"
+            },
+            "num_col": "cols.stdnts_admttd",
+            "den_col": "cols.to_be_admitted",
+            "sort": true,
+            "ascending": false
           },
-          "ranking_val_desc": "cols.perc_admitted_oosc",
-          "num_col": "cols.stdnts_admttd",
-          "den_col": "cols.to_be_admitted",
-          "sort": true,
-          "ascending": false
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.perc_admitted_oosc"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_elm"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_elem_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Elementary OoSC students admitted status report as on ",
@@ -99,19 +114,34 @@
             "cols.oosc_stu_admt_othr_reasons": "sum"
           }
         },
-        "ranking_args": {
-          "ranking_type": "percent_ranking",
-          "agg_dict": {
-            "cols.oosc_tot_surveyed": "sum",
-            "cols.to_be_admitted": "sum",
-            "cols.stdnts_admttd": "sum",
-            "cols.oosc_stu_admt_othr_reasons": "sum"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "percent_ranking",
+            "agg_dict": {
+              "cols.oosc_tot_surveyed": "sum",
+              "cols.to_be_admitted": "sum",
+              "cols.stdnts_admttd": "sum",
+              "cols.oosc_stu_admt_othr_reasons": "sum"
+            },
+            "num_col": "cols.stdnts_admttd",
+            "den_col": "cols.to_be_admitted",
+            "sort": true,
+            "ascending": false
           },
-          "ranking_val_desc": "cols.perc_admitted_oosc",
-          "num_col": "cols.stdnts_admttd",
-          "den_col": "cols.to_be_admitted",
-          "sort": true,
-          "ascending": false
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.perc_admitted_oosc"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_sec"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_sec_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Secondary OoSC students admitted status report as on ",
@@ -179,15 +209,30 @@
             "cols.oosc_no_stu_absent_greater_6": "sum"
           }
         },
-        "ranking_args": {
-          "ranking_type": "number_ranking",
-          "agg_dict": {
-            "cols.oosc_no_stu_absent_greater_6": "sum"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "number_ranking",
+            "agg_dict": {
+              "cols.oosc_no_stu_absent_greater_6": "sum"
+            },
+            "ranking_col": "cols.oosc_no_stu_absent_greater_6",
+            "sort": true,
+            "ascending": true
           },
-          "ranking_val_desc": "cols.oosc_no_stu_absent_greater_6",
-          "ranking_col": "cols.oosc_no_stu_absent_greater_6",
-          "sort": true,
-          "ascending": true
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.oosc_no_stu_absent_greater_6"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_elm"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_elem_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Elementary students absent greater than 6 days report as on ",
@@ -229,15 +274,30 @@
             "cols.oosc_no_stu_absent_greater_6": "sum"
           }
         },
-        "ranking_args": {
-          "ranking_type": "number_ranking",
-          "agg_dict": {
-            "cols.oosc_no_stu_absent_greater_6": "sum"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "number_ranking",
+            "agg_dict": {
+              "cols.oosc_no_stu_absent_greater_6": "sum"
+            },
+            "ranking_col": "cols.oosc_no_stu_absent_greater_6",
+            "sort": "True",
+            "ascending": "True"
           },
-          "ranking_val_desc": "cols.oosc_no_stu_absent_greater_6",
-          "ranking_col": "cols.oosc_no_stu_absent_greater_6",
-          "sort": "True",
-          "ascending": "True"
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.oosc_no_stu_absent_greater_6"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_sec"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_sec_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Secondary OoSC students absent greater than 6 days report as on ",
@@ -262,7 +322,7 @@
       "report_code": "OOSC_PD",
       "report_category": "Enrolment",
       "report_desc": "OoSC Potential dropout",
-      "generate_report": true,
+      "generate_report": false,
       "ranking_weightage" : 2,
       "improvement_weightage" : 0,
       "source_config": {
@@ -302,17 +362,32 @@
             "cols.oosc_pot_dropout_count": "sum"
           }
         },
-        "ranking_args": {
-          "ranking_type": "percent_ranking",
-          "agg_dict": {
-            "cols.total_students": "sum",
-            "cols.oosc_pot_dropout_count": "sum"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "percent_ranking",
+            "agg_dict": {
+              "cols.total_students": "sum",
+              "cols.oosc_pot_dropout_count": "sum"
+            },
+            "num_col": "cols.oosc_pot_dropout_count",
+            "den_col": "cols.total_students",
+            "sort": true,
+            "ascending": true
           },
-          "ranking_val_desc": "cols.oosc_perc_pot_dropouts",
-          "num_col": "cols.oosc_pot_dropout_count",
-          "den_col": "cols.total_students",
-          "sort": true,
-          "ascending": true
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.oosc_perc_pot_dropouts"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_elm"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_elem_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Elementary OoSC potential dropout report as on ",
@@ -376,17 +451,32 @@
             "cols.oosc_pot_dropout_count": "sum"
           }
         },
-        "ranking_args": {
-          "ranking_type": "percent_ranking",
-          "agg_dict": {
-            "cols.total_students": "sum",
-            "cols.oosc_pot_dropout_count": "sum"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "percent_ranking",
+            "agg_dict": {
+              "cols.total_students": "sum",
+              "cols.oosc_pot_dropout_count": "sum"
+            },
+            "num_col": "cols.oosc_pot_dropout_count",
+            "den_col": "cols.total_students",
+            "sort":true,
+            "ascending": true
           },
-          "ranking_val_desc": "cols.oosc_perc_pot_dropouts",
-          "num_col": "cols.oosc_pot_dropout_count",
-          "den_col": "cols.total_students",
-          "sort":true,
-          "ascending": true
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.oosc_perc_pot_dropouts"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_sec"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_sec_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Secondary OoSC potential dropout report as on ",

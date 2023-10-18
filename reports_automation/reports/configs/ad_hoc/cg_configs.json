@@ -45,6 +45,7 @@
                     }
                 }
             },
+            "custom_process_base_report" : false,
             "include_base_report" : true,
             "summary_sheets_args": [
                 {

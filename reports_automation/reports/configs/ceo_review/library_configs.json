@@ -32,18 +32,33 @@
                     "cols.shelves_not_created": "sum"
                 }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.tot_secs": "sum", 
-                    "cols.shelves_created": "sum", 
-                    "cols.shelves_not_created": "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tot_secs": "sum", 
+                        "cols.shelves_created": "sum", 
+                        "cols.shelves_not_created": "sum"
+                    },
+                    "num_col": "cols.shelves_created",
+                    "den_col": "cols.tot_secs",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_shelves_created",
-                "num_col": "cols.shelves_created",
-                "den_col": "cols.tot_secs",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_shelves_created"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_elem_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Elementary schools Library shelves created report",
@@ -78,18 +93,33 @@
                     "cols.shelves_not_created": "sum"
                 }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.tot_secs": "sum", 
-                    "cols.shelves_created": "sum", 
-                    "cols.shelves_not_created": "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tot_secs": "sum", 
+                        "cols.shelves_created": "sum", 
+                        "cols.shelves_not_created": "sum"
+                    },
+                    "num_col": "cols.shelves_created",
+                    "den_col": "cols.tot_secs",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_shelves_created",
-                "num_col": "cols.shelves_created",
-                "den_col": "cols.tot_secs",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_shelves_created"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_sec_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Secondary schools Library shelves created report",
@@ -145,18 +175,33 @@
                     "cols.sctns_assigning_books": "sum"
                 }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.tot_sections": "sum", 
-                    "cols.sctns_not_assigning_books": "sum", 
-                    "cols.sctns_assigning_books": "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tot_sections": "sum", 
+                        "cols.sctns_not_assigning_books": "sum", 
+                        "cols.sctns_assigning_books": "sum"
+                    },
+                    "num_col": "cols.sctns_assigning_books",
+                    "den_col": "cols.tot_sections",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_sctns_assigning_books",
-                "num_col": "cols.sctns_assigning_books",
-                "den_col": "cols.tot_sections",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_sctns_assigning_books"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_elem_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Elementary schools Library books assigning teachers report",
@@ -191,18 +236,33 @@
                     "cols.sctns_assigning_books": "sum"
                 }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.tot_sections": "sum", 
-                    "cols.sctns_not_assigning_books": "sum", 
-                    "cols.sctns_assigning_books": "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tot_sections": "sum", 
+                        "cols.sctns_not_assigning_books": "sum", 
+                        "cols.sctns_assigning_books": "sum"
+                    },
+                    "num_col": "cols.sctns_assigning_books",
+                    "den_col": "cols.tot_sections",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_sctns_assigning_books",
-                "num_col": "cols.sctns_assigning_books",
-                "den_col": "cols.tot_sections",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_sctns_assigning_books"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_sec_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Secondary schools Library books assigning teachers report",

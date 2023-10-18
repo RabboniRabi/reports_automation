@@ -29,19 +29,34 @@
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.test_completed": "sum", 
-                        "cols.test_in_progress" : "sum",
-                        "cols.test_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.test_completed": "sum", 
+                            "cols.test_in_progress" : "sum",
+                            "cols.test_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.test_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_test_comp",
-                    "num_col": "cols.test_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_test_comp"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary level sports battery test schools report",
@@ -73,19 +88,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.test_completed": "sum", 
-                        "cols.test_in_progress" : "sum",
-                        "cols.test_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.test_completed": "sum", 
+                            "cols.test_in_progress" : "sum",
+                            "cols.test_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.test_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_test_comp",
-                    "num_col": "cols.test_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_test_comp"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary level sports battery test schools report",
@@ -145,25 +175,40 @@
                         "cols.long_jump_comp_stu": "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "average_ranking",
-                    "agg_dict": {
-                        "cols.sports_tot_stu": "sum",
-                        "cols.perc_50m_comp": "mean",
-                        "cols.perc_600m_800m_comp": "mean",
-                        "cols.perc_6_10m_shutt_comp": "mean",
-                        "cols.perc_4kg_shot_comp": "mean",
-                        "cols.perc_long_jump_comp": "mean"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "average_ranking",
+                        "agg_dict": {
+                            "cols.sports_tot_stu": "sum",
+                            "cols.perc_50m_comp": "mean",
+                            "cols.perc_600m_800m_comp": "mean",
+                            "cols.perc_6_10m_shutt_comp": "mean",
+                            "cols.perc_4kg_shot_comp": "mean",
+                            "cols.perc_long_jump_comp": "mean"
+                        },
+                        "avg_cols": [
+                            "cols.perc_50m_comp", 
+                            "cols.perc_600m_800m_comp", 
+                            "cols.perc_6_10m_shutt_comp", 
+                            "cols.perc_4kg_shot_comp", 
+                            "cols.perc_long_jump_comp"],
+                        "sort":true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_avg_overall_comp",
-                    "avg_cols": [
-                        "cols.perc_50m_comp", 
-                        "cols.perc_600m_800m_comp", 
-                        "cols.perc_6_10m_shutt_comp", 
-                        "cols.perc_4kg_shot_comp", 
-                        "cols.perc_long_jump_comp"],
-                    "sort":true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_avg_overall_comp"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary level sports battery test students report",
@@ -211,25 +256,40 @@
                         "cols.long_jump_comp_stu": "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "average_ranking",
-                    "agg_dict": {
-                        "cols.sports_tot_stu": "sum",
-                        "cols.perc_50m_comp": "mean",
-                        "cols.perc_600m_800m_comp": "mean",
-                        "cols.perc_6_10m_shutt_comp": "mean",
-                        "cols.perc_4kg_shot_comp": "mean",
-                        "cols.perc_long_jump_comp": "mean"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "average_ranking",
+                        "agg_dict": {
+                            "cols.sports_tot_stu": "sum",
+                            "cols.perc_50m_comp": "mean",
+                            "cols.perc_600m_800m_comp": "mean",
+                            "cols.perc_6_10m_shutt_comp": "mean",
+                            "cols.perc_4kg_shot_comp": "mean",
+                            "cols.perc_long_jump_comp": "mean"
+                        },
+                        "avg_cols": [
+                            "cols.perc_50m_comp", 
+                            "cols.perc_600m_800m_comp", 
+                            "cols.perc_6_10m_shutt_comp", 
+                            "cols.perc_4kg_shot_comp", 
+                            "cols.perc_long_jump_comp"],
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_avg_overall_comp",
-                    "avg_cols": [
-                        "cols.perc_50m_comp", 
-                        "cols.perc_600m_800m_comp", 
-                        "cols.perc_6_10m_shutt_comp", 
-                        "cols.perc_4kg_shot_comp", 
-                        "cols.perc_long_jump_comp"],
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_avg_overall_comp"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary level sports battery test students report",
@@ -291,19 +351,34 @@
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "multiple_columns_percent_ranking",
-                    "agg_dict": {
-                        "cols.fully_delivered": "sum", 
-                        "cols.part_delivered" : "sum",
-                        "cols.not_delivered" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "multiple_columns_percent_ranking",
+                        "agg_dict": {
+                            "cols.fully_delivered": "sum", 
+                            "cols.part_delivered" : "sum",
+                            "cols.not_delivered" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": ["cols.fully_delivered", "cols.part_delivered"],
+                        "den_col": ["cols.tot_schools"],
+                        "sort":true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_equip_delivered",
-                    "num_col": ["cols.fully_delivered", "cols.part_delivered"],
-                    "den_col": ["cols.tot_schools"],
-                    "sort":true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_equip_delivered"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary level sports equipment delivery status report",
@@ -335,19 +410,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "multiple_columns_percent_ranking",
-                    "agg_dict": {
-                        "cols.fully_delivered": "sum", 
-                        "cols.part_delivered" : "sum",
-                        "cols.not_delivered" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "multiple_columns_percent_ranking",
+                        "agg_dict": {
+                            "cols.fully_delivered": "sum", 
+                            "cols.part_delivered" : "sum",
+                            "cols.not_delivered" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": ["cols.fully_delivered", "cols.part_delivered"],
+                        "den_col": ["cols.tot_schools"],
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_equip_delivered",
-                    "num_col": ["cols.fully_delivered", "cols.part_delivered"],
-                    "den_col": ["cols.tot_schools"],
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_equip_delivered"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary level sports equipment delivery status report",

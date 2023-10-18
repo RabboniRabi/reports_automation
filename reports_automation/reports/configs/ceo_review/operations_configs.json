@@ -31,19 +31,34 @@
                         "cols.up_time_hrs" : "median"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_books",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_books"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools Hi Tech labs uptime report",
@@ -75,19 +90,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_books",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_books"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools Hi Tech labs uptime report",
@@ -140,18 +170,33 @@
                 "grouping_cols" : [],
                 "grouping_agg_dict" : {}
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.fully_mapped": "sum", 
-                    "cols.part_mapped" : "sum",
-                    "cols.tot_schools" : "sum"
+            "ranking_config": {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.fully_mapped": "sum", 
+                        "cols.part_mapped" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "num_col": "cols.fully_mapped",
+                    "den_col": "cols.tot_schools",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_fully_mapped",
-                "num_col": "cols.fully_mapped",
-                "den_col": "cols.tot_schools",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_fully_mapped"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_elem_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Elementary schools PET to school mapping report",
@@ -185,18 +230,33 @@
                     "cols.fully_comp": "sum"
                      }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.fully_mapped": "sum", 
-                    "cols.part_mapped" : "sum",
-                    "cols.tot_schools" : "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.fully_mapped": "sum", 
+                        "cols.part_mapped" : "sum",
+                        "cols.tot_schools" : "sum"
+                    },
+                    "num_col": "cols.fully_mapped",
+                    "den_col": "cols.tot_schools",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_fully_mapped",
-                "num_col": "cols.fully_mapped",
-                "den_col": "cols.tot_schools",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_fully_mapped"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_sec_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Elementary schools PET to school mapping report",

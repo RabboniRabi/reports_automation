@@ -280,7 +280,10 @@ def combine_multiple_datasets(df_data_set:dict, combine_type:str, combine_data_c
             # Get the concatenation config
             concat_config = combine_data_configs[key]
             # Get the data for the key in concat, drop any columns to be dropped config and then concatenate
-            df_data = df_data_set[key].drop(columns=concat_config['cols_to_drop_before_concat'])
+            if 'cols_to_drop_before_concat' in concat_config:
+                df_data = df_data_set[key].drop(columns=concat_config['cols_to_drop_before_concat'])
+            else:
+                df_data = df_data_set[key]
             df_combined = pd.concat([df_combined, df_data], join=concat_config['join']) 
 
     return df_combined

@@ -43,24 +43,39 @@
                         "cols.brd_tot_stu_w_cents" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "number_ranking",
-                    "agg_dict": {
-                        "brd_tot_stu_appr" : "sum",
-                        "brd_tot_stu_pass" : "sum",
-                        "brd_pass_perc" : "mean",
-                        "brd_avg_marks" : "mean",
-                        "brd_marks_30_to_60_count" : "sum",
-                        "brd_marks_60_to_80_count" : "sum",
-                        "brd_marks_grtr_80_count" : "sum",
-                        "cols.brd_maj_grp_cents" : "sum",
-                        "cols.brd_voc_grp_cents" : "sum",
-                        "cols.brd_tot_stu_w_cents" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "number_ranking",
+                        "agg_dict": {
+                            "brd_tot_stu_appr" : "sum",
+                            "brd_tot_stu_pass" : "sum",
+                            "brd_pass_perc" : "mean",
+                            "brd_avg_marks" : "mean",
+                            "brd_marks_30_to_60_count" : "sum",
+                            "brd_marks_60_to_80_count" : "sum",
+                            "brd_marks_grtr_80_count" : "sum",
+                            "cols.brd_maj_grp_cents" : "sum",
+                            "cols.brd_voc_grp_cents" : "sum",
+                            "cols.brd_tot_stu_w_cents" : "sum"
+                        },
+                        "ranking_col": "cols.brd_pass_perc",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.brd_pass_perc",
-                    "ranking_col": "cols.brd_pass_perc",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.brd_pass_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools students 12th board exams result report",
@@ -134,22 +149,38 @@
                         "cols.brd_cents" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "number_ranking",
-                    "agg_dict": {
-                        "brd_tot_stu_appr" : "sum",
-                        "brd_tot_stu_pass" : "sum",
-                        "brd_pass_perc" : "mean",
-                        "brd_avg_marks" : "mean",
-                        "brd_marks_30_to_60_count" : "sum",
-                        "brd_marks_60_to_80_count" : "sum",
-                        "brd_marks_grtr_80_count" : "sum",
-                        "brd_cents" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "number_ranking",
+                        "agg_dict": {
+                            "brd_tot_stu_appr" : "sum",
+                            "brd_tot_stu_pass" : "sum",
+                            "brd_pass_perc" : "mean",
+                            "brd_avg_marks" : "mean",
+                            "brd_marks_30_to_60_count" : "sum",
+                            "brd_marks_60_to_80_count" : "sum",
+                            "brd_marks_grtr_80_count" : "sum",
+                            "brd_cents" : "sum"
+                        },
+                        "ranking_val_desc": "cols.brd_pass_perc",
+                        "ranking_col": "cols.brd_pass_perc",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.brd_pass_perc",
-                    "ranking_col": "cols.brd_pass_perc",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.brd_pass_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools students 10th board exams result report",

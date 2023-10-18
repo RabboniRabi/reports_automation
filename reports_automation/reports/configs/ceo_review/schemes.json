@@ -71,19 +71,34 @@
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_books",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_books"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing text books report",
@@ -115,19 +130,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_not_started" : "sum",
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_completed": "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_books",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_books"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing text books report",
@@ -217,19 +247,34 @@
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_uniforms",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_uniforms"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing uniforms report",
@@ -261,19 +306,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending":false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_uniforms",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending":false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_uniforms"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing uniforms report",
@@ -363,19 +423,34 @@
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort":true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_notebooks",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort":true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_notebooks"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing notebooks report",
@@ -407,19 +482,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_notebooks",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_notebooks"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing notebooks report",
@@ -509,19 +599,34 @@
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_geo_boxes",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_geo_boxes"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing geometry boxes report",
@@ -553,19 +658,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_geo_boxes",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_geo_boxes"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing geometry boxes report",
@@ -655,19 +775,34 @@
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_colour_pencil",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_colour_pencil"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing colour pencil report",
@@ -699,19 +834,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_colour_pencil",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_colour_pencil"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing colour pencil report",
@@ -802,19 +952,34 @@
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_crayons",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_crayons"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing crayons report",
@@ -846,19 +1011,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum", 
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum", 
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort":true,
+                        "ascending":false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_crayons",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort":true,
-                    "ascending":false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_crayons"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing crayons report",
@@ -949,19 +1129,34 @@
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.tot_schools" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_completed": "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.tot_schools" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_atlas",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_atlas"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing atlas report",
@@ -993,19 +1188,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.tot_schools" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_completed": "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.tot_schools" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort":true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_atlas",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort":true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_atlas"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing atlas report",
@@ -1096,19 +1306,34 @@
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.tot_schools" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_completed": "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.tot_schools" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort":true,
+                        "ascending":false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_bag",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort":true,
-                    "ascending":false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_bag"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools issuing bags report",
@@ -1140,19 +1365,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.tot_schools" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_completed": "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.tot_schools" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_completed": "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_bag",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_bag"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing bags report",
@@ -1227,19 +1467,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum",
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_cycle",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_cycle"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing cycles report",
@@ -1314,19 +1569,34 @@
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {}
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.scheme_completed": "sum",
-                        "cols.scheme_in_progress" : "sum",
-                        "cols.scheme_not_started" : "sum",
-                        "cols.tot_schools" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.scheme_completed": "sum",
+                            "cols.scheme_in_progress" : "sum",
+                            "cols.scheme_not_started" : "sum",
+                            "cols.tot_schools" : "sum"
+                        },
+                        "num_col": "cols.scheme_completed",
+                        "den_col": "cols.tot_schools",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_schools_issued_laptop",
-                    "num_col": "cols.scheme_completed",
-                    "den_col": "cols.tot_schools",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_schools_issued_laptop"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools issuing laptops report",

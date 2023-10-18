@@ -31,17 +31,32 @@
                     "cols.total": "sum"
                 }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.screened": "sum", 
-                    "cols.total": "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.screened": "sum", 
+                        "cols.total": "sum"
+                    },
+                    "num_col": "cols.screened",
+                    "den_col": "cols.total",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_screened",
-                "num_col": "cols.screened",
-                "den_col": "cols.total",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_screened"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_elem_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Elementary Students' health screening report",
@@ -74,17 +89,32 @@
                     "cols.total": "sum"
                 }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.screened": "sum", 
-                    "cols.total": "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.screened": "sum", 
+                        "cols.total": "sum"
+                    },
+                    "num_col": "cols.screened",
+                    "den_col": "cols.total",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_screened",
-                "num_col": "cols.screened",
-                "den_col": "cols.total",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_screened"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_sec_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Secondary Students' health screening report",
@@ -137,17 +167,32 @@
                     "cols.fully_comp": "sum"
                     }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.total" : "sum", 
-                    "cols.fully_comp": "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.total" : "sum", 
+                        "cols.fully_comp": "sum"
+                    },
+                    "num_col": "cols.fully_comp",
+                    "den_col": "cols.total",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_comp",
-                "num_col": "cols.fully_comp",
-                "den_col": "cols.total",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_comp"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_elem_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Elementary Schools' health screening report",
@@ -180,18 +225,33 @@
                     "cols.fully_comp": "sum"
                     }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.total" : "sum", 
-                    "cols.fully_comp": "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.total" : "sum", 
+                        "cols.fully_comp": "sum"
+                    },
+                    "num_col": "cols.fully_comp",
+                    "den_col": "cols.total",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_comp",
-                "num_col": "cols.fully_comp",
-                "den_col": "cols.total",
-                "sort": true,
-                "ascending": false
-                },
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_comp"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_sec_rank",
+                        "show_rank_val" : false
+                    }
+                }
+            },
             "format_config" : {
                 "heading" : "Secondary Schools' health screening report",
                 "subtotal_outlines_dict" : {

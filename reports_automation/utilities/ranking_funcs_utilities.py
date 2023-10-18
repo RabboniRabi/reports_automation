@@ -40,7 +40,6 @@ def percent_ranking(df, ranking_args_dict):
     """
 
     # Get the values from the ranking arguments dictionary
-    ranking_val_desc = ranking_args_dict['ranking_val_desc']
     num_col = ranking_args_dict['num_col']
     den_col = ranking_args_dict['den_col']
 
@@ -54,7 +53,7 @@ def percent_ranking(df, ranking_args_dict):
     return df
 
 
-def percent_ranking_agg(df, group_levels, ranking_args_dict):
+def percent_ranking_agg(df, ranking_args_dict):
     """
     Function similar to percent_ranking to rank data based on percentage.
     (value of numerator is aggregate sum of given list of numerator columns. Similar for denominator)
@@ -63,8 +62,6 @@ def percent_ranking_agg(df, group_levels, ranking_args_dict):
     -----------
     df: Pandas DataFrame
         The data to be ranked
-    group_levels: list
-        The list of columns to group by
     ranking_args_dict: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {
@@ -86,7 +83,6 @@ def percent_ranking_agg(df, group_levels, ranking_args_dict):
 
     # Get the values from the ranking arguments dictionary
     agg_dict = ranking_args_dict['agg_dict']
-    ranking_val_desc = ranking_args_dict['ranking_val_desc']
     num_cols = ranking_args_dict['num_col']
     den_cols = ranking_args_dict['den_col']    
 
@@ -109,7 +105,7 @@ def percent_ranking_agg(df, group_levels, ranking_args_dict):
     return df
 
 
-def avg_ranking(df, group_levels, ranking_args_dict):
+def avg_ranking(df, ranking_args_dict):
     """
     Function to rank data based on result of averaging a list of values
     
@@ -117,8 +113,6 @@ def avg_ranking(df, group_levels, ranking_args_dict):
     -----------
     df: Pandas DataFrame
         The data to be ranked
-    group_levels: list
-        The list of columns to group by
     ranking_args_dict: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {
@@ -138,10 +132,7 @@ def avg_ranking(df, group_levels, ranking_args_dict):
     """
     # Get the values from the ranking arguments dictionary
     agg_dict = ranking_args_dict['agg_dict']
-    ranking_val_desc = ranking_args_dict['ranking_val_desc']
     avg_cols = ranking_args_dict['avg_cols']
-
-
 
     # Calculate average of given columns
     for i in range(0, len(avg_cols)):
@@ -159,7 +150,7 @@ def avg_ranking(df, group_levels, ranking_args_dict):
 
     return df
 
-def number_ranking(df, group_levels, ranking_args_dict):
+def number_ranking(df, ranking_args_dict):
     """
     Function to rank data based on value given in a specified column.
 
@@ -167,8 +158,6 @@ def number_ranking(df, group_levels, ranking_args_dict):
     -----------
     df: Pandas DataFrame
         The data to be ranked
-    group_levels: list
-        The list of columns to group by
     ranking_args_dict: dict
         A dictionary of parameter name - parameter value key-value pairs to be used for calculating the rank
         Eg: ranking_args_dict = {

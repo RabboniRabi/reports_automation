@@ -1,27 +1,30 @@
 {
-  "report_configs" : [
+  "report_configs": [
     {
       "report_name": "student_teacher_ratio",
       "report_code": "STU_TCH_RATIO",
       "report_category": "class",
       "report_desc": "Student teacher ratio report",
       "generate_report": false,
-      "ranking_weightage" : 0,
-      "improvement_weightage" : 0,
+      "ranking_weightage": 0,
+      "improvement_weightage": 0,
       "source_config": {
-        "query_file_name" : "student_teacher_ratio.sql",
-        "db" : "tn_schools_db"
+        "query_file_name": "student_teacher_ratio.sql",
+        "db": "tn_schools_db"
       },
       "pre_process_brc_merge": false,
-      "brc_merge_config" : {
-        "join_on" : ["cols.block_name", "cols.udise_col"],
-        "merge_type" : "left"
+      "brc_merge_config": {
+        "join_on": [
+          "cols.block_name",
+          "cols.udise_col"
+        ],
+        "merge_type": "left"
       },
-      "post_process_brc_merge" : false,
-      "elementary_report" : {
+      "post_process_brc_merge": false,
+      "elementary_report": {
         "generate_report": true,
-        "ranking_weightage" : 0,
-        "improvement_weightage" : 0,
+        "ranking_weightage": 0,
+        "improvement_weightage": 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -32,15 +35,30 @@
             "cols.student_teacher_ratio": "mean"
           }
         },
-        "ranking_args": {
-          "ranking_type": "number_ranking",
-          "agg_dict": {
-            "cols.student_teacher_ratio": "mean"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "number_ranking",
+            "agg_dict": {
+              "cols.student_teacher_ratio": "mean"
+            },
+            "ranking_col": "cols.student_teacher_ratio",
+            "sort": true,
+            "ascending": true
           },
-          "ranking_val_desc": "cols.student_teacher_ratio",
-          "ranking_col": "cols.student_teacher_ratio",
-          "sort": true,
-          "ascending": true
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.student_teacher_ratio"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_elm"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_elem_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Elementary level student teacher ratio ranking report",
@@ -56,51 +74,79 @@
               "cols.deo_name_elm": ""
             }
           },
-          "format_dicts" : [
+          "format_dicts": [
             {
-                "columns" : ["cols.student_teacher_ratio"],
-                "format" : {"num_format": "0.00"}
+              "columns": [
+                "cols.student_teacher_ratio"
+              ],
+              "format": {
+                "num_format": "0.00"
+              }
             }
           ]
         }
       },
       "secondary_report": {
         "generate_report": true,
-        "ranking_weightage" : 0,
-        "improvement_weightage" : 0,
-        "un_ranked_report_args" : {
+        "ranking_weightage": 0,
+        "improvement_weightage": 0,
+        "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
-            "cols.deo_name_sec", "cols.block_name"
+            "cols.deo_name_sec",
+            "cols.block_name"
           ],
           "grouping_agg_dict": {
             "cols.student_teacher_ratio": "mean"
           }
         },
-        "ranking_args": {
-          "ranking_type" : "number_ranking",
-          "agg_dict": {
-            "cols.student_teacher_ratio": "mean"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "number_ranking",
+            "agg_dict": {
+              "cols.student_teacher_ratio": "mean"
+            },
+            "ranking_col": "cols.student_teacher_ratio",
+            "sort": true,
+            "ascending": true
           },
-          "ranking_val_desc": "cols.student_teacher_ratio",
-          "ranking_col": "cols.student_teacher_ratio",
-          "sort": true,
-          "ascending": true
-        },
-        "format_config" : {
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.student_teacher_ratio"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_sec"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_sec_rank",
+                "show_rank_val" : false
+            }
+        }
+      },
+        "format_config": {
           "heading": "Secondary level student teacher ratio ranking report",
-          "subtotal_outlines_dict" : {
-            "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
-            "agg_cols_func_dict" : {
+          "subtotal_outlines_dict": {
+            "level_subtotal_cols_dict": {
+              "1": "cols.deo_name_sec"
+            },
+            "agg_cols_func_dict": {
               "cols.student_teacher_ratio": "mean",
               "cols.deo_sec_rank": "mean"
             },
-            "text_append_dict" : {"cols.deo_name_sec": ""}
+            "text_append_dict": {
+              "cols.deo_name_sec": ""
+            }
           },
-          "format_dicts" : [
+          "format_dicts": [
             {
-                "columns" : ["cols.student_teacher_ratio"],
-                "format" : {"num_format": "0.00"}
+              "columns": [
+                "cols.student_teacher_ratio"
+              ],
+              "format": {
+                "num_format": "0.00"
+              }
             }
           ]
         }
@@ -112,23 +158,26 @@
       "report_category": "class",
       "report_desc": "Sections without class teacher report",
       "generate_report": false,
-      "ranking_weightage" : 0,
-      "improvement_weightage" : 0,
+      "ranking_weightage": 0,
+      "improvement_weightage": 0,
       "source_config": {
-        "source_file_name":"Class-teacher-assigned-rpt.xlsx",
-        "source_sheet_name" : "Report",
-        "skip_rows" : 4
+        "source_file_name": "Class-teacher-assigned-rpt.xlsx",
+        "source_sheet_name": "Report",
+        "skip_rows": 4
       },
       "pre_process_brc_merge": true,
-      "brc_merge_config" : {
-        "join_on" : ["cols.block_name", "cols.udise_col"],
-        "merge_type" : "left"
+      "brc_merge_config": {
+        "join_on": [
+          "cols.block_name",
+          "cols.udise_col"
+        ],
+        "merge_type": "left"
       },
-      "post_process_brc_merge" : false,
-      "elementary_report" : {
+      "post_process_brc_merge": false,
+      "elementary_report": {
         "generate_report": true,
-        "ranking_weightage" : 0,
-        "improvement_weightage" : 0,
+        "ranking_weightage": 0,
+        "improvement_weightage": 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -140,24 +189,30 @@
             "cols.sections_without_teacher": "sum"
           }
         },
-        "ranking_args": {},
-        "format_config" : {
-          "heading" : "Elementary school sections without a class teacher report",
-          "subtotal_outlines_dict" : {
-            "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-            "agg_cols_func_dict" : {
-              "cols.tot_sections" : "sum",
+        "ranking_config" : {
+          "ranking_args": {}
+        },
+        "format_config": {
+          "heading": "Elementary school sections without a class teacher report",
+          "subtotal_outlines_dict": {
+            "level_subtotal_cols_dict": {
+              "1": "cols.deo_name_elm"
+            },
+            "agg_cols_func_dict": {
+              "cols.tot_sections": "sum",
               "cols.sections_without_teacher": "sum"
             },
-            "text_append_dict" : {"cols.deo_name_elm": ""}
+            "text_append_dict": {
+              "cols.deo_name_elm": ""
+            }
           },
-          "format_dicts" : []
+          "format_dicts": []
         }
       },
-      "secondary_report" : {
+      "secondary_report": {
         "generate_report": true,
-        "ranking_weightage" : 0,
-        "improvement_weightage" : 0,
+        "ranking_weightage": 0,
+        "improvement_weightage": 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -165,25 +220,30 @@
             "cols.block_name"
           ],
           "grouping_agg_dict": {
-            "cols.tot_sections" : "sum",
+            "cols.tot_sections": "sum",
             "cols.sections_without_teacher": "sum"
           }
         },
-        "ranking_args": {},
-        "format_config" : {
-          "heading" : "Secondary school sections without a class teacher report",
-          "subtotal_outlines_dict" : {
-            "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
-            "agg_cols_func_dict" : {
-              "cols.tot_sections" : "sum",
+        "ranking_config" : {
+          "ranking_args": {}
+        },
+        "format_config": {
+          "heading": "Secondary school sections without a class teacher report",
+          "subtotal_outlines_dict": {
+            "level_subtotal_cols_dict": {
+              "1": "cols.deo_name_elm"
+            },
+            "agg_cols_func_dict": {
+              "cols.tot_sections": "sum",
               "cols.class_without_teacher": "sum"
             },
-            "text_append_dict" : {"cols.deo_name_elm": ""}
+            "text_append_dict": {
+              "cols.deo_name_elm": ""
+            }
           },
-          "format_dicts" : []
+          "format_dicts": []
         }
       }
     }
-
   ]
 }

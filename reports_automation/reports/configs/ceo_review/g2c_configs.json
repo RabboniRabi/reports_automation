@@ -35,21 +35,36 @@
                     "cols.tot_pnd_lessr_15_days" : "sum"
                 }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.tot_app_rcvd": "sum",
-                    "cols.tot_aprvd" : "sum",
-                    "cols.tot_pnding" : "sum",
-                    "cols.tot_rjctd" : "sum",
-                    "cols.tot_pnd_grtr_15_days" : "sum",
-                    "cols.tot_pnd_lessr_15_days" : "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tot_app_rcvd": "sum",
+                        "cols.tot_aprvd" : "sum",
+                        "cols.tot_pnding" : "sum",
+                        "cols.tot_rjctd" : "sum",
+                        "cols.tot_pnd_grtr_15_days" : "sum",
+                        "cols.tot_pnd_lessr_15_days" : "sum"
+                    },
+                    "num_col": "cols.tot_pnd_grtr_15_days",
+                    "den_col": "cols.tot_app_rcvd",
+                    "sort": true,
+                    "ascending": true
                 },
-                "ranking_val_desc": "cols.perc_apps_grtr_15_days",
-                "num_col": "cols.tot_pnd_grtr_15_days",
-                "den_col": "cols.tot_app_rcvd",
-                "sort": true,
-                "ascending": true
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_apps_grtr_15_days"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_elem_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Elementary level % of Pending G2C applications greater than 15 days",
@@ -90,21 +105,36 @@
                     "cols.tot_pnd_lessr_15_days" : "sum"
                 }
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.tot_app_rcvd": "sum",
-                    "cols.tot_aprvd" : "sum",
-                    "cols.tot_pnding" : "sum",
-                    "cols.tot_rjctd" : "sum",
-                    "cols.tot_pnd_grtr_15_days" : "sum",
-                    "cols.tot_pnd_lessr_15_days" : "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.tot_app_rcvd": "sum",
+                        "cols.tot_aprvd" : "sum",
+                        "cols.tot_pnding" : "sum",
+                        "cols.tot_rjctd" : "sum",
+                        "cols.tot_pnd_grtr_15_days" : "sum",
+                        "cols.tot_pnd_lessr_15_days" : "sum"
+                    },
+                    "num_col": "cols.tot_pnd_grtr_15_days",
+                    "den_col": "cols.tot_app_rcvd",
+                    "sort": true,
+                    "ascending": true
                 },
-                "ranking_val_desc": "cols.perc_apps_grtr_15_days",
-                "num_col": "cols.tot_pnd_grtr_15_days",
-                "den_col": "cols.tot_app_rcvd",
-                "sort": true,
-                "ascending": true
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_apps_grtr_15_days"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_sec_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "heading" : "Secondary level % of Pending G2C applications greater than 15 days",

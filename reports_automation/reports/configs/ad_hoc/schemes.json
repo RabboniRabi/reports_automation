@@ -1,0 +1,888 @@
+{
+    "report_configs": [
+
+        {
+            "report_name": "schools_issuing_textbooks",
+            "report_code" : "SCH_ISS_TXT_BOOKS",
+            "report_category": "Schemes",
+            "report_desc": "Schools issuing text books report",
+            "generate_report": true,
+            "custom_data_fetch" : false,
+            "source_config" : {
+                "sources" : [
+                    {
+                        "source_name" : "text_books_high_higher_sec_govt",
+                        "source_file_name" : "TB-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "text_books_high_higher_sec_aided",
+                        "source_file_name" : "TB-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "text_books_pri_mid_govt",
+                        "source_file_name" : "TB-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "text_books_pri_mid_aided",
+                        "source_file_name" : "TB-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "custom_data_combine" : false,
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "text_books_high_higher_sec_govt" : {
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
+                    },
+                    "text_books_high_higher_sec_aided" : {
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
+                    },
+                    "text_books_pri_mid_govt" : {
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
+                    },
+                    "text_books_pri_mid_aided" : {
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
+                    }
+                }
+            }, 
+            "base_rpt_config" : {
+                "custom_process_base_report" : true,
+                "proc_base_rpt_module_name" :  "schemes",
+                "proc_base_rpt_method_name" :  "process_base_report", 
+                "include_base_report" : true
+            },       
+            "summary_sheets_args": [
+                {
+                    "summary_sheet_name" : "District level - Schools issuing textbooks",
+                    "summary_sheet_code" : "dist_lvl_SCH_ISS_TXT",
+                    "custom_summary" : true,
+                    "custom_summary_config" : {
+                        "module_name" : "schemes",
+                        "method_name" : "data_summary"
+                    },
+                    "grouping_levels" : ["cols.district_name"],
+                    "agg_dict": {
+                        "cols.scheme_comp": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum"
+                        },
+                    "ranking_config": {
+                        "ranking_args" : {
+                            "ranking_type" : "percent_ranking",
+                            "num_col": "cols.scheme_comp",
+                            "den_col": "cols.udise_col",
+                            "sort": true,
+                            "ascending": false,
+                            "show_rank_col" : false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc": "cols.perc_schools_issued_books"
+                        }
+                    },
+                    "format_config" : {
+                        "heading" : "Schools issuing textbook - District wise report",
+                        "cols_to_drop": [],
+                        "cols_rename_dict" : {
+                            "cols.udise_col" : "cols.tot_schools",
+                            "cols.scheme_comp": "cols.scheme_completed"
+                        },
+                        "format_dicts" : [
+                            {
+                                "description" : "Apply percentage formatting",
+                                "columns" : ["cols.perc_schools_issued_books"],
+                                "format" : {"num_format": "0.00%"}
+                            },
+                            {
+                                "description" : "Apply 3 colour gradient heatmap",
+                                "columns" : ["cols.perc_schools_issued_books"],
+                                "conditional_format_flag" : true,
+                                "conditional_format" : {"type": "3_color_scale"}
+                              }
+                        ]
+                    }
+                    
+                }
+            ]
+        },
+        {
+            "report_name": "schools_issuing_uniforms",
+            "report_code" : "SCH_ISS_UNFRM",
+            "report_category": "Schemes",
+            "report_desc": "Schools issuing uniforms report",
+            "generate_report": true,
+            "custom_data_fetch" : false,
+            "source_config" : {
+                "sources" : [
+                    {
+                        "source_name" : "uniforms_high_higher_sec_govt",
+                        "source_file_name" : "Uniform-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "uniforms_high_higher_sec_aided",
+                        "source_file_name" : "Uniform-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "uniforms_pri_mid_govt",
+                        "source_file_name" : "Uniform-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "uniforms_pri_mid_aided",
+                        "source_file_name" : "Uniform-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "custom_data_combine" : false,
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "uniforms_high_higher_sec_govt" : {
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
+                    },
+                    "uniforms_high_higher_sec_aided" : {
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
+                    },
+                    "uniforms_pri_mid_govt" : {
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
+                    },
+                    "uniforms_pri_mid_aided" : {
+                        "join" : "outer",
+                        "cols_to_drop_before_concat" : []
+                    }
+                }
+            },
+            "base_rpt_config" : {
+                "custom_process_base_report" : true,
+                "proc_base_rpt_module_name" :  "schemes",
+                "proc_base_rpt_method_name" :  "process_base_report", 
+                "include_base_report" : true
+            },       
+            "summary_sheets_args": [
+                {
+                    "summary_sheet_name" : "District level - Schools issuing uniforms",
+                    "summary_sheet_code" : "DIST_LVL_SCH_ISS_UNI",
+                    "custom_summary" : true,
+                    "custom_summary_config" : {
+                        "module_name" : "schemes",
+                        "method_name" : "data_summary"
+                    },
+                    "grouping_levels" : ["cols.district_name"],
+                    "agg_dict": {
+                        "cols.scheme_comp": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum"
+                        },
+                    "ranking_config": {
+                        "ranking_args" : {
+                            "ranking_type" : "percent_ranking",
+                            "num_col": "cols.scheme_comp",
+                            "den_col": "cols.udise_col",
+                            "sort": true,
+                            "ascending": false,
+                            "show_rank_col" : false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc": "cols.perc_schools_issued_books"
+                        }
+                    },
+                    "format_config" : {
+                        "heading" : "Schools issuing uniforms - District wise report",
+                        "cols_to_drop": [],
+                        "cols_rename_dict" : {
+                            "cols.udise_col" : "cols.tot_schools",
+                            "cols.scheme_comp": "cols.scheme_completed"
+                        },
+                        "format_dicts" : [
+                            {
+                                "description" : "Apply percentage formatting",
+                                "columns" : ["cols.perc_schools_issued_books"],
+                                "format" : {"num_format": "0.00%"}
+                            },
+                            {
+                                "description" : "Apply 3 colour gradient heatmap",
+                                "columns" : ["cols.perc_schools_issued_books"],
+                                "conditional_format_flag" : true,
+                                "conditional_format" : {"type": "3_color_scale"}
+                              }
+                        ]
+                    }
+                    
+                }
+            ]
+        },
+        {
+            "report_name": "schools_issuing_notebooks",
+            "report_code" : "SCH_ISS_NTBK",
+            "report_category": "Schemes",
+            "report_desc": "Schools issuing notebooks report",
+            "generate_report": true,
+            "custom_data_fetch" : false,
+            "source_config" : {
+                "sources" : [
+                    {
+                        "source_name" : "nb_high_higher_sec_govt",
+                        "source_file_name" : "NB-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "nb_high_higher_sec_aided",
+                        "source_file_name" : "NB-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "nb_pri_mid_govt",
+                        "source_file_name" : "NB-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "nb_pri_mid_aided",
+                        "source_file_name" : "NB-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "custom_data_combine" : false,
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "nb_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "nb_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "nb_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "nb_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
+            },
+            "base_rpt_config" : {
+                "custom_process_base_report" : true,
+                "proc_base_rpt_module_name" :  "schemes",
+                "proc_base_rpt_method_name" :  "process_base_report", 
+                "include_base_report" : true
+            },       
+            "summary_sheets_args": [
+                {
+                    "summary_sheet_name" : "District level - Schools issuing notebooks",
+                    "summary_sheet_code" : "DIST_LVL_SCH_ISS_NTBK",
+                    "custom_summary" : true,
+                    "custom_summary_config" : {
+                        "module_name" : "schemes",
+                        "method_name" : "data_summary"
+                    },
+                    "grouping_levels" : ["cols.district_name"],
+                    "agg_dict": {
+                        "cols.scheme_comp": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum"
+                        },
+                    "ranking_config": {
+                        "ranking_args" : {
+                            "ranking_type" : "percent_ranking",
+                            "num_col": "cols.scheme_comp",
+                            "den_col": "cols.udise_col",
+                            "sort": true,
+                            "ascending": false,
+                            "show_rank_col" : false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc": "cols.perc_schools_issued_notebooks"
+                        }
+                    },
+                    "format_config" : {
+                        "heading" : "Schools issuing notebook - District wise report",
+                        "cols_to_drop": [],
+                        "cols_rename_dict" : {
+                            "cols.udise_col" : "cols.tot_schools",
+                            "cols.scheme_comp": "cols.scheme_completed"
+                        },
+                        "format_dicts" : [
+                            {
+                                "description" : "Apply percentage formatting",
+                                "columns" : ["cols.perc_schools_issued_notebooks"],
+                                "format" : {"num_format": "0.00%"}
+                            },
+                            {
+                                "description" : "Apply 3 colour gradient heatmap",
+                                "columns" : ["cols.perc_schools_issued_notebooks"],
+                                "conditional_format_flag" : true,
+                                "conditional_format" : {"type": "3_color_scale"}
+                              }
+                        ]
+                    }
+                    
+                }
+            ]
+        },
+        {
+            "report_name": "schools_issuing_geometry_boxes",
+            "report_code" : "SCH_ISS_GEOBX",
+            "report_category": "Schemes",
+            "report_desc": "Schools issuing geometry boxes report",
+            "generate_report": true,
+            "custom_data_fetch" : false,
+            "source_config" : {
+                "sources" : [
+                    {
+                        "source_name" : "geo_box_high_higher_sec_govt",
+                        "source_file_name" : "Geo-Box-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "geo_box_high_higher_sec_aided",
+                        "source_file_name" : "Geo-Box-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "geo_box_pri_mid_govt",
+                        "source_file_name" : "Geo-Box-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "geo_box_pri_mid_aided",
+                        "source_file_name" : "Geo-Box-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "custom_data_combine" : false,
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "geo_box_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "geo_box_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "geo_box_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "geo_box_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
+            },
+            "base_rpt_config" : {
+                "custom_process_base_report" : true,
+                "proc_base_rpt_module_name" :  "schemes",
+                "proc_base_rpt_method_name" :  "process_base_report", 
+                "include_base_report" : true
+            },       
+            "summary_sheets_args": [
+                {
+                    "summary_sheet_name" : "District level - Schools issuing geometry box",
+                    "summary_sheet_code" : "DIST_LVL_SCH_ISS_GOEBX",
+                    "custom_summary" : true,
+                    "custom_summary_config" : {
+                        "module_name" : "schemes",
+                        "method_name" : "data_summary"
+                    },
+                    "grouping_levels" : ["cols.district_name"],
+                    "agg_dict": {
+                        "cols.scheme_comp": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum"
+                        },
+                    "ranking_config": {
+                        "ranking_args" : {
+                            "ranking_type" : "percent_ranking",
+                            "num_col": "cols.scheme_comp",
+                            "den_col": "cols.udise_col",
+                            "sort": true,
+                            "ascending": false,
+                            "show_rank_col" : false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc": "cols.perc_schools_issued_geo_boxes"
+                        }
+                    },
+                    "format_config" : {
+                        "heading" : "Schools issuing geometry boxes - District wise report",
+                        "cols_to_drop": [],
+                        "cols_rename_dict" : {
+                            "cols.udise_col" : "cols.tot_schools",
+                            "cols.scheme_comp": "cols.scheme_completed"
+                        },
+                        "format_dicts" : [
+                            {
+                                "description" : "Apply percentage formatting",
+                                "columns" : ["cols.perc_schools_issued_geo_boxes"],
+                                "format" : {"num_format": "0.00%"}
+                            },
+                            {
+                                "description" : "Apply 3 colour gradient heatmap",
+                                "columns" : ["cols.perc_schools_issued_geo_boxes"],
+                                "conditional_format_flag" : true,
+                                "conditional_format" : {"type": "3_color_scale"}
+                              }
+                        ]
+                    }
+                    
+                }
+            ]
+        },
+        {
+            "report_name": "schools_issuing_colour_pencil",
+            "report_code" : "SCH_ISS_CPENCL",
+            "report_category": "Schemes",
+            "report_desc": "Schools issuing colour pencil report",
+            "generate_report": true,
+            "custom_data_fetch" : false,
+            "source_config" : {
+                "sources" : [
+                    {
+                        "source_name" : "colour_penc_high_higher_sec_govt",
+                        "source_file_name" : "Color-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "colour_penc_high_higher_sec_aided",
+                        "source_file_name" : "Color-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "colour_penc_pri_mid_govt",
+                        "source_file_name" : "Color-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "colour_penc_pri_mid_aided",
+                        "source_file_name" : "Color-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "custom_data_combine" : false,
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "colour_penc_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "colour_penc_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "colour_penc_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "colour_penc_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
+            },
+            "base_rpt_config" : {
+                "custom_process_base_report" : true,
+                "proc_base_rpt_module_name" :  "schemes",
+                "proc_base_rpt_method_name" :  "process_base_report", 
+                "include_base_report" : true
+            },       
+            "summary_sheets_args": [
+                {
+                    "summary_sheet_name" : "District level - Schools issuing colour pencil",
+                    "summary_sheet_code" : "DIST_LVL_SCH_ISS_CPENC",
+                    "custom_summary" : true,
+                    "custom_summary_config" : {
+                        "module_name" : "schemes",
+                        "method_name" : "data_summary"
+                    },
+                    "grouping_levels" : ["cols.district_name"],
+                    "agg_dict": {
+                        "cols.scheme_comp": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum"
+                        },
+                    "ranking_config": {
+                        "ranking_args" : {
+                            "ranking_type" : "percent_ranking",
+                            "num_col": "cols.scheme_comp",
+                            "den_col": "cols.udise_col",
+                            "sort": true,
+                            "ascending": false,
+                            "show_rank_col" : false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc": "cols.perc_schools_issued_colour_pencil"
+                        }
+                    },
+                    "format_config" : {
+                        "heading" : "Schools issuing colour pencil - District wise report",
+                        "cols_to_drop": [],
+                        "cols_rename_dict" : {
+                            "cols.udise_col" : "cols.tot_schools",
+                            "cols.scheme_comp": "cols.scheme_completed"
+                        },
+                        "format_dicts" : [
+                            {
+                                "description" : "Apply percentage formatting",
+                                "columns" : ["cols.perc_schools_issued_colour_pencil"],
+                                "format" : {"num_format": "0.00%"}
+                            },
+                            {
+                                "description" : "Apply 3 colour gradient heatmap",
+                                "columns" : ["cols.perc_schools_issued_colour_pencil"],
+                                "conditional_format_flag" : true,
+                                "conditional_format" : {"type": "3_color_scale"}
+                              }
+                        ]
+                    }
+                    
+                }
+            ]
+        },
+        {
+            "report_name": "schools_issuing_crayons",
+            "report_code" : "SCH_ISS_CRAY",
+            "report_category": "Schemes",
+            "report_desc": "Schools issuing crayons report",
+            "generate_report": true,
+            "custom_data_fetch" : false,
+            "source_config" : {
+                "sources": [
+                    {
+                        "source_name": "crayons_high_higher_sec_govt",
+                        "source_file_name" : "Crayons-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name": "crayons_high_higher_sec_aided",
+                        "source_file_name" : "Crayons-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name": "crayons_pri_mid_govt",
+                        "source_file_name" : "Crayons-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name": "crayons_pri_mid_aided",
+                        "source_file_name": "Crayons-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name": "Aided",
+                        "skip_rows": 0
+                    }
+                ],
+                "custom_data_combine" : false,
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "crayons_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "crayons_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "crayons_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "crayons_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                 }
+
+            },
+            "base_rpt_config" : {
+                "custom_process_base_report" : true,
+                "proc_base_rpt_module_name" :  "schemes",
+                "proc_base_rpt_method_name" :  "process_base_report", 
+                "include_base_report" : true
+            },       
+            "summary_sheets_args": [
+                {
+                    "summary_sheet_name" : "District level - Schools issuing crayons",
+                    "summary_sheet_code" : "DIST_LVL_SCH_ISS_CRAY",
+                    "custom_summary" : true,
+                    "custom_summary_config" : {
+                        "module_name" : "schemes",
+                        "method_name" : "data_summary"
+                    },
+                    "grouping_levels" : ["cols.district_name"],
+                    "agg_dict": {
+                        "cols.scheme_comp": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum"
+                        },
+                    "ranking_config": {
+                        "ranking_args" : {
+                            "ranking_type" : "percent_ranking",
+                            "num_col": "cols.scheme_comp",
+                            "den_col": "cols.udise_col",
+                            "sort": true,
+                            "ascending": false,
+                            "show_rank_col" : false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc": "cols.perc_schools_issued_crayons"
+                        }
+                    },
+                    "format_config" : {
+                        "heading" : "Schools issuing crayons - District wise report",
+                        "cols_to_drop": [],
+                        "cols_rename_dict" : {
+                            "cols.udise_col" : "cols.tot_schools",
+                            "cols.scheme_comp": "cols.scheme_completed"
+                        },
+                        "format_dicts" : [
+                            {
+                                "description" : "Apply percentage formatting",
+                                "columns" : ["cols.perc_schools_issued_crayons"],
+                                "format" : {"num_format": "0.00%"}
+                            },
+                            {
+                                "description" : "Apply 3 colour gradient heatmap",
+                                "columns" : ["cols.perc_schools_issued_crayons"],
+                                "conditional_format_flag" : true,
+                                "conditional_format" : {"type": "3_color_scale"}
+                              }
+                        ]
+                    }
+                    
+                }
+            ]
+        },
+        {
+            "report_name": "schools_issuing_atlas",
+            "report_code" : "SCH_ISS_ATLS",
+            "report_category": "Schemes",
+            "report_desc": "Schools issuing atlas report",
+            "generate_report": true,
+            "custom_data_fetch" : false,
+            "source_config" : {
+                "sources": [
+                    {
+                        "source_name" : "atlas_high_higher_sec_govt",
+                        "source_file_name" : "Atlas-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "atlas_high_higher_sec_aided",
+                        "source_file_name" : "Atlas-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "atlas_pri_mid_govt",
+                        "source_file_name" : "Atlas-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "atlas_pri_mid_aided",
+                        "source_file_name" : "Atlas-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "custom_data_combine" : false,
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "atlas_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "atlas_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "atlas_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "atlas_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
+
+            },
+            "base_rpt_config" : {
+                "custom_process_base_report" : true,
+                "proc_base_rpt_module_name" :  "schemes",
+                "proc_base_rpt_method_name" :  "process_base_report", 
+                "include_base_report" : true
+            },       
+            "summary_sheets_args": [
+                {
+                    "summary_sheet_name" : "District level - Schools issuing atlas",
+                    "summary_sheet_code" : "DIST_LVL_SCH_ISS_ATLS",
+                    "custom_summary" : true,
+                    "custom_summary_config" : {
+                        "module_name" : "schemes",
+                        "method_name" : "data_summary"
+                    },
+                    "grouping_levels" : ["cols.district_name"],
+                    "agg_dict": {
+                        "cols.scheme_comp": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum"
+                        },
+                    "ranking_config": {
+                        "ranking_args" : {
+                            "ranking_type" : "percent_ranking",
+                            "num_col": "cols.scheme_comp",
+                            "den_col": "cols.udise_col",
+                            "sort": true,
+                            "ascending": false,
+                            "show_rank_col" : false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc": "cols.perc_schools_issued_atlas"
+                        }
+                    },
+                    "format_config" : {
+                        "heading" : "Schools issuing atlas - District wise report",
+                        "cols_to_drop": [],
+                        "cols_rename_dict" : {
+                            "cols.udise_col" : "cols.tot_schools",
+                            "cols.scheme_comp": "cols.scheme_completed"
+                        },
+                        "format_dicts" : [
+                            {
+                                "description" : "Apply percentage formatting",
+                                "columns" : ["cols.perc_schools_issued_atlas"],
+                                "format" : {"num_format": "0.00%"}
+                            },
+                            {
+                                "description" : "Apply 3 colour gradient heatmap",
+                                "columns" : ["cols.perc_schools_issued_atlas"],
+                                "conditional_format_flag" : true,
+                                "conditional_format" : {"type": "3_color_scale"}
+                              }
+                        ]
+                    }
+                    
+                }
+            ]
+        },
+        {
+            "report_name": "schools_issuing_bags",
+            "report_code" : "SCH_ISS_BAGS",
+            "report_category": "Schemes",
+            "report_desc": "Schools issuing bags report",
+            "generate_report": true,
+            "custom_data_fetch" : false,
+            "source_config" : {
+                "sources": [
+                    {
+                        "source_name" : "bags_high_higher_sec_govt",
+                        "source_file_name" : "Bag-Scheme-HS-HSS-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "bags_high_higher_sec_aided",
+                        "source_file_name" : "Bag-Scheme-HS-HSS-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    },
+                    {
+                        "source_name" : "bags_pri_mid_govt",
+                        "source_file_name" : "Bag-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Govt",
+                        "skip_rows" : 4
+                    },
+                    {
+                        "source_name" : "bags_pri_mid_aided",
+                        "source_file_name" : "Bag-Scheme-Pri-Mid-Sch-Rpt.xlsx",
+                        "source_sheet_name" : "Aided",
+                        "skip_rows" : 0
+                    }
+                ],
+                "custom_data_combine" : false,
+                "combine_data_type" : "concat",
+                "combine_data_configs" : {
+                    "bags_high_higher_sec_govt" : {
+                        "join" : "outer"
+                    },
+                    "bags_high_higher_sec_aided" : {
+                        "join" : "outer"
+                    },
+                    "bags_pri_mid_govt" : {
+                        "join" : "outer"
+                    },
+                    "bags_pri_mid_aided" : {
+                        "join" : "outer"
+                    }
+                }
+
+            },
+            "base_rpt_config" : {
+                "custom_process_base_report" : true,
+                "proc_base_rpt_module_name" :  "schemes",
+                "proc_base_rpt_method_name" :  "process_base_report", 
+                "include_base_report" : true
+            },       
+            "summary_sheets_args": [
+                {
+                    "summary_sheet_name" : "District level - Schools issuing bags",
+                    "summary_sheet_code" : "DIST_LVL_SCH_ISS_BAGS",
+                    "custom_summary" : true,
+                    "custom_summary_config" : {
+                        "module_name" : "schemes",
+                        "method_name" : "data_summary"
+                    },
+                    "grouping_levels" : ["cols.district_name"],
+                    "agg_dict": {
+                        "cols.scheme_comp": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum"
+                        },
+                    "ranking_config": {
+                        "ranking_args" : {
+                            "ranking_type" : "percent_ranking",
+                            "num_col": "cols.scheme_comp",
+                            "den_col": "cols.udise_col",
+                            "sort": true,
+                            "ascending": false,
+                            "show_rank_col" : false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc": "cols.perc_schools_issued_bag"
+                        }
+                    },
+                    "format_config" : {
+                        "heading" : "Schools issuing bags - District wise report",
+                        "cols_to_drop": [],
+                        "cols_rename_dict" : {
+                            "cols.udise_col" : "cols.tot_schools",
+                            "cols.scheme_comp": "cols.scheme_completed"
+                        },
+                        "format_dicts" : [
+                            {
+                                "description" : "Apply percentage formatting",
+                                "columns" : ["cols.perc_schools_issued_bag"],
+                                "format" : {"num_format": "0.00%"}
+                            },
+                            {
+                                "description" : "Apply 3 colour gradient heatmap",
+                                "columns" : ["cols.perc_schools_issued_bag"],
+                                "conditional_format_flag" : true,
+                                "conditional_format" : {"type": "3_color_scale"}
+                              }
+                        ]
+                    }
+                    
+                }
+            ]
+        }
+    ]
+}

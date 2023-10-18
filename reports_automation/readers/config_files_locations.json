@@ -25,6 +25,7 @@
         "files" : [
                     "attendance_configs.json",
                     "cg_configs.json",
+                    "schemes.json",
                     "updation_status_configs.json"
                 ]
     },

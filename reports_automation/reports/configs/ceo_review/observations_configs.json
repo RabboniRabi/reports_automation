@@ -29,17 +29,32 @@
                 "grouping_cols" : [],
                 "grouping_agg_dict" : {}
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.participants": "sum", 
-                    "cols.tot_students" : "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.participants": "sum", 
+                        "cols.tot_students" : "sum"
+                    },
+                    "num_col": "cols.deo",
+                    "den_col": "cols.deo_target",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.perc_DEO_obs",
-                "num_col": "cols.deo",
-                "den_col": "cols.deo_target",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.perc_DEO_obs"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_elm"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_elem_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "subtotal_outlines_dict" : {
@@ -68,17 +83,32 @@
                 "grouping_cols" : [],
                 "grouping_agg_dict" : {}
             },
-            "ranking_args": {
-                "ranking_type" : "percent_ranking",
-                "agg_dict": {
-                    "cols.participants": "sum", 
-                    "cols.tot_students" : "sum"
+            "ranking_config" : {
+                "ranking_args": {
+                    "ranking_type" : "percent_ranking",
+                    "agg_dict": {
+                        "cols.participants": "sum", 
+                        "cols.tot_students" : "sum"
+                    },
+                    "num_col": "cols.participants",
+                    "den_col": "cols.tot_students",
+                    "sort": true,
+                    "ascending": false
                 },
-                "ranking_val_desc": "cols.per_participants",
-                "num_col": "cols.participants",
-                "den_col": "cols.tot_students",
-                "sort": true,
-                "ascending": false
+                "data_ranking_levels" : {
+                    "block_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                        "show_rank_col": false,
+                        "show_rank_val" : true,
+                        "ranking_val_desc" : "cols.per_participants"
+                    },
+                    "deo_level" : {
+                        "grouping_levels" : ["cols.deo_name_sec"],
+                        "show_rank_col" : true,
+                        "rank_col_name" : "cols.deo_sec_rank",
+                        "show_rank_val" : false
+                    }
+                }
             },
             "format_config" : {
                 "subtotal_outlines_dict" : {

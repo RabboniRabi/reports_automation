@@ -32,17 +32,32 @@
                         "cols.tot_tchrs" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.updt_tchrs": "sum", 
-                        "cols.tot_tchrs" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.updt_tchrs": "sum", 
+                            "cols.tot_tchrs" : "sum"
+                        },
+                        "num_col": "cols.updt_tchrs",
+                        "den_col": "cols.tot_tchrs",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_tchrs_updated",
-                    "num_col": "cols.updt_tchrs",
-                    "den_col": "cols.tot_tchrs",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_tchrs_updated"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary Teachers leave balance updated report",
@@ -75,17 +90,32 @@
                         "cols.tot_tchrs" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.updt_tchrs": "sum", 
-                        "cols.tot_tchrs" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.updt_tchrs": "sum", 
+                            "cols.tot_tchrs" : "sum"
+                        },
+                        "num_col": "cols.updt_tchrs",
+                        "den_col": "cols.tot_tchrs",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.perc_tchrs_updated",
-                    "num_col": "cols.updt_tchrs",
-                    "den_col": "cols.tot_tchrs",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.perc_tchrs_updated"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary Teachers leave balance updated report",
@@ -137,15 +167,30 @@
                         "cols.att_sch_markd_tch_perc": "mean"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "number_ranking",
-                    "agg_dict": {
-                        "cols.att_sch_markd_tch_perc": "mean"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "number_ranking",
+                        "agg_dict": {
+                            "cols.att_sch_markd_tch_perc": "mean"
+                        },
+                        "ranking_col": "cols.att_sch_markd_tch_perc",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.att_sch_markd_tch_perc",
-                    "ranking_col": "cols.att_sch_markd_tch_perc",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.att_sch_markd_tch_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools marking teachers attendance report",
@@ -180,15 +225,30 @@
                         "cols.att_sch_markd_tch_perc": "mean"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "number_ranking",
-                    "agg_dict": {
-                        "cols.att_sch_markd_tch_perc": "mean"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "number_ranking",
+                        "agg_dict": {
+                            "cols.att_sch_markd_tch_perc": "mean"
+                        },
+                        "ranking_col": "cols.att_sch_markd_tch_perc",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.att_sch_markd_tch_perc",
-                    "ranking_col": "cols.att_sch_markd_tch_perc",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.att_sch_markd_tch_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools marking teachers attendance report",
@@ -242,15 +302,30 @@
                         "cols.att_sch_markd_perc": "mean"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "number_ranking",
-                    "agg_dict": {
-                        "cols.att_sch_markd_perc": "mean"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "number_ranking",
+                        "agg_dict": {
+                            "cols.att_sch_markd_perc": "mean"
+                        },
+                        "ranking_col": "cols.att_sch_markd_perc",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.att_sch_markd_perc",
-                    "ranking_col": "cols.att_sch_markd_perc",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.att_sch_markd_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools marking students attendance report",
@@ -285,15 +360,30 @@
                         "cols.att_sch_markd_perc": "mean"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "number_ranking",
-                    "agg_dict": {
-                        "cols.att_sch_markd_perc": "mean"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "number_ranking",
+                        "agg_dict": {
+                            "cols.att_sch_markd_perc": "mean"
+                        },
+                        "ranking_col": "cols.att_sch_markd_perc",
+                        "sort":true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.att_sch_markd_perc",
-                    "ranking_col": "cols.att_sch_markd_perc",
-                    "sort":true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.att_sch_markd_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools marking students attendance report",
@@ -348,17 +438,32 @@
                         "cols.att_sec_marked_tot": "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.att_sec_working_tot": "sum",
-                        "cols.att_sec_marked_tot": "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.att_sec_working_tot": "sum",
+                            "cols.att_sec_marked_tot": "sum"
+                        },
+                        "num_col": "cols.att_sec_marked_tot",
+                        "den_col": "cols.att_sec_working_tot",
+                        "sort": true,
+                        "ascending":false
                     },
-                    "ranking_val_desc": "cols.att_sec_mark_perc",
-                    "num_col": "cols.att_sec_marked_tot",
-                    "den_col": "cols.att_sec_working_tot",
-                    "sort": true,
-                    "ascending":false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.att_sec_mark_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary schools' sections marking attendance report",
@@ -396,17 +501,32 @@
                         "cols.att_sec_marked_tot": "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.att_sec_working_tot": "sum",
-                        "cols.att_sec_marked_tot": "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.att_sec_working_tot": "sum",
+                            "cols.att_sec_marked_tot": "sum"
+                        },
+                        "num_col": "cols.att_sec_marked_tot",
+                        "den_col": "cols.att_sec_working_tot",
+                        "sort":true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.att_sec_mark_perc",
-                    "num_col": "cols.att_sec_marked_tot",
-                    "den_col": "cols.att_sec_working_tot",
-                    "sort":true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.att_sec_mark_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary schools' sections marking attendance report",
@@ -462,16 +582,31 @@
                         "cols.att_stu_avg_absent_perc": "mean"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "number_ranking",
-                    "agg_dict": {
-                        "cols.att_stu_avg_present_perc": "mean",
-                        "cols.att_stu_avg_absent_perc": "mean"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "number_ranking",
+                        "agg_dict": {
+                            "cols.att_stu_avg_present_perc": "mean",
+                            "cols.att_stu_avg_absent_perc": "mean"
+                        },
+                        "ranking_col": "cols.att_stu_avg_present_perc",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.att_stu_avg_present_perc",
-                    "ranking_col": "cols.att_stu_avg_present_perc",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.att_stu_avg_present_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary students attendance report",
@@ -509,16 +644,31 @@
                         "cols.att_stu_avg_absent_perc": "mean"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "number_ranking",
-                    "agg_dict": {
-                        "cols.att_stu_avg_present_perc": "mean",
-                        "cols.att_stu_avg_absent_perc": "mean"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "number_ranking",
+                        "agg_dict": {
+                            "cols.att_stu_avg_present_perc": "mean",
+                            "cols.att_stu_avg_absent_perc": "mean"
+                        },
+                        "ranking_col": "cols.att_stu_avg_present_perc",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.att_stu_avg_present_perc",
-                    "ranking_col": "cols.att_stu_avg_present_perc",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.att_stu_avg_present_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary students attendance report",
@@ -575,16 +725,31 @@
                         "cols.att_tch_avg_absent_perc": "mean"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "number_ranking",
-                    "agg_dict": {
-                        "cols.att_tch_avg_present_perc": "mean",
-                        "cols.att_tch_avg_absent_perc": "mean"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "number_ranking",
+                        "agg_dict": {
+                            "cols.att_tch_avg_present_perc": "mean",
+                            "cols.att_tch_avg_absent_perc": "mean"
+                        },
+                        "ranking_col": "cols.att_tch_avg_present_perc",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.att_tch_avg_present_perc",
-                    "ranking_col": "cols.att_tch_avg_present_perc",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.att_tch_avg_present_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary teachers attendance report",
@@ -622,16 +787,31 @@
                         "cols.att_tch_avg_absent_perc": "mean"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "number_ranking",
-                    "agg_dict": {
-                        "cols.att_tch_avg_present_perc": "mean",
-                        "cols.att_tch_avg_absent_perc": "mean"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "number_ranking",
+                        "agg_dict": {
+                            "cols.att_tch_avg_present_perc": "mean",
+                            "cols.att_tch_avg_absent_perc": "mean"
+                        },
+                        "ranking_col": "cols.att_tch_avg_present_perc",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.att_tch_avg_present_perc",
-                    "ranking_col": "cols.att_tch_avg_present_perc",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.att_tch_avg_present_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary teachers attendance report",
@@ -689,17 +869,32 @@
                         "cols.tot_students" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.participants": "sum", 
-                        "cols.tot_students" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.participants": "sum", 
+                            "cols.tot_students" : "sum"
+                        },
+                        "num_col": "cols.participants",
+                        "den_col": "cols.tot_students",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.per_participants",
-                    "num_col": "cols.participants",
-                    "den_col": "cols.tot_students",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.per_participants"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 }
             },
             "secondary_report" : {
@@ -714,17 +909,32 @@
                         "cols.tot_students" : "sum"
                         }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.participants": "sum", 
-                        "cols.tot_students" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.participants": "sum", 
+                            "cols.tot_students" : "sum"
+                        },
+                        "num_col": "cols.participants",
+                        "den_col": "cols.tot_students",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.per_participants",
-                    "num_col": "cols.participants",
-                    "den_col": "cols.tot_students",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.per_participants"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 }
             },
             "format_config" : {

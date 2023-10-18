@@ -31,17 +31,32 @@
           "grouping_cols": [],
           "grouping_agg_dict": {}
         },
-        "ranking_args": {
-          "ranking_type": "percent_ranking",
-          "agg_dict": {
-            "cols.total_cp_students": "sum",
-            "cols.ageing": "sum"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "percent_ranking",
+            "agg_dict": {
+              "cols.total_cp_students": "sum",
+              "cols.ageing": "sum"
+            },
+            "num_col": "cols.ageing",
+            "den_col": "cols.total_cp_students",
+            "sort": true,
+            "ascending": true
           },
-          "ranking_val_desc": "cols.perc_ageing",
-          "num_col": "cols.ageing",
-          "den_col": "cols.total_cp_students",
-          "sort": true,
-          "ascending": true
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.perc_ageing"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_elm"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_elem_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Elementary students ageing in common pool report",
@@ -87,17 +102,32 @@
           "grouping_cols": [],
           "grouping_agg_dict": {}
         },
-        "ranking_args": {
-          "ranking_type": "percent_ranking",
-          "agg_dict": {
-            "cols.total_cp_students": "sum",
-            "cols.ageing": "sum"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "percent_ranking",
+            "agg_dict": {
+              "cols.total_cp_students": "sum",
+              "cols.ageing": "sum"
+            },
+            "num_col": "cols.ageing",
+            "den_col": "cols.total_cp_students",
+            "sort": true,
+            "ascending": true
           },
-          "ranking_val_desc": "cols.perc_ageing",
-          "num_col": "cols.ageing",
-          "den_col": "cols.total_cp_students",
-          "sort": true,
-          "ascending": true
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.perc_ageing"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_sec"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_sec_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Secondary students ageing in common pool report",
@@ -175,7 +205,9 @@
             "cols.sch_with_no_students": "sum"
           }
         },
-        "ranking_args": {},
+        "ranking_config" : {
+          "ranking_args": {}
+        },
         "format_config": {
           "heading": "Elementary schools without students enrollment report",
           "subtotal_outlines_dict": {
@@ -208,7 +240,9 @@
             "cols.sch_with_no_students": "sum"
           }
         },
-        "ranking_args": {},
+        "ranking_config" : {
+          "ranking_args": {}
+        },
         "format_config": {
           "heading": "Secondary schools without students enrollment report",
           "subtotal_outlines_dict": {
@@ -263,17 +297,32 @@
             "cols.students_enrolled_cls1_2023_24": "sum"
           }
         },
-        "ranking_args": {
-          "ranking_type": "percent_ranking",
-          "agg_dict": {
-            "cols.students_enrolled_cls1_2022_23": "sum",
-            "cols.students_enrolled_cls1_2023_24": "sum"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "percent_ranking",
+            "agg_dict": {
+              "cols.students_enrolled_cls1_2022_23": "sum",
+              "cols.students_enrolled_cls1_2023_24": "sum"
+            },
+            "num_col": "cols.students_enrolled_cls1_2023_24",
+            "den_col": "cols.students_enrolled_cls1_2022_23",
+            "sort": true,
+            "ascending":false
           },
-          "ranking_val_desc": "cols.students_enrolled_cls1_change_perc",
-          "num_col": "cols.students_enrolled_cls1_2023_24",
-          "den_col": "cols.students_enrolled_cls1_2022_23",
-          "sort": true,
-          "ascending":false
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.students_enrolled_cls1_change_perc"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_elm"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_elem_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Increase in Elementary Government Schools' Student Enrollment as on",
@@ -317,17 +366,32 @@
             "cols.students_enrolled_cls1_2023_24": "sum"
           }
         },
-        "ranking_args": {
-          "ranking_type": "percent_ranking",
-          "agg_dict": {
-            "cols.students_enrolled_cls1_2022_23": "sum",
-            "cols.students_enrolled_cls1_2023_24": "sum"
+        "ranking_config" : {
+          "ranking_args": {
+            "ranking_type": "percent_ranking",
+            "agg_dict": {
+              "cols.students_enrolled_cls1_2022_23": "sum",
+              "cols.students_enrolled_cls1_2023_24": "sum"
+            },
+            "num_col": "cols.students_enrolled_cls1_2023_24",
+            "den_col": "cols.students_enrolled_cls1_2022_23",
+            "sort": true,
+            "ascending": false
           },
-          "ranking_val_desc": "cols.students_enrolled_cls1_change_perc",
-          "num_col": "cols.students_enrolled_cls1_2023_24",
-          "den_col": "cols.students_enrolled_cls1_2022_23",
-          "sort": true,
-          "ascending": false
+          "data_ranking_levels" : {
+            "block_level" : {
+                "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                "show_rank_col": false,
+                "show_rank_val" : true,
+                "ranking_val_desc" : "cols.students_enrolled_cls1_change_perc"
+            },
+            "deo_level" : {
+                "grouping_levels" : ["cols.deo_name_sec"],
+                "show_rank_col" : true,
+                "rank_col_name" : "cols.deo_sec_rank",
+                "show_rank_val" : false
+            }
+          }
         },
         "format_config": {
           "heading": "Increase in Secondary Government Schools' Student Enrollment as on",

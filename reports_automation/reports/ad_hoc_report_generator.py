@@ -5,6 +5,8 @@ Module with generator functions to generate ad hoc reports
 import sys
 sys.path.append('../')
 
+import pandas as pd
+
 import utilities.column_names_utilities as cols
 import utilities.file_utilities as file_utilities
 import utilities.ranking_utilities as ranking_utilities
@@ -46,6 +48,13 @@ def get_report(report_config: dict, save_source:bool=False):
     # Get the base data
     df_base_report = _get_data_for_ad_hoc_report(report_config, save_source)
 
+    # Get the base report process config
+    base_rpt_config = report_config['base_rpt_config']
+
+    # Check and if flagged true, process base report before getting summaries
+    if base_rpt_config['custom_process_base_report']:
+        df_base_report = _get_processed_base_report(df_base_report, base_rpt_config)
+
     #file_utilities.save_to_excel({'base_report': df_base_report}, 'df_base_report.xlsx')
 
     # Create report summary sheets from base data for given summary sheets configurations
@@ -53,7 +62,7 @@ def get_report(report_config: dict, save_source:bool=False):
     df_reports = _get_summary_sheets(df_base_report, summary_sheets_args)   
     
     # Add the base report to the final report if needed
-    if report_config['include_base_report']:
+    if base_rpt_config['include_base_report']:
         df_reports['base_report'] = df_base_report
 
 
@@ -116,11 +125,12 @@ def _get_data_for_ad_hoc_report(report_config: dict, save_source:bool=False):
                 Call the custom_data_combine function in the module corresponding to the config
                 which will do the custom processing of the data set and return a Pandas DataFrame object.
                 """
+                combine_data_configs = source_config['combine_data_configs']
                 # Get the name of the module
-                report_module_name = importlib.import_module('ad_hoc.' + report_config['report_name'])
+                report_module_name = importlib.import_module('ad_hoc.' + combine_data_configs['module_name'])
 
                 # Call the function with the custom logic for the report
-                cust_logic_func = getattr(report_module_name, 'custom_data_combine')
+                cust_logic_func = getattr(report_module_name, combine_data_configs['method_name'])
                 df_base_report = cust_logic_func(df_data_set)
 
             # else if config is provided, combine the data set into a single dataframe object
@@ -165,20 +175,17 @@ def _get_summary_sheets(df_base_report, summary_sheets_args):
 
     # Declare a dictionary to hold all the summary sheet data
     df_reports = {}
-
-    #print('df_base_report columns: ', df_base_report.columns.to_list())
-
-    
     
     # For summary sheet configuration
     for summary_sheet_args in summary_sheets_args:
 
         if summary_sheet_args["custom_summary"]:
             # Call the custom method in the custom module for the script to create the summary report
+            custom_summary_config = summary_sheet_args['custom_summary_config']
             # Get the name of the module
-            report_module_name = importlib.import_module('ad_hoc.' + report_config['report_name'])
+            report_module_name = importlib.import_module('ad_hoc.' + custom_summary_config['module_name'])
             # Call the function with the custom logic for the report
-            cust_summary_func = getattr(report_module_name, summary_sheet_args["summary_sheet_code"])
+            cust_summary_func = getattr(report_module_name, custom_summary_config["method_name"])
             df_summary = cust_summary_func(df_base_report, summary_sheet_args)
         else:
             # Group the base report to the given grouping levels and aggregate given columns
@@ -189,14 +196,40 @@ def _get_summary_sheets(df_base_report, summary_sheets_args):
                 sys.exit(err)
 
         # Sort and rank data if configuration is given
-        ranking_config = summary_sheet_args['ranking_config']
-        if ranking_config is not None and bool(ranking_config):
+        if 'ranking_config' in summary_sheet_args:
+            ranking_config = summary_sheet_args['ranking_config']
             df_summary = ranking_utilities.calc_ranking(df_summary, ranking_config)
 
         # Add the summary to the dictionary of data reports
         df_reports[summary_sheet_args['summary_sheet_code']] = df_summary
 
     return df_reports
+
+
+def _get_processed_base_report(df_base_report:pd.DataFrame, base_rpt_config: dict):
+    """
+    Internal helper function to process the base report by calling
+    custom functions based on configuration in config.
+
+    Parameters:
+    -----------
+    df_base_report: pd.DataFrame
+        The base report to be processed
+    base_rpt_config: dict
+        The base report config to use to process the base report
+
+    Returns:
+    -------
+    The processed base report as a Pandas dataframe object
+    """
+    # Get the name of the module
+    report_module_name = importlib.import_module('ad_hoc.' + base_rpt_config['proc_base_rpt_module_name'])
+
+    # Call the function with the custom logic for processing the base report
+    cust_proc_func = getattr(report_module_name, base_rpt_config["proc_base_rpt_method_name"])
+    df_proc_base_report = cust_proc_func(df_base_report)
+
+    return df_proc_base_report
 
 
 

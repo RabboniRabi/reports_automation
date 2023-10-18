@@ -155,7 +155,6 @@ def format_ceo_review_report(df, format_config, ranking_config, sheet_name, file
     # Insert a blank row to the top of the data frame
     row_to_insert = []
     for i in range (0, no_of_columns):
-        #print('column type: ', type(updated_df.columns[i]))
         row_to_insert.append(type(updated_df.columns[i])(0))
     updated_df = utilities.insert_row(updated_df, 0, row_to_insert)
 

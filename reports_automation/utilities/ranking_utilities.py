@@ -241,13 +241,8 @@ def update_deo_ranking_master(df_summary, ranking_config, metric_code, metric_ca
     # Drop the block level ranking configuration so that ranking is calculated with grouping further
     del deo_ranking_config['data_ranking_levels']
 
-    print('deo_ranking_config: ', deo_ranking_config)
-
     # Call the ranking function to get the DEO level data ranked with values
     df_ranking = calc_ranking(df_summary_deo_lvl, deo_ranking_config)
-
-    print('df_ranking: ', df_ranking)
-
 
     # Update the ranking data with columns indicating metrics, school level and month-year
     df_ranking[cols.metric_code] = metric_code

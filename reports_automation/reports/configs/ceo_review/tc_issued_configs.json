@@ -31,17 +31,32 @@
                         "cols.tc_cls8_issued_2023_24" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.tc_cls8_total_2022_23": "sum",
-                        "cols.tc_cls8_issued_2023_24" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.tc_cls8_total_2022_23": "sum",
+                            "cols.tc_cls8_issued_2023_24" : "sum"
+                        },
+                        "num_col": "cols.tc_cls8_issued_2023_24",
+                        "den_col": "cols.tc_cls8_total_2022_23",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.tc_cls8_issued_2023_24_perc",
-                    "num_col": "cols.tc_cls8_issued_2023_24",
-                    "den_col": "cols.tc_cls8_total_2022_23",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.tc_cls8_issued_2023_24_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary TC Issued - Class 8 as on",
@@ -74,17 +89,32 @@
                         "cols.tc_cls8_issued_2023_24" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.tc_cls8_total_2022_23": "sum",
-                        "cols.tc_cls8_issued_2023_24" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.tc_cls8_total_2022_23": "sum",
+                            "cols.tc_cls8_issued_2023_24" : "sum"
+                        },
+                        "num_col": "cols.tc_cls8_issued_2023_24",
+                        "den_col": "cols.tc_cls8_total_2022_23",
+                        "sort": true,
+                        "ascending":false
                     },
-                    "ranking_val_desc": "cols.tc_cls8_issued_2023_24_perc",
-                    "num_col": "cols.tc_cls8_issued_2023_24",
-                    "den_col": "cols.tc_cls8_total_2022_23",
-                    "sort": true,
-                    "ascending":false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.tc_cls8_issued_2023_24_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary TC Issued - Class 8 as on",
@@ -136,17 +166,32 @@
                         "cols.tc_cls5_issued_2023_24" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.tc_cls5_total_2022_23": "sum",
-                        "cols.tc_cls5_issued_2023_24" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.tc_cls5_total_2022_23": "sum",
+                            "cols.tc_cls5_issued_2023_24" : "sum"
+                        },
+                        "num_col": "cols.tc_cls5_issued_2023_24",
+                        "den_col": "cols.tc_cls5_total_2022_23",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.tc_cls5_issued_2023_24_perc",
-                    "num_col": "cols.tc_cls5_issued_2023_24",
-                    "den_col": "cols.tc_cls5_total_2022_23",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.tc_cls5_issued_2023_24_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary TC issued - Class 5 as on",
@@ -179,17 +224,32 @@
                         "cols.tc_cls5_issued_2023_24" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.tc_cls5_total_2022_23": "sum",
-                        "cols.tc_cls5_issued_2023_24" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.tc_cls5_total_2022_23": "sum",
+                            "cols.tc_cls5_issued_2023_24" : "sum"
+                        },
+                        "num_col": "cols.tc_cls5_issued_2023_24",
+                        "den_col": "cols.tc_cls5_total_2022_23",
+                        "sort": true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.tc_cls5_issued_2023_24_perc",
-                    "num_col": "cols.tc_cls5_issued_2023_24",
-                    "den_col": "cols.tc_cls5_total_2022_23",
-                    "sort": true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.tc_cls5_issued_2023_24_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary TC issued - Class 5  as on",
@@ -241,17 +301,32 @@
                         "cols.tc_cls10_issued_2023_24" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.tc_cls10_total_2022_23": "sum",
-                        "cols.tc_cls10_issued_2023_24" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.tc_cls10_total_2022_23": "sum",
+                            "cols.tc_cls10_issued_2023_24" : "sum"
+                        },
+                        "num_col": "cols.tc_cls10_issued_2023_24",
+                        "den_col": "cols.tc_cls10_total_2022_23",
+                        "sort":true,
+                        "ascending": false
                     },
-                    "ranking_val_desc": "cols.tc_cls10_issued_2023_24_perc",
-                    "num_col": "cols.tc_cls10_issued_2023_24",
-                    "den_col": "cols.tc_cls10_total_2022_23",
-                    "sort":true,
-                    "ascending": false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.tc_cls10_issued_2023_24_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_elm"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_elem_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Elementary TC issued - Class 10 as on",
@@ -284,17 +359,32 @@
                         "cols.tc_cls10_issued_2023_24" : "sum"
                     }
                 },
-                "ranking_args": {
-                    "ranking_type" : "percent_ranking",
-                    "agg_dict": {
-                        "cols.tc_cls10_total_2022_23": "sum",
-                        "cols.tc_cls10_issued_2023_24" : "sum"
+                "ranking_config" : {
+                    "ranking_args": {
+                        "ranking_type" : "percent_ranking",
+                        "agg_dict": {
+                            "cols.tc_cls10_total_2022_23": "sum",
+                            "cols.tc_cls10_issued_2023_24" : "sum"
+                        },
+                        "num_col": "cols.tc_cls10_issued_2023_24",
+                        "den_col": "cols.tc_cls10_total_2022_23",
+                        "sort": true,
+                        "ascending":false
                     },
-                    "ranking_val_desc": "cols.tc_cls10_issued_2023_24_perc",
-                    "num_col": "cols.tc_cls10_issued_2023_24",
-                    "den_col": "cols.tc_cls10_total_2022_23",
-                    "sort": true,
-                    "ascending":false
+                    "data_ranking_levels" : {
+                        "block_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec", "cols.block_name"],
+                            "show_rank_col": false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc" : "cols.tc_cls10_issued_2023_24_perc"
+                        },
+                        "deo_level" : {
+                            "grouping_levels" : ["cols.deo_name_sec"],
+                            "show_rank_col" : true,
+                            "rank_col_name" : "cols.deo_sec_rank",
+                            "show_rank_val" : false
+                        }
+                    }
                 },
                 "format_config" : {
                     "heading" : "Secondary TC issued - Class 10 as on",
