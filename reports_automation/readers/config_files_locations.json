@@ -34,7 +34,8 @@
         "files" : [
             "board_results.json",
             "progress_rpt_frmt_configs.json",
-            "tenth_metric_wise_grouping.json"
-            ]
+            "tenth_metric_wise_grouping.json",
+            "twelfth_metric_wise_grouping.json"
+        ]
     }
 }

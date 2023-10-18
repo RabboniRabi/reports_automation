@@ -8,7 +8,124 @@ import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
 import utilities.column_names_utilities as cols
 import pandas as pd
-import utilities.report_splitter_utilities as report_splitter
+from functools import reduce
+import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
+
+def get_subject_aggregation(filter_df, grouping_levels, subject_grouping, agg_dict):
+    """
+    Helper Function to group the 12th student data multiple subjects to major group, vocational group and also several
+    single subjects at a given grouping level and do the aggregation.
+    Parameters:
+    ---------
+        filter_df: Pandas dataframe
+        grouping_levels: list
+            Levels to group the data by
+        subject_grouping: dict
+            Subject group and the list of subjects belongs to the group
+                For Example: {
+                    "others_group": ["BIO-CHEMISTRY", "MICRO-BIOLOGY"]
+                }
+        agg_dict: dict
+            Columns to aggregate
+
+    Returns:
+    ---------
+    Subject aggregated dataframe
+    """
+    sub_of_focus = agg_dict['subjects_of_focus']
+    df = filter_df[grouping_levels]
+    df.drop_duplicates(inplace=True)
+    for sub_group, sub_list in subject_grouping.items():
+        group_marks = list()
+        for sub in sub_list:
+            try:
+                if sub_group == 'subjects_of_focus':
+                    marks = filter_df[sub].to_list()
+                    marks = [mark for mark in marks if str(mark) != 'nan']
+                    marks = list(map(int, marks))
+                    if sub_of_focus[sub] == "std":
+                        agg_col = np.std(marks)
+                    elif sub_of_focus[sub] == "median":
+                        agg_col = np.median(marks)
+                    elif sub_of_focus[sub] == "mean":
+                        agg_col = np.mean(marks)
+                    df[sub + '_' + sub_of_focus[sub]] = agg_col
+                else:
+                    marks = filter_df[sub].to_list()
+                    group_marks.extend(marks)
+            except KeyError:
+                continue
+        if sub_group != 'subjects_of_focus':
+            group_marks = [mark for mark in group_marks if str(mark) != 'nan']
+            group_marks = list(map(int, group_marks))
+            if agg_dict[sub_group] == "std":
+                agg_col = np.std(group_marks)
+            elif agg_dict[sub_group] == "median":
+                agg_col = np.median(group_marks)
+            elif agg_dict[sub_group] == "mean":
+                agg_col = np.mean(group_marks)
+            df[sub_group + '_' + agg_dict[sub_group]] = agg_col
+
+    return df
+
+
+
+def get_subject_grouping(df, sub_mark):
+    """
+    Helper Function to group the subjects with the respective marks student level data
+    Parameters:
+    ---------
+        df: Pandas dataframe
+        sub_mark: dict
+            Subject name column and their corresponding mark column
+            For Example: "sub_mark": {
+                            "SUBNAME_B3": "BMARK3",
+                            "SUBNAME_B4": "BMARK4",
+                            "SUBNAME_B5": "BMARK5",
+                            "SUBNAME_B6": "BMARK6"
+                        }
+    Returns:
+    ---------
+    Student level subject-wise marks as columns dataframe
+    """
+    # Extracting the total subjects list from the dataframe
+    subjects_list = []
+    [subjects_list.extend(df[col_name].to_list()) for col_name in sub_mark.keys()]
+    # Removing the duplicates
+    subjects_list = list(dict.fromkeys(subjects_list))
+    # Declaring a master grouping levels - for each subject dataframe merge will happen to
+    # final dataframe with these grouping levels
+    #group_levels = df.iloc[:, 0:14].columns.to_list()
+    group_levels = [cols.district_name, cols.block_name, cols.udise_col, cols.management,
+                    cols.stu_name, cols.grp, cols.tot_stu, cols.local_body, cols.stud_comm, cols.gender, cols.urban_rural, cols.medium, cols.lang_marks,
+                    cols.eng_marks, cols.tot_marks, cols.stu_pass]
+
+    # Silicing the unnecessary columns and adding the necessary columns for the master dataframe
+    #final_df_col_list = df.iloc[:, 0:17].columns.to_list()
+    #final_df_col_list.extend([cols.tot_marks, cols.stu_pass])
+    final_df = df[group_levels]
+
+    # Loop to iterate through subjects
+    for sub in subjects_list:
+        # Creating an empty dataframe
+        sub_df = pd.DataFrame()
+        for sub_name, mark in sub_mark.items():
+            # Filtering the dataframe for the respective subject name
+            updated_sub_df = df[df[sub_name] == sub]
+            # Adding the subject column with the respective marks
+            updated_sub_df[sub] = updated_sub_df[mark]
+            # Concatenating with the subject dataframe
+            sub_df = pd.concat([sub_df, updated_sub_df])
+        # Silicing the unnecessary columns and adding the necessary columns for the master dataframe
+        final_columns_list = group_levels.copy()
+        final_columns_list.append(sub)
+        # Merging the subject dataframe with the final dataframe
+        final_df = final_df.merge(sub_df[final_columns_list], on=group_levels, how='outer')
+        del sub_df
+
+    return final_df
 
 
 def subject_grouping(df, subject_group, sub_mark):
@@ -18,7 +135,7 @@ def subject_grouping(df, subject_group, sub_mark):
     Parameters:
     ----------
         df: Dataframe to group the subjects
-        subject_group: Dict
+        subject_group: dict
         For Example: {
         "others_group": ["BIO-CHEMISTRY", "MICRO-BIOLOGY"]
         Subject group and the list of subjects belongs to the group
@@ -147,7 +264,7 @@ def get_prepped_data_for_analysis(report_config):
         ((prev_ac_yr_schl_lvl[cols.prev_pass] / prev_ac_yr_schl_lvl[cols.prev_tot_stu]) * 100), 2)
 
     # Add the average median marks at school level
-    prev_ac_yr_schl_lvl[cols.prev_avg_marks] = round((prev_ac_yr_schl_lvl[cols.prev_tot_marks] / 5), 2)
+    prev_ac_yr_schl_lvl[cols.prev_avg_marks] = round((prev_ac_yr_schl_lvl[cols.prev_tot_marks] / 6), 2)
     # Deleting the unnecessary columns
     prev_ac_yr_schl_lvl.drop(columns=[cols.prev_pass, cols.prev_tot_stu, cols.prev_tot_marks], inplace=True)
 
@@ -156,7 +273,7 @@ def get_prepped_data_for_analysis(report_config):
         ((curr_ac_yr_schl_lvl[cols.curr_pass] / curr_ac_yr_schl_lvl[cols.curr_tot_stu]) * 100), 2)
 
     # Add the average median marks at school level
-    curr_ac_yr_schl_lvl[cols.curr_avg_marks] = round((curr_ac_yr_schl_lvl[cols.curr_tot_marks] / 5), 2)
+    curr_ac_yr_schl_lvl[cols.curr_avg_marks] = round((curr_ac_yr_schl_lvl[cols.curr_tot_marks] / 6), 2)
 
     # Deleting the unnecessary columns
     curr_ac_yr_schl_lvl.drop(columns=[cols.curr_tot_marks], inplace=True)
@@ -164,7 +281,47 @@ def get_prepped_data_for_analysis(report_config):
     #dir_path = file_utilities.get_curr_month_gen_reports_dir_path()
     #file_utilities.save_to_excel({"Report": curr_ac_yr_schl_lvl}, "12th_sch_lvl_sub_v1.xlsx", dir_path=dir_path)
 
+def data_prep(config):
+    """
+    Function to call the internal functions
+    Args:
+        subject_group_config:
+        metric_source_config:
+
+    Returns:
+
+    """
+    # Get the source data configuration for the report code
+    source_config = config['source_config_curr_yr']
+    sub_mark = config['sub_mark']
+
+    # Reading the Excel files as a dict
+    df_data_set = data_fetcher.get_data_set_from_config(source_config, "miscellaneous_configs")
+    # Get the subject group config
+    subject_group = config['subjects']
+
+    filter_dict = config['filter_dict']
+    # Get the group levels from the config
+
+
+    #aided = utilities.filter_dataframe(aided, filter_dict, include=False)
+    df_master = pd.DataFrame()
+
+
+    for mang_type, df in df_data_set.items():
+        print(mang_type)
+        print("Before Filter shape: ", df.shape)
+        df = utilities.filter_dataframe(df, filter_dict, include=False)
+        print("After Filter shape: ", df.shape)
+        temp = get_subject_grouping(df, sub_mark)
+        print("After Subject grouping shape: ", temp.shape)
+        df_master = pd.concat([df_master, temp])
+
+    dir_path = file_utilities.get_curr_month_gen_reports_dir_path()
+    file_utilities.save_to_excel({"Report": df_master}, "12th_current_year_subject_grouping_version.xlsx", dir_path=dir_path)
+
+
 if __name__ == "__main__":
-    config = config_reader.get_config('12th_board_dist_lvl_report_card', 'miscellaneous_configs')
+    config = config_reader.get_config("12TH_SUBJECTS_GROUPING", "miscellaneous_configs")
     config = cols.update_nested_dictionaries(config)
-    get_prepped_data_for_analysis(config)
+    data_prep(config)

@@ -3,6 +3,7 @@ Module with utility functions that can be commonly used across the project.
 """
 
 from datetime import datetime
+from datetime import date
 import datetime as dt
 
 import pandas as pd
@@ -17,6 +18,28 @@ def get_today_date():
     The current date as a 'DD:MM:YY' format string
     """
     return datetime.now().strftime('%d-%m-%y')
+
+
+def get_curr_year():
+    """
+    Function to return the current year
+
+    Returns:
+    -------
+    The current year in 'YYYY' format int
+    """
+    return date.today().year
+
+
+def get_prev_year():
+    """
+    Function to return the previous year
+
+    Returns:
+    -------
+    The previous year in 'YYYY' format int
+    """
+    return date.today().year - 1
 
 def get_curr_month():
     """
@@ -472,7 +495,10 @@ def group_agg_rename(df, grouping_levels, agg_dict: dict, append_str=''):
     # Rename the columns to reflect the aggregated nature of the data
     cols_to_rename = {}
     for agg_col in agg_dict.keys():
-        cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col] + '_' + append_str
+        if append_str != '':
+            cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col] + '_' + append_str
+        else:
+            cols_to_rename[agg_col] = agg_col + '_' + agg_dict[agg_col]
 
     df_grouped.rename(columns=cols_to_rename, inplace=True)
 
