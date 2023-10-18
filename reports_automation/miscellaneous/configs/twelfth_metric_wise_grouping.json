@@ -1,0 +1,197 @@
+{
+  "report_configs": [
+    {
+      "report_name": "12th_subjects_groupping",
+      "report_code" : "12TH_SUBJECTS_GROUPING",
+      "report_desc": "Configuration for subjects grouping for 12th board results",
+      "source_config_curr_yr": {
+        "sources": [
+          {
+            "source_name" : "govt",
+            "source_file_name": "hsc_stud_level_government_2022_2023.xlsx",
+            "source_sheet_name": "govt_2023",
+            "skip_rows": 0
+          },
+           {
+            "source_name" : "aided",
+            "source_file_name": "hsc_stud_level_aided_2022_2023.xlsx",
+            "source_sheet_name": "aided_2023",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "un_aided",
+            "source_file_name": "hsc_stud_level_private_2022_2023.xlsx",
+            "source_sheet_name": "private_2023",
+            "skip_rows": 0
+          }
+        ]
+      },
+      "source_config_prev_yr": {
+        "sources": [
+          {
+            "source_name" : "govt",
+            "source_file_name": "hsc_stud_level_government_2021_2022.xlsx",
+            "source_sheet_name": "govt_2022",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "aided",
+            "source_file_name": "hsc_stud_level_aided_2021_2022.xlsx",
+            "source_sheet_name": "aided_2022",
+            "skip_rows": 0
+          },
+          {
+            "source_name" : "un_aided",
+            "source_file_name": "hsc_stud_level_private_2021_2022.xlsx",
+            "source_sheet_name": "private_2022",
+            "skip_rows": 0
+          }
+        ]
+      },
+      "metrics" : ["cols.management","cols.gender", "cols.urban_rural", "cols.medium", "cols.stud_comm", "cols.local_body"],
+      "filter_dict": {
+        "cols.stu_name": [
+          "DELETED"
+        ],
+        "cols.tot_marks": [
+          "XXX",
+          "AAA",
+          "AAAA"
+        ],
+        "cols.lang_marks": [
+          "XXX",
+          "AAA"
+        ],
+        "cols.eng_marks": [
+          "XXX",
+          "AAA"
+        ],
+       "cols.mark_3":  ["XXX", "AAA"],
+        "cols.mark_4":  ["XXX", "AAA"],
+        "cols.mark_5": ["XXX", "AAA"],
+        "cols.mark_6": ["XXX", "AAA"]
+      },
+      "subjects": {
+        "subjects_of_focus": [
+          "language",
+          "english",
+          "PHYSICS",
+          "CHEMISTRY",
+          "MATHEMATICS",
+          "BIOLOGY",
+          "ECONOMICS",
+          "COMMERCE",
+          "COMPUTER SCIENCE",
+          "total",
+          "Pass"
+        ],
+        "main_group": [
+          "ECONOMICS",
+          "PHYSICS",
+          "CHEMISTRY",
+          "MATHEMATICS",
+          "BIOLOGY",
+          "BOTANY",
+          "ZOOLOGY",
+          "COMMERCE",
+          "ACCOUNTANCY",
+          "BUSINESS MATHEMATICS AND STATISTICS",
+          "COMPUTER APPLICATIONS",
+          "COMPUTER SCIENCE"
+        ],
+        "arts_group": [
+          "GEOGRAPHY",
+          "COMMUNICATIVE ENGLISH",
+          "HISTORY",
+          "POLITICAL SCIENCE",
+          "ETHICS AND INDIAN CULTURE",
+          "ADVANCED LANGUAGE(TAMIL)"
+        ],
+        "vocational_group": [
+          "NURSING GENERAL",
+          "HOME SCIENCE",
+          "BASIC MECHANICAL ENGINEERING - THEORY",
+          "BASIC MECHANICAL ENGINEERING",
+          "BASIC ELECTRICAL ENGINEERING - THEORY",
+          "BASIC ELECTRICAL ENGINEERING",
+          "BASIC ELECTRONICS ENGINEERING - THEORY",
+          "BASIC ELECTRONICS ENGINEERING",
+          "BASIC CIVIL ENGINEERING - THEORY",
+          "BASIC CIVIL ENGINEERING",
+          "BASIC AUTOMOBILE ENGINEERING - THEORY",
+          "BASIC AUTOMOBILE ENGINEERING",
+          "TEXTILE TECHNOLOGY  - THEORY",
+          "TEXTILE TECHNOLOGY",
+          "NURSING - THEORY",
+          "NURSING",
+          "TEXTILES AND DRESS DESIGNING - THEORY",
+          "TEXTILES AND DRESS DESIGNING",
+          "FOOD SERVICE MANAGEMENT - THEORY",
+          "FOOD SERVICE MANAGEMENT",
+          "COMPUTER TECHNOLOGY",
+          "AGRICULTURAL SCIENCE- THEORY",
+          "AGRICULTURAL SCIENCE",
+          "OFFICE MANAGEMENT AND SECRETARYSHIP - THEORY",
+          "TYPOGRAPHY AND COMPUTER APPLICATIONS",
+          "AUDITING"
+        ],
+        "others_group": [
+          "BIO-CHEMISTRY",
+          "MICRO-BIOLOGY",
+          "NUTRITION & DIETETICS",
+          "STATISTICS"
+        ]
+      },
+      "sub_mark": {
+        "SUBNAME_B3": "BMARK3",
+        "SUBNAME_B4": "BMARK4",
+        "SUBNAME_B5": "BMARK5",
+        "SUBNAME_B6": "BMARK6"
+      },
+      "agg_dict_median": {
+        "common_agg_dict": {
+          "cols.tot_stu": "count",
+          "cols.stu_pass": "sum"
+        },
+        "subjects_of_focus": {
+          "cols.lang_marks": "median",
+          "cols.eng_marks": "median",
+          "cols.physics": "median",
+          "cols.chemistry": "median",
+          "cols.mathematics": "median",
+          "cols.biology": "median",
+          "cols.economics": "median",
+          "cols.commerce": "median",
+          "cols.computer_science": "median",
+          "cols.tot_marks": "median"
+        },
+        "main_group": "median",
+        "arts_group": "median",
+        "vocational_group": "median",
+        "others_group": "median"
+      },
+      "agg_dict_std": {
+        "common_agg_dict": {
+          "cols.tot_stu": "count",
+          "cols.stu_pass": "sum"
+        },
+        "subjects_of_focus": {
+          "cols.lang_marks": "std",
+          "cols.eng_marks": "std",
+          "cols.physics": "std",
+          "cols.chemistry": "std",
+          "cols.mathematics": "std",
+          "cols.biology": "std",
+          "cols.economics": "std",
+          "cols.commerce": "std",
+          "cols.computer_science": "std",
+          "cols.tot_marks": "std"
+        },
+        "main_group": "std",
+        "arts_group": "std",
+        "vocational_group": "std",
+        "others_group": "std"
+      }
+    }
+  ]
+}
