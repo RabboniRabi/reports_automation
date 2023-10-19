@@ -82,7 +82,7 @@ def get_year_of_prev_month():
 
     return last_month.strftime("%Y")
 
-def get_curr_year():
+def get_curr_year_as_str():
     """
     Function to return a string representation of the current year
 

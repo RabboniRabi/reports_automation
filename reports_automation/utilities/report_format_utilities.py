@@ -206,7 +206,7 @@ def format_ceo_review_report(df, format_config, ranking_config, sheet_name, file
 
 def format_ad_hoc_report_and_save(df_reports, summary_sheets_args, file_name):
     """
-    Function to prepare the add hoc report for viewing by applying the given 
+    Function to prepare the ad hoc report for viewing by applying the given 
     formatting configurations on the data.
 
     The function also saves the formatted data in the current day of the month
@@ -303,6 +303,48 @@ def format_ad_hoc_report_and_save(df_reports, summary_sheets_args, file_name):
     
         
     writer.save()        
+
+
+def format_split_ad_hoc_report_and_save(df_split_reports, format_config, dir_name):
+    """
+    Function to prepare the split ad hoc report for viewing by applying the given 
+    formatting configurations on the data.
+
+    The function also saves the split data as individual files in the given directory name
+    in the  current day of the month folder in generated reports folder.
+
+    Parameters:
+    -----------
+    df_split_reports: dict
+        Dictionary of dataframes containing split data
+    format_config: dict
+
+    """
+
+    # For each of the split report
+    for key in df_split_reports:
+        # Get the xlsxwriter object of the split report
+        dir_path = file_utilities.get_curr_day_month_gen_report_name_dir_path(dir_name)
+        writer = file_utilities.get_xlsxwriter_obj({key: df_split_reports[key]}, key+'.xlsx', dir_path)
+        # Get the worksheet
+        workbook = writer.book
+        worksheet = workbook.get_worksheet_by_name(key)
+
+        # Apply border to the data
+        format_utilities.apply_border(df_split_reports[key], worksheet, workbook)
+
+        # Apply formatting specified in JSON
+        format_dicts_list = format_config['format_dicts']
+        format_utilities.apply_formatting(format_dicts_list, df_split_reports[key], worksheet, workbook, start_row=1)
+
+        # Insert heading for the summary sheet 
+        # TODO Probably need to insert a blank row in the data before getting the xlsx writer objects
+        format_utilities.write_heading(df_split_reports[key], format_config['heading'], worksheet, workbook)
+
+        # Format the header
+        format_utilities.format_col_header(df_split_reports[key], worksheet, workbook)
+
+        writer.save()
 
 
 

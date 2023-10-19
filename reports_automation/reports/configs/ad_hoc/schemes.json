@@ -65,7 +65,7 @@
             "summary_sheets_args": [
                 {
                     "summary_sheet_name" : "District level - Schools issuing textbooks",
-                    "summary_sheet_code" : "dist_lvl_SCH_ISS_TXT",
+                    "summary_sheet_code" : "DIST_LVL_SCH_ISS_TXT",
                     "custom_summary" : true,
                     "custom_summary_config" : {
                         "module_name" : "schemes",
@@ -91,6 +91,57 @@
                     },
                     "format_config" : {
                         "heading" : "Schools issuing textbook - District wise report",
+                        "cols_to_drop": [],
+                        "cols_rename_dict" : {
+                            "cols.udise_col" : "cols.tot_schools",
+                            "cols.scheme_comp": "cols.scheme_completed"
+                        },
+                        "format_dicts" : [
+                            {
+                                "description" : "Apply percentage formatting",
+                                "columns" : ["cols.perc_schools_issued_books"],
+                                "format" : {"num_format": "0.00%"}
+                            },
+                            {
+                                "description" : "Apply 3 colour gradient heatmap",
+                                "columns" : ["cols.perc_schools_issued_books"],
+                                "conditional_format_flag" : true,
+                                "conditional_format" : {"type": "3_color_scale"}
+                              }
+                        ]
+                    }
+                    
+                },
+                {
+                    "summary_sheet_name" : "Block level - Schools issuing textbooks",
+                    "summary_sheet_code" : "BLK_LVL_SCH_ISS_TXT",
+                    "custom_summary" : true,
+                    "custom_summary_config" : {
+                        "module_name" : "schemes",
+                        "method_name" : "data_summary"
+                    },
+                    "grouping_levels" : ["cols.district_name", "cols.block_name"],
+                    "agg_dict": {
+                        "cols.scheme_comp": "sum", 
+                        "cols.scheme_in_progress" : "sum",
+                        "cols.scheme_not_started" : "sum"
+                        },
+                    "ranking_config": {
+                        "ranking_args" : {
+                            "ranking_type" : "percent_ranking",
+                            "num_col": "cols.scheme_comp",
+                            "den_col": "cols.udise_col",
+                            "sort": true,
+                            "ascending": false,
+                            "show_rank_col" : false,
+                            "show_rank_val" : true,
+                            "ranking_val_desc": "cols.perc_schools_issued_books"
+                        }
+                    },
+                    "split_report" : true,
+                    "split_on_col" : "cols.district_name",
+                    "format_config" : {
+                        "heading" : "Schools issuing textbook - Block wise report",
                         "cols_to_drop": [],
                         "cols_rename_dict" : {
                             "cols.udise_col" : "cols.tot_schools",

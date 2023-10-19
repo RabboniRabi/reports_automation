@@ -12,6 +12,7 @@ import utilities.file_utilities as file_utilities
 import utilities.ranking_utilities as ranking_utilities
 import utilities.report_utilities as report_utilities
 import utilities.report_format_utilities as report_format_utilities
+import utilities.report_splitter_utilities as report_splitter_utilities
 import importlib
 import data_cleaning.column_cleaner as column_cleaner
 import readers.data_fetcher as data_fetcher
@@ -232,6 +233,37 @@ def _get_processed_base_report(df_base_report:pd.DataFrame, base_rpt_config: dic
     return df_proc_base_report
 
 
+def _split_format_save_report(ad_hoc_rpt, summary_sheets_args):
+    """
+    Helper function to split reports before formatting and saving
+    if any configuration has the split report flag as true.
+
+    Parameters:
+    ----------
+    df_reports: dict
+        The ad hoc report summaries as a dictionary of Pandas DataFrame objects
+    summary_sheets_args: dict
+        Dictionary of arguments required to create summaries of data each of which 
+        contains a dictionary of format configurations to be used to clean up the data 
+        and apply visual formatting.
+    """
+
+    for summary_sheet_args in summary_sheets_args:
+        
+        if 'split_report' in summary_sheet_args and summary_sheet_args['split_report']:
+            # Get the report to split
+            df_report = ad_hoc_rpt[summary_sheet_args['summary_sheet_code']]
+            df_split_report = report_splitter_utilities.split_report(df_report, summary_sheet_args['split_on_col'])
+
+            # Format and save the report
+            format_config = summary_sheet_args['format_config']
+            report_format_utilities.format_split_ad_hoc_report_and_save(
+                df_split_report, format_config, summary_sheet_args['summary_sheet_name'])
+
+            # Remove the report from the overall set of reports to be saved
+            del ad_hoc_rpt[summary_sheet_args['summary_sheet_code']]
+
+
 
         
 
@@ -266,6 +298,10 @@ def generate_format_save_report(report_code):
 
     # Get the ad hoc report
     ad_hoc_rpt = get_report(report_config, save_report)
+
+    # Split and save any reports flagged to be split
+    summary_sheets_args = report_config['summary_sheets_args']
+    _split_format_save_report(ad_hoc_rpt, summary_sheets_args)
 
     # Format and save the report
     report_format_utilities.format_ad_hoc_report_and_save(
