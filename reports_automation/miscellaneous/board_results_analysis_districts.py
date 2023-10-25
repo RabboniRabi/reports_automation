@@ -1,4 +1,4 @@
-0"""
+"""
 Module with functions to create a report card/analysis of schools' performance
 in 10th and 12th board exams with data compared to previous year and split
 up district wise.

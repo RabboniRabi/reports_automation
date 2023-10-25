@@ -425,7 +425,7 @@ cg_ecnom_supp_need = 'Economic Support Needed'
 # board exams report specific columns
 stu_name = 'NAME'
 brd_tot_stu_appr = 'No. of students who appeared for all subjects'
-brd_tot_stu_pass = 'No. of students passed'
+brd_tot_stu_pass = 'No. of students passed in all subjects'
 brd_pass_perc = 'Pass %'
 brd_pass_perc_med = 'Median Pass %'
 brd_avg_marks = 'Average marks'
@@ -531,6 +531,39 @@ biology = "BIOLOGY"
 economics = "ECONOMICS"
 commerce = "COMMERCE"
 computer_science = "COMPUTER SCIENCE"
+school_name = "school_name"
+pass_perc = "pass_perc"
+
+
+main_group = 'main_group'
+arts_group = 'arts_group'
+vocational_group = 'vocational_group'
+others_group = 'others_group'
+physics_median = 'PHYSICS_median'
+chemistry_median = 'CHEMISTRY_median'
+mathematics_median = 'MATHEMATICS_median'
+biology_median = 'BIOLOGY_median'
+economics_median = 'ECONOMICS_median'
+commerce_median = 'COMMERCE_median'
+comp_sci_median = 'COMPUTER SCIENCE_median'
+main_group_median = 'main_group_median'
+arts_group_median = "arts_group_median"
+vocational_group = 'vocational_group_median'
+others_group_median = 'others_group_median'
+physics_std = 'PHYSICS_std'
+chemistry_std = 'CHEMISTRY_std'
+mathematics_std = 'MATHEMATICS_std'
+biology_std = 'BIOLOGY_std'
+economics_std = 'ECONOMICS_std'
+commerce_std = 'COMMERCE_std'
+comp_sci_std = 'COMPUTER SCIENCE_std'
+main_group_std = 'main_group_std'
+arts_group_std = "arts_group_std"
+vocational_group = 'vocational_group_std'
+others_group_std = 'others_group_std'
+grp = 'GRP'
+local_body = 'localbody_type'
+
 
 
 
