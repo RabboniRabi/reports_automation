@@ -4,59 +4,46 @@ sys.path.append('../')
 import pandas as pd
 import utilities.file_utilities as file_utilities
 
-def data_prep(stud_det_df:pd.DataFrame,metric_type:list):
-    """
-    Function to merge the student mark details dataframe with the list of different type of metrics.
+# The dataframe with student mark details for defined management type
+govt = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\SSLC_stud_level_private_2022-23.xlsx')
+print("Data successfully read")
 
-    Parameters:
-        stud_det_df:pd.DataFrame
-           Data frame with student details with their marks
+# The dataframe with mother's qualification details
+moth_qual = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\sslc_moth_qual.xlsx')
+print("Data successfully read")
 
-        metric_type: list
-           The list of dataframe with different metrics to be merged.
+# The dataframe with mother's occupation details
+moth_occ = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\sslc_moth_occ.xlsx')
+print("Data successfully read")
 
-    Returns:
-           The merged dataframe with student details and the given metric.
-    """
+# The dataframe with father's qualification details
+fath_qual = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\sslc_fath_qual.xlsx')
+print("Data successfully read")
 
-    for df in metric_type:
-        stud_det_df = pd.merge(stud_det_df,df,how= 'left',on ='EMIS_NO')
-    return stud_det_df
+# The dataframe with father's occupation details
+fath_occ = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\sslc_fath_occ.xlsx')
+print("Data successfully read")
 
-def main():
-    # The dataframe with student mark details for defined management type
-    aided = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\SSLC_stud_level_government_2022-23.xlsx')
-    print("Data successfully read")
+ # The dataframe with parent's income details
+parent_inc = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\sslc_parent_income.xlsx')
+print("Data successfully read")
 
-    # The dataframe with mother's qualification details
-    moth_qual = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\sslc_moth_qual.xlsx')
-    print("Data successfully read")
+# merge operation
+print("merging")
+moth_det = pd.merge(moth_qual,moth_occ,how= 'outer',on ='EMIS_NO')
+print("merging")
+fat_det = pd.merge(fath_qual,fath_occ,how= 'outer',on ='EMIS_NO')
+print("merging")
+parent_det = pd.merge(moth_det,fat_det,how= 'outer',on ='EMIS_NO')
+print("merging")
+parent_det_inc = pd.merge(parent_det,parent_inc,how= 'outer',on ='EMIS_NO')
+print("merging")
 
-    # The dataframe with mother's occupation details
-    moth_occ = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\sslc_moth_occ.xlsx')
-    print("Data successfully read")
+sslc_data = pd.merge(govt,parent_det_inc,how= 'left',on ='EMIS_NO')
 
-    # The dataframe with father's qualification details
-    fath_qual = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\sslc_fath_qual.xlsx')
-    print("Data successfully read")
-
-    # The dataframe with father's occupation details
-    fath_occ = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\sslc_fath_occ.xlsx')
-    print("Data successfully read")
-
-    # The dataframe with parent's income details
-    parent_inc = pd.read_excel(r'C:\Users\TAMILL\Data Reporting\reports\source_data\Oct_23\sslc\sslc_parent_income.xlsx')
-    print("Data successfully read")
-
-    # list with different metrics to be merged
-    metric_list = [moth_qual,moth_occ,fath_qual,fath_occ,parent_inc]
-    df_prep = data_prep(aided,metric_list)
-
-    # To save as excel file
-    directory_path = file_utilities.get_curr_day_month_gen_report_name_dir_path('data_preperation_10')
-    file_utilities.save_to_excel({'Report': df_prep},'govt.xlsx', dir_path=directory_path)
+# To save as excel file
+print("saving")
+directory_path = file_utilities.get_curr_day_month_gen_report_name_dir_path('data_preperation_10_pvt')
+file_utilities.save_to_excel({'Report':sslc_data},'pvt.xlsx', dir_path=directory_path)
 
 
-
-if __name__ == "__main__":
-    main()
