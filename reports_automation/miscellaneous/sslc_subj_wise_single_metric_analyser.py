@@ -3,6 +3,7 @@ Module to create analysis reports with subject wise median and standard deviatio
 of SSLC data for each of a given list of metrics to analyse.
 """
 
+
 import sys
 
 import pandas as pd
@@ -165,8 +166,8 @@ def _get_grouping_lvl_med_sd(grouping_levels: list, df_dict: dict, median_agg_di
                   inplace=True)
 
     # Melt the subject columns and values into rows with subject and median values
-    df_med = pd.melt(df_med, id_vars=grouping_levels+[cols.brd_tot_stu_appr, cols.brd_tot_stu_pass],
-                        value_vars=value_vars_list, var_name=cols.subject, value_name='median')
+    #df_med = pd.melt(df_med, id_vars=grouping_levels+[cols.brd_tot_stu_appr, cols.brd_tot_stu_pass],
+    #                    value_vars=value_vars_list, var_name=cols.subject, value_name='median')
 
     # Group the data and get the standard deviation values
     df_sd = tenth_board_data_prep.get_grouping_level_data(df_dict.copy(), grouping_levels, std_dev_agg_dict)
@@ -184,8 +185,8 @@ def _get_grouping_lvl_med_sd(grouping_levels: list, df_dict: dict, median_agg_di
         inplace=True)
 
     # Melt the subject columns and values into rows with subject and standard deviation values
-    df_sd = pd.melt(df_sd, id_vars=grouping_levels, value_vars=value_vars_list,
-                        var_name=cols.subject, value_name='std_dev')
+    #df_sd = pd.melt(df_sd, id_vars=grouping_levels, value_vars=value_vars_list,
+    #                    var_name=cols.subject, value_name='std_dev')
 
     # Merge median and standard deviation value for the grouped data
     df_med_sd = pd.merge(df_med, df_sd, how='inner', on=grouping_levels+[cols.subject])
