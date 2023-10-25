@@ -10,7 +10,7 @@ sys.path.append('../')
 
 districts_lat_long_path = '/home/rabboni/Downloads/district_lat_long.xlsx'
 
-file_name = 'HSC_urbanrural_subj_wise_rpt.xlsx'
+file_name = 'SSLC_community_subj_wise_both_years_rpt.xlsx'
 
 file_path = '/home/rabboni/Downloads/' + file_name
 
