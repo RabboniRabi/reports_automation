@@ -371,7 +371,7 @@ class_taught = 'Class_Taught'
 upper_primary_only = 'Upper primary only'
 upper_primary_and_secondary = 'Upper primary and Secondary'
 teacher_id = 'Teacher_ID'
-not_assigned = 'Not Assigned'
+not_assigned = 'Not Asssubjectigned'
 sections_without_teacher = 'Total number of sections without class teacher'
 
 # subjects data sepecific columns
@@ -532,6 +532,10 @@ biology = "BIOLOGY"
 economics = "ECONOMICS"
 commerce = "COMMERCE"
 computer_science = "COMPUTER SCIENCE"
+school_name = "school_name"
+pass_perc = "pass_perc"
+
+
 main_group = 'main_group'
 arts_group = 'arts_group'
 vocational_group = 'vocational_group'
