@@ -68,6 +68,7 @@ def get_subject_aggregation(filter_df, grouping_levels, subject_grouping, agg_di
                 agg_col = np.mean(group_marks)
             df[sub_group + '_' + agg_dict[sub_group]] = agg_col
 
+
     return df
 
 
@@ -98,7 +99,7 @@ def get_subject_grouping(df, sub_mark):
     # Declaring a master grouping levels - for each subject dataframe merge will happen to
     # final dataframe with these grouping levels
     #group_levels = df.iloc[:, 0:14].columns.to_list()
-    group_levels = [cols.district_name, cols.block_name, cols.udise_col, cols.management,
+    group_levels = [cols.district_name, cols.block_name, cols.udise_col, cols.management, cols.sub_management,
                     cols.stu_name, cols.grp, cols.tot_stu, cols.local_body, cols.stud_comm, cols.gender, cols.urban_rural, cols.medium, cols.lang_marks,
                     cols.eng_marks, cols.tot_marks, cols.stu_pass]
 
@@ -124,7 +125,6 @@ def get_subject_grouping(df, sub_mark):
         # Merging the subject dataframe with the final dataframe
         final_df = final_df.merge(sub_df[final_columns_list], on=group_levels, how='outer')
         del sub_df
-
     return final_df
 
 
