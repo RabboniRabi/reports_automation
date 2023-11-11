@@ -121,15 +121,21 @@ def calc_ranking(df, ranking_config):
                 ranking_args_for_key['show_rank_col'] = grouping_lvl_ranking_config['show_rank_col']
                 ranking_args_for_key['rank_col_name'] = grouping_lvl_ranking_config['rank_col_name']
                 show_rank_col_flag = True
+            else:
+                ranking_args_for_key['show_rank_col'] = False
             
             if 'show_rank_val' in grouping_lvl_ranking_config and grouping_lvl_ranking_config['show_rank_val']:
                 ranking_args_for_key['show_rank_val'] = grouping_lvl_ranking_config['show_rank_val']
                 ranking_args_for_key['ranking_val_desc'] = grouping_lvl_ranking_config['ranking_val_desc']
                 show_rank_val_flag = True
+            else:
+                ranking_args_for_key['show_rank_val'] = False
             
             if 'rank_within_parent_group' in grouping_lvl_ranking_config and grouping_lvl_ranking_config['rank_within_parent_group']:
                 ranking_args_for_key['rank_within_parent_group'] = grouping_lvl_ranking_config['rank_within_parent_group']
                 ranking_args_for_key['rank_within_parent_grouping_levels'] = grouping_lvl_ranking_config['rank_within_parent_grouping_levels']
+            else:
+                ranking_args_for_key['rank_within_parent_group'] = False
 
             # Group the data to the level it needs to be ranked on
             grouping_levels = grouping_lvl_ranking_config['grouping_levels']
@@ -147,16 +153,21 @@ def calc_ranking(df, ranking_config):
                 df_subset = data_ranked_for_grouping_lvl[grouping_levels + \
                             [grouping_lvl_ranking_config['rank_col_name'], grouping_lvl_ranking_config['ranking_val_desc']]]
             elif show_rank_col_flag:
-                            # Get the subset of data with grouping levels and rank column and rank value column
+                # Get the subset of data with grouping levels and rank column and rank value column
                 df_subset = data_ranked_for_grouping_lvl[grouping_levels + [grouping_lvl_ranking_config['rank_col_name']]]
             elif show_rank_val_flag:
-                            # Get the subset of data with grouping levels and rank column and rank value column
+                # Get the subset of data with grouping levels and rank column and rank value column
                 df_subset = data_ranked_for_grouping_lvl[grouping_levels + [grouping_lvl_ranking_config['ranking_val_desc']]]
+
+                # Drop the ranking column from master data when ranking type is number ranking as this
+                # gives rise to duplicate columns.
+                if (ranking_config['ranking_args']['ranking_type'] == 'number_ranking'):
+                    df_ranked.drop(columns=[ranking_config['ranking_args']['ranking_col']], inplace=True)
             else:
                 # No source configuration was found
                 sys.exit('Atleast one of show_rank_col or show_rank_val flags need to be true')
 
-            # Merge the ranked data for the current grouping level with the consolidated ranked data    
+            # Merge the ranked data for the current grouping level with the consolidated ranked data   
             df_ranked = pd.merge(df_ranked, df_subset, how='left', on=grouping_levels)
             # Reset the flags to false for next iteration
             show_rank_col_flag, show_rank_val_flag = False, False

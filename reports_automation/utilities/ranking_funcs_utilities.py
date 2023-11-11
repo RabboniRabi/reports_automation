@@ -179,6 +179,8 @@ def number_ranking(df, ranking_args_dict):
     # Sort the data, rank it and show/hide columns based on the configuration
     df = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
 
+    return df
+
 
 
 
@@ -216,9 +218,21 @@ def _sort_rank_and_show_hide_cols(df, ranking_args_dict):
     Pandas DataFrame object of sorted and if configured, ranked data    
     """
 
-    # Sort the values
-    ascending = ranking_args_dict['ascending']
-    df.sort_values(by=[cols.ranking_value], ascending=ascending, inplace=True)
+    if ranking_args_dict['ranking_type'] == 'number_ranking':
+        """ 
+        If ranking type is number ranking, rename the ranking column to generic 'Ranking Value'
+        for the execution of this function. No need to rename it back as ranking_col and ranking_val_desc
+        can be given as same in the config. 
+        'Ranking Value' gets renamed to ranking_val_desc during the execution of this function
+        """
+        df.rename(columns={ranking_args_dict['ranking_col']: cols.ranking_value}, inplace=True)
+
+    # Get the ascending flag
+    ascending = ranking_args_dict['ascending']   
+
+    # Sort the values if flag is true
+    if ranking_args_dict['sort']: 
+        df.sort_values(by=[cols.ranking_value], ascending=ascending, inplace=True)
 
     # Add a rank column if flag indicates that rank should be shown
     if 'show_rank_col' in ranking_args_dict and ranking_args_dict['show_rank_col']:
