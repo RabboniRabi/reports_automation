@@ -149,9 +149,11 @@ def get_elem_ranked_report(df_summary, ranking_config, metric_code, metric_categ
 
     # Sort the data by DEO Ranks
     elem_ranked_report.sort_values(by=[cols.deo_elem_rank, cols.deo_name_elm], ascending=True, inplace=True)
-
+    print("report utilities:", elem_ranked_report)
+    print("report utilities columns:", elem_ranked_report.columns)
     # Drop duplicate columns
     elem_ranked_report = elem_ranked_report.T.drop_duplicates().T
+    print("report utilities after dropping columns:", elem_ranked_report.columns)
 
     return elem_ranked_report
 

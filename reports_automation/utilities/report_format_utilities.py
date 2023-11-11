@@ -86,6 +86,7 @@ def format_ceo_review_report(df, format_config, ranking_config, sheet_name, file
     level_subtotal_cols_dict = subtotal_outlines_dict['level_subtotal_cols_dict']
     agg_cols_func_dict = subtotal_outlines_dict['agg_cols_func_dict']
     text_append_dict = subtotal_outlines_dict['text_append_dict']
+    print("report format utilities:", df.columns)
 
     # Compute sub-totals and insert into provided dataframe
     subtotals_result_dict = subtotal_utilities.compute_insert_subtotals(df, subtotal_outlines_dict, ranking_config)
