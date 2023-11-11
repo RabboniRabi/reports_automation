@@ -46,6 +46,7 @@ def percent_ranking(df, ranking_args_dict):
     # Calculate fraction of values (to be used for ranking)
     df[cols.ranking_value] = (df[num_col]/df[den_col])
     df[cols.ranking_value].fillna(0, inplace=True)
+    print("in percent ranking:", df.columns)
 
     # Sort the data, rank it and show/hide columns based on the configuration
     df = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
@@ -98,7 +99,7 @@ def percent_ranking_agg(df, ranking_args_dict):
     # Calculate fraction of values (to be used for ranking)
     df[cols.ranking_value] = (num_agg/den_agg)
     df[cols.ranking_value].fillna(0, inplace=True)
-
+    print("in percent ranking agg:", df.columns)
     # Sort the data, rank it and show/hide columns based on the configuration
     df = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
 
@@ -144,7 +145,7 @@ def avg_ranking(df, ranking_args_dict):
     no_of_items = len(avg_cols)
     df[cols.ranking_value] = (total_series/no_of_items)
     df[cols.ranking_value].fillna(0, inplace=True)
-
+    print("in avg ranking:", df.columns)
     # Sort the data, rank it and show/hide columns based on the configuration
     df = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
 
@@ -177,7 +178,13 @@ def number_ranking(df, ranking_args_dict):
     """
 
     # Sort the data, rank it and show/hide columns based on the configuration
+    #df[cols.ranking_value] = df[ranking_args_dict['ranking_col']]
+    df.rename(columns={
+        ranking_args_dict['ranking_col']: cols.ranking_value
+    },inplace=True)
+    print(df)
     df = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
+    return df
 
 
 
@@ -218,6 +225,7 @@ def _sort_rank_and_show_hide_cols(df, ranking_args_dict):
 
     # Sort the values
     ascending = ranking_args_dict['ascending']
+    print(df.columns)
     df.sort_values(by=[cols.ranking_value], ascending=ascending, inplace=True)
 
     # Add a rank column if flag indicates that rank should be shown
