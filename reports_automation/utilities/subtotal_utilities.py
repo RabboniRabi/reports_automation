@@ -75,11 +75,10 @@ def compute_insert_subtotals(df, subtotal_outlines_dict, ranking_config):
 
     # Get all the column names in the master data frame
     master_columns = df.columns.values
-    print("master columns: ", master_columns)
+
 
     # Initialize a data frame to hold the inserted subtotal rows - Useful for outlines and formatting
     df_subtotal_rows = pd.DataFrame(columns=df.columns)
-    print("Subtotal rows: ", df_subtotal_rows)
 
     # Initialize a list to hold the index locations of the inserted subtotal rows - Useful for formatting
     subtotals_row_indices_list = []

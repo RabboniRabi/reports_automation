@@ -182,7 +182,6 @@ def number_ranking(df, ranking_args_dict):
     df.rename(columns={
         ranking_args_dict['ranking_col']: cols.ranking_value
     },inplace=True)
-    print(df)
     df = _sort_rank_and_show_hide_cols(df, ranking_args_dict)
 
     return df
@@ -223,15 +222,17 @@ def _sort_rank_and_show_hide_cols(df, ranking_args_dict):
     -------
     Pandas DataFrame object of sorted and if configured, ranked data    
     """
+    """
 
     if ranking_args_dict['ranking_type'] == 'number_ranking':
-        """ 
+        
         If ranking type is number ranking, rename the ranking column to generic 'Ranking Value'
         for the execution of this function. No need to rename it back as ranking_col and ranking_val_desc
         can be given as same in the config. 
         'Ranking Value' gets renamed to ranking_val_desc during the execution of this function
-        """
+        
         df.rename(columns={ranking_args_dict['ranking_col']: cols.ranking_value}, inplace=True)
+    """
 
     # Get the ascending flag
     ascending = ranking_args_dict['ascending']   
