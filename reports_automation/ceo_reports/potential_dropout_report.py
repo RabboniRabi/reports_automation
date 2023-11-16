@@ -30,10 +30,13 @@ def pre_process_BRC_merge(raw_data: pd.DataFrame):
     DataFrame object of potential dropouts data processed and ready for mapping with BRC-CRC data
     """
 
+    raw_data = raw_data[raw_data[cols.school_type] == 'Government']
+
     # Get school level class wise count of potential dropout students
     df_pivot_class_wise = pd.pivot_table(raw_data, values=cols.emis_id, index=grouping_level,
                                          columns=[cols.class_number],
                                          aggfunc='count', fill_value=0).reset_index()
+
 
     # Convert all column name types to string
     df_pivot_class_wise.columns = df_pivot_class_wise.columns.map(str)
@@ -53,5 +56,6 @@ def pre_process_BRC_merge(raw_data: pd.DataFrame):
     # Merge the total potential dropout count to the class wise count
     df_merged = pd.merge(df_class_1_12_tot_count, df_pivot_class_wise, on=grouping_level)
     df_merged = pd.merge(df_merged, df_tot_pot_dropouts_schl, on=grouping_level)
+
 
     return df_merged
