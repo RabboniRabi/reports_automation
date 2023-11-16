@@ -102,25 +102,30 @@ def main():
     Generate report with teacher details and their undertaking subjects
     """
     # Get Unaided school data
-    df_unaid = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\Sample\teacher_detials\unaided.xlsx')
+    df_unaid = pd.read_excel(r'C:\Users\TAMILL\tch\tch_class_sub_un.xlsx')
+    print("Read sucessfully")
 
     # Partially aided df
-    df_part_aid = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\Sample\teacher_detials\partially_aided.xlsx')
+    df_part_aid = pd.read_excel(r'C:\Users\TAMILL\tch\tch_class_sub_part.xlsx')
+    print("Read sucessfully")
 
     # Fully aided df
-    df_full_aid = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\Sample\teacher_detials\fully_aided.xlsx')
+    df_full_aid = pd.read_excel(r'C:\Users\TAMILL\tch\tch_class_sub_full.xlsx')
+    print("Read sucessfully")
 
     # Central govt df
-    df_cent = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\Sample\teacher_detials\central.xlsx')
+    #df_cent = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\Sample\teacher_detials\central.xlsx')
 
     # Govt schools df as 4 datasets due to large size of the data
-    df_govt1 = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\Sample\teacher_detials\govt_ar_din.xlsx')
-    df_govt2 = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\Sample\teacher_detials\govt_erode_mad.xlsx')
-    df_govt3 = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\Sample\teacher_detials\govt_may_nil.xlsx')
-    df_govt4= pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\Sample\teacher_detials\govt_theni_viru.xlsx')
+    df_govt_1 = pd.read_excel(r'C:\Users\TAMILL\tch\tch_class_sub_govt1.xlsx',sheet_name= 'ar_kar')
+    print("Read sucessfully")
+    df_govt_2 = pd.read_excel(r'C:\Users\TAMILL\tch\tch_class_sub_govt1.xlsx',sheet_name= 'kr_ten')
+    print("Read sucessfully")
+    df_govt_3 = pd.read_excel(r'C:\Users\TAMILL\tch\tch_class_sub_govt2.xlsx')
+    print("Read sucessfully")
 
     # Declare list of all school types
-    all_manag_type = [df_unaid, df_part_aid, df_full_aid, df_cent, df_govt1, df_govt2, df_govt3, df_govt4]
+    all_manag_type = [df_unaid, df_part_aid, df_full_aid, df_govt_1, df_govt_2, df_govt_3]
 
     # List of group of classes
     classes_list = [[1, 2, 3], [4, 5], [6, 7, 8],[9, 10],[11,12]]
@@ -146,10 +151,10 @@ def main():
     df_class_9_10 = all_teach_sub_det_1_10(all_manag_type, classes_list[3])
     file_utilities.save_to_excel({'Report':df_class_9_10 },'class_9_10.xlsx', dir_path=directory_path)
 
-    # For classes 9 and 10
+    # For classes 11 and 12
     df_class11_12= all_teach_sub_det_11_12(all_manag_type, classes_list[4])
     file_utilities.save_to_excel({'Report':df_class11_12 },'class_11_12.xlsx', dir_path=directory_path)
-
+ 
 
 
 if __name__ == "__main__":

@@ -48,7 +48,7 @@
           }
         ]
       },
-      "metrics" : ["cols.stud_comm", "cols.gender", "cols.urban_rural", "cols.medium"],
+      "metrics" : ["cols.sub_management"],
       "filter_dict": {
         "cols.stu_name": [
           "DELETED"

@@ -79,7 +79,7 @@ def pre_process_BRC_merge(raw_data):
 
 
     # Drop columns that will not be used for the report
-    df_pre_processed.drop(columns=[cols.not_admttd, cols.to_be_verified, cols.non_target], inplace=True)
+    df_pre_processed.drop(columns=[cols.to_be_verified, cols.non_target], inplace=True)
 
     # Rename columns
     df_pre_processed.rename(columns={cols.stdnt_admttd: cols.stdnts_admttd}, inplace=True)

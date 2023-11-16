@@ -163,8 +163,8 @@ def main():
 
     # Edit the two lines below for each quiz report
     # To create the report for the defined quiz_id
-    qset_id = [30248]
-    report_name = 'TPD_quiz_report'
+    qset_id = [30256]
+    report_name = '30256_9_10'
 
     # Read the database connection credentials
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
@@ -201,3 +201,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

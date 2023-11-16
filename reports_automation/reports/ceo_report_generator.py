@@ -19,6 +19,7 @@ from enums.ranking_types import RankingTypes as ranking_types
 import data_cleaning.column_cleaner as column_cleaner
 
 
+
 def get_ceo_report_raw_data(report_config: dict, save_source=False):
     """
     Function to generate the raw data for CEO reports. This data would be

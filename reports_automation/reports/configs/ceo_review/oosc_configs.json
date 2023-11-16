@@ -36,6 +36,7 @@
             "cols.oosc_tot_surveyed": "sum",
             "cols.to_be_admitted": "sum",
             "cols.stdnts_admttd": "sum",
+            "cols.not_admttd": "sum",
             "cols.oosc_stu_admt_othr_reasons": "sum"
           }
         },
@@ -46,12 +47,13 @@
               "cols.oosc_tot_surveyed": "sum",
               "cols.to_be_admitted": "sum",
               "cols.stdnts_admttd": "sum",
+              "cols.not_admttd": "sum",
               "cols.oosc_stu_admt_othr_reasons": "sum"
             },
-            "num_col": "cols.stdnts_admttd",
+            "num_col": "cols.not_admttd",
             "den_col": "cols.to_be_admitted",
             "sort": true,
-            "ascending": false
+            "ascending": true
           },
           "data_ranking_levels" : {
             "block_level" : {
@@ -78,6 +80,7 @@
               "cols.oosc_tot_surveyed": "sum",
               "cols.to_be_admitted": "sum",
               "cols.stdnts_admttd": "sum",
+              "cols.not_admttd": "sum",
               "cols.oosc_stu_admt_othr_reasons": "sum",
               "cols.deo_elem_rank": "mean"
             },
@@ -85,6 +88,10 @@
               "cols.deo_name_elm": ""
             }
           },
+          "columns_to_drop" : [
+
+
+                    ],
           "format_dicts": [
             {
               "columns": [
@@ -111,6 +118,7 @@
             "cols.oosc_tot_surveyed": "sum",
             "cols.to_be_admitted": "sum",
             "cols.stdnts_admttd": "sum",
+            "cols.not_admttd": "sum",
             "cols.oosc_stu_admt_othr_reasons": "sum"
           }
         },
@@ -121,12 +129,13 @@
               "cols.oosc_tot_surveyed": "sum",
               "cols.to_be_admitted": "sum",
               "cols.stdnts_admttd": "sum",
+              "cols.not_admttd": "sum",
               "cols.oosc_stu_admt_othr_reasons": "sum"
             },
-            "num_col": "cols.stdnts_admttd",
+            "num_col": "cols.not_admttd",
             "den_col": "cols.to_be_admitted",
             "sort": true,
-            "ascending": false
+            "ascending": true
           },
           "data_ranking_levels" : {
             "block_level" : {
@@ -153,6 +162,7 @@
               "cols.oosc_tot_surveyed": "sum",
               "cols.to_be_admitted": "sum",
               "cols.stdnts_admttd": "sum",
+              "cols.not_admttd": "sum",
               "cols.oosc_stu_admt_othr_reasons": "sum",
               "cols.deo_sec_rank": "mean"
             },
@@ -160,6 +170,10 @@
               "cols.deo_name_sec": ""
             }
           },
+          "columns_to_drop" : [
+
+
+                    ],
           "format_dicts": [
             {
               "columns": [
