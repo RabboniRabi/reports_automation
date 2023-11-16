@@ -41,12 +41,31 @@ def main():
     # get the grouping level
     grouping_lvl = [cols.district_name, cols.block_name, cols.management, cols.udise_col, cols.school_name]
 
-    # get the agg dict
+    # get the agg dict for class 12
+    #agg_dict = {
+        #cols.tot_stu: "count",
+        #cols.stu_pass: "sum",
+        #cols.tot_marks: "median",
+        #cols.lang_marks: "median",
+        #cols.eng_marks: "median",
+        #cols.math_marks: "median",
+        #cols.physics: "median",
+        #cols.chemistry: "median",
+        #cols.biology: "median",
+        #cols.economics: "median",
+        #cols.commerce: "median",
+        #cols.computer_science: "median"}
+
+    # get the agg dict for class 12
     agg_dict = {
         cols.tot_stu: "count",
         cols.stu_pass: "sum",
-        cols.tot_marks: "median"
-    }
+        cols.tot_marks: "median",
+        cols.lang_marks: "median",
+        cols.eng_marks: "median",
+        cols.math_marks: "median",
+        cols.science_marks: "median",
+        cols.social_marks: "median"}
 
     # Create an empty DataFrame to store the combined data
     combined_df = pd.DataFrame()
@@ -58,26 +77,31 @@ def main():
     # Convert total mark column to integer
     #combined_df[cols.tot_marks] = combined_df[cols.tot_marks].fillna(0).astype('int')
     combined_df[cols.tot_marks] = combined_df[cols.tot_marks].astype('int')
+    combined_df[cols.lang_marks] = combined_df[cols.lang_marks].astype('int')
+    combined_df[cols.eng_marks] = combined_df[cols.eng_marks].astype('int')
+    combined_df[cols.math_marks] = combined_df[cols.math_marks].astype('int')
+    combined_df[cols.science_marks] = combined_df[cols.science_marks].astype('int')
+    combined_df[cols.social_marks] = combined_df[cols.social_marks].astype('int')
 
     # Combine DataFrames with Grouping Levels
     combined_df_grouped = combined_df.groupby(grouping_lvl).agg(agg_dict)
 
     # Get the class 10 PTR data
-    cls_10_ptr = pd.read_excel(r'C:\Users\Admin\Desktop\data analysis\PTR/class_10_PTR.xlsx', sheet_name='Details')
+    cls_10_ptr = pd.read_excel(r'C:\Users\Admin\Desktop\data analysis\PTR/class 10 ptr.xlsx', sheet_name='Details')
 
     # Merge the two DataFrames based on a common column.
     sslc_ptr = pd.merge(combined_df_grouped, cls_10_ptr, how='inner', on=[cols.udise_col])
 
-    #Add pass % in a new column
-    #sslc_ptr[cols.stu_pass] = pd.to_numeric(sslc_ptr[cols.stu_pass], errors='coerce')
-    #sslc_ptr[cols.tot_stu] = pd.to_numeric(sslc_ptr[cols.tot_stu], errors='coerce')
+    #Add pass % in a new column hsc
+    sslc_ptr[cols.stu_pass] = pd.to_numeric(sslc_ptr[cols.stu_pass], errors='coerce')
+    sslc_ptr[cols.tot_stu] = pd.to_numeric(sslc_ptr[cols.tot_stu], errors='coerce')
 
     pass_perc = sslc_ptr[cols.stu_pass] / sslc_ptr[cols.tot_stu]
     sslc_ptr[cols.pass_perc] = round(pass_perc, 2)
 
     # Save the metric report
     dir_path = file_utilities.get_curr_day_month_gen_report_name_dir_path('PTR')
-    file_utilities.save_to_excel({'sslc_ptr': sslc_ptr}, 'sslc_ptr_rpt.xlsx', dir_path=dir_path)
+    file_utilities.save_to_excel({'sslc_ptr': sslc_ptr}, 'SSLC_ptr_rpt.xlsx', dir_path=dir_path)
 
 if __name__ == '__main__':
     main()

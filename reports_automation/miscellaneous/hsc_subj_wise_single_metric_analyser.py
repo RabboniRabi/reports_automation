@@ -316,7 +316,9 @@ def _get_grouping_lvl_med_sd(df_dict, grouping_level, grouping_level_flag, sub_m
                        cols.arts_group, cols.vocational_group, cols.others_group]
     # Group the data and get the median values
     df_med = get_grouping_level_data(df_dict.copy(), grouping_level, grouping_level_flag, sub_mark, subject_grouping, median_agg_dict)
+    print(df_med.columns)
     print("Got the median")
+
 
     df_med.rename(columns={
         cols.emis_no_count: cols.brd_tot_stu_appr,
@@ -332,10 +334,11 @@ def _get_grouping_lvl_med_sd(df_dict, grouping_level, grouping_level_flag, sub_m
         cols.comp_sci_median: cols.computer_science,
         cols.main_group_median: cols.main_group,
         cols.arts_group_median: cols.arts_group,
-        cols.vocational_group: cols.vocational_group,
+        cols.vocational_group_median: cols.vocational_group,
         cols.others_group_median: cols.others_group,
         cols.total_median: cols.tot_marks
     }, inplace=True)
+    print(df_med.columns)
 
     print("Making the subject columns as rows")
     # Melt the subject columns and values into rows with subject and median values
@@ -344,6 +347,7 @@ def _get_grouping_lvl_med_sd(df_dict, grouping_level, grouping_level_flag, sub_m
     # Group the data and get the standard deviation values
     df_sd = get_grouping_level_data(df_dict.copy(), grouping_level, grouping_level_flag, sub_mark, subject_grouping, std_dev_agg_dict)
     print("Got the standard deviation")
+    print(df_sd.columns)
     df_sd.rename(columns={
         cols.emis_no_count: cols.brd_tot_stu_appr,
         cols.pass_sum: cols.brd_tot_stu_pass,
@@ -358,7 +362,7 @@ def _get_grouping_lvl_med_sd(df_dict, grouping_level, grouping_level_flag, sub_m
         cols.comp_sci_std: cols.computer_science,
         cols.main_group_std: cols.main_group,
         cols.arts_group_std: cols.arts_group,
-        cols.vocational_group: cols.vocational_group,
+        cols.vocational_group_std: cols.vocational_group,
         cols.others_group_std: cols.others_group,
         cols.total_std: cols.tot_marks
     }, inplace=True)
@@ -371,7 +375,8 @@ def _get_grouping_lvl_med_sd(df_dict, grouping_level, grouping_level_flag, sub_m
 
     print("Merging both the datasets")
     # Merge median and standard deviation value for the grouped data
-    df_med_sd = pd.merge(df_med, df_sd, how='inner', on=grouping_level)
+    df_med_sd = pd.merge(df_med, df_sd, how='inner', on=grouping_level + [cols.subject])
+
 
     return df_med_sd
 
@@ -535,7 +540,7 @@ def main():
                                     median_agg_dict, std_dev_agg_dict, sub_mark, sub_group)
 
         # Save the metric report
-        dir_path = file_utilities.get_curr_day_month_gen_report_name_dir_path('data_for_cluster_analysis')
+        dir_path = file_utilities.get_curr_day_month_gen_report_name_dir_path('data_analysis')
         file_utilities.save_to_excel(df_dict_metric_wise_sub, 'HSC_' + metric + '_subj_wise_rpt_both_years.xlsx', dir_path=dir_path)
 
 
