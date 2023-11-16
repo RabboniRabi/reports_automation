@@ -275,7 +275,7 @@
             "report_code" : "Student_TRANS_10_11",
             "report_category": "Transition",
             "report_desc": "Student Transition Rate from Class 10 to 11",
-            "generate_report":false,
+            "generate_report": false,
             "ranking_weightage" : 0,
             "improvement_weightage" : 0,
             "source_config" : {

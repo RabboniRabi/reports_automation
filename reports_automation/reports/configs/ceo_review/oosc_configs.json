@@ -336,7 +336,7 @@
       "report_code": "OOSC_PD",
       "report_category": "Enrolment",
       "report_desc": "OoSC Potential dropout",
-      "generate_report": false,
+      "generate_report": true,
       "ranking_weightage" : 2,
       "improvement_weightage" : 0,
       "source_config": {
