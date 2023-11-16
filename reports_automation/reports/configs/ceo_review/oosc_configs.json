@@ -84,6 +84,9 @@
               "cols.oosc_stu_admt_othr_reasons": "sum",
               "cols.deo_elem_rank": "mean"
             },
+            "columns_rename_dict" : {
+                        "cols.not_admttd" : "cols.stu_pen_to_admt"
+                    },
             "text_append_dict": {
               "cols.deo_name_elm": ""
             }
