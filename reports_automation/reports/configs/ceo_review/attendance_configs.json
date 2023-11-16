@@ -143,7 +143,7 @@
             "report_code" : "ATT_SCH_MARK_TCH",
             "report_category": "Attendance",
             "report_desc": "Schools marking teachers attendance report",
-            "generate_report": true,
+            "generate_report": false,
             "ranking_weightage" : 0,
             "improvement_weightage" : 0,
             "source_config" : {
@@ -164,6 +164,8 @@
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {
+                        "cols.avg_schools_marked": "mean",
+                        "cols.avg_total_working_days": "mean",
                         "cols.att_sch_markd_tch_perc": "mean"
                     }
                 },
@@ -171,6 +173,8 @@
                     "ranking_args": {
                         "ranking_type" : "number_ranking",
                         "agg_dict": {
+                            "cols.avg_schools_marked": "mean",
+                            "cols.avg_total_working_days": "mean",
                             "cols.att_sch_markd_tch_perc": "mean"
                         },
                         "ranking_col": "cols.att_sch_markd_tch_perc",
@@ -197,6 +201,8 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
+                            "cols.avg_schools_marked": "mean",
+                            "cols.avg_total_working_days": "mean",
                             "cols.att_sch_markd_tch_perc": "mean", 
                             "cols.deo_elem_rank": "mean"
                         },
@@ -222,6 +228,8 @@
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {
+                        "cols.avg_schools_marked": "mean",
+                        "cols.avg_total_working_days": "mean",
                         "cols.att_sch_markd_tch_perc": "mean"
                     }
                 },
@@ -229,6 +237,8 @@
                     "ranking_args": {
                         "ranking_type" : "number_ranking",
                         "agg_dict": {
+                            "cols.avg_schools_marked": "mean",
+                            "cols.avg_total_working_days": "mean",
                             "cols.att_sch_markd_tch_perc": "mean"
                         },
                         "ranking_col": "cols.att_sch_markd_tch_perc",
@@ -255,6 +265,8 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
+                            "cols.avg_schools_marked": "mean",
+                            "cols.avg_total_working_days": "mean",
                             "cols.att_sch_markd_tch_perc": "mean", 
                             "cols.deo_sec_rank": "mean"
                         },
@@ -299,6 +311,8 @@
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {
+                        "cols.avg_schools_marked": "mean",
+                        "cols.avg_total_working_days": "mean",
                         "cols.att_sch_markd_perc": "mean"
                     }
                 },
@@ -306,6 +320,8 @@
                     "ranking_args": {
                         "ranking_type" : "number_ranking",
                         "agg_dict": {
+                            "cols.avg_schools_marked": "mean",
+                            "cols.avg_total_working_days": "mean",
                             "cols.att_sch_markd_perc": "mean"
                         },
                         "ranking_col": "cols.att_sch_markd_perc",
@@ -332,6 +348,8 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
+                            "cols.avg_schools_marked": "mean",
+                            "cols.avg_total_working_days": "mean",
                             "cols.att_sch_markd_perc": "mean", 
                             "cols.deo_elem_rank": "mean"
                         },
@@ -342,8 +360,16 @@
                     },
                     "format_dicts" : [
                         {
-                            "columns" : ["cols.att_avg_sch_markd_perc"],
+                            "columns" : ["cols.att_avg_sch_markd_perc", "cols.avg_schools_marked"],
                             "format" : {"num_format": "0.00%"}
+                        },
+                        {
+                             "columns" : ["cols.avg_schools_marked"],
+                            "format" : {"num_format": "0.00"}
+                        },
+                        {
+                            "columns" : ["cols.avg_total_working_days"],
+                            "format" : {"num_format": "0.00"}
                         }
                     ]
                 }
@@ -357,6 +383,8 @@
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {
+                        "cols.avg_schools_marked": "mean",
+                        "cols.avg_total_working_days": "mean",
                         "cols.att_sch_markd_perc": "mean"
                     }
                 },
@@ -364,6 +392,8 @@
                     "ranking_args": {
                         "ranking_type" : "number_ranking",
                         "agg_dict": {
+                            "cols.avg_schools_marked": "mean",
+                            "cols.avg_total_working_days": "mean",
                             "cols.att_sch_markd_perc": "mean"
                         },
                         "ranking_col": "cols.att_sch_markd_perc",
@@ -390,6 +420,8 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
+                            "cols.avg_schools_marked": "mean",
+                            "cols.avg_total_working_days": "mean",
                             "cols.att_sch_markd_perc": "mean", 
                             "cols.deo_sec_rank": "mean"
                         },
@@ -402,6 +434,10 @@
                         {
                             "columns" : ["cols.att_avg_sch_markd_perc"],
                             "format" : {"num_format": "0.00%"}
+                        },
+                        {
+                             "columns" : ["cols.avg_schools_marked", "cols.avg_total_working_days"],
+                            "format" : {"num_format": "0.00"}
                         }
                     ]
                 }
@@ -477,8 +513,6 @@
                         "text_append_dict" : {"cols.deo_name_elm": ""}
                     },
                     "columns_to_drop" : [
-                        "cols.att_sec_working_tot",
-                        "cols.att_sec_marked_tot"
                     ],
                     "format_dicts" : [
                         {
@@ -540,8 +574,6 @@
                         "text_append_dict" : {"cols.deo_name_sec": ""}
                     },
                     "columns_to_drop" : [
-                        "cols.att_sec_working_tot",
-                        "cols.att_sec_marked_tot"
                     ],
                     "format_dicts" : [
                         {
@@ -578,6 +610,8 @@
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_elm", "cols.block_name"],
                     "grouping_agg_dict" : {
+                        "cols.avg_total_students": "mean",
+                        "cols.avg_total_present": "mean",
                         "cols.att_stu_avg_present_perc": "mean",
                         "cols.att_stu_avg_absent_perc": "mean"
                     }
@@ -586,6 +620,8 @@
                     "ranking_args": {
                         "ranking_type" : "number_ranking",
                         "agg_dict": {
+                            "cols.avg_total_students": "mean",
+                            "cols.avg_total_present": "mean",
                             "cols.att_stu_avg_present_perc": "mean",
                             "cols.att_stu_avg_absent_perc": "mean"
                         },
@@ -613,6 +649,8 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_elm"},
                         "agg_cols_func_dict" : {
+                            "cols.avg_total_students": "mean",
+                            "cols.avg_total_present": "mean",
                             "cols.att_stu_avg_present_perc": "mean", 
                             "cols.att_stu_avg_absent_perc": "mean", 
                             "cols.deo_elem_rank": "mean"
@@ -627,6 +665,10 @@
                         {
                             "columns" : ["cols.att_stu_avg_present_frmt", "cols.att_stu_avg_absent_frmt"],
                             "format" : {"num_format": "0.00%"}
+                        },
+                        {
+                            "columns": ["cols.avg_total_students", "cols.avg_total_present"],
+                            "format": {"num_format":  "0.00"}
                         }
                     ]
                 }
@@ -640,6 +682,8 @@
                     "custom_unranked_report": false,
                     "grouping_cols" : ["cols.deo_name_sec", "cols.block_name"],
                     "grouping_agg_dict" : {
+                        "cols.avg_total_students": "mean",
+                        "cols.avg_total_present": "mean",
                         "cols.att_stu_avg_present_perc": "mean",
                         "cols.att_stu_avg_absent_perc": "mean"
                     }
@@ -648,6 +692,8 @@
                     "ranking_args": {
                         "ranking_type" : "number_ranking",
                         "agg_dict": {
+                            "cols.avg_total_students": "mean",
+                            "cols.avg_total_present": "mean",
                             "cols.att_stu_avg_present_perc": "mean",
                             "cols.att_stu_avg_absent_perc": "mean"
                         },
@@ -675,6 +721,8 @@
                     "subtotal_outlines_dict" : {
                         "level_subtotal_cols_dict" : {"1" : "cols.deo_name_sec"},
                         "agg_cols_func_dict" : {
+                            "cols.avg_total_students": "mean",
+                            "cols.avg_total_present": "mean",
                             "cols.att_stu_avg_present_perc": "mean",
                             "cols.att_stu_avg_absent_perc": "mean",
                             "cols.deo_sec_rank": "mean"
@@ -689,6 +737,10 @@
                         {
                             "columns" : ["cols.att_stu_avg_present_frmt", "cols.att_stu_avg_absent_frmt"],
                             "format" : {"num_format": "0.00%"}
+                        },
+                        {
+                            "columns": ["cols.avg_total_students", "cols.avg_total_present"],
+                            "format": {"num_format":  "0.00"}
                         }
                     ]
                 }

@@ -297,7 +297,10 @@ no_of_days_abs = 'no_of_days_absent'
 att_class_id = 'class_id'
 att_total_students = 'total_students'
 att_perc_students_abs_6_days = '% Students absent for greater than 6 days'
-
+avg_schools_marked = "Avg Total Schools Marked"
+avg_total_working_days = "Avg Total Working Days"
+avg_total_present = "Avg Total Present"
+avg_total_students = "Avg Total Students"
 
 # Updation specific column names
 up_tot_tchrs = 'total_teachers'
