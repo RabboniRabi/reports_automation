@@ -301,6 +301,7 @@ att_perc_students_abs_6_days = '% Students absent for greater than 6 days'
 avg_schools_marked = "Avg Total Schools Marked"
 avg_total_working_days = "Avg Total Working Days"
 avg_total_present = "Avg Total Present"
+total_present = "Avg Students Excepted"
 avg_total_students = "Avg Total Students"
 
 # Updation specific column names
@@ -413,6 +414,8 @@ att_stu_avg_present_frmt = 'Average students present %'
 att_stu_avg_absent_frmt = 'Average students absent %'
 att_sec_working_tot = 'total_sections_working_between_dates'
 att_sec_marked_tot = 'total_sections_marked_between_dates'
+total_sections_working_marked = 'Total sections working marked'
+total_sections_marked = 'Total sections marked'
 att_sec_mark_perc = '% sections marking attendance'
 att_tch_avg_present_perc = 'average_present_perc'
 att_tch_avg_absent_perc = 'average_absent_perc'
