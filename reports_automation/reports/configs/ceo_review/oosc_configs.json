@@ -6,7 +6,7 @@
       "report_category": "Enrolment",
       "report_desc": "OoSc - admitted Report",
       "generate_report": true,
-      "ranking_weightage" : 0,
+      "ranking_weightage" : 1,
       "improvement_weightage" : 0,
       "source_config": {
         "source_file_name": "OSC-Survey-Full-Rpt.xlsx",
@@ -24,7 +24,7 @@
       "post_process_brc_merge": false,
       "elementary_report": {
         "generate_report": true,
-        "ranking_weightage" : 0,
+        "ranking_weightage" : 2,
         "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
@@ -37,7 +37,8 @@
             "cols.to_be_admitted": "sum",
             "cols.stdnts_admttd": "sum",
             "cols.not_admttd": "sum",
-            "cols.oosc_stu_admt_othr_reasons": "sum"
+            "cols.oosc_stu_admt_othr_reasons": "sum",
+            "cols.oosc_stu_nt_admt_othr_reasons": "sum"
           }
         },
         "ranking_config" : {
@@ -48,7 +49,8 @@
               "cols.to_be_admitted": "sum",
               "cols.stdnts_admttd": "sum",
               "cols.not_admttd": "sum",
-              "cols.oosc_stu_admt_othr_reasons": "sum"
+              "cols.oosc_stu_admt_othr_reasons": "sum",
+              "cols.oosc_stu_nt_admt_othr_reasons": "sum"
             },
             "num_col": "cols.not_admttd",
             "den_col": "cols.to_be_admitted",
@@ -82,6 +84,7 @@
               "cols.stdnts_admttd": "sum",
               "cols.not_admttd": "sum",
               "cols.oosc_stu_admt_othr_reasons": "sum",
+              "cols.oosc_stu_nt_admt_othr_reasons": "sum",
               "cols.deo_elem_rank": "mean"
             },
             "columns_rename_dict" : {
@@ -109,7 +112,7 @@
       },
       "secondary_report": {
         "generate_report": true,
-        "ranking_weightage" : 0,
+        "ranking_weightage" : 2,
         "improvement_weightage" : 0,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
@@ -122,7 +125,8 @@
             "cols.to_be_admitted": "sum",
             "cols.stdnts_admttd": "sum",
             "cols.not_admttd": "sum",
-            "cols.oosc_stu_admt_othr_reasons": "sum"
+            "cols.oosc_stu_admt_othr_reasons": "sum",
+            "cols.oosc_stu_nt_admt_othr_reasons": "sum"
           }
         },
         "ranking_config" : {
@@ -133,7 +137,8 @@
               "cols.to_be_admitted": "sum",
               "cols.stdnts_admttd": "sum",
               "cols.not_admttd": "sum",
-              "cols.oosc_stu_admt_othr_reasons": "sum"
+              "cols.oosc_stu_admt_othr_reasons": "sum",
+              "cols.oosc_stu_nt_admt_othr_reasons": "sum"
             },
             "num_col": "cols.not_admttd",
             "den_col": "cols.to_be_admitted",
@@ -167,6 +172,7 @@
               "cols.stdnts_admttd": "sum",
               "cols.not_admttd": "sum",
               "cols.oosc_stu_admt_othr_reasons": "sum",
+              "cols.oosc_stu_nt_admt_othr_reasons": "sum",
               "cols.deo_sec_rank": "mean"
             },
             "text_append_dict": {
@@ -340,8 +346,8 @@
       "report_category": "Enrolment",
       "report_desc": "OoSC Potential dropout",
       "generate_report": true,
-      "ranking_weightage" : 2,
-      "improvement_weightage" : 0,
+      "ranking_weightage" : 1,
+      "improvement_weightage" : 0.5,
       "source_config": {
         "source_file_name": "potential_dropout_rpt.xlsx",
         "source_sheet_name": "Details",
@@ -358,8 +364,8 @@
       "post_process_brc_merge": false,
       "elementary_report": {
         "generate_report": true,
-        "ranking_weightage" : 3,
-        "improvement_weightage" : 0,
+        "ranking_weightage" : 2,
+        "improvement_weightage" : 1,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
@@ -443,8 +449,8 @@
       },
       "secondary_report": {
         "generate_report": true,
-        "ranking_weightage" : 3,
-        "improvement_weightage" : 0,
+        "ranking_weightage" : 5,
+        "improvement_weightage" : 1,
         "un_ranked_report_args": {
           "custom_unranked_report": false,
           "grouping_cols": [
