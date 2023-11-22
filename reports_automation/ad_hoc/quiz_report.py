@@ -108,7 +108,7 @@ def process_usa(usa:pd.DataFrame, questions_list:list):
     """
     usa.sort_values('AnswerString')
     # splitting comma separated values
-    usa[questions_list] = usa.AnswerString.str.split(',', expand=True)
+    usa[questions_list] = usa.AnswerString.str.split(',',expand=True)
     usa[questions_list] = usa[questions_list].astype(int)
 
     # dropping the columns not required
@@ -163,8 +163,8 @@ def main():
 
     # Edit the two lines below for each quiz report
     # To create the report for the defined quiz_id
-    qset_id = [30256]
-    report_name = '30256_9_10'
+    qset_id = [30251]
+    report_name = 'TPD_quiz_report_30251'
 
     # Read the database connection credentials
     credentials_dict = dbutilities.read_conn_credentials('db_credentials.json')
@@ -174,9 +174,11 @@ def main():
 
     # Fetch question and answer details for the list of question ids
     qstn_ans = qstn_ans_fetch(qstn_lists, credentials_dict)
+    #qstn_ans = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\main\30254q.xlsx')
 
     # Get user selected answers for the list of questions ids
     usa = user_selected_answers_fetch(qset_id, credentials_dict)
+    #usa=pd.read_excel(r'C:\Users\TAMILL\30254_usa.xlsx')
 
     # Get the list of unique questions
     questions_list = qstn_ans['Questions'].unique()
@@ -201,4 +203,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

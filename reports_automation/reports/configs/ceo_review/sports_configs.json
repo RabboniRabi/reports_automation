@@ -22,7 +22,7 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
-                "ranking_weightage" : 5,
+                "ranking_weightage" : 2,
                 "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
@@ -81,7 +81,7 @@
             },
             "secondary_report" : {
                 "generate_report": true,
-                "ranking_weightage" : 5,
+                "ranking_weightage" : 2,
                 "improvement_weightage" : 1,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
@@ -329,7 +329,7 @@
             "report_category": "Sports",
             "report_desc": "Sports equipment delivery status report",
             "generate_report": true,
-            "ranking_weightage" : 0,
+            "ranking_weightage" : 1,
             "improvement_weightage" : 0,
             "source_config" : {
                 "source_file_name" : "Sports-Delivery-Update-Status-Rpt.xlsx",
@@ -344,7 +344,7 @@
             "post_process_brc_merge" : false,
             "elementary_report" : {
                 "generate_report": true,
-                "ranking_weightage" : 0,
+                "ranking_weightage" : 2,
                 "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
@@ -403,7 +403,7 @@
             },
             "secondary_report" : {
                 "generate_report": true,
-                "ranking_weightage" : 0,
+                "ranking_weightage" : 2,
                 "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": true,
