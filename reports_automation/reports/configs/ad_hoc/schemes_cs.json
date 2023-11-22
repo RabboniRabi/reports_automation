@@ -1,0 +1,62 @@
+{
+    "report_configs": [
+        {
+            "report_name": "schools_issuing_textbooks",
+            "report_code": "SCH_ISS_TXT_BOOKS",
+            "report_category": "Schemes",
+            "report_desc": "Schools issuing text books report",
+            "generate_report": true,
+            "custom_data_fetch" : false,
+            "source_config": {
+                "sources": [
+                    {
+                        "source_name": "text_books_high_higher_sec_govt",
+                        "source_file_name": "TB-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name": "Govt",
+                        "skip_rows": 4
+                    },
+                    {
+                        "source_name": "text_books_high_higher_sec_aided",
+                        "source_file_name": "TB-Scheme-Hs-Hss-Sch-Rpt.xlsx",
+                        "source_sheet_name": "Aided",
+                        "skip_rows": 0
+                    }
+                ],
+                "custom_data_combine": true,
+                "combine_data_type": "concat",
+                "combine_data_configs": {
+                    "primary_merge_data": {
+                        "source_name": "text_books_high_higher_sec_govt",
+                        "cols_to_drop_before_concat": []
+                    },
+                    "text_books_high_higher_sec_aided": {
+                        "join_on": "outer",
+                        "cols_to_drop_before_concat": []
+                    }
+                }
+            },
+            "include_base_report" : true,
+            "summary_sheets_args": [
+                {
+                    "summary_sheet_name": "District level textbook issued",
+                    "summary_sheet_code": "dist_lvl_txt_book_issued_count",
+                    "custom_summary": true,
+                    "grouping_levels": [
+                        "cols.district_name"
+                    ],
+                    "agg_dict": {
+                        "cols.scheme_completed": "sum",
+                        "cols.scheme_in_progress": "sum",
+                        "cols.scheme_not_started": "sum",
+                        "cols.tot_schools": "sum"
+                    }
+                }
+            ]
+
+        }
+
+    ]
+}
+
+
+
