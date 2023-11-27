@@ -524,12 +524,8 @@ def is_any_row_common(df_larger, df_smaller):
 
     # Get the cell wise matches of the smaller data frame with the larger dataframe
     df_cell_wise_matches = df_smaller.isin(df_larger)
-    # Get the row wise True matches (True if all cells in a row are True. False otherwise)
-    df_rows_wise_matches = df_cell_wise_matches.all(axis='columns')
-    # Check if any row match done above was true
-    any_row_matches = df_rows_wise_matches.any(axis=None)
 
-    return any_row_matches
+    return df_cell_wise_matches.any()
 
 
 def update_master_data(df_master_data, df_new_data):
@@ -642,3 +638,32 @@ def replace_negatives(x):
         return 0
     else:
         return x
+
+def get_unique_id(df, cols_to_add, col_name, index=0):
+   """
+   Helper function to create a unique id for a dataframe using concatenation of strings
+   Parameters:
+  -----------
+       df: Dataframe to create unique id
+       cols_to_add: list
+       Column values to concatenate
+       col_name: str
+       Name of the column to be displayed
+       index: Default 0
+       At which index, the new column needs to be inserted
+   Returns:
+  -------
+   Dataframe with the unique id column
+   """
+   # Creating an Unique id column with an empty string
+   df.insert(index, col_name, ' ')
+   for col in cols_to_add:
+       # Converting any datatype to string
+       df = df.astype({
+           col: 'string'
+       })
+       df[col_name] = df[col_name] + df[col]
+   # After concatenating removing the whitespaces
+   df[col_name].str.strip()
+
+   return df

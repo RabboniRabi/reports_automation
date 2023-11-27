@@ -320,7 +320,7 @@ ranking_value_desc = 'Ranking Value Description'
 beo_rank = 'BEO Rank'
 deo_elem_rank = 'DEO (Elementary) Rank'
 deo_sec_rank = 'DEO (Secondary) Rank'
-
+unique_id = 'Unique ID'
 # Sports specific column names
 test_comp_status = 'Completion Status'
 test_in_progress = 'In Progress'

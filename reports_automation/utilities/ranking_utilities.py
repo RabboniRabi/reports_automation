@@ -299,14 +299,18 @@ def update_deo_ranking_master(df_summary, ranking_config, metric_code, metric_ca
 
         # Define the subset of columns to check for common rows
         cols_to_check = [cols.name, cols.desig, cols.metric_code, cols.school_level, cols.month_col, cols.year_col]
+        df_master_ranking = utilities.get_unique_id(df_master_ranking, cols_to_check, cols.unique_id)
+        df_ranking = utilities.get_unique_id(df_ranking, cols_to_check, cols.unique_id)
 
         # Check if ranking data already exists
-        if (utilities.is_any_row_common(df_master_ranking[cols_to_check], df_ranking[cols_to_check])):
+        if (utilities.is_any_row_common(df_master_ranking[cols.unique_id], df_ranking[cols.unique_id])):
+            df_master_ranking.set_index(cols.unique_id, inplace=True)
             # Then update with the latest ranking
-            df_master_ranking.update(df_ranking)
+            df_master_ranking.update(df_ranking.set_index(cols.unique_id))
         else:
             # Add the new ranking to the ranking master
             df_master_ranking = pd.concat([df_master_ranking, df_ranking], join='inner')
+
 
     # Get only the columns to save.
     df_master_ranking = df_master_ranking[cols_to_save]        
