@@ -363,7 +363,7 @@
             },
             "secondary_report" : {
                 "generate_report": true,
-                "ranking_weightage" : 0,
+                "ranking_weightage" : 2,
                 "improvement_weightage" : 0,
                 "un_ranked_report_args" : {
                     "custom_unranked_report": false,
