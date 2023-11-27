@@ -24,7 +24,7 @@ def get_ceo_deo_mapping():
     mapping_data_dir_path = file_utilities.get_mapping_data_dir_path()
     file_path = file_utilities.get_file_path('BRC_CRC_Master_V3.xlsx', mapping_data_dir_path)
 
-    df_brc_crc_mapping = file_utilities.read_sheet(file_path, sheet_name='BRC-CRC V3 wo hyphen')
+    df_brc_crc_mapping = file_utilities.read_sheet(file_path, sheet_name='BRC-CRC V1')
 
     ceo_deo_mapping = {}
 
