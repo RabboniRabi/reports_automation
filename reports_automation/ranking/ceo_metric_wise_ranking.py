@@ -8,6 +8,9 @@ import sys
 sys.path.append('../')
 
 import math
+import warnings
+
+warnings.filterwarnings('ignore')
 
 import utilities.utilities as utilities
 import utilities.file_utilities as file_utilities
@@ -22,10 +25,41 @@ import pandas as pd
 
 import miscellaneous.ceo_deo_mapping as mapping
 
+# Get the current month data
+curr_month = utilities.get_curr_month()
+curr_year = utilities.get_curr_year()
+dir_path = file_utilities.get_ranking_reports_dir()
+def calculate_weighted_score_for_ceo_rank_rpts(df_ceo_ranking):
+    """
+    Function to calculate the score based on the metric weightage
+    Parameters:
+    -------
+        df_ceo_ranking: Dataframe with the inverted ranks
+
+    Returns:
+    -------
+    CEO Level weighted score dataframe
+    """
+    # Getting the metric weightage for the active configs
+    metric_weightages = weightage_fetcher.fetch_ceo_rev_metric_ranking_weightages()
+    # Extracting metrics that have weightages
+    weighted_metrics = {metric: metric_weightages[metric] for metric in metric_weightages.keys() if metric_weightages[metric] != 0}
+    # Loop to iterate for each metric code
+    for metric_code in weighted_metrics.keys():
+        # Multiplying that column with the weightage
+        df_ceo_ranking[metric_code] = df_ceo_ranking[metric_code] * metric_weightages[metric_code]
+
+    # Sorting the dataframe by districts
+    df_ceo_ranking.sort_values(by="CEO", inplace=True)
+    # Adding a key-value pair for adding weightage column in the dataframe
+    weighted_metrics["CEO"] = "Weightage"
+    df_ceo_ranking.loc[len(df_ceo_ranking)] = weighted_metrics
+
+    return df_ceo_ranking
 def calculate_ceo_ranks_for_deo_lvl_rpts():
     """
     Function to calculate the CEO ranks for DEO level reports.
-    The function calculates the mean ranks of all DEOs assigned 
+    The function inverts the ranks and then calculates the mean ranks of all DEOs assigned
     to the CEO for each metric.
 
     Returns:
@@ -34,11 +68,9 @@ def calculate_ceo_ranks_for_deo_lvl_rpts():
     """
 
     # Get the august ranking master
-    dir_path = file_utilities.get_ranking_reports_dir()
-    
-    # Get the current month data 
-    curr_month = utilities.get_curr_month()
-    curr_year = utilities.get_curr_year()
+
+    metric_schl_lvls_app = get_schl_lvls_app_for_active_metrics()
+
     df_ranking_master = ranking_utilities.get_ceo_rev_ranking_master_data(['DEO'], \
                     [school_levels.ELEMENTARY.value, school_levels.SECONDARY.value], \
                     [curr_month], [int(curr_year)])
@@ -46,12 +78,14 @@ def calculate_ceo_ranks_for_deo_lvl_rpts():
     # Get the list of unique metric codes
     metric_codes  = df_ranking_master[cols.metric_code].unique()
 
-
     # Get the CEO DEO mapping
     ceo_deo_mapping = mapping.get_ceo_deo_mapping()
 
+
     df_ceo_ranking = pd.DataFrame()
     df_ceo_ranking['CEO'] = ceo_deo_mapping.keys()
+    no_of_elem_deos = mapping.get_no_of_elem_deos()
+    no_of_sec_deos = mapping.get_no_of_sec_deos()
 
     metric_weightages = weightage_fetcher.fetch_ceo_rev_metric_ranking_weightages()
 
@@ -66,7 +100,7 @@ def calculate_ceo_ranks_for_deo_lvl_rpts():
         for ceo in ceo_deo_mapping.keys():
             # Get elementary DEOs
             elem_deos = ceo_deo_mapping[ceo]['Elementary_DEOs']
-            sec_deos  = ceo_deo_mapping[ceo]['Secondary_DEOs']
+            sec_deos = ceo_deo_mapping[ceo]['Secondary_DEOs']
             all_deos = elem_deos + sec_deos
             # Filter DEOs mapped to this CEO
             deos_of_ceo = utilities.filter_dataframe_column(df_ranking_master, cols.name, all_deos)
@@ -74,44 +108,65 @@ def calculate_ceo_ranks_for_deo_lvl_rpts():
             # From that, filter dataframe for current metric_code
             deos_of_ceo_metric = utilities.filter_dataframe_column(deos_of_ceo, cols.metric_code, [metric_code])
 
-            # Get the average rank of DEOs
-            mean_ceo_rank_metric = round(deos_of_ceo_metric.loc[:,cols.rank_col].mean(),1)
-            
-            # Update rank of CEO for metric
-            df_ceo_ranking[metric_code].loc[df_ceo_ranking['CEO']==ceo] = mean_ceo_rank_metric
+            sec_df = deos_of_ceo_metric[deos_of_ceo_metric[cols.school_level] == "Secondary"]
 
-    file_utilities.save_to_excel({'ceo_avg_rank': df_ceo_ranking}, 'ceo_ranks_for_deo_lvl_reports_sep.xlsx', dir_path)        
+            sec_df[cols.rank_col] = (no_of_sec_deos + 1) - sec_df[cols.rank_col]
+            metric_code_sch_lvl_list = metric_schl_lvls_app[metric_code]
+            if len(metric_code_sch_lvl_list) == 2:
+                # Filtering for Elementary
+                elem_df = deos_of_ceo_metric[deos_of_ceo_metric[cols.school_level] == "Elementary"]
+                # Inverting the ranks - 1st rank becomes 58 for weightage multiplication
+                elem_df[cols.rank_col] = (no_of_elem_deos + 1) - elem_df[cols.rank_col]
+                # Getting the average for the respective Elementary DEO
+                elem_rank_avg = (elem_df[cols.rank_col].mean()) / no_of_elem_deos
+                # Filtering for Secondary
+                sec_df = deos_of_ceo_metric[deos_of_ceo_metric[cols.school_level] == "Secondary"]
+                # Inverting the ranks for secondary
+                sec_df[cols.rank_col] = (no_of_sec_deos + 1) - sec_df[cols.rank_col]
+                # Getting the average for the respective Secondary DEO
+                sec_rank_avg = (sec_df[cols.rank_col].mean()) / no_of_sec_deos
+                # Adding both the Average ranks and dividing it by 2
+                ceo_rank = (elem_rank_avg + sec_rank_avg)/2
+                mean_ceo_rank = round(ceo_rank, 2)
+            elif len(metric_code_sch_lvl_list) == 1 and metric_code_sch_lvl_list[0] == "Elementary":
+                # Filtering for Elementary
+                elem_df = deos_of_ceo_metric[deos_of_ceo_metric[cols.school_level] == "Elementary"]
+                # Inverting the ranks
+                elem_df[cols.rank_col] = (no_of_elem_deos + 1) - elem_df[cols.rank_col]
+                # If there is only one school level report for a particular metric then no need to divide it by 2
+                elem_rank_avg = (elem_df[cols.rank_col].mean()) / no_of_elem_deos
+                mean_ceo_rank = round(elem_rank_avg, 2)
+            else:
+                # Filtering for Secondary
+                sec_df = deos_of_ceo_metric[deos_of_ceo_metric[cols.school_level] == "Secondary"]
+                # Inverting the ranks for secondary
+                sec_df[cols.rank_col] = (no_of_sec_deos + 1) - sec_df[cols.rank_col]
+                # Getting the average for the respective Secondary DEO
+                sec_rank_avg = (sec_df[cols.rank_col].mean()) / no_of_sec_deos
+                mean_ceo_rank = round(sec_rank_avg, 2)
+            # Update rank of CEO for metric
+            df_ceo_ranking[metric_code].loc[df_ceo_ranking['CEO'] == ceo] = mean_ceo_rank
+    # Replacing null values to 0
+    df_ceo_ranking.fillna(0, inplace=True)
 
     return df_ceo_ranking
 
-
-def calculate_inverted_ceo_ranks_for_deo_lvl_rpts():
+def get_ceo_cons_ranking_deo_lvl_rpts():
     """
-    Function to calculate the inverted CEO ranks for each metric.
-    For example, if the rank for a CEO for attendance metric was 7
-    and max rank for the metric is 58, the inverted rank will be:
-    58+1 - 7 = 52.
-
-    The inverted rank values will be used to multiply with the weightage
-    for a metric. So, higher the rank, (eg, 3/58), larger the inverted rank value (56),
-    higher the score when multiplied with the weightage.
+    Function to get CEO consolidated ranking with their weighted scores and saving it as excel file
 
     """
+    # Get the CEO consolidating report
+    ceo_cons_df = calculate_ceo_ranks_for_deo_lvl_rpts()
+    # Get the weighted score report
+    weighted_score_df = calculate_weighted_score_for_ceo_rank_rpts(ceo_cons_df.copy())
 
-    # Get the ranks of CEOs for all metrics
-    df_ceo_ranking = calculate_ceo_ranks_for_deo_lvl_rpts()
+    # Saving the file
+    file_utilities.save_to_excel({'ceo_avg_rank': ceo_cons_df},
+                                 'ceo_ranks_for_deo_lvl_reports_' + str(curr_month).lower() + '.xlsx', dir_path)
+    file_utilities.save_to_excel({'ceo_avg_rank': weighted_score_df},
+                                 'ceo_ranks_weighted_score_' + str(curr_month).lower() + '.xlsx', dir_path)
 
-    # Get metric wise maximum CEO rank possible
-    metric_wise_max_ceo_rank_dict = get_metric_wise_ceo_max_rank()
-
-    # For each metric, calculate the inverted rank
-    for metric_code in metric_wise_max_ceo_rank_dict.keys():
-        if metric_code in df_ceo_ranking.columns.to_list():
-            max_rank = metric_wise_max_ceo_rank_dict[metric_code]
-            df_ceo_ranking[metric_code] = (max_rank + 1) - df_ceo_ranking[metric_code]
-
-    dir_path = file_utilities.get_ranking_reports_dir()
-    file_utilities.save_to_excel({'ceo_avg_inv_rank': df_ceo_ranking}, 'inverted_ceo_ranks_for_deo_lvl_reports_sep.xlsx', dir_path)        
 
 
 
@@ -157,49 +212,8 @@ def get_schl_lvls_app_for_active_metrics():
 
 
 
-def get_metric_wise_ceo_max_rank():
-    """
-    Function to fetch the metric wise maximum possible rank for a CEO.
-    This calculation is needed as metrics are applicable for either 
-    Elementary (58 DEOs) only, Secondary (55 DEOs) only or both
-
-    Returns:
-    -------
-    Dictionary of metric wise max possible rank
-    """
-
-    # Get number of elementary and secondary DEOs
-    no_of_elem_deos = mapping.get_no_of_elem_deos()
-    no_of_sec_deos = mapping.get_no_of_sec_deos()
-
-    # Get the school levels applicability of metrics
-    metric_schl_lvls_app = get_schl_lvls_app_for_active_metrics()
-
-    metric_wise_rank = {}
-
-    # For each metric, check the applicability of school levels
-    # and assign the maximum possible rank
-
-    for metric_code in metric_schl_lvls_app.keys():
-
-        if school_levels.ELEMENTARY.value in metric_schl_lvls_app[metric_code] \
-                    and school_levels.SECONDARY.value in metric_schl_lvls_app[metric_code] :
-            max_rank = math.ceil((no_of_elem_deos + no_of_sec_deos)/2)
-        elif school_levels.ELEMENTARY.value in metric_schl_lvls_app[metric_code]:
-            max_rank = no_of_elem_deos
-        elif school_levels.SECONDARY.value in metric_schl_lvls_app[metric_code]:
-            max_rank = no_of_sec_deos
-
-        metric_wise_rank[metric_code] = max_rank
-
-    return metric_wise_rank
-            
-
-
-
 if __name__ == "__main__":
-    
-    calculate_inverted_ceo_ranks_for_deo_lvl_rpts()
+    get_ceo_cons_ranking_deo_lvl_rpts()
 
 
 
