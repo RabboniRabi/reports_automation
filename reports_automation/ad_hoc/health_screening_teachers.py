@@ -11,9 +11,9 @@ import data_cleaning.column_cleaner as column_cleaner
 import pandas as pd
 
 # Read the excel report as a Pandas DataFrame object
-df_report_pmoa = pd.read_excel(r'C:\Users\TAMILL\Downloads\PMOA-Screening-rpt.xlsx',sheet_name='Report', skiprows=4)
-df_report_mht = pd.read_excel(r'C:\Users\TAMILL\Downloads/mht_scr_rpt.xlsx',sheet_name='Report', skiprows=4)
-df_report_spectacle = pd.read_excel(r'C:\Users\TAMILL\Downloads\Spect-Manage-rpt.xlsx',sheet_name='Block-Wise Report', skiprows=4)
+
+
+
 
 
 def get_pmoa_screening_status(df, group_level):
@@ -189,14 +189,20 @@ def main():
     # path to save the file
     directory_path = file_utilities.get_curr_day_month_gen_report_name_dir_path('health_screening')
 
+    df_report_pmoa = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\health_scr\source\PMOA-Screening-rpt (1).xlsx',sheet_name='Report', skiprows=4)
+    print("File read")
     df_schools_screening_status_pmoa = get_pmoa_screening_status(df_report_pmoa, cols.district_name)
     file_utilities.save_to_excel({'Report': df_schools_screening_status_pmoa}, 'pmoa.xlsx', dir_path=directory_path)
 
+    df_report_mht = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\health_scr\source\MHT-Screening-Rpt (1).xlsx',sheet_name='Report', skiprows=4)
+    print("File read")
     df_schools_screening_status_mht = get_mht_screening_status(df_report_mht, cols.district_name)
     file_utilities.save_to_excel({'Report': df_schools_screening_status_mht}, 'mht.xlsx', dir_path=directory_path)
 
-    df_schools_screening_status_spectacle = get_spectacle_Status(df_report_spectacle, cols.district_name)
-    file_utilities.save_to_excel({'Report': df_schools_screening_status_spectacle}, 'spectacle.xlsx', dir_path=directory_path)
+    #df_report_spectacle = pd.read_excel(r'C:\Users\TAMILL\Desktop\TEA\health_scr\Spect-Manage-Rpt (1).xlsx',sheet_name='Block-Wise Report', skiprows=4)
+    print("File read")
+    #df_schools_screening_status_spectacle = get_spectacle_Status(df_report_spectacle, cols.district_name)
+    #file_utilities.save_to_excel({'Report': df_schools_screening_status_spectacle}, 'spectacle.xlsx', dir_path=directory_path)
 
 
 
