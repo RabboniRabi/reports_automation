@@ -17,7 +17,8 @@ from ceo_report_levels import CEOReportLevels as ceo_report_levels
 from enums.school_levels import SchoolLevels as school_levels
 from enums.ranking_types import RankingTypes as ranking_types
 import data_cleaning.column_cleaner as column_cleaner
-
+import warnings
+warnings.filterwarnings('ignore')
 
 
 def get_ceo_report_raw_data(report_config: dict, save_source=False):
