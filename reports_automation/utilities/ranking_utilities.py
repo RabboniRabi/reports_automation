@@ -299,6 +299,7 @@ def update_deo_ranking_master(df_summary, ranking_config, metric_code, metric_ca
 
         # Define the subset of columns to check for common rows
         cols_to_check = [cols.name, cols.desig, cols.metric_code, cols.school_level, cols.month_col, cols.year_col]
+        # Creating a Unique Id for the ranking master
         df_master_ranking = utilities.get_unique_id(df_master_ranking, cols_to_check, cols.unique_id)
         df_ranking = utilities.get_unique_id(df_ranking, cols_to_check, cols.unique_id)
 
