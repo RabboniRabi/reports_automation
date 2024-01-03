@@ -3,6 +3,7 @@ Script to extract student transition data class-wise in one go
 """
 import sys
 sys.path.append('../')
+import os
 import utilities.file_utilities as file_utilities
 import pandas as pd
 import utilities.dbutilities as dbutilities
@@ -17,14 +18,14 @@ def data_extraction():
 
     """
     class_studying_id = {
-        #"'Grade_1-2_stu_trans_count'": [1, 2],
-        #"'Grade_2-3_stu_trans_count'": [2, 3],
-        #"'Grade_3-4_stu_trans_count'": [3, 4],
-        #"'Grade_4-5_stu_trans_count'": [4, 5],
-        #"'Grade_5-6_stu_trans_count'": [5, 6],
-        #"'Grade_6-7_stu_trans_count'": [6, 7],
-        #"'Grade_7-8_stu_trans_count'": [7, 8],
-        # "'Grade_8-9_stu_trans_count'": [8, 9],
+        "'Grade_1-2_stu_trans_count'": [1, 2],
+        "'Grade_2-3_stu_trans_count'": [2, 3],
+        "'Grade_3-4_stu_trans_count'": [3, 4],
+        "'Grade_4-5_stu_trans_count'": [4, 5],
+        "'Grade_5-6_stu_trans_count'": [5, 6],
+        "'Grade_6-7_stu_trans_count'": [6, 7],
+        "'Grade_7-8_stu_trans_count'": [7, 8],
+        "'Grade_8-9_stu_trans_count'": [8, 9],
         "'Grade_9-10_stu_trans_count'": [9, 10],
         "'Grade_10-11_stu_trans_count'": [10, 11],
         "'Grade_11-12_stu_trans_count'": [11, 12],
@@ -41,12 +42,6 @@ def data_extraction():
         merge_df = pd.merge(df_grade_count, df_trans_count, how='outer', on=grouping_levels)
         file_utilities.save_to_excel({'Report': merge_df}, grade + '.xlsx', dir_path=dir_path)
 
-def get_transition_rate_district_wise(dir_path):
-    """
-    Function to convert school level data to district-wise and get the transition rate for the respective district.
-    Returns:
-
-    """
 
 
 if __name__ == "__main__":
