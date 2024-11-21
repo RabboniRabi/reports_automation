@@ -565,8 +565,16 @@ others_group_std = 'others_group_std'
 grp = 'GRP'
 local_body = 'localbody_type'
 
-
-
+# SE Weekly Report
+total_se_students = "Total Number of Students (Grade 6-8)"
+total_se_stu_logged_in = "Total number of Students Logged in (Grade 6-8)"
+logged_in_flag = "School logged In (Schools from which at least one student logged in) (Yes/No)"
+total_schls_not_logged_in = "Total Schools Not Logged in"
+stu_login_perc = 'Total Students Login %'
+grnd_total = 'Grand Total'
+stu_logged_in_more_30_min = 'students_logged_in_more_than_30_minutes'
+stu_logged_in_10_to_30_min = 'students_logged_in_for_10_to_30_minutes'
+stu_logged_in_less_10_min = 'students_logged_in_less_than_10_minutes'
 
 def get_value(var_name: str):
     """
